@@ -2,20 +2,18 @@ import FleetSection from "@/components/FleetSection";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import QuoteCalculator from "@/components/QuoteCalculator";
+import Reviews from "@/components/Reviews";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-black">
-      {/* NAVBAR FIJO ARRIBA */}
       <Navbar />
 
-      {/* HERO */}
       <section id="inicio">
         <Hero />
       </section>
 
-      {/* COTIZADOR */}
       <section
         id="cotizador"
         className="relative py-20 px-4 bg-gradient-to-br from-black via-gray-900 to-black"
@@ -33,8 +31,7 @@ export default function Home() {
               Obtén tu precio en segundos
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Selecciona tu ruta, indica cuántas personas viajan y te damos el
-              precio exacto al instante.
+              Selecciona tu ruta, indica cuántas personas viajan y te damos el precio exacto al instante.
             </p>
           </div>
 
@@ -42,10 +39,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECCIÓN DE FLOTA */}
       <FleetSection />
 
-      {/* BOTÓN FLOTANTE DE WHATSAPP */}
+      <Reviews />
+
       <WhatsAppFloat />
     </main>
   );
