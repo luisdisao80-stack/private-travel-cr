@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import QuoteCalculator from "@/components/QuoteCalculator";
 import Reviews from "@/components/Reviews";
+import FAQSection from "@/components/FAQSection";
 import ServiceComparison from "@/components/ServiceComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
@@ -51,6 +52,8 @@ export default function Home() {
       <FleetSection />
 
       <Reviews />
+      
+      <FAQSection />
 
       <WhatsAppFloat />
     </main>
