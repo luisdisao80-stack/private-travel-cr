@@ -49,19 +49,21 @@ export default function ContactForm() {
 
     const servicioTexto = formData.servicio === "vip" ? "VIP (con paradas + bebidas + snacks)" : "Standard";
 
-    const mensaje = encodeURIComponent(
-      `¡Hola Private Travel CR! 👋\n\n` +
+    // Construir mensaje sin emojis que se rompen en URL
+    const mensajeTexto =
+      `¡Hola Private Travel CR!\n\n` +
       `Quiero cotizar un shuttle privado.\n\n` +
-      `👤 *Nombre:* ${formData.nombre}\n` +
-      `📧 *Email:* ${formData.email}\n` +
-      (formData.whatsapp ? `📱 *WhatsApp:* ${formData.whatsapp}\n` : "") +
-      `👥 *Viajeros:* ${formData.pasajeros} ${parseInt(formData.pasajeros) === 1 ? "persona" : "personas"}\n` +
-      `📍 *Ruta:* ${formData.ruta}\n` +
-      `📅 *Fecha:* ${formData.fecha}\n` +
-      `✨ *Servicio:* ${servicioTexto}\n` +
-      (formData.mensaje ? `\n💬 *Detalles adicionales:*\n${formData.mensaje}\n` : "") +
-      `\n¿Cuál sería el precio y la disponibilidad? ¡Gracias!`
-    );
+      `*Nombre:* ${formData.nombre}\n` +
+      `*Email:* ${formData.email}\n` +
+      (formData.whatsapp ? `*WhatsApp:* ${formData.whatsapp}\n` : "") +
+      `*Viajeros:* ${formData.pasajeros} ${parseInt(formData.pasajeros) === 1 ? "persona" : "personas"}\n` +
+      `*Ruta:* ${formData.ruta}\n` +
+      `*Fecha:* ${formData.fecha}\n` +
+      `*Servicio:* ${servicioTexto}\n` +
+      (formData.mensaje ? `\n*Detalles adicionales:*\n${formData.mensaje}\n` : "") +
+      `\n¿Cuál sería el precio y la disponibilidad? ¡Gracias!`;
+
+    const mensaje = encodeURIComponent(mensajeTexto);
 
     window.open(`https://wa.me/50686334133?text=${mensaje}`, "_blank");
     setSent(true);
