@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import QuoteCalculator from "@/components/QuoteCalculator";
 import Reviews from "@/components/Reviews";
+import ServiceComparison from "@/components/ServiceComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 export default function Home() {
@@ -14,6 +15,10 @@ export default function Home() {
         <Hero />
       </section>
 
+      {/* SECCIÓN STANDARD VS VIP */}
+      <ServiceComparison />
+
+      {/* COTIZADOR */}
       <section
         id="cotizador"
         className="relative py-20 px-4 bg-gradient-to-br from-black via-gray-900 to-black"
