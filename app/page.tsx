@@ -6,6 +6,7 @@ import QuoteCalculator from "@/components/QuoteCalculator";
 import Reviews from "@/components/Reviews";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
+import PopularRoutes from "@/components/PopularRoutes";
 import ServiceComparison from "@/components/ServiceComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
@@ -51,6 +52,8 @@ export default function Home() {
       </section>
 
       <FleetSection />
+
+  <PopularRoutes />
 
       <Reviews />
 
