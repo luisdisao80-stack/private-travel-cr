@@ -1,3 +1,4 @@
+import BenefitsSection from "@/components/BenefitsSection";
 import FleetSection from "@/components/FleetSection";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
@@ -15,7 +16,10 @@ export default function Home() {
         <Hero />
       </section>
 
-      {/* SECCIÓN STANDARD VS VIP */}
+      {/* BENEFICIOS CON ICONOS */}
+      <BenefitsSection />
+
+      {/* STANDARD VS VIP */}
       <ServiceComparison />
 
       {/* COTIZADOR */}
