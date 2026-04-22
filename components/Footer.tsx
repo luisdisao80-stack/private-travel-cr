@@ -183,7 +183,8 @@ export default function Footer() {
                 className="flex items-center gap-2 p-3 rounded-xl bg-gray-900/50 border border-white/5 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all group"
               >
                 <svg
-                  className="w-[18px] h-[18px] text-gray-400 group-hover:text-amber-400 transition-colors"
+                  style={{ width: "18px", height: "18px" }}
+                  className="text-gray-400 group-hover:text-amber-400 transition-colors flex-shrink-0"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
@@ -200,7 +201,8 @@ export default function Footer() {
                 className="flex items-center gap-2 p-3 rounded-xl bg-gray-900/50 border border-white/5 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all group"
               >
                 <svg
-                  className="w-[18px] h-[18px] text-gray-400 group-hover:text-amber-400 transition-colors"
+                  style={{ width: "18px", height: "18px" }}
+                  className="text-gray-400 group-hover:text-amber-400 transition-colors flex-shrink-0"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
@@ -216,7 +218,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 p-3 rounded-xl bg-gray-900/50 border border-white/5 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all group"
               >
-                <svg className="w-4 h-4" viewBox="0 0 48 48">
+                <svg style={{ width: "18px", height: "18px" }} className="flex-shrink-0" viewBox="0 0 48 48">
                   <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571 c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
                   <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039 l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
                   <path fill="#4CAF50" d="M24,44c5.166,0,9.860-1.977,13.409-5.192l-6.190-5.238C29.211,35.091,26.715,36,24,36 c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
@@ -232,7 +234,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 p-3 rounded-xl bg-gray-900/50 border border-white/5 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all group"
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#34E0A1">
+                <svg style={{ width: "18px", height: "18px" }} className="flex-shrink-0" viewBox="0 0 24 24" fill="#34E0A1">
                   <path d="M12.006 4.295c-2.67 0-5.338.784-7.645 2.353H0l1.963 2.135a5.997 5.997 0 004.04 10.43 5.976 5.976 0 004.075-1.6L12 19.753l1.922-2.14a5.972 5.972 0 004.072 1.596 6 6 0 004.041-10.432L24 6.648h-4.36a13.528 13.528 0 00-7.634-2.353zM6.003 17.502a4.503 4.503 0 11.001-9.005 4.503 4.503 0 01-.001 9.005zm5.998-4.577c0-2.98-2.164-5.536-5.02-6.623a12.03 12.03 0 0110.041 0c-2.857 1.087-5.02 3.643-5.02 6.623zm6.002 4.577a4.503 4.503 0 11-.002-9.005 4.503 4.503 0 01.002 9.005zm0-6.86a2.357 2.357 0 00-2.358 2.358 2.357 2.357 0 002.358 2.357 2.357 2.357 0 002.356-2.358 2.357 2.357 0 00-2.356-2.356zm-12.003 0a2.357 2.357 0 00-2.358 2.358 2.357 2.357 0 002.358 2.357 2.357 2.357 0 002.357-2.358 2.357 2.357 0 00-2.357-2.356Z" />
                 </svg>
                 <span className="text-xs text-gray-300">TripAdvisor</span>
