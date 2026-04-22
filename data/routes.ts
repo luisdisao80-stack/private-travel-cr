@@ -129,6 +129,10 @@ export const routes: Route[] = [
 // FUNCIONES HELPER
 // ============================================
 
+export type ServiceType = "standard" | "vip";
+
+export const VIP_EXTRA_USD = 70;
+
 export function getLocationById(id: string): Location | undefined {
   return locations.find((loc) => loc.id === id);
 }
@@ -152,13 +156,18 @@ export function getPopularRoutes(): Route[] {
 export function calculatePrice(
   fromId: string,
   toId: string,
-  passengers: number
+  passengers: number,
+  serviceType: ServiceType = "standard"
 ): { price: number; vehicle: Vehicle; route: Route } | null {
   const route = getRoute(fromId, toId);
   if (!route) return null;
 
   const vehicle = passengers <= 5 ? vehicles[0] : vehicles[1];
-  const price = Math.round(route.basePriceUSD * vehicle.priceMultiplier);
+  let price = Math.round(route.basePriceUSD * vehicle.priceMultiplier);
+
+  if (serviceType === "vip") {
+    price += VIP_EXTRA_USD;
+  }
 
   return { price, vehicle, route };
 }
@@ -166,13 +175,28 @@ export function calculatePrice(
 export function calculateAllPrices(
   fromId: string,
   toId: string
-): { staria: number; hiace: number; route: Route } | null {
+): {
+  stariaStandard: number;
+  stariaVip: number;
+  hiaceStandard: number;
+  hiaceVip: number;
+  route: Route;
+} | null {
   const route = getRoute(fromId, toId);
   if (!route) return null;
 
+  const stariaStandard = Math.round(route.basePriceUSD * vehicles[0].priceMultiplier);
+  const hiaceStandard = Math.round(route.basePriceUSD * vehicles[1].priceMultiplier);
+
   return {
-    staria: Math.round(route.basePriceUSD * vehicles[0].priceMultiplier),
-    hiace: Math.round(route.basePriceUSD * vehicles[1].priceMultiplier),
+    stariaStandard,
+    stariaVip: stariaStandard + VIP_EXTRA_USD,
+    hiaceStandard,
+    hiaceVip: hiaceStandard + VIP_EXTRA_USD,
     route,
   };
 }
+
+
+
+
