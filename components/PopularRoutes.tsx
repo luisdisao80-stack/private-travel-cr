@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Clock, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/LanguageContext";
 
 type Route = {
   from: string;
@@ -24,6 +25,8 @@ const popularRoutes: Route[] = [
 ];
 
 export default function PopularRoutes() {
+  const { t, lang } = useLanguage();
+
   const scrollToQuote = () => {
     const quoteSection = document.getElementById("cotizador");
     if (quoteSection) {
@@ -34,6 +37,7 @@ export default function PopularRoutes() {
   return (
     <section
       id="rutas"
+      key={lang}
       className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.08),transparent_70%)]" />
@@ -49,19 +53,19 @@ export default function PopularRoutes() {
         >
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
-              ✦ RUTAS POPULARES
+              {t.routes.badge}
             </span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-            Los destinos más
+            {t.routes.titlePart1}
             <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-              buscados en Costa Rica
+              {t.routes.titlePart2}
             </span>
           </h2>
 
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Tarifas fijas y transparentes para las rutas más solicitadas por nuestros viajeros.
+            {t.routes.subtitle}
           </p>
         </motion.div>
 
@@ -122,7 +126,7 @@ export default function PopularRoutes() {
                       }}
                     >
                       <Sparkles size={8} />
-                      POPULAR
+                      {t.routes.popular}
                     </span>
                   )}
                 </div>
@@ -149,7 +153,7 @@ export default function PopularRoutes() {
                   <Clock size={10} color="rgba(245,158,11,0.7)" />
                   <span>{route.duration}</span>
                   <span style={{ color: "#4b5563" }}>·</span>
-                  <span>Privado</span>
+                  <span>{t.routes.private}</span>
                 </div>
 
                 {/* Precio y CTA */}
@@ -164,7 +168,7 @@ export default function PopularRoutes() {
                 >
                   <div>
                     <div style={{ fontSize: "9px", color: "#6b7280", lineHeight: "1", letterSpacing: "0.05em", textTransform: "uppercase" }}>
-                      Desde
+                      {t.routes.from}
                     </div>
                     <div style={{ fontSize: "20px", fontWeight: 700, color: "#fbbf24", lineHeight: "1.2" }}>
                       ${route.priceFrom}
@@ -181,7 +185,7 @@ export default function PopularRoutes() {
                       gap: "4px",
                     }}
                   >
-                    Cotizar
+                    {t.routes.quote}
                     <ArrowRight size={11} />
                   </span>
                 </div>
@@ -199,16 +203,16 @@ export default function PopularRoutes() {
           className="mt-12 text-center"
         >
           <p className="text-gray-400 mb-5">
-            ¿No ves tu destino? Tenemos{" "}
-            <span className="text-amber-400 font-semibold">25+ rutas disponibles</span>{" "}
-            en todo Costa Rica.
+            {t.routes.noDestination}{" "}
+            <span className="text-amber-400 font-semibold">{t.routes.routesAvailable}</span>{" "}
+            {t.routes.inCostaRica}
           </p>
           <Button
             onClick={scrollToQuote}
             size="lg"
             className="h-14 px-8 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold shadow-2xl shadow-amber-500/30"
           >
-            Ver todas las rutas y cotizar
+            {t.routes.seeAll}
             <ArrowRight className="ml-2" size={18} />
           </Button>
         </motion.div>

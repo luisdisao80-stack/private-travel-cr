@@ -7,22 +7,40 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-const routeOptions = [
-  "SJO Airport → La Fortuna",
-  "SJO Airport → Manuel Antonio",
-  "SJO Airport → Monteverde",
-  "SJO Airport → Tamarindo",
-  "LIR Airport → La Fortuna",
-  "LIR Airport → Tamarindo",
-  "LIR Airport → Monteverde",
-  "La Fortuna → Monteverde",
-  "La Fortuna → Manuel Antonio",
-  "La Fortuna → Tamarindo",
-  "Otra ruta (la detallo en el mensaje)",
-];
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function ContactForm() {
+  const { t, lang } = useLanguage();
+
+  // Opciones de ruta segun idioma
+  const routeOptions = lang === "en"
+    ? [
+        "SJO Airport → La Fortuna",
+        "SJO Airport → Manuel Antonio",
+        "SJO Airport → Monteverde",
+        "SJO Airport → Tamarindo",
+        "LIR Airport → La Fortuna",
+        "LIR Airport → Tamarindo",
+        "LIR Airport → Monteverde",
+        "La Fortuna → Monteverde",
+        "La Fortuna → Manuel Antonio",
+        "La Fortuna → Tamarindo",
+        "Other route (I'll detail it in the message)",
+      ]
+    : [
+        "SJO Airport → La Fortuna",
+        "SJO Airport → Manuel Antonio",
+        "SJO Airport → Monteverde",
+        "SJO Airport → Tamarindo",
+        "LIR Airport → La Fortuna",
+        "LIR Airport → Tamarindo",
+        "LIR Airport → Monteverde",
+        "La Fortuna → Monteverde",
+        "La Fortuna → Manuel Antonio",
+        "La Fortuna → Tamarindo",
+        "Otra ruta (la detallo en el mensaje)",
+      ];
+
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -47,21 +65,42 @@ export default function ContactForm() {
       return;
     }
 
-    const servicioTexto = formData.servicio === "vip" ? "VIP (con paradas + bebidas + snacks)" : "Standard";
+    // Mensaje de WhatsApp bilingue segun el idioma activo
+    let mensajeTexto = "";
 
-    // Construir mensaje sin emojis que se rompen en URL
-    const mensajeTexto =
-      `¡Hola Private Travel CR!\n\n` +
-      `Quiero cotizar un shuttle privado.\n\n` +
-      `*Nombre:* ${formData.nombre}\n` +
-      `*Email:* ${formData.email}\n` +
-      (formData.whatsapp ? `*WhatsApp:* ${formData.whatsapp}\n` : "") +
-      `*Viajeros:* ${formData.pasajeros} ${parseInt(formData.pasajeros) === 1 ? "persona" : "personas"}\n` +
-      `*Ruta:* ${formData.ruta}\n` +
-      `*Fecha:* ${formData.fecha}\n` +
-      `*Servicio:* ${servicioTexto}\n` +
-      (formData.mensaje ? `\n*Detalles adicionales:*\n${formData.mensaje}\n` : "") +
-      `\n¿Cuál sería el precio y la disponibilidad? ¡Gracias!`;
+    if (lang === "en") {
+      const servicioTexto = formData.servicio === "vip" ? "VIP (stops + drinks + snacks)" : "Standard";
+      const passengerLabel = parseInt(formData.pasajeros) === 1 ? "person" : "people";
+
+      mensajeTexto =
+        `Hello Private Travel CR!\n\n` +
+        `I want to request a quote for a private shuttle.\n\n` +
+        `*Name:* ${formData.nombre}\n` +
+        `*Email:* ${formData.email}\n` +
+        (formData.whatsapp ? `*WhatsApp:* ${formData.whatsapp}\n` : "") +
+        `*Travelers:* ${formData.pasajeros} ${passengerLabel}\n` +
+        `*Route:* ${formData.ruta}\n` +
+        `*Date:* ${formData.fecha}\n` +
+        `*Service:* ${servicioTexto}\n` +
+        (formData.mensaje ? `\n*Additional details:*\n${formData.mensaje}\n` : "") +
+        `\nWhat would the price and availability be? Thank you!`;
+    } else {
+      const servicioTexto = formData.servicio === "vip" ? "VIP (con paradas + bebidas + snacks)" : "Standard";
+      const passengerLabel = parseInt(formData.pasajeros) === 1 ? "persona" : "personas";
+
+      mensajeTexto =
+        `¡Hola Private Travel CR!\n\n` +
+        `Quiero cotizar un shuttle privado.\n\n` +
+        `*Nombre:* ${formData.nombre}\n` +
+        `*Email:* ${formData.email}\n` +
+        (formData.whatsapp ? `*WhatsApp:* ${formData.whatsapp}\n` : "") +
+        `*Viajeros:* ${formData.pasajeros} ${passengerLabel}\n` +
+        `*Ruta:* ${formData.ruta}\n` +
+        `*Fecha:* ${formData.fecha}\n` +
+        `*Servicio:* ${servicioTexto}\n` +
+        (formData.mensaje ? `\n*Detalles adicionales:*\n${formData.mensaje}\n` : "") +
+        `\n¿Cuál sería el precio y la disponibilidad? ¡Gracias!`;
+    }
 
     const mensaje = encodeURIComponent(mensajeTexto);
 
@@ -74,6 +113,7 @@ export default function ContactForm() {
   return (
     <section
       id="contacto"
+      key={lang}
       className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.08),transparent_70%)]" />
@@ -89,19 +129,19 @@ export default function ContactForm() {
         >
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
-              ✦ CONTÁCTANOS
+              {t.contact.badge}
             </span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-            Cuéntanos sobre
+            {t.contact.titlePart1}
             <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-              tu próximo viaje
+              {t.contact.titlePart2}
             </span>
           </h2>
 
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Llena el formulario y te enviaremos tu cotización personalizada por WhatsApp en minutos.
+            {t.contact.subtitle}
           </p>
         </motion.div>
 
@@ -120,14 +160,14 @@ export default function ContactForm() {
                 <div className="space-y-2">
                   <Label className="text-amber-400 flex items-center gap-1.5">
                     <User size={14} />
-                    Nombre completo *
+                    {t.contact.name} *
                   </Label>
                   <Input
                     type="text"
                     required
                     value={formData.nombre}
                     onChange={(e) => handleChange("nombre", e.target.value)}
-                    placeholder="Tu nombre"
+                    placeholder={t.contact.namePlaceholder}
                     className="bg-black/50 border-amber-500/30 text-white h-12 focus:border-amber-500"
                   />
                 </div>
@@ -135,14 +175,14 @@ export default function ContactForm() {
                 <div className="space-y-2">
                   <Label className="text-amber-400 flex items-center gap-1.5">
                     <Mail size={14} />
-                    Email *
+                    {t.contact.email} *
                   </Label>
                   <Input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => handleChange("email", e.target.value)}
-                    placeholder="tu@email.com"
+                    placeholder="your@email.com"
                     className="bg-black/50 border-amber-500/30 text-white h-12 focus:border-amber-500"
                   />
                 </div>
@@ -153,7 +193,7 @@ export default function ContactForm() {
                 <div className="space-y-2">
                   <Label className="text-amber-400 flex items-center gap-1.5">
                     <Phone size={14} />
-                    WhatsApp (opcional)
+                    {t.contact.whatsapp}
                   </Label>
                   <Input
                     type="tel"
@@ -167,7 +207,7 @@ export default function ContactForm() {
                 <div className="space-y-2">
                   <Label className="text-amber-400 flex items-center gap-1.5">
                     <Users size={14} />
-                    Número de viajeros *
+                    {t.contact.travelers} *
                   </Label>
                   <Input
                     type="number"
@@ -186,11 +226,11 @@ export default function ContactForm() {
                 <div className="space-y-2">
                   <Label className="text-amber-400 flex items-center gap-1.5">
                     <MapPin size={14} />
-                    Ruta que te interesa *
+                    {t.contact.route} *
                   </Label>
                   <Select value={formData.ruta} onValueChange={(val) => handleChange("ruta", val)}>
                     <SelectTrigger className="bg-black/50 border-amber-500/30 text-white h-12 focus:border-amber-500">
-                      <SelectValue placeholder="Selecciona tu ruta" />
+                      <SelectValue placeholder={t.contact.routePlaceholder} />
                     </SelectTrigger>
                     <SelectContent className="bg-black border-amber-500/30">
                       {routeOptions.map((route) => (
@@ -205,7 +245,7 @@ export default function ContactForm() {
                 <div className="space-y-2">
                   <Label className="text-amber-400 flex items-center gap-1.5">
                     <Calendar size={14} />
-                    Fecha del viaje *
+                    {t.contact.date} *
                   </Label>
                   <Input
                     type="date"
@@ -221,7 +261,7 @@ export default function ContactForm() {
               {/* Tipo de servicio */}
               <div className="space-y-2">
                 <Label className="text-amber-400 flex items-center gap-1.5">
-                  ✨ Tipo de servicio
+                  ✨ {t.contact.serviceType}
                 </Label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
@@ -234,7 +274,7 @@ export default function ContactForm() {
                     }`}
                   >
                     <div className="text-white font-bold text-sm">Standard</div>
-                    <div className="text-xs text-gray-400">Directo · Rápido</div>
+                    <div className="text-xs text-gray-400">{t.contact.standardDesc}</div>
                   </button>
 
                   <button
@@ -249,7 +289,7 @@ export default function ContactForm() {
                     <div className="text-white font-bold text-sm flex items-center gap-1.5">
                       👑 VIP
                     </div>
-                    <div className="text-xs text-gray-400">+1-2h parada · +$70</div>
+                    <div className="text-xs text-gray-400">{t.contact.vipDesc}</div>
                   </button>
                 </div>
               </div>
@@ -258,12 +298,12 @@ export default function ContactForm() {
               <div className="space-y-2">
                 <Label className="text-amber-400 flex items-center gap-1.5">
                   <MessageSquare size={14} />
-                  Detalles adicionales (opcional)
+                  {t.contact.additionalDetails}
                 </Label>
                 <textarea
                   value={formData.mensaje}
                   onChange={(e) => handleChange("mensaje", e.target.value)}
-                  placeholder="Número de vuelo, hotel, necesidades especiales (sillas para niños, equipaje extra, etc.)"
+                  placeholder={t.contact.detailsPlaceholder}
                   rows={4}
                   className="w-full px-4 py-3 rounded-md bg-black/50 border border-amber-500/30 text-white focus:border-amber-500 focus:outline-none resize-none"
                 />
@@ -273,7 +313,7 @@ export default function ContactForm() {
               <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
                 <CheckCircle2 size={14} className="text-amber-400 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-gray-400">
-                  Tu información está segura. No la compartimos con terceros. Al enviar se abrirá WhatsApp con tu mensaje pre-escrito para que solo presiones enviar.
+                  {t.contact.privacyNote}
                 </p>
               </div>
 
@@ -286,12 +326,12 @@ export default function ContactForm() {
                 {sent ? (
                   <>
                     <CheckCircle2 className="mr-2" size={20} />
-                    ¡Abriendo WhatsApp!
+                    {t.contact.opening}
                   </>
                 ) : (
                   <>
                     <Send className="mr-2" size={18} />
-                    Enviar por WhatsApp
+                    {t.contact.sendWhatsapp}
                   </>
                 )}
               </Button>
@@ -306,7 +346,7 @@ export default function ContactForm() {
             transition={{ delay: 0.5 }}
             className="mt-8 text-center"
           >
-            <p className="text-gray-400 text-sm mb-4">¿Prefieres contactarnos directamente?</p>
+            <p className="text-gray-400 text-sm mb-4">{t.contact.directContact}</p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a
                 href="https://wa.me/50686334133"

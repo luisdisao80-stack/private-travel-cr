@@ -3,61 +3,72 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/LanguageContext";
 
 type Review = {
   name: string;
   text: string;
-  date: string;
+  dateEn: string;
+  dateEs: string;
   initials: string;
   color: string;
 };
 
+// Los textos de las reviews se quedan en INGLES porque los clientes originales eran turistas internacionales
 const reviews: Review[] = [
   {
     name: "Sarah M.",
     text: "We booked with Private Travel Costa Rica twice during our trip and were fortunate to have Pablo as our driver both times! He is so friendly and proud to share information about his beautiful country. He even gifted me a hand-made bracelet from his daughter for my birthday!",
-    date: "Hace 2 semanas",
+    dateEn: "2 weeks ago",
+    dateEs: "Hace 2 semanas",
     initials: "SM",
     color: "from-amber-400 to-amber-600",
   },
   {
     name: "Jennifer K.",
     text: "Diego was a fabulous driver! Great conversation, great ride. The car was so clean, comfortable, and smelled so fresh. He arrived early and got us there early. Best driver around! If you're traveling to Costa Rica, you HAVE to book.",
-    date: "Hace 3 semanas",
+    dateEn: "3 weeks ago",
+    dateEs: "Hace 3 semanas",
     initials: "JK",
     color: "from-emerald-400 to-emerald-600",
   },
   {
     name: "Rachel T.",
     text: "My daughter and I had a fantastic experience with Diego! He took us to Poas volcano and La Paz Waterfall Gardens. He suggested taking us to the Starbucks plantation since we had extra time. Expert navigation and incredible service!",
-    date: "Hace 1 mes",
+    dateEn: "1 month ago",
+    dateEs: "Hace 1 mes",
     initials: "RT",
     color: "from-rose-400 to-rose-600",
   },
   {
     name: "Michael R.",
     text: "Excellent experience with Oscar as our private driver from La Fortuna to Rio Celeste. He was incredibly professional, punctual, and made us feel safe and comfortable. Very informative — sharing insights about local wildlife and Costa Rican culture.",
-    date: "Hace 1 mes",
+    dateEn: "1 month ago",
+    dateEs: "Hace 1 mes",
     initials: "MR",
     color: "from-blue-400 to-blue-600",
   },
   {
     name: "Linda H.",
     text: "Such hospitable and kind service! Pablo was our driver and was very friendly and conversational. On the way back he stopped by Cafe Macadamia and showed us a great lookout point of Lake Arenal. Very communicative and responsive — would highly recommend!",
-    date: "Hace 2 meses",
+    dateEn: "2 months ago",
+    dateEs: "Hace 2 meses",
     initials: "LH",
     color: "from-purple-400 to-purple-600",
   },
   {
     name: "David P.",
     text: "Outstanding service from start to finish. Professional drivers, immaculate vehicles, and punctual pickup. Made our Costa Rica trip stress-free. Will definitely book again on our next visit!",
-    date: "Hace 2 meses",
+    dateEn: "2 months ago",
+    dateEs: "Hace 2 meses",
     initials: "DP",
     color: "from-orange-400 to-orange-600",
   },
 ];
 
 export default function Reviews() {
+  const { t, lang } = useLanguage();
+
   const openGoogleReviews = () => {
     window.open(
       "https://www.google.com/maps/place/?q=place_id:ChIJl0aOiIQNoI8R6KcwnmmDEw8",
@@ -68,6 +79,7 @@ export default function Reviews() {
   return (
     <section
       id="reviews"
+      key={lang}
       className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.08),transparent_60%)]" />
@@ -83,14 +95,14 @@ export default function Reviews() {
         >
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
-              ✦ RESEÑAS VERIFICADAS
+              {t.reviews.badge}
             </span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
-            Más de 190 viajeros
+            {t.reviews.titlePart1}
             <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-              nos recomiendan
+              {t.reviews.titlePart2}
             </span>
           </h2>
 
@@ -109,7 +121,7 @@ export default function Reviews() {
               </div>
               <div className="text-left">
                 <div className="text-3xl font-bold text-white">5.0</div>
-                <div className="text-xs text-gray-400">de 5 estrellas</div>
+                <div className="text-xs text-gray-400">{t.reviews.outOfFive}</div>
               </div>
             </div>
 
@@ -123,7 +135,7 @@ export default function Reviews() {
               </svg>
               <div className="text-left">
                 <div className="text-3xl font-bold text-white">190+</div>
-                <div className="text-xs text-gray-400">reseñas en Google</div>
+                <div className="text-xs text-gray-400">{t.reviews.googleReviews}</div>
               </div>
             </div>
           </div>
@@ -179,7 +191,9 @@ export default function Reviews() {
                     <div className="text-white font-semibold text-sm">
                       {review.name}
                     </div>
-                    <div className="text-gray-500 text-xs">{review.date}</div>
+                    <div className="text-gray-500 text-xs">
+                      {lang === "en" ? review.dateEn : review.dateEs}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -206,7 +220,7 @@ export default function Reviews() {
               <path fill="#4CAF50" d="M24,44c5.166,0,9.860-1.977,13.409-5.192l-6.190-5.238C29.211,35.091,26.715,36,24,36 c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
               <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571 c0.003-0.002,0.002-0.001,0.003-0.002l6.190,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
             </svg>
-            Ver todas las reseñas en Google
+            {t.reviews.seeAllGoogle}
           </Button>
         </motion.div>
       </div>

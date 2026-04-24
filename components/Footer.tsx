@@ -2,22 +2,38 @@
 
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle, Star } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Footer() {
+  const { t, lang } = useLanguage();
   const currentYear = new Date().getFullYear();
 
-  const quickLinks = [
-    { label: "Inicio", href: "#inicio" },
-    { label: "Beneficios", href: "#beneficios" },
-    { label: "Servicios", href: "#servicios" },
-    { label: "Cotizador", href: "#cotizador" },
-    { label: "Flota", href: "#flota" },
-    { label: "Reseñas", href: "#reviews" },
-    { label: "FAQ", href: "#faq" },
-  ];
+  // Enlaces rapidos segun idioma
+  const quickLinks = lang === "en"
+    ? [
+        { label: "Home", href: "#inicio" },
+        { label: "Benefits", href: "#beneficios" },
+        { label: "Services", href: "#servicios" },
+        { label: "Get Quote", href: "#cotizador" },
+        { label: "Fleet", href: "#flota" },
+        { label: "Reviews", href: "#reviews" },
+        { label: "FAQ", href: "#faq" },
+      ]
+    : [
+        { label: "Inicio", href: "#inicio" },
+        { label: "Beneficios", href: "#beneficios" },
+        { label: "Servicios", href: "#servicios" },
+        { label: "Cotizador", href: "#cotizador" },
+        { label: "Flota", href: "#flota" },
+        { label: "Reseñas", href: "#reviews" },
+        { label: "FAQ", href: "#faq" },
+      ];
 
   return (
-    <footer className="relative bg-gradient-to-b from-black via-gray-950 to-black border-t border-amber-500/20">
+    <footer
+      key={lang}
+      className="relative bg-gradient-to-b from-black via-gray-950 to-black border-t border-amber-500/20"
+    >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.05),transparent_70%)]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-16">
@@ -36,7 +52,7 @@ export default function Footer() {
               className="h-16 w-auto mb-4"
             />
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              Transporte privado premium en Costa Rica. Cotización instantánea, chofer bilingüe y servicio puerta a puerta.
+              {t.footer.brandDescription}
             </p>
 
             {/* Badge de rating */}
@@ -48,7 +64,7 @@ export default function Footer() {
               </div>
               <div className="text-xs">
                 <div className="text-white font-bold">5.0 ★</div>
-                <div className="text-gray-400">190+ reseñas</div>
+                <div className="text-gray-400">{t.footer.reviewsCount}</div>
               </div>
             </div>
           </motion.div>
@@ -61,7 +77,7 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase">
-              Enlaces Rápidos
+              {t.footer.quickLinks}
             </h3>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
@@ -88,7 +104,7 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase">
-              Contacto
+              {t.footer.contact}
             </h3>
             <ul className="space-y-3">
               <li>
@@ -122,7 +138,7 @@ export default function Footer() {
                     <Phone size={14} className="text-amber-400" />
                   </div>
                   <div className="pt-1">
-                    <div className="text-xs text-gray-500">Teléfono</div>
+                    <div className="text-xs text-gray-500">{t.footer.phone}</div>
                     <div className="text-sm">+506 8633-4133</div>
                   </div>
                 </a>
@@ -152,7 +168,7 @@ export default function Footer() {
                   <MapPin size={14} className="text-amber-400" />
                 </div>
                 <div className="pt-1">
-                  <div className="text-xs text-gray-500">Ubicación</div>
+                  <div className="text-xs text-gray-500">{t.footer.location}</div>
                   <div className="text-sm">La Fortuna, San Carlos</div>
                   <div className="text-sm">Costa Rica 🇨🇷</div>
                 </div>
@@ -168,10 +184,10 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase">
-              Síguenos
+              {t.footer.followUs}
             </h3>
             <p className="text-gray-400 text-sm mb-4">
-              Mira nuestras aventuras y reseñas reales de clientes.
+              {t.footer.followDescription}
             </p>
 
             <div className="grid grid-cols-2 gap-2">
@@ -258,10 +274,10 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-500 text-sm text-center md:text-left">
-              © {currentYear} Private Travel CR · Todos los derechos reservados.
+              © {currentYear} Private Travel CR · {t.footer.rightsReserved}
             </p>
             <p className="text-gray-500 text-sm text-center md:text-right">
-              Hecho con ❤️ en Costa Rica 🇨🇷
+              {t.footer.madeWith}
             </p>
           </div>
         </div>

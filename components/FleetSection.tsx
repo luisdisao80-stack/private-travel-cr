@@ -3,55 +3,11 @@
 import { motion } from "framer-motion";
 import { Users, Wifi, Droplet, Snowflake, Package, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-type VehicleCard = {
-  id: string;
-  name: string;
-  model: string;
-  paxRange: string;
-  image: string;
-  description: string;
-  priceFrom: number;
-  features: { icon: React.ReactNode; label: string }[];
-  badge?: string;
-};
-
-const vehicleCards: VehicleCard[] = [
-  {
-    id: "staria",
-    name: "Hyundai Staria",
-    model: "Premium SUV",
-    paxRange: "1 - 5 Pasajeros",
-    image: "/staria.webp",
-    description: "Viaje ultra cómodo con tecnología de vanguardia y amplio espacio para equipaje. Ideal para parejas, familias pequeñas y grupos de hasta 5 personas.",
-    priceFrom: 90,
-    badge: "MÁS POPULAR",
-    features: [
-      { icon: <Snowflake size={16} />, label: "A/C Premium" },
-      { icon: <Wifi size={16} />, label: "WiFi a bordo" },
-      { icon: <Droplet size={16} />, label: "Agua gratis" },
-      { icon: <Package size={16} />, label: "Gran equipaje" },
-    ],
-  },
-  {
-    id: "hiace",
-    name: "Toyota Hiace",
-    model: "High Roof Van",
-    paxRange: "6 - 9 Pasajeros",
-    image: "/hiace.png",
-    description: "Opción de techo alto que garantiza máxima libertad y visibilidad panorámica. Perfecta para grupos grandes y familias numerosas.",
-    priceFrom: 117,
-    badge: "GRUPOS GRANDES",
-    features: [
-      { icon: <Snowflake size={16} />, label: "A/C Dual" },
-      { icon: <Wifi size={16} />, label: "WiFi a bordo" },
-      { icon: <Droplet size={16} />, label: "Agua gratis" },
-      { icon: <Package size={16} />, label: "Gran capacidad" },
-    ],
-  },
-];
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function FleetSection() {
+  const { t, lang } = useLanguage();
+
   const scrollToQuote = () => {
     const quoteSection = document.getElementById("cotizador");
     if (quoteSection) {
@@ -59,8 +15,48 @@ export default function FleetSection() {
     }
   };
 
+  // Datos de vehiculos con descripciones bilingues
+  const vehicleCards = [
+    {
+      id: "staria",
+      name: "Hyundai Staria",
+      model: "Premium SUV",
+      paxRange: `1 - 5 ${t.fleet.paxLabel}`,
+      image: "/staria.webp",
+      description: t.fleet.stariaDesc,
+      priceFrom: 90,
+      badge: t.fleet.mostPopular,
+      features: [
+        { icon: <Snowflake size={16} />, label: lang === "en" ? "Premium A/C" : "A/C Premium" },
+        { icon: <Wifi size={16} />, label: lang === "en" ? "Onboard WiFi" : "WiFi a bordo" },
+        { icon: <Droplet size={16} />, label: lang === "en" ? "Free water" : "Agua gratis" },
+        { icon: <Package size={16} />, label: lang === "en" ? "Large luggage" : "Gran equipaje" },
+      ],
+    },
+    {
+      id: "hiace",
+      name: "Toyota Hiace",
+      model: "High Roof Van",
+      paxRange: `6 - 9 ${t.fleet.paxLabel}`,
+      image: "/hiace.png",
+      description: t.fleet.hiaceDesc,
+      priceFrom: 117,
+      badge: t.fleet.largeGroups,
+      features: [
+        { icon: <Snowflake size={16} />, label: lang === "en" ? "Dual A/C" : "A/C Dual" },
+        { icon: <Wifi size={16} />, label: lang === "en" ? "Onboard WiFi" : "WiFi a bordo" },
+        { icon: <Droplet size={16} />, label: lang === "en" ? "Free water" : "Agua gratis" },
+        { icon: <Package size={16} />, label: lang === "en" ? "Large capacity" : "Gran capacidad" },
+      ],
+    },
+  ];
+
   return (
-    <section id="flota" className="relative py-24 px-4 bg-gradient-to-br from-gray-950 via-black to-gray-950 overflow-hidden">
+    <section
+      id="flota"
+      key={lang}
+      className="relative py-24 px-4 bg-gradient-to-br from-gray-950 via-black to-gray-950 overflow-hidden"
+    >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.1),transparent_60%)]" />
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -79,14 +75,18 @@ export default function FleetSection() {
           className="text-center mb-16"
         >
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-            <span className="text-amber-400 text-sm font-medium tracking-wider">✦ NUESTRA FLOTA</span>
+            <span className="text-amber-400 text-sm font-medium tracking-wider">
+              {t.fleet.badge}
+            </span>
           </div>
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-            Vehículos
-            <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent"> Premium</span>
+            {t.fleet.titlePart1}
+            <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+              {" "}{t.fleet.titlePart2}
+            </span>
           </h2>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Modernos, cómodos y equipados con todo lo necesario para que disfrutes el viaje desde el primer kilómetro.
+            {t.fleet.subtitle}
           </p>
         </motion.div>
 
@@ -144,7 +144,9 @@ export default function FleetSection() {
 
                   <div className="flex items-center justify-between flex-wrap gap-4">
                     <div>
-                      <div className="text-xs text-gray-500 uppercase tracking-wider">Desde</div>
+                      <div className="text-xs text-gray-500 uppercase tracking-wider">
+                        {t.fleet.from}
+                      </div>
                       <div className="text-3xl font-bold text-white">
                         ${vehicle.priceFrom}
                         <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
@@ -155,7 +157,7 @@ export default function FleetSection() {
                       onClick={scrollToQuote}
                       className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold h-12 px-6 shadow-lg shadow-amber-500/30"
                     >
-                      Cotizar
+                      {t.fleet.cta}
                     </Button>
                   </div>
                 </div>
@@ -174,17 +176,7 @@ export default function FleetSection() {
           <div className="inline-flex flex-wrap items-center justify-center gap-6 px-6 py-4 bg-amber-500/5 border border-amber-500/20 rounded-full">
             <div className="flex items-center gap-2 text-sm text-gray-300">
               <Check size={16} className="text-amber-400" />
-              <span>Flota renovada</span>
-            </div>
-            <div className="w-1 h-1 rounded-full bg-amber-400/50" />
-            <div className="flex items-center gap-2 text-sm text-gray-300">
-              <Check size={16} className="text-amber-400" />
-              <span>Revisión técnica al día</span>
-            </div>
-            <div className="w-1 h-1 rounded-full bg-amber-400/50" />
-            <div className="flex items-center gap-2 text-sm text-gray-300">
-              <Check size={16} className="text-amber-400" />
-              <span>Seguros incluidos</span>
+              <span>{t.fleet.guarantees}</span>
             </div>
           </div>
         </motion.div>

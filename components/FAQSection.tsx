@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 type FAQ = {
   question: string;
   answer: string;
 };
 
-const faqs: FAQ[] = [
+const faqsEs: FAQ[] = [
   {
     question: "¿Es seguro viajar con Private Travel CR?",
     answer:
@@ -62,16 +63,79 @@ const faqs: FAQ[] = [
   },
 ];
 
+const faqsEn: FAQ[] = [
+  {
+    question: "Is it safe to travel with Private Travel CR?",
+    answer:
+      "Absolutely. Our fleet consists of new vehicles with up-to-date technical inspections and full insurance coverage. All our drivers are professional bilingual drivers with years of experience driving in Costa Rica. We have over 190 5-star reviews on Google that back up our service.",
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer:
+      "We accept secure credit card payments. When you confirm your booking via WhatsApp, we send you a payment link to process the transaction. It's fast, secure, and you can pay from anywhere in the world before your trip.",
+  },
+  {
+    question: "What happens if my flight is delayed or cancelled?",
+    answer:
+      "Don't worry. When you book, we ask for your flight number and monitor its status in real time. If your flight is delayed, we automatically adjust the pickup time at no extra cost. If it's cancelled, we reschedule your service for the new date.",
+  },
+  {
+    question: "Can I cancel my reservation?",
+    answer:
+      "Yes. We offer free cancellation up to 48 hours before your trip. Just message us on WhatsApp at +506 8633-4133 and we'll process your cancellation hassle-free. We want you to book with total peace of mind.",
+  },
+  {
+    question: "Do you offer child seats?",
+    answer:
+      "Yes, we offer child seats completely free upon request. Just let us know the age and number of children traveling when you book, and we'll prepare the vehicle with the appropriate seats. Your family's safety is our priority.",
+  },
+  {
+    question: "How far in advance should I book?",
+    answer:
+      "We recommend booking at least 24 hours in advance to guarantee availability, especially during high season (December to April). For last-minute bookings, contact us via WhatsApp and we'll do our best to help you.",
+  },
+  {
+    question: "How much luggage can I bring?",
+    answer:
+      "Each passenger can bring one large suitcase and one carry-on at no additional cost. If you're traveling with special equipment (surfboards, bicycles, diving gear), let us know when booking to confirm available space in the right vehicle.",
+  },
+  {
+    question: "Can you make stops during the trip?",
+    answer:
+      "Of course! Short stops (restroom, coffee, photos) are included at no cost. If you want a more complete experience with 1-2 hour tourist stops (waterfalls, coffee plantations, lookout points), we recommend our VIP service for just $70 extra, which includes flexible stops, drinks, and snacks.",
+  },
+  {
+    question: "Is the price per person or per vehicle?",
+    answer:
+      "The price is per COMPLETE VEHICLE, not per person. This means you travel privately with your group, without sharing with strangers. Up to 5 passengers go in the Hyundai Staria and 6 to 9 passengers in the Toyota Hiace, at the same price.",
+  },
+  {
+    question: "What's the difference between Standard and VIP?",
+    answer:
+      "Standard is a direct, fast, and comfortable transfer. VIP (+$70) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, water and snacks, premium WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
+  },
+];
+
 export default function FAQSection() {
+  const { t, lang } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const faqs = lang === "en" ? faqsEn : faqsEs;
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  // Mensaje y URL de WhatsApp segun idioma
+  const whatsappMessage =
+    lang === "en"
+      ? encodeURIComponent("Hello! I have a question about the service")
+      : encodeURIComponent("Hola! Tengo una pregunta sobre el servicio");
+
   return (
     <section
       id="faq"
+      key={lang}
       className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.08),transparent_70%)]" />
@@ -87,19 +151,19 @@ export default function FAQSection() {
         >
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
-              ✦ PREGUNTAS FRECUENTES
+              {t.faq.badge}
             </span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-            Resolvemos tus
+            {t.faq.titlePart1}
             <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-              dudas más comunes
+              {t.faq.titlePart2}
             </span>
           </h2>
 
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Todo lo que necesitas saber antes de reservar tu transporte privado en Costa Rica.
+            {t.faq.subtitle}
           </p>
         </motion.div>
 
@@ -197,14 +261,14 @@ export default function FAQSection() {
           <div className="inline-flex flex-col sm:flex-row items-center gap-4 px-6 py-4 rounded-2xl bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30">
             <MessageCircle size={24} className="text-amber-400 flex-shrink-0" />
             <p className="text-gray-300 text-sm">
-              ¿Tienes otra pregunta?{" "}
+              {t.faq.ctaText}{" "}
               <a
-                href="https://wa.me/50686334133?text=Hola!%20Tengo%20una%20pregunta%20sobre%20el%20servicio"
+                href={`https://wa.me/50686334133?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-amber-400 hover:text-amber-300 font-semibold"
               >
-                Escríbenos por WhatsApp →
+                {t.faq.ctaLink}
               </a>
             </p>
           </div>
