@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle, Star } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import Link from "next/link";
 
 export default function Footer() {
   const { t, lang } = useLanguage();
@@ -28,6 +29,14 @@ export default function Footer() {
         { label: "Reseñas", href: "#reviews" },
         { label: "FAQ", href: "#faq" },
       ];
+
+  const termsLabel = lang === "en" ? "Terms and Conditions" : "Términos y Condiciones";
+  const rightsText = lang === "en"
+    ? "All Rights Reserved."
+    : "Todos los derechos reservados.";
+  const madeWithText = lang === "en"
+    ? "Made with ❤️ in Costa Rica 🇨🇷"
+    : "Hecho con ❤️ en Costa Rica 🇨🇷";
 
   return (
     <footer
@@ -93,6 +102,18 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              {/* Link a Terms */}
+              <li>
+                <Link
+                  href="/terms"
+                  className="text-gray-400 hover:text-amber-400 transition-colors text-sm flex items-center gap-1.5 group"
+                >
+                  <span className="text-amber-500/0 group-hover:text-amber-500 transition-colors">
+                    →
+                  </span>
+                  {termsLabel}
+                </Link>
+              </li>
             </ul>
           </motion.div>
 
@@ -270,14 +291,23 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* Línea divisoria */}
+        {/* Línea divisoria con copyright y link extra a Terms */}
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-gray-500 text-sm text-center md:text-left">
-              © {currentYear} Private Travel CR · {t.footer.rightsReserved}
-            </p>
+            <div className="flex flex-col md:flex-row items-center gap-3 text-gray-500 text-sm">
+              <p className="text-center md:text-left">
+                © {currentYear} Private Travel CR · {rightsText}
+              </p>
+              <span className="hidden md:inline text-gray-700">·</span>
+              <Link
+                href="/terms"
+                className="hover:text-amber-400 transition-colors underline-offset-4 hover:underline"
+              >
+                {termsLabel}
+              </Link>
+            </div>
             <p className="text-gray-500 text-sm text-center md:text-right">
-              {t.footer.madeWith}
+              {madeWithText}
             </p>
           </div>
         </div>
