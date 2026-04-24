@@ -216,8 +216,10 @@ export const translations = {
       titlePart1: "Over 190 travelers",
       titlePart2: "recommend us",
       stars: "out of 5 stars",
+      outOfFive: "out of 5 stars",
       googleReviews: "Google reviews",
       seeAll: "See all reviews on Google",
+      seeAllGoogle: "See all reviews on Google",
     },
 
     // FAQ
@@ -228,6 +230,8 @@ export const translations = {
       subtitle: "Everything you need to know before booking your private transport in Costa Rica.",
       anotherQuestion: "Have another question?",
       writeUs: "Write us on WhatsApp →",
+      ctaText: "Have another question?",
+      ctaLink: "Write us on WhatsApp →",
       items: [
         {
           question: "Is it safe to travel with Private Travel CR?",
@@ -296,22 +300,32 @@ export const translations = {
       whatsapp: "WhatsApp (optional)",
       whatsappPlaceholder: "+1 555-123-4567",
       passengers: "Number of travelers",
+      travelers: "Number of travelers",
       route: "Route you're interested in",
       routePlaceholder: "Select your route",
       date: "Travel date",
       service: "Service type",
+      serviceType: "Service type",
       standardShort: "Standard",
       standardDescShort: "Direct · Fast",
+      standardDesc: "Direct · Fast",
       vipShort: "VIP",
       vipDescShort: "+1-2h stop · +$70",
+      vipDesc: "+1-2h stop · +$70",
       details: "Additional details (optional)",
+      additionalDetails: "Additional details (optional)",
       detailsPlaceholder:
         "Flight number, hotel, special needs (child seats, extra luggage, etc.)",
       privacy:
         "Your information is safe. We don't share it with third parties. When you submit, WhatsApp will open with your pre-written message for you to just hit send.",
+      privacyNote:
+        "Your information is safe. We don't share it with third parties. When you submit, WhatsApp will open with your pre-written message for you to just hit send.",
       send: "Send via WhatsApp",
+      sendWhatsapp: "Send via WhatsApp",
       sending: "Opening WhatsApp!",
+      opening: "Opening WhatsApp!",
       otherWays: "Prefer to contact us directly?",
+      directContact: "Prefer to contact us directly?",
       routeOptions: [
         "SJO Airport → La Fortuna",
         "SJO Airport → Manuel Antonio",
@@ -348,7 +362,10 @@ export const translations = {
     footer: {
       description:
         "Premium private transportation in Costa Rica. Instant quotes, bilingual driver, door-to-door service.",
+      brandDescription:
+        "Premium private transportation in Costa Rica. Instant quotes, bilingual driver, door-to-door service.",
       reviews: "reviews",
+      reviewsCount: "190+ reviews",
       quickLinks: "Quick Links",
       links: {
         home: "Home",
@@ -362,10 +379,14 @@ export const translations = {
       contact: "Contact",
       whatsappLabel: "WhatsApp",
       phoneLabel: "Phone",
+      phone: "+506 8633-4133",
       emailLabel: "Email",
       locationLabel: "Location",
+      location: "La Fortuna, Costa Rica",
       follow: "Follow Us",
+      followUs: "Follow Us",
       followDesc: "Check out our adventures and real client reviews.",
+      followDescription: "Check out our adventures and real client reviews.",
       travellersChoice: "Travellers' Choice",
       copyright: "All rights reserved.",
       madeIn: "Made with ❤️ in Costa Rica 🇨🇷",
@@ -588,8 +609,10 @@ export const translations = {
       titlePart1: "Más de 190 viajeros",
       titlePart2: "nos recomiendan",
       stars: "de 5 estrellas",
+      outOfFive: "de 5 estrellas",
       googleReviews: "reseñas en Google",
       seeAll: "Ver todas las reseñas en Google",
+      seeAllGoogle: "Ver todas las reseñas en Google",
     },
 
     faq: {
@@ -600,6 +623,8 @@ export const translations = {
         "Todo lo que necesitas saber antes de reservar tu transporte privado en Costa Rica.",
       anotherQuestion: "¿Tienes otra pregunta?",
       writeUs: "Escríbenos por WhatsApp →",
+      ctaText: "¿Tienes otra pregunta?",
+      ctaLink: "Escríbenos por WhatsApp →",
       items: [
         {
           question: "¿Es seguro viajar con Private Travel CR?",
@@ -667,22 +692,32 @@ export const translations = {
       whatsapp: "WhatsApp (opcional)",
       whatsappPlaceholder: "+1 555-123-4567",
       passengers: "Número de viajeros",
+      travelers: "Número de viajeros",
       route: "Ruta que te interesa",
       routePlaceholder: "Selecciona tu ruta",
       date: "Fecha del viaje",
       service: "Tipo de servicio",
+      serviceType: "Tipo de servicio",
       standardShort: "Standard",
       standardDescShort: "Directo · Rápido",
+      standardDesc: "Directo · Rápido",
       vipShort: "VIP",
       vipDescShort: "+1-2h parada · +$70",
+      vipDesc: "+1-2h parada · +$70",
       details: "Detalles adicionales (opcional)",
+      additionalDetails: "Detalles adicionales (opcional)",
       detailsPlaceholder:
         "Número de vuelo, hotel, necesidades especiales (sillas para niños, equipaje extra, etc.)",
       privacy:
         "Tu información está segura. No la compartimos con terceros. Al enviar se abrirá WhatsApp con tu mensaje pre-escrito para que solo presiones enviar.",
+      privacyNote:
+        "Tu información está segura. No la compartimos con terceros. Al enviar se abrirá WhatsApp con tu mensaje pre-escrito para que solo presiones enviar.",
       send: "Enviar por WhatsApp",
+      sendWhatsapp: "Enviar por WhatsApp",
       sending: "¡Abriendo WhatsApp!",
+      opening: "¡Abriendo WhatsApp!",
       otherWays: "¿Prefieres contactarnos directamente?",
+      directContact: "¿Prefieres contactarnos directamente?",
       routeOptions: [
         "SJO Airport → La Fortuna",
         "SJO Airport → Manuel Antonio",
@@ -718,7 +753,10 @@ export const translations = {
     footer: {
       description:
         "Transporte privado premium en Costa Rica. Cotización instantánea, chofer bilingüe y servicio puerta a puerta.",
+      brandDescription:
+        "Transporte privado premium en Costa Rica. Cotización instantánea, chofer bilingüe y servicio puerta a puerta.",
       reviews: "reseñas",
+      reviewsCount: "190+ reseñas",
       quickLinks: "Enlaces Rápidos",
       links: {
         home: "Inicio",
@@ -732,10 +770,14 @@ export const translations = {
       contact: "Contacto",
       whatsappLabel: "WhatsApp",
       phoneLabel: "Teléfono",
+      phone: "+506 8633-4133",
       emailLabel: "Email",
       locationLabel: "Ubicación",
+      location: "La Fortuna, Costa Rica",
       follow: "Síguenos",
+      followUs: "Síguenos",
       followDesc: "Mira nuestras aventuras y reseñas reales de clientes.",
+      followDescription: "Mira nuestras aventuras y reseñas reales de clientes.",
       travellersChoice: "Travellers' Choice",
       copyright: "Todos los derechos reservados.",
       madeIn: "Hecho con ❤️ en Costa Rica 🇨🇷",
