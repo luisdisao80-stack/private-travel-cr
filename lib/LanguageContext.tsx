@@ -12,15 +12,17 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Inglés por defecto
+  // Empezamos con ingles por defecto
   const [lang, setLangState] = useState<Language>("en");
+  const [mounted, setMounted] = useState(false);
 
-  // Al cargar, verificar si hay idioma guardado en localStorage
+  // Solo al montar el componente, leemos localStorage
   useEffect(() => {
     const saved = localStorage.getItem("ptcr-lang") as Language | null;
     if (saved === "en" || saved === "es") {
       setLangState(saved);
     }
+    setMounted(true);
   }, []);
 
   const setLang = (newLang: Language) => {
@@ -33,6 +35,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLang,
     t: translations[lang],
   };
+
+  // Hasta que no este montado, usamos el idioma por defecto (en)
+  // Esto evita el doble renderizado que causa el bug de letras superpuestas
+  if (!mounted) {
+    return (
+      <LanguageContext.Provider value={{ lang: "en", setLang, t: translations.en }}>
+        {children}
+      </LanguageContext.Provider>
+    );
+  }
 
   return (
     <LanguageContext.Provider value={value}>
