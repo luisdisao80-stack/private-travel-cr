@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Menu, MessageCircle, Phone } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/lib/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t, lang } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -17,7 +20,11 @@ export default function Navbar() {
   }, []);
 
   const openWhatsApp = () => {
-    const msg = encodeURIComponent("¡Hola! Me interesa su servicio de transporte privado.");
+    const greetingMsg =
+      lang === "en"
+        ? "Hello! I'm interested in your private transportation service."
+        : "¡Hola! Me interesa su servicio de transporte privado.";
+    const msg = encodeURIComponent(greetingMsg);
     window.open(`https://wa.me/50686334133?text=${msg}`, "_blank");
   };
 
@@ -30,11 +37,11 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { label: "Inicio", id: "inicio" },
-    { label: "Cotizador", id: "cotizador" },
-    { label: "Flota", id: "flota" },
-    { label: "Rutas", id: "rutas" },
-    { label: "Contacto", id: "contacto" },
+    { label: t.nav.home, id: "inicio" },
+    { label: t.nav.quote, id: "cotizador" },
+    { label: t.nav.fleet, id: "flota" },
+    { label: t.nav.routes, id: "rutas" },
+    { label: t.nav.contact, id: "contacto" },
   ];
 
   return (
@@ -63,17 +70,21 @@ export default function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
+            <LanguageSwitcher />
+
             <a href="tel:+50686334133" className="flex items-center gap-2 text-gray-300 hover:text-amber-400 transition-colors text-sm font-medium">
               <Phone size={16} />
               +506 8633-4133
             </a>
             <Button onClick={openWhatsApp} className="bg-green-600 hover:bg-green-700 text-white font-semibold">
               <MessageCircle size={16} className="mr-2" />
-              WhatsApp
+              {t.nav.whatsapp}
             </Button>
           </div>
 
           <div className="lg:hidden flex items-center gap-2">
+            <LanguageSwitcher />
+
             <Button onClick={openWhatsApp} size="sm" className="bg-green-600 hover:bg-green-700 text-white">
               <MessageCircle size={16} />
             </Button>
@@ -85,7 +96,9 @@ export default function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="bg-black border-amber-500/20 text-white w-[300px] sm:w-[400px]">
-                <SheetTitle className="text-amber-400 text-xl mb-8 mt-4">Menú</SheetTitle>
+                <SheetTitle className="text-amber-400 text-xl mb-8 mt-4">
+                  {lang === "en" ? "Menu" : "Menú"}
+                </SheetTitle>
 
                 <div className="flex flex-col gap-2">
                   {navLinks.map((link) => (
@@ -103,7 +116,7 @@ export default function Navbar() {
 
                   <Button onClick={openWhatsApp} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold h-12">
                     <MessageCircle size={18} className="mr-2" />
-                    Chatear por WhatsApp
+                    {lang === "en" ? "Chat on WhatsApp" : "Chatear por WhatsApp"}
                   </Button>
                 </div>
               </SheetContent>

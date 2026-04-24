@@ -1,0 +1,760 @@
+// Sistema de traducciones Private Travel CR
+// EN = English (principal)
+// ES = Spanish
+
+export type Language = "en" | "es";
+
+export const translations = {
+  en: {
+    // NAVBAR
+    nav: {
+      home: "Home",
+      quote: "Get Quote",
+      fleet: "Fleet",
+      routes: "Routes",
+      contact: "Contact",
+      whatsapp: "WhatsApp",
+    },
+
+    // HERO
+    hero: {
+      badge: "PREMIUM PRIVATE TRANSPORTATION",
+      titlePart1: "Explore Costa Rica",
+      titlePart2: "In Total Comfort",
+      subtitle: "Premium private shuttle service.",
+      features: "Instant quotes · Bilingual drivers · Door-to-door",
+      ctaQuote: "Get Quote Now",
+      ctaWhatsapp: "Direct WhatsApp",
+      statStars: "Stars",
+      statAvailable: "Available",
+      statPrivate: "Private",
+      scroll: "SCROLL",
+    },
+
+    // BENEFITS
+    benefits: {
+      badge: "✦ WHY CHOOSE US",
+      titlePart1: "Why travelers",
+      titlePart2: "prefer us",
+      subtitle:
+        "More than a shuttle, a premium experience designed so your Costa Rica trip starts stress-free.",
+      items: [
+        {
+          title: "Door to Door",
+          description:
+            "We pick you up exactly where you are and take you directly to your destination. No unnecessary stops, no detours.",
+        },
+        {
+          title: "100% Private",
+          description:
+            "Your own vehicle with a dedicated driver for you and your group only. No sharing with strangers, total privacy.",
+        },
+        {
+          title: "Meet & Greet",
+          description:
+            "Your driver welcomes you with a name sign and helps with luggage. Stress-free arrival guaranteed.",
+        },
+        {
+          title: "24/7 Support",
+          description:
+            "We are available before, during, and after your trip. Quick response via WhatsApp at any hour.",
+        },
+      ],
+      trust: {
+        google: "on Google Reviews",
+        travelers: "happy travelers",
+        insurance: "Insurance",
+        insuranceLabel: "included",
+        costaRican: "Costa Rican",
+      },
+    },
+
+    // SERVICE COMPARISON
+    services: {
+      badge: "✦ TWO WAYS TO TRAVEL",
+      titlePart1: "Choose your",
+      titlePart2: "experience style",
+      subtitle:
+        "All our trips are private and comfortable. The difference is in the details and how much you want to enjoy the journey.",
+      standard: {
+        badge: "FAST AND EFFICIENT",
+        name: "Standard",
+        description:
+          "The fastest way to reach your destination. A private, direct trip, no stops, no waiting.",
+        priceLabel: "From",
+        priceNote: "Price per vehicle (not per person)",
+        features: [
+          "Direct route without detours or stops",
+          "Available 24/7, any schedule",
+          "Door-to-door service",
+          "Professional bilingual driver",
+          "On-board WiFi and bottled water",
+          "Full insurance and flight tracking",
+        ],
+        cta: "Get Standard Quote",
+        ideal: "Ideal for airport transfers and tight schedules",
+      },
+      vip: {
+        badgePopular: "⭐ MOST POPULAR",
+        badgeTop: "PREMIUM EXPERIENCE",
+        name: "VIP",
+        description:
+          "Why just travel when you can live an experience? Tourist stop, local drinks, and a driver who guides you.",
+        priceLabel: "Standard + $70 USD",
+        priceNote: "Includes full VIP experience",
+        features: [
+          { label: "1-2h tourist stop", sub: "(flexible)" },
+          { label: "Concierge Service", sub: "(your driver guides you)" },
+          {
+            label: "Welcome Kit:",
+            sub: "local beers, sodas, snacks",
+          },
+          { label: "Premium WiFi and USB chargers", sub: "" },
+          { label: "Personalized recommendations", sub: "" },
+          { label: "Everything in Standard", sub: "+ more" },
+        ],
+        cta: "Get VIP Quote",
+        ideal: "Perfect for honeymoons and unforgettable trips",
+      },
+      notSure: "Not sure which to choose?",
+      chatWhatsapp: "Chat with us on WhatsApp →",
+    },
+
+    // QUOTE CALCULATOR
+    quote: {
+      sectionBadge: "✦ INSTANT QUOTE",
+      sectionTitle: "Get your price in seconds",
+      sectionSubtitle:
+        "Select your route, indicate how many passengers, and we give you the exact price instantly.",
+      title: "Instant Quote",
+      subtitle: "Get your price instantly, no waiting",
+      origin: "Origin",
+      originPlaceholder: "Where are you starting from?",
+      destination: "Destination",
+      destinationPlaceholder: "Where are you going?",
+      passengers: "Passengers",
+      date: "Travel date",
+      serviceType: "Service type",
+      standardLabel: "Standard",
+      standardDesc: "Direct · Fast · Door-to-door",
+      vipLabel: "VIP",
+      vipDesc: "+1-2h stop · Drinks · Snacks",
+      vipPremium: "PREMIUM",
+      calculate: "Calculate Price",
+      notAvailable:
+        "This route is not available. Contact us on WhatsApp for a custom quote.",
+      chooseVehicle: "Choose your vehicle",
+      vipSelected: "VIP SELECTED",
+      recommended: "RECOMMENDED",
+      passengersRange: "passengers",
+      priceUSD: "USD",
+      vipIncluded: "Includes VIP service",
+      priceTotal: "Total trip price",
+      notForPax: "Not suitable for",
+      estimatedDuration: "Estimated duration:",
+      distance: "Distance:",
+      vipStop: " + VIP stop",
+      standardIncluded: "✓ Included in your reservation:",
+      vipIncludedTitle: "INCLUDED IN YOUR VIP EXPERIENCE:",
+      reserveWhatsapp: "Reserve via WhatsApp",
+      standardFeatures: [
+        "Bilingual driver",
+        "Door-to-door service",
+        "Free water",
+        "On-board WiFi",
+      ],
+      vipFeatures: [
+        { strong: "1-2h tourist stop", normal: "flexible" },
+        { strong: "Concierge Service", normal: "personalized" },
+        { strong: "Local beers", normal: "" },
+        { strong: "Sodas & premium water", normal: "" },
+        { strong: "Local snacks", normal: "" },
+        { strong: "Premium WiFi + chargers", normal: "" },
+        { strong: "Expert bilingual driver", normal: "" },
+        { strong: "Door-to-door service", normal: "" },
+      ],
+    },
+
+    // FLEET
+    fleet: {
+      badge: "✦ OUR FLEET",
+      titlePart1: "Modern vehicles,",
+      titlePart2: "total comfort",
+      subtitle:
+        "All our vehicles are kept in optimal condition, clean and air-conditioned for your comfort.",
+      mostPopular: "MOST POPULAR",
+      largeGroups: "LARGE GROUPS",
+      stariaDesc: "Perfect for couples, small families and business trips.",
+      hiaceDesc: "Ideal for large groups, tours and families with extra luggage.",
+      paxLabel: "passengers",
+      luggageLabel: "luggage",
+      from: "From",
+      cta: "Get Quote",
+      guarantees: "New fleet · Technical inspection up to date · Full insurance included",
+    },
+
+    // POPULAR ROUTES
+    routes: {
+      badge: "✦ POPULAR ROUTES",
+      titlePart1: "The most searched",
+      titlePart2: "destinations in Costa Rica",
+      subtitle:
+        "Fixed and transparent fares for the most requested routes by our travelers.",
+      popular: "POPULAR",
+      private: "Private",
+      from: "From",
+      quote: "Quote",
+      noDestination: "Don't see your destination? We have",
+      routesAvailable: "25+ routes available",
+      inCostaRica: "throughout Costa Rica.",
+      seeAll: "See all routes and quote",
+    },
+
+    // REVIEWS
+    reviews: {
+      badge: "✦ VERIFIED REVIEWS",
+      titlePart1: "Over 190 travelers",
+      titlePart2: "recommend us",
+      stars: "out of 5 stars",
+      googleReviews: "Google reviews",
+      seeAll: "See all reviews on Google",
+    },
+
+    // FAQ
+    faq: {
+      badge: "✦ FREQUENTLY ASKED QUESTIONS",
+      titlePart1: "We answer your",
+      titlePart2: "most common questions",
+      subtitle: "Everything you need to know before booking your private transport in Costa Rica.",
+      anotherQuestion: "Have another question?",
+      writeUs: "Write us on WhatsApp →",
+      items: [
+        {
+          question: "Is it safe to travel with Private Travel CR?",
+          answer:
+            "Absolutely. Our fleet consists of new vehicles with up-to-date technical inspections and full insurance. All our drivers are professional bilingual with years of experience driving in Costa Rica. We have over 190 5-star reviews on Google that back up our service.",
+        },
+        {
+          question: "What payment methods do you accept?",
+          answer:
+            "We accept credit card payments securely. When confirming your reservation via WhatsApp, we send you the payment link to process the transaction. It's fast, secure, and you can pay from anywhere in the world before your trip.",
+        },
+        {
+          question: "What happens if my flight is delayed or cancelled?",
+          answer:
+            "Don't worry. When booking we ask for your flight number and monitor its status in real time. If your flight is delayed, we automatically adjust the pickup time at no extra cost. If it's cancelled, we reschedule your service for the new date.",
+        },
+        {
+          question: "Can I cancel my reservation?",
+          answer:
+            "Yes. We offer free cancellation 48 hours before the trip. Simply write us on WhatsApp at +506 8633-4133 and we process your cancellation without complications. We want you to book with complete peace of mind.",
+        },
+        {
+          question: "Do you offer child seats?",
+          answer:
+            "Yes, we offer completely free child seats upon request. Just tell us when booking the age and number of children traveling, and we prepare the vehicle with the appropriate seats. Your family's safety is our priority.",
+        },
+        {
+          question: "How far in advance should I book?",
+          answer:
+            "We recommend booking at least 24 hours in advance to guarantee availability, especially in high season (December to April). For last-minute bookings, contact us on WhatsApp and we'll do our best to help you.",
+        },
+        {
+          question: "How much luggage can I bring?",
+          answer:
+            "Each passenger can bring one large suitcase and one carry-on at no extra cost. If you travel with special equipment (surfboards, bicycles, diving gear), let us know when booking to confirm available space in the correct vehicle.",
+        },
+        {
+          question: "Can you make stops during the trip?",
+          answer:
+            "Of course! Short stops (bathroom, coffee, photos) are included at no cost. If you want a more complete experience with 1-2 hour tourist stops (waterfalls, coffee farms, viewpoints), we recommend our VIP service for just $70 extra, which includes flexible stops, drinks, and snacks.",
+        },
+        {
+          question: "Is the price per person or per vehicle?",
+          answer:
+            "The price is per COMPLETE vehicle, not per person. This means you travel privately with your group, without sharing with strangers. Up to 5 passengers go in Hyundai Staria and 6 to 9 passengers in Toyota Hiace, at the same price.",
+        },
+        {
+          question: "What's the difference between Standard and VIP?",
+          answer:
+            "Standard is a direct, fast, and comfortable transfer. VIP (+$70) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, waters and snacks, premium WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
+        },
+      ],
+    },
+
+    // CONTACT FORM
+    contact: {
+      badge: "✦ CONTACT US",
+      titlePart1: "Tell us about",
+      titlePart2: "your next trip",
+      subtitle:
+        "Fill out the form and we'll send you your personalized quote via WhatsApp in minutes.",
+      name: "Full name",
+      namePlaceholder: "Your name",
+      email: "Email",
+      emailPlaceholder: "your@email.com",
+      whatsapp: "WhatsApp (optional)",
+      whatsappPlaceholder: "+1 555-123-4567",
+      passengers: "Number of travelers",
+      route: "Route you're interested in",
+      routePlaceholder: "Select your route",
+      date: "Travel date",
+      service: "Service type",
+      standardShort: "Standard",
+      standardDescShort: "Direct · Fast",
+      vipShort: "VIP",
+      vipDescShort: "+1-2h stop · +$70",
+      details: "Additional details (optional)",
+      detailsPlaceholder:
+        "Flight number, hotel, special needs (child seats, extra luggage, etc.)",
+      privacy:
+        "Your information is safe. We don't share it with third parties. When you submit, WhatsApp will open with your pre-written message for you to just hit send.",
+      send: "Send via WhatsApp",
+      sending: "Opening WhatsApp!",
+      otherWays: "Prefer to contact us directly?",
+      routeOptions: [
+        "SJO Airport → La Fortuna",
+        "SJO Airport → Manuel Antonio",
+        "SJO Airport → Monteverde",
+        "SJO Airport → Tamarindo",
+        "LIR Airport → La Fortuna",
+        "LIR Airport → Tamarindo",
+        "LIR Airport → Monteverde",
+        "La Fortuna → Monteverde",
+        "La Fortuna → Manuel Antonio",
+        "La Fortuna → Tamarindo",
+        "Other route (I'll detail in the message)",
+      ],
+      whatsappMessage: {
+        greeting: "Hello Private Travel CR!",
+        intro: "I want to quote a private shuttle.",
+        name: "Name",
+        email: "Email",
+        whatsapp: "WhatsApp",
+        travelers: "Travelers",
+        person: "person",
+        people: "people",
+        route: "Route",
+        date: "Date",
+        service: "Service",
+        details: "Additional details",
+        closing: "What would be the price and availability? Thanks!",
+        standardService: "Standard",
+        vipService: "VIP (with stops + drinks + snacks)",
+      },
+    },
+
+    // FOOTER
+    footer: {
+      description:
+        "Premium private transportation in Costa Rica. Instant quotes, bilingual driver, door-to-door service.",
+      reviews: "reviews",
+      quickLinks: "Quick Links",
+      links: {
+        home: "Home",
+        benefits: "Benefits",
+        services: "Services",
+        quote: "Quote",
+        fleet: "Fleet",
+        reviews: "Reviews",
+        faq: "FAQ",
+      },
+      contact: "Contact",
+      whatsappLabel: "WhatsApp",
+      phoneLabel: "Phone",
+      emailLabel: "Email",
+      locationLabel: "Location",
+      follow: "Follow Us",
+      followDesc: "Check out our adventures and real client reviews.",
+      travellersChoice: "Travellers' Choice",
+      copyright: "All rights reserved.",
+      madeIn: "Made with ❤️ in Costa Rica 🇨🇷",
+    },
+
+    // WHATSAPP FLOAT
+    whatsappFloat: {
+      greeting: "Hello!",
+      message: "Need help with your transportation? We're here for you.",
+      chat: "Chat now →",
+    },
+
+    // LANGUAGE SWITCHER
+    langSwitcher: {
+      current: "EN",
+      other: "ES",
+    },
+  },
+
+  // ==========================================
+  // ESPAÑOL
+  // ==========================================
+  es: {
+    nav: {
+      home: "Inicio",
+      quote: "Cotizador",
+      fleet: "Flota",
+      routes: "Rutas",
+      contact: "Contacto",
+      whatsapp: "WhatsApp",
+    },
+
+    hero: {
+      badge: "PREMIUM PRIVATE TRANSPORTATION",
+      titlePart1: "Explora Costa Rica",
+      titlePart2: "Con Total Comodidad",
+      subtitle: "Servicio de shuttle privado premium.",
+      features: "Cotización instantánea · Chofer bilingüe · Puerta a puerta",
+      ctaQuote: "Cotizar Ahora",
+      ctaWhatsapp: "WhatsApp Directo",
+      statStars: "Estrellas",
+      statAvailable: "Disponibilidad",
+      statPrivate: "Privado",
+      scroll: "SCROLL",
+    },
+
+    benefits: {
+      badge: "✦ POR QUÉ ELEGIRNOS",
+      titlePart1: "Por qué los viajeros",
+      titlePart2: "nos prefieren",
+      subtitle:
+        "Más que un shuttle, una experiencia premium diseñada para que tu viaje por Costa Rica empiece sin estrés.",
+      items: [
+        {
+          title: "Puerta a Puerta",
+          description:
+            "Te recogemos exactamente donde estés y te llevamos directo a tu destino. Sin paradas innecesarias, sin desvíos.",
+        },
+        {
+          title: "100% Privado",
+          description:
+            "Tu propio vehículo con chofer dedicado solo para ti y tu grupo. Sin compartir con desconocidos, total privacidad.",
+        },
+        {
+          title: "Meet & Greet",
+          description:
+            "Tu chofer te recibe con un cartel con tu nombre y te ayuda con el equipaje. Llegada sin estrés garantizada.",
+        },
+        {
+          title: "Soporte 24/7",
+          description:
+            "Estamos disponibles antes, durante y después de tu viaje. Responde rápido vía WhatsApp a cualquier hora.",
+        },
+      ],
+      trust: {
+        google: "en Google Reviews",
+        travelers: "viajeros satisfechos",
+        insurance: "Seguros",
+        insuranceLabel: "incluidos",
+        costaRican: "costarricense",
+      },
+    },
+
+    services: {
+      badge: "✦ DOS FORMAS DE VIAJAR",
+      titlePart1: "Elige tu estilo de",
+      titlePart2: "experiencia",
+      subtitle:
+        "Todos nuestros viajes son privados y cómodos. La diferencia está en los detalles y en cuánto quieres disfrutar el trayecto.",
+      standard: {
+        badge: "RÁPIDO Y EFICIENTE",
+        name: "Standard",
+        description:
+          "La forma más rápida de llegar a tu destino. Un viaje privado, directo, sin paradas, sin esperas.",
+        priceLabel: "Desde",
+        priceNote: "Precio por vehículo (no por persona)",
+        features: [
+          "Ruta directa sin desvíos ni paradas",
+          "Disponible 24/7, cualquier horario",
+          "Servicio puerta a puerta",
+          "Chofer bilingüe profesional",
+          "WiFi a bordo y agua embotellada",
+          "Seguro completo y monitoreo de vuelos",
+        ],
+        cta: "Cotizar Standard",
+        ideal: "Ideal para traslados aeropuerto y horarios apretados",
+      },
+      vip: {
+        badgePopular: "⭐ MÁS POPULAR",
+        badgeTop: "EXPERIENCIA PREMIUM",
+        name: "VIP",
+        description:
+          "¿Por qué solo viajar cuando puedes vivir una experiencia? Parada turística, bebidas locales y un chofer que te guía.",
+        priceLabel: "Standard + $70 USD",
+        priceNote: "Incluye toda la experiencia VIP",
+        features: [
+          { label: "1-2h de parada turística", sub: "(flexible)" },
+          { label: "Servicio Concierge", sub: "(tu chofer te guía)" },
+          { label: "Welcome Kit:", sub: "cervezas, sodas, snacks" },
+          { label: "WiFi premium y cargadores USB", sub: "" },
+          { label: "Recomendaciones personalizadas", sub: "" },
+          { label: "Todo lo de Standard", sub: "+ más" },
+        ],
+        cta: "Cotizar VIP",
+        ideal: "Perfecto para lunas de miel y viajes inolvidables",
+      },
+      notSure: "¿No estás seguro qué elegir?",
+      chatWhatsapp: "Chatea con nosotros por WhatsApp →",
+    },
+
+    quote: {
+      sectionBadge: "✦ COTIZACIÓN INSTANTÁNEA",
+      sectionTitle: "Obtén tu precio en segundos",
+      sectionSubtitle:
+        "Selecciona tu ruta, indica cuántas personas viajan y te damos el precio exacto al instante.",
+      title: "Cotización Instantánea",
+      subtitle: "Obtén tu precio al instante, sin esperas",
+      origin: "Origen",
+      originPlaceholder: "¿Desde dónde sales?",
+      destination: "Destino",
+      destinationPlaceholder: "¿A dónde vas?",
+      passengers: "Pasajeros",
+      date: "Fecha de viaje",
+      serviceType: "Tipo de servicio",
+      standardLabel: "Standard",
+      standardDesc: "Directo · Rápido · Puerta a puerta",
+      vipLabel: "VIP",
+      vipDesc: "+1-2h parada · Bebidas · Snacks",
+      vipPremium: "PREMIUM",
+      calculate: "Calcular Precio",
+      notAvailable:
+        "Esta ruta no está disponible. Contáctanos por WhatsApp para cotización personalizada.",
+      chooseVehicle: "Elige tu vehículo",
+      vipSelected: "VIP SELECCIONADO",
+      recommended: "RECOMENDADO",
+      passengersRange: "pasajeros",
+      priceUSD: "USD",
+      vipIncluded: "Incluye servicio VIP",
+      priceTotal: "Precio total del viaje",
+      notForPax: "No apto para",
+      estimatedDuration: "Duración estimada:",
+      distance: "Distancia:",
+      vipStop: " + parada VIP",
+      standardIncluded: "✓ Incluido en tu reserva:",
+      vipIncludedTitle: "INCLUIDO EN TU EXPERIENCIA VIP:",
+      reserveWhatsapp: "Reservar por WhatsApp",
+      standardFeatures: [
+        "Chofer bilingüe",
+        "Servicio puerta a puerta",
+        "Agua gratis",
+        "WiFi a bordo",
+      ],
+      vipFeatures: [
+        { strong: "1-2h de parada turistica", normal: "flexible" },
+        { strong: "Servicio Concierge", normal: "personalizado" },
+        { strong: "Cervezas locales", normal: "" },
+        { strong: "Sodas & aguas premium", normal: "" },
+        { strong: "Snacks locales", normal: "" },
+        { strong: "WiFi premium + cargadores", normal: "" },
+        { strong: "Chofer bilingue experto", normal: "" },
+        { strong: "Servicio puerta a puerta", normal: "" },
+      ],
+    },
+
+    fleet: {
+      badge: "✦ NUESTRA FLOTA",
+      titlePart1: "Vehículos modernos,",
+      titlePart2: "comodidad total",
+      subtitle:
+        "Todos nuestros vehículos se mantienen en óptimas condiciones, limpios y con aire acondicionado para tu comodidad.",
+      mostPopular: "MÁS POPULAR",
+      largeGroups: "GRUPOS GRANDES",
+      stariaDesc: "Perfecto para parejas, familias pequeñas y viajes de negocios.",
+      hiaceDesc: "Ideal para grupos grandes, tours y familias con equipaje extra.",
+      paxLabel: "pasajeros",
+      luggageLabel: "equipaje",
+      from: "Desde",
+      cta: "Cotizar",
+      guarantees: "Flota renovada · Revisión técnica al día · Seguros completos incluidos",
+    },
+
+    routes: {
+      badge: "✦ RUTAS POPULARES",
+      titlePart1: "Los destinos más",
+      titlePart2: "buscados en Costa Rica",
+      subtitle:
+        "Tarifas fijas y transparentes para las rutas más solicitadas por nuestros viajeros.",
+      popular: "POPULAR",
+      private: "Privado",
+      from: "Desde",
+      quote: "Cotizar",
+      noDestination: "¿No ves tu destino? Tenemos",
+      routesAvailable: "25+ rutas disponibles",
+      inCostaRica: "en todo Costa Rica.",
+      seeAll: "Ver todas las rutas y cotizar",
+    },
+
+    reviews: {
+      badge: "✦ RESEÑAS VERIFICADAS",
+      titlePart1: "Más de 190 viajeros",
+      titlePart2: "nos recomiendan",
+      stars: "de 5 estrellas",
+      googleReviews: "reseñas en Google",
+      seeAll: "Ver todas las reseñas en Google",
+    },
+
+    faq: {
+      badge: "✦ PREGUNTAS FRECUENTES",
+      titlePart1: "Resolvemos tus",
+      titlePart2: "dudas más comunes",
+      subtitle:
+        "Todo lo que necesitas saber antes de reservar tu transporte privado en Costa Rica.",
+      anotherQuestion: "¿Tienes otra pregunta?",
+      writeUs: "Escríbenos por WhatsApp →",
+      items: [
+        {
+          question: "¿Es seguro viajar con Private Travel CR?",
+          answer:
+            "Absolutamente. Nuestra flota está compuesta por vehículos nuevos, con revisión técnica al día y seguros completos. Todos nuestros choferes son profesionales bilingües con años de experiencia manejando en Costa Rica. Contamos con más de 190 reseñas de 5 estrellas en Google que respaldan nuestro servicio.",
+        },
+        {
+          question: "¿Qué métodos de pago aceptan?",
+          answer:
+            "Aceptamos pago con tarjeta de crédito de forma segura. Al confirmar tu reserva por WhatsApp, te enviamos el link de pago para procesar la transacción. Es rápido, seguro y puedes pagar desde cualquier parte del mundo antes de tu viaje.",
+        },
+        {
+          question: "¿Qué pasa si mi vuelo se retrasa o se cancela?",
+          answer:
+            "No te preocupes. Al hacer tu reserva te pedimos tu número de vuelo y monitoreamos su estado en tiempo real. Si tu vuelo se retrasa, ajustamos automáticamente la hora de recogida sin costo extra. Si se cancela, reagendamos tu servicio para la nueva fecha.",
+        },
+        {
+          question: "¿Puedo cancelar mi reserva?",
+          answer:
+            "Sí. Ofrecemos cancelación gratuita con 48 horas de anticipación al viaje. Simplemente escríbenos por WhatsApp al +506 8633-4133 y procesamos tu cancelación sin complicaciones. Queremos que reserves con total tranquilidad.",
+        },
+        {
+          question: "¿Ofrecen sillas para niños?",
+          answer:
+            "Sí, ofrecemos sillas para niños completamente gratis bajo solicitud. Solo indícanos al reservar la edad y cantidad de niños que viajarán, y preparamos el vehículo con las sillas apropiadas. La seguridad de tu familia es nuestra prioridad.",
+        },
+        {
+          question: "¿Con cuánto tiempo debo reservar?",
+          answer:
+            "Recomendamos reservar con al menos 24 horas de anticipación para garantizar disponibilidad, especialmente en temporada alta (diciembre a abril). Para reservas de último minuto, contáctanos por WhatsApp y haremos todo lo posible por ayudarte.",
+        },
+        {
+          question: "¿Cuánto equipaje puedo llevar?",
+          answer:
+            "Cada pasajero puede llevar una maleta grande y un equipaje de mano sin costo adicional. Si viajas con equipo especial (tablas de surf, bicicletas, equipo de buceo), avísanos al reservar para confirmar el espacio disponible en el vehículo correcto.",
+        },
+        {
+          question: "¿Pueden hacer paradas durante el viaje?",
+          answer:
+            "¡Por supuesto! Paradas cortas (baño, café, fotos) están incluidas sin costo. Si quieres una experiencia más completa con paradas turísticas de 1-2 horas (cataratas, cafetales, miradores), te recomendamos nuestro servicio VIP por solo $70 extra, que incluye paradas flexibles, bebidas y snacks.",
+        },
+        {
+          question: "¿El precio es por persona o por vehículo?",
+          answer:
+            "El precio es por VEHÍCULO completo, no por persona. Esto significa que viajas en privado con tu grupo, sin compartir con desconocidos. Hasta 5 pasajeros van en Hyundai Staria y de 6 a 9 pasajeros en Toyota Hiace, al mismo precio.",
+        },
+        {
+          question: "¿Cuál es la diferencia entre Standard y VIP?",
+          answer:
+            "El Standard es un traslado directo, rápido y cómodo. El VIP (+$70) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi premium, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
+        },
+      ],
+    },
+
+    contact: {
+      badge: "✦ CONTÁCTANOS",
+      titlePart1: "Cuéntanos sobre",
+      titlePart2: "tu próximo viaje",
+      subtitle:
+        "Llena el formulario y te enviaremos tu cotización personalizada por WhatsApp en minutos.",
+      name: "Nombre completo",
+      namePlaceholder: "Tu nombre",
+      email: "Email",
+      emailPlaceholder: "tu@email.com",
+      whatsapp: "WhatsApp (opcional)",
+      whatsappPlaceholder: "+1 555-123-4567",
+      passengers: "Número de viajeros",
+      route: "Ruta que te interesa",
+      routePlaceholder: "Selecciona tu ruta",
+      date: "Fecha del viaje",
+      service: "Tipo de servicio",
+      standardShort: "Standard",
+      standardDescShort: "Directo · Rápido",
+      vipShort: "VIP",
+      vipDescShort: "+1-2h parada · +$70",
+      details: "Detalles adicionales (opcional)",
+      detailsPlaceholder:
+        "Número de vuelo, hotel, necesidades especiales (sillas para niños, equipaje extra, etc.)",
+      privacy:
+        "Tu información está segura. No la compartimos con terceros. Al enviar se abrirá WhatsApp con tu mensaje pre-escrito para que solo presiones enviar.",
+      send: "Enviar por WhatsApp",
+      sending: "¡Abriendo WhatsApp!",
+      otherWays: "¿Prefieres contactarnos directamente?",
+      routeOptions: [
+        "SJO Airport → La Fortuna",
+        "SJO Airport → Manuel Antonio",
+        "SJO Airport → Monteverde",
+        "SJO Airport → Tamarindo",
+        "LIR Airport → La Fortuna",
+        "LIR Airport → Tamarindo",
+        "LIR Airport → Monteverde",
+        "La Fortuna → Monteverde",
+        "La Fortuna → Manuel Antonio",
+        "La Fortuna → Tamarindo",
+        "Otra ruta (la detallo en el mensaje)",
+      ],
+      whatsappMessage: {
+        greeting: "¡Hola Private Travel CR!",
+        intro: "Quiero cotizar un shuttle privado.",
+        name: "Nombre",
+        email: "Email",
+        whatsapp: "WhatsApp",
+        travelers: "Viajeros",
+        person: "persona",
+        people: "personas",
+        route: "Ruta",
+        date: "Fecha",
+        service: "Servicio",
+        details: "Detalles adicionales",
+        closing: "¿Cuál sería el precio y la disponibilidad? ¡Gracias!",
+        standardService: "Standard",
+        vipService: "VIP (con paradas + bebidas + snacks)",
+      },
+    },
+
+    footer: {
+      description:
+        "Transporte privado premium en Costa Rica. Cotización instantánea, chofer bilingüe y servicio puerta a puerta.",
+      reviews: "reseñas",
+      quickLinks: "Enlaces Rápidos",
+      links: {
+        home: "Inicio",
+        benefits: "Beneficios",
+        services: "Servicios",
+        quote: "Cotizador",
+        fleet: "Flota",
+        reviews: "Reseñas",
+        faq: "FAQ",
+      },
+      contact: "Contacto",
+      whatsappLabel: "WhatsApp",
+      phoneLabel: "Teléfono",
+      emailLabel: "Email",
+      locationLabel: "Ubicación",
+      follow: "Síguenos",
+      followDesc: "Mira nuestras aventuras y reseñas reales de clientes.",
+      travellersChoice: "Travellers' Choice",
+      copyright: "Todos los derechos reservados.",
+      madeIn: "Hecho con ❤️ en Costa Rica 🇨🇷",
+    },
+
+    whatsappFloat: {
+      greeting: "¡Hola!",
+      message: "¿Necesitas ayuda con tu transporte? Estamos aquí para ti.",
+      chat: "Chatear ahora →",
+    },
+
+    langSwitcher: {
+      current: "ES",
+      other: "EN",
+    },
+  },
+};
+
+// Función helper para obtener traducciones
+export function getTranslations(lang: Language) {
+  return translations[lang];
+}

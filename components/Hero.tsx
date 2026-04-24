@@ -3,8 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowDown, MessageCircle, Sparkles } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Hero() {
+  const { t, lang } = useLanguage();
+
   const scrollToQuote = () => {
     const quoteSection = document.getElementById("cotizador");
     if (quoteSection) {
@@ -13,11 +16,12 @@ export default function Hero() {
   };
 
   const openWhatsApp = () => {
+    const greetingMsg =
+      lang === "en"
+        ? "Hello! I'm interested in your private transportation service in Costa Rica."
+        : "¡Hola! Me interesa su servicio de transporte privado en Costa Rica.";
     window.open(
-      "https://wa.me/50686334133?text=" +
-        encodeURIComponent(
-          "¡Hola! Me interesa su servicio de transporte privado en Costa Rica."
-        ),
+      "https://wa.me/50686334133?text=" + encodeURIComponent(greetingMsg),
       "_blank"
     );
   };
@@ -43,7 +47,7 @@ export default function Hero() {
           >
             <Sparkles size={14} className="text-amber-400" />
             <span className="text-amber-400 text-sm font-medium tracking-wide">
-              PREMIUM PRIVATE TRANSPORTATION
+              {t.hero.badge}
             </span>
           </motion.div>
 
@@ -53,9 +57,9 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 tracking-tight leading-[1.1]"
           >
-            Explora Costa Rica
+            {t.hero.titlePart1}
             <span className="block bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent mt-2">
-              Con Total Comodidad
+              {t.hero.titlePart2}
             </span>
           </motion.h1>
 
@@ -65,7 +69,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-gray-200 mb-4 max-w-2xl mx-auto leading-relaxed"
           >
-            Servicio de shuttle privado premium.
+            {t.hero.subtitle}
           </motion.p>
 
           <motion.p
@@ -74,7 +78,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="text-base md:text-lg text-gray-400 mb-10 max-w-xl mx-auto"
           >
-            Cotización instantánea · Chofer bilingüe · Puerta a puerta
+            {t.hero.features}
           </motion.p>
 
           <motion.div
@@ -88,7 +92,7 @@ export default function Hero() {
               size="lg"
               className="h-14 px-8 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all w-full sm:w-auto"
             >
-              Cotizar Ahora
+              {t.hero.ctaQuote}
               <ArrowDown className="ml-2 animate-bounce" size={18} />
             </Button>
 
@@ -99,7 +103,7 @@ export default function Hero() {
               className="h-14 px-8 border-white/20 bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm font-semibold text-base w-full sm:w-auto"
             >
               <MessageCircle className="mr-2" size={18} />
-              WhatsApp Directo
+              {t.hero.ctaWhatsapp}
             </Button>
           </motion.div>
 
@@ -115,11 +119,13 @@ export default function Hero() {
             </div>
             <div className="text-center border-x border-white/10">
               <div className="text-3xl md:text-4xl font-bold text-amber-400">24/7</div>
-              <div className="text-xs md:text-sm text-gray-400 mt-1">Disponibilidad</div>
+              <div className="text-xs md:text-sm text-gray-400 mt-1">{t.hero.statAvailable}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-amber-400">100%</div>
-              <div className="text-xs md:text-sm text-gray-400 mt-1">Puntualidad</div>
+              <div className="text-xs md:text-sm text-gray-400 mt-1">
+                {lang === "en" ? "On-Time" : "Puntualidad"}
+              </div>
             </div>
           </motion.div>
         </div>
@@ -136,7 +142,7 @@ export default function Hero() {
           transition={{ duration: 2, repeat: Infinity }}
           className="flex flex-col items-center gap-2 text-white/60"
         >
-          <span className="text-xs tracking-widest">SCROLL</span>
+          <span className="text-xs tracking-widest">{t.hero.scroll}</span>
           <ArrowDown size={20} />
         </motion.div>
       </motion.div>
