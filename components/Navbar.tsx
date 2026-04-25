@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Menu, MessageCircle, Phone } from "lucide-react";
@@ -36,7 +37,9 @@ export default function Navbar() {
     }
   };
 
-  const navLinks = [
+  type NavLink = { label: string; id: string; href?: string };
+
+  const navLinks: NavLink[] = [
     { label: t.nav.home, id: "inicio" },
     { label: t.nav.quote, id: "cotizador" },
     { label: t.nav.fleet, id: "flota" },
@@ -63,11 +66,25 @@ export default function Navbar() {
           </button>
 
           <div className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <button key={link.id} onClick={() => scrollToSection(link.id)} className="px-4 py-2 text-gray-300 hover:text-amber-400 transition-colors font-medium text-sm">
-                {link.label}
-              </button>
-            ))}
+            {navLinks.map((link) =>
+              link.href ? (
+                <Link
+                  key={link.id}
+                  href={link.href}
+                  className="px-4 py-2 text-gray-300 hover:text-amber-400 transition-colors font-medium text-sm"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <button
+                  key={link.id}
+                  onClick={() => scrollToSection(link.id)}
+                  className="px-4 py-2 text-gray-300 hover:text-amber-400 transition-colors font-medium text-sm"
+                >
+                  {link.label}
+                </button>
+              )
+            )}
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
@@ -102,11 +119,26 @@ export default function Navbar() {
                 </SheetTitle>
 
                 <div className="flex flex-col gap-2">
-                  {navLinks.map((link) => (
-                    <button key={link.id} onClick={() => scrollToSection(link.id)} className="text-left px-4 py-3 text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all font-medium">
-                      {link.label}
-                    </button>
-                  ))}
+                  {navLinks.map((link) =>
+                    link.href ? (
+                      <Link
+                        key={link.id}
+                        href={link.href}
+                        onClick={() => setMobileOpen(false)}
+                        className="text-left px-4 py-3 text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all font-medium"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <button
+                        key={link.id}
+                        onClick={() => scrollToSection(link.id)}
+                        className="text-left px-4 py-3 text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all font-medium"
+                      >
+                        {link.label}
+                      </button>
+                    )
+                  )}
                 </div>
 
                 <div className="mt-8 pt-8 border-t border-amber-500/20 space-y-4">
