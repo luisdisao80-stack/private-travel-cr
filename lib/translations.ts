@@ -12,8 +12,74 @@ export const translations = {
       quote: "Get Quote",
       fleet: "Fleet",
       routes: "Routes",
+      about: "About",
       contact: "Contact",
       whatsapp: "WhatsApp",
+    },
+
+    // ABOUT PAGE
+    about: {
+      hero: {
+        badge: "Our Story",
+        titlePart1: "The story behind",
+        titlePart2: "every ride",
+        subtitle:
+          "Private Travel CR is more than a shuttle service. It's a family project born from passion for Costa Rica and a commitment to give every traveler the welcome they deserve.",
+      },
+      story: {
+        badge: "✦ MY JOURNEY",
+        title: "From a young dreamer to your trusted driver",
+        chapter1: {
+          title: "Where it all began",
+          body:
+            "I entered the tourism industry in 2006, when I was still figuring out what I wanted to do with my life. What I learned in those early years stayed with me forever: transportation in Costa Rica is not about moving people from point A to point B. It's the very first impression a traveler gets of our country, and the very last memory they take home. That responsibility shaped me.",
+        },
+        chapter2: {
+          eyebrow: "15 Years of Learning",
+          title: "Two companies, one obsession",
+          body:
+            "For nearly 15 years I worked at two of the most important transportation companies in Costa Rica. I learned operations, logistics, customer service, fleet management, every detail. But over time I noticed something was missing: the human touch. The personal care. The kind of attention a traveler who chose Costa Rica for their honeymoon, family vacation, or once-in-a-lifetime trip truly deserves.",
+        },
+        chapter3: {
+          title: "The day everything changed",
+          body:
+            "In 2021 my second son was born. Holding him in my arms, I knew I had to build something of my own — something I could one day show my family with pride. I called Anthony, my cousin, who shared the same vision. We took the leap together. Private Travel CR was born from that moment, from the desire to do things our way, with care, with purpose, with heart.",
+        },
+        chapter4: {
+          eyebrow: "Almost 4 years later",
+          title: "From La Fortuna, with gratitude",
+          body:
+            "Today, almost 4 years in, we're based in La Fortuna, in the shadow of the Arenal Volcano. Every traveler we welcome reminds us why we started. Every five-star review on Google tells us we're on the right path. We're not the biggest shuttle company in Costa Rica, and we don't want to be. We want to be the one you remember.",
+        },
+      },
+      values: {
+        badge: "✦ WHAT WE STAND FOR",
+        title: "Three things we never compromise",
+        subtitle:
+          "These aren't marketing words. They're the daily decisions Anthony and I make for every single ride.",
+        family: {
+          title: "Family-Run",
+          description:
+            "We are a family business, not a corporation. When you ride with us, you're treated like family — because that's how we know how to treat people.",
+        },
+        purpose: {
+          title: "Purpose-Driven",
+          description:
+            "Every ride matters because every traveler matters. Your trip is unique, and so is the way we plan, drive, and care for you from start to finish.",
+        },
+        costaRica: {
+          title: "Costa Rican Roots",
+          description:
+            "This is our country. We know every curve, every viewpoint, every hidden waterfall. When you travel with us, you travel with locals who genuinely love showing you home.",
+        },
+      },
+      cta: {
+        title: "Ready to travel with people who care?",
+        subtitle:
+          "Send us a message on WhatsApp and let's plan your Costa Rica trip together. We respond fast, in English or Spanish, any day, any hour.",
+        whatsapp: "Chat on WhatsApp",
+        quote: "Get a quote",
+      },
     },
 
     // HERO
@@ -415,8 +481,74 @@ export const translations = {
       quote: "Cotizador",
       fleet: "Flota",
       routes: "Rutas",
+      about: "Nosotros",
       contact: "Contacto",
       whatsapp: "WhatsApp",
+    },
+
+    // ABOUT PAGE
+    about: {
+      hero: {
+        badge: "Nuestra Historia",
+        titlePart1: "La historia detrás",
+        titlePart2: "de cada viaje",
+        subtitle:
+          "Private Travel CR es más que un servicio de shuttles. Es un proyecto familiar nacido del amor por Costa Rica y del compromiso de darle a cada viajero la bienvenida que merece.",
+      },
+      story: {
+        badge: "✦ MI CAMINO",
+        title: "De un joven soñador a tu chofer de confianza",
+        chapter1: {
+          title: "Donde todo comenzó",
+          body:
+            "Entré al turismo en el 2006, cuando todavía estaba descubriendo qué quería hacer con mi vida. Lo que aprendí en esos primeros años se me quedó para siempre: el transporte en Costa Rica no se trata de mover personas de un punto A a un punto B. Es la primera impresión que un viajero tiene de nuestro país, y el último recuerdo que se lleva a casa. Esa responsabilidad me marcó.",
+        },
+        chapter2: {
+          eyebrow: "15 Años de Aprendizaje",
+          title: "Dos empresas, una misma obsesión",
+          body:
+            "Durante casi 15 años trabajé en dos de las empresas de transporte más importantes de Costa Rica. Aprendí operaciones, logística, servicio al cliente, manejo de flota, cada detalle. Pero con el tiempo noté que algo faltaba: el toque humano. La atención personal. El tipo de cuidado que un viajero que escogió Costa Rica para su luna de miel, sus vacaciones familiares o el viaje de su vida realmente merece.",
+        },
+        chapter3: {
+          title: "El día que todo cambió",
+          body:
+            "En el 2021 nació mi segundo hijo. Teniéndolo en brazos, supe que tenía que construir algo propio, algo que algún día le pudiera mostrar a mi familia con orgullo. Llamé a Anthony, mi primo, que compartía la misma visión. Dimos el salto juntos. Private Travel CR nació de ese momento, del deseo de hacer las cosas a nuestra manera, con cuidado, con propósito, con corazón.",
+        },
+        chapter4: {
+          eyebrow: "Casi 4 años después",
+          title: "Desde La Fortuna, con gratitud",
+          body:
+            "Hoy, casi 4 años después, estamos basados en La Fortuna, a la sombra del Volcán Arenal. Cada viajero que recibimos nos recuerda por qué empezamos. Cada reseña de cinco estrellas en Google nos confirma que vamos por buen camino. No somos la empresa de shuttles más grande de Costa Rica, y no queremos serlo. Queremos ser la que recordás.",
+        },
+      },
+      values: {
+        badge: "✦ LO QUE NOS DEFINE",
+        title: "Tres cosas en las que nunca cedemos",
+        subtitle:
+          "No son frases de marketing. Son las decisiones diarias que Anthony y yo tomamos en cada viaje.",
+        family: {
+          title: "Negocio Familiar",
+          description:
+            "Somos un negocio familiar, no una corporación. Cuando viajás con nosotros, te tratamos como familia, porque así es como sabemos tratar a la gente.",
+        },
+        purpose: {
+          title: "Con Propósito",
+          description:
+            "Cada viaje importa porque cada viajero importa. Tu viaje es único, y así es como lo planificamos, lo conducimos y te cuidamos de principio a fin.",
+        },
+        costaRica: {
+          title: "Raíces Ticas",
+          description:
+            "Este es nuestro país. Conocemos cada curva, cada mirador, cada catarata escondida. Cuando viajás con nosotros, viajás con costarricenses que aman mostrarte su tierra.",
+        },
+      },
+      cta: {
+        title: "¿Listo para viajar con quienes les importa?",
+        subtitle:
+          "Mandanos un mensaje por WhatsApp y planeamos tu viaje por Costa Rica juntos. Respondemos rápido, en inglés o español, cualquier día, cualquier hora.",
+        whatsapp: "Chatear por WhatsApp",
+        quote: "Cotizar mi viaje",
+      },
     },
 
     hero: {

@@ -41,6 +41,7 @@ export default function Navbar() {
     { label: t.nav.quote, id: "cotizador" },
     { label: t.nav.fleet, id: "flota" },
     { label: t.nav.routes, id: "rutas" },
+    { label: t.nav.about, id: "about", href: "/about" },
     { label: t.nav.contact, id: "contacto" },
   ];
 
