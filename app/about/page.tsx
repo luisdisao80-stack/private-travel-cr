@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -14,31 +13,11 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
-import { getTranslations, type Language } from "@/lib/translations";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function AboutPage() {
-  const [lang, setLang] = useState<Language>("en");
+  const { t, lang } = useLanguage();
 
-  // Sync con el idioma del resto del sitio (mismo patrón que usás en otras páginas)
-  useEffect(() => {
-    const stored = (typeof window !== "undefined"
-      ? (localStorage.getItem("lang") as Language | null)
-      : null) || "en";
-    setLang(stored);
-
-    const handler = () => {
-      const newLang = (localStorage.getItem("lang") as Language) || "en";
-      setLang(newLang);
-    };
-    window.addEventListener("storage", handler);
-    window.addEventListener("languageChange", handler);
-    return () => {
-      window.removeEventListener("storage", handler);
-      window.removeEventListener("languageChange", handler);
-    };
-  }, []);
-
-  const t = getTranslations(lang).about;
   const whatsappNumber = "50686334133";
   const whatsappMessage = encodeURIComponent(
     lang === "es"
@@ -53,7 +32,6 @@ export default function AboutPage() {
 
       {/* HERO */}
       <section className="relative pt-32 pb-20 px-4 overflow-hidden">
-        {/* Background gradient effects */}
         <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 via-transparent to-transparent pointer-events-none" />
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
 
@@ -61,20 +39,20 @@ export default function AboutPage() {
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-amber-500/30 bg-amber-500/5">
             <Heart className="w-3.5 h-3.5 text-amber-400" />
             <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
-              {t.hero.badge}
+              {t.about.hero.badge}
             </span>
           </div>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-            {t.hero.titlePart1}
+            {t.about.hero.titlePart1}
             <br />
             <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
-              {t.hero.titlePart2}
+              {t.about.hero.titlePart2}
             </span>
           </h1>
 
           <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">
-            {t.hero.subtitle}
+            {t.about.hero.subtitle}
           </p>
         </div>
       </section>
@@ -84,14 +62,14 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           <div className="mb-12 text-center">
             <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
-              {t.story.badge}
+              {t.about.story.badge}
             </span>
             <h2 className="mt-3 text-3xl md:text-5xl font-bold">
-              {t.story.title}
+              {t.about.story.title}
             </h2>
           </div>
 
-          {/* Photo placeholder — replace with your real photo when ready */}
+          {/* Photo placeholder */}
           <div className="mb-12 mx-auto max-w-2xl">
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-amber-500/20 via-zinc-900 to-zinc-950">
               <div className="absolute inset-0 flex items-center justify-center">
@@ -106,7 +84,6 @@ export default function AboutPage() {
                   </p>
                 </div>
               </div>
-              {/* Subtle decorative pattern */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(251,191,36,0.15),transparent_50%)]" />
             </div>
           </div>
@@ -123,10 +100,10 @@ export default function AboutPage() {
                 </span>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                {t.story.chapter1.title}
+                {t.about.story.chapter1.title}
               </h3>
               <p className="text-white/70 text-lg leading-relaxed">
-                {t.story.chapter1.body}
+                {t.about.story.chapter1.body}
               </p>
             </article>
 
@@ -136,18 +113,18 @@ export default function AboutPage() {
               <div className="flex items-center gap-2 mb-3">
                 <Compass className="w-4 h-4 text-amber-400" />
                 <span className="text-sm font-bold text-amber-400 tracking-widest uppercase">
-                  {t.story.chapter2.eyebrow}
+                  {t.about.story.chapter2.eyebrow}
                 </span>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                {t.story.chapter2.title}
+                {t.about.story.chapter2.title}
               </h3>
               <p className="text-white/70 text-lg leading-relaxed">
-                {t.story.chapter2.body}
+                {t.about.story.chapter2.body}
               </p>
             </article>
 
-            {/* Chapter 3: 2021 — el momento clave */}
+            {/* Chapter 3: 2021 */}
             <article className="relative pl-8 md:pl-12 border-l-2 border-amber-500/30">
               <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-amber-400 ring-4 ring-amber-400/20" />
               <div className="flex items-center gap-2 mb-3">
@@ -157,10 +134,10 @@ export default function AboutPage() {
                 </span>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                {t.story.chapter3.title}
+                {t.about.story.chapter3.title}
               </h3>
               <p className="text-white/70 text-lg leading-relaxed">
-                {t.story.chapter3.body}
+                {t.about.story.chapter3.body}
               </p>
             </article>
 
@@ -170,14 +147,14 @@ export default function AboutPage() {
               <div className="flex items-center gap-2 mb-3">
                 <MapPin className="w-4 h-4 text-amber-400" />
                 <span className="text-sm font-bold text-amber-400 tracking-widest uppercase">
-                  {t.story.chapter4.eyebrow}
+                  {t.about.story.chapter4.eyebrow}
                 </span>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                {t.story.chapter4.title}
+                {t.about.story.chapter4.title}
               </h3>
               <p className="text-white/70 text-lg leading-relaxed">
-                {t.story.chapter4.body}
+                {t.about.story.chapter4.body}
               </p>
             </article>
           </div>
@@ -189,49 +166,46 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <div className="mb-12 text-center">
             <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
-              {t.values.badge}
+              {t.about.values.badge}
             </span>
             <h2 className="mt-3 text-3xl md:text-5xl font-bold">
-              {t.values.title}
+              {t.about.values.title}
             </h2>
             <p className="mt-4 text-white/60 max-w-2xl mx-auto">
-              {t.values.subtitle}
+              {t.about.values.subtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {/* Family */}
             <div className="group relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all duration-300">
               <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
                 <Heart className="w-6 h-6 text-amber-400" />
               </div>
-              <h3 className="text-xl font-bold mb-3">{t.values.family.title}</h3>
+              <h3 className="text-xl font-bold mb-3">{t.about.values.family.title}</h3>
               <p className="text-white/60 leading-relaxed">
-                {t.values.family.description}
+                {t.about.values.family.description}
               </p>
             </div>
 
-            {/* Purpose */}
             <div className="group relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all duration-300">
               <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
                 <Compass className="w-6 h-6 text-amber-400" />
               </div>
-              <h3 className="text-xl font-bold mb-3">{t.values.purpose.title}</h3>
+              <h3 className="text-xl font-bold mb-3">{t.about.values.purpose.title}</h3>
               <p className="text-white/60 leading-relaxed">
-                {t.values.purpose.description}
+                {t.about.values.purpose.description}
               </p>
             </div>
 
-            {/* Costa Rica */}
             <div className="group relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all duration-300">
               <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
                 <MapPin className="w-6 h-6 text-amber-400" />
               </div>
               <h3 className="text-xl font-bold mb-3">
-                {t.values.costaRica.title}
+                {t.about.values.costaRica.title}
               </h3>
               <p className="text-white/60 leading-relaxed">
-                {t.values.costaRica.description}
+                {t.about.values.costaRica.description}
               </p>
             </div>
           </div>
@@ -245,10 +219,10 @@ export default function AboutPage() {
             <div className="absolute -top-32 -right-32 w-96 h-96 bg-amber-500/20 rounded-full blur-[100px] pointer-events-none" />
             <div className="relative">
               <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                {t.cta.title}
+                {t.about.cta.title}
               </h2>
               <p className="text-lg text-white/70 max-w-2xl mx-auto mb-10 leading-relaxed">
-                {t.cta.subtitle}
+                {t.about.cta.subtitle}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -259,13 +233,13 @@ export default function AboutPage() {
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-amber-400 text-black font-bold text-lg hover:bg-amber-300 transition-colors"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  {t.cta.whatsapp}
+                  {t.about.cta.whatsapp}
                 </a>
                 <Link
-                  href="/#cotizar"
+                  href="/#cotizador"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/20 text-white font-bold text-lg hover:bg-white/5 transition-colors"
                 >
-                  {t.cta.quote}
+                  {t.about.cta.quote}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
