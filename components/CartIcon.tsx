@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -15,7 +15,7 @@ export default function CartIcon() {
       aria-label={`${t.cart.openCart} (${itemCount})`}
       className="relative p-2 rounded-full text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 transition-all"
     >
-      <ShoppingBag size={20} />
+      <ShoppingCart size={20} />
 
       <AnimatePresence>
         {itemCount > 0 && (

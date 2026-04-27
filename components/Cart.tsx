@@ -10,7 +10,7 @@ import {
   Users,
   Crown,
   Clock,
-  ShoppingBag,
+  ShoppingCart,
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -71,7 +71,7 @@ export default function Cart() {
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-amber-500/10 bg-gradient-to-b from-amber-500/5 to-transparent">
               <div className="flex items-center gap-2">
-                <ShoppingBag className="text-amber-400" size={22} />
+                <ShoppingCart className="text-amber-400" size={22} />
                 <h2 className="text-xl font-bold text-white">
                   {showBookingForm ? t.cart.bookingDetails : t.cart.title}
                 </h2>
@@ -97,7 +97,7 @@ export default function Cart() {
                   /* Empty state */
                   <div className="flex flex-col items-center justify-center h-full p-8 text-center">
                     <div className="w-20 h-20 rounded-full bg-amber-500/10 flex items-center justify-center mb-4">
-                      <ShoppingBag size={32} className="text-amber-400/50" />
+                      <ShoppingCart size={32} className="text-amber-400/50" />
                     </div>
                     <h3 className="text-white font-semibold mb-2">{t.cart.emptyTitle}</h3>
                     <p className="text-gray-400 text-sm mb-6">{t.cart.emptyDescription}</p>
