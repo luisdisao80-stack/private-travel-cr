@@ -1,229 +1,361 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Star, Quote } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Star,
+  ChevronLeft,
+  ChevronRight,
+  Quote,
+  ExternalLink,
+  Award,
+} from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { reviews, reviewStats } from "@/lib/reviews-data";
 
-type Review = {
-  name: string;
-  text: string;
-  dateEn: string;
-  dateEs: string;
-  initials: string;
-  color: string;
-};
-
-// Los textos de las reviews se quedan en INGLES porque los clientes originales eran turistas internacionales
-const reviews: Review[] = [
-  {
-    name: "Sarah M.",
-    text: "We booked with Private Travel Costa Rica twice during our trip and were fortunate to have Pablo as our driver both times! He is so friendly and proud to share information about his beautiful country. He even gifted me a hand-made bracelet from his daughter for my birthday!",
-    dateEn: "2 weeks ago",
-    dateEs: "Hace 2 semanas",
-    initials: "SM",
-    color: "from-amber-400 to-amber-600",
-  },
-  {
-    name: "Jennifer K.",
-    text: "Diego was a fabulous driver! Great conversation, great ride. The car was so clean, comfortable, and smelled so fresh. He arrived early and got us there early. Best driver around! If you're traveling to Costa Rica, you HAVE to book.",
-    dateEn: "3 weeks ago",
-    dateEs: "Hace 3 semanas",
-    initials: "JK",
-    color: "from-emerald-400 to-emerald-600",
-  },
-  {
-    name: "Rachel T.",
-    text: "My daughter and I had a fantastic experience with Diego! He took us to Poas volcano and La Paz Waterfall Gardens. He suggested taking us to the Starbucks plantation since we had extra time. Expert navigation and incredible service!",
-    dateEn: "1 month ago",
-    dateEs: "Hace 1 mes",
-    initials: "RT",
-    color: "from-rose-400 to-rose-600",
-  },
-  {
-    name: "Michael R.",
-    text: "Excellent experience with Oscar as our private driver from La Fortuna to Rio Celeste. He was incredibly professional, punctual, and made us feel safe and comfortable. Very informative — sharing insights about local wildlife and Costa Rican culture.",
-    dateEn: "1 month ago",
-    dateEs: "Hace 1 mes",
-    initials: "MR",
-    color: "from-blue-400 to-blue-600",
-  },
-  {
-    name: "Linda H.",
-    text: "Such hospitable and kind service! Pablo was our driver and was very friendly and conversational. On the way back he stopped by Cafe Macadamia and showed us a great lookout point of Lake Arenal. Very communicative and responsive — would highly recommend!",
-    dateEn: "2 months ago",
-    dateEs: "Hace 2 meses",
-    initials: "LH",
-    color: "from-purple-400 to-purple-600",
-  },
-  {
-    name: "David P.",
-    text: "Outstanding service from start to finish. Professional drivers, immaculate vehicles, and punctual pickup. Made our Costa Rica trip stress-free. Will definitely book again on our next visit!",
-    dateEn: "2 months ago",
-    dateEs: "Hace 2 meses",
-    initials: "DP",
-    color: "from-orange-400 to-orange-600",
-  },
-];
+const AUTOPLAY_INTERVAL = 6000; // 6 segundos por reseña
 
 export default function Reviews() {
   const { t, lang } = useLanguage();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [direction, setDirection] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
-  const openGoogleReviews = () => {
-    window.open(
-      "https://www.google.com/maps/place/?q=place_id:ChIJl0aOiIQNoI8R6KcwnmmDEw8",
-      "_blank"
-    );
+  const goToIndex = useCallback(
+    (index: number, dir: number = 1) => {
+      setDirection(dir);
+      setCurrentIndex(((index % reviews.length) + reviews.length) % reviews.length);
+    },
+    []
+  );
+
+  const next = useCallback(() => {
+    goToIndex(currentIndex + 1, 1);
+  }, [currentIndex, goToIndex]);
+
+  const prev = useCallback(() => {
+    goToIndex(currentIndex - 1, -1);
+  }, [currentIndex, goToIndex]);
+
+  // Autoplay
+  useEffect(() => {
+    if (isPaused) return;
+    intervalRef.current = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((i) => (i + 1) % reviews.length);
+    }, AUTOPLAY_INTERVAL);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isPaused, currentIndex]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [next, prev]);
+
+  // Touch handlers para swipe
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsPaused(true);
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) next();
+      else prev();
+    }
+    touchStartX.current = null;
+    setTimeout(() => setIsPaused(false), 1000);
+  };
+
+  const review = reviews[currentIndex];
+
+  // Badges de plataformas (logos como SVG inline para que carguen al toque)
+  const GoogleLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true">
+      <path
+        fill="#4285F4"
+        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+      />
+    </svg>
+  );
+
+  const TripAdvisorLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true">
+      <circle cx="12" cy="12" r="11" fill="#34E0A1" />
+      <circle cx="8.5" cy="13" r="2.5" fill="#000" />
+      <circle cx="15.5" cy="13" r="2.5" fill="#000" />
+      <circle cx="8.5" cy="13" r="0.8" fill="#fff" />
+      <circle cx="15.5" cy="13" r="0.8" fill="#fff" />
+    </svg>
+  );
+
+  const slideVariants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 60 : -60,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -60 : 60,
+      opacity: 0,
+    }),
   };
 
   return (
     <section
-      id="reviews"
-      key={lang}
-      className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
+      id="reseñas"
+      className="relative py-20 md:py-28 px-4 overflow-hidden bg-black"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.08),transparent_60%)]" />
+      {/* Decorative gradients */}
+      <div className="absolute inset-0 bg-gradient-to-b from-amber-500/[0.03] via-transparent to-transparent pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-amber-500/[0.04] rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header con stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-            <span className="text-amber-400 text-sm font-medium tracking-wider">
+      <div className="relative max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-amber-500/30 bg-amber-500/5">
+            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
               {t.reviews.badge}
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
-            {t.reviews.titlePart1}
-            <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+            {t.reviews.titlePart1}{" "}
+            <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
               {t.reviews.titlePart2}
             </span>
           </h2>
 
-          {/* Stats grandes */}
-          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 mt-8">
-            {/* 5 estrellas */}
-            <div className="flex items-center gap-3 px-6 py-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl">
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={20}
-                    className="fill-amber-400 text-amber-400"
-                  />
-                ))}
-              </div>
-              <div className="text-left">
-                <div className="text-3xl font-bold text-white">5.0</div>
-                <div className="text-xs text-gray-400">{t.reviews.outOfFive}</div>
-              </div>
-            </div>
-
-            {/* Reviews count */}
-            <div className="flex items-center gap-3 px-6 py-4 bg-white/5 border border-white/10 rounded-2xl">
-              <svg className="w-8 h-8" viewBox="0 0 48 48">
-                <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571 c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
-                <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039 l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
-                <path fill="#4CAF50" d="M24,44c5.166,0,9.860-1.977,13.409-5.192l-6.190-5.238C29.211,35.091,26.715,36,24,36 c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
-                <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571 c0.003-0.002,0.002-0.001,0.003-0.002l6.190,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
-              </svg>
-              <div className="text-left">
-                <div className="text-3xl font-bold text-white">190+</div>
-                <div className="text-xs text-gray-400">{t.reviews.googleReviews}</div>
-              </div>
-            </div>
+          {/* Star rating */}
+          <div className="flex items-center justify-center gap-1.5 mb-3 mt-6">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className="w-6 h-6 fill-amber-400 text-amber-400"
+                strokeWidth={0}
+              />
+            ))}
+            <span className="ml-2 text-2xl font-bold text-white">5.0</span>
           </div>
-        </motion.div>
 
-        {/* Grid de reviews */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((review, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative"
+          {/* Platform stats: Google + TripAdvisor */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
+            <a
+              href={reviewStats.google.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-amber-400/40 hover:bg-white/10 transition-all"
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/0 to-amber-500/0 group-hover:from-amber-500/20 group-hover:to-amber-600/20 rounded-2xl blur-xl transition-all duration-500" />
+              <GoogleLogo />
+              <span className="text-sm text-white/80">
+                <span className="font-semibold">{reviewStats.google.count}+</span>{" "}
+                {t.reviews.googleReviews}
+              </span>
+              <ExternalLink className="w-3 h-3 text-white/40" />
+            </a>
 
-              <div className="relative h-full bg-gradient-to-br from-gray-900 to-black border border-white/5 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-300">
-                {/* Quote icon */}
-                <Quote
-                  size={32}
-                  className="text-amber-500/20 mb-4"
-                  fill="currentColor"
-                />
+            <a
+              href={reviewStats.tripadvisor.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-amber-400/40 hover:bg-white/10 transition-all"
+            >
+              <TripAdvisorLogo />
+              <span className="text-sm text-white/80">
+                <span className="font-semibold">{reviewStats.tripadvisor.count}</span>{" "}
+                {t.reviews.tripadvisorReviews}
+              </span>
+              <ExternalLink className="w-3 h-3 text-white/40" />
+            </a>
+          </div>
 
-                {/* Stars */}
-                <div className="flex gap-0.5 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={16}
-                      className="fill-amber-400 text-amber-400"
-                    />
-                  ))}
-                </div>
+          {/* Travelers' Choice badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/10 border border-amber-400/40">
+            <Award className="w-4 h-4 text-amber-400" />
+            <span className="text-sm font-semibold text-amber-300">
+              {t.reviews.travelersChoice} {reviewStats.tripadvisor.travelersChoiceYear}
+            </span>
+          </div>
+        </div>
 
-                {/* Review text */}
-                <p className="text-gray-300 text-sm leading-relaxed mb-6 line-clamp-6">
-                  {review.text}
-                </p>
+        {/* Carrusel */}
+        <div
+          className="relative"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
+          {/* Card del review actual */}
+          <div className="relative min-h-[420px] md:min-h-[360px]">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.article
+                key={review.id}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  duration: 0.5,
+                  ease: [0.32, 0.72, 0, 1],
+                }}
+                className="absolute inset-0 px-2 md:px-12"
+              >
+                <div className="relative h-full p-6 md:p-10 rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] via-white/[0.02] to-transparent backdrop-blur-sm">
+                  {/* Quote icon decorativo */}
+                  <Quote
+                    className="absolute top-6 right-6 w-10 h-10 text-amber-400/20"
+                    aria-hidden="true"
+                  />
 
-                {/* Author */}
-                <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-                  <div
-                    className={`w-10 h-10 rounded-full bg-gradient-to-br ${review.color} flex items-center justify-center flex-shrink-0`}
-                  >
-                    <span className="text-black text-sm font-bold">
-                      {review.initials}
-                    </span>
+                  {/* 5 estrellas */}
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-5 h-5 fill-amber-400 text-amber-400"
+                        strokeWidth={0}
+                      />
+                    ))}
                   </div>
-                  <div>
-                    <div className="text-white font-semibold text-sm">
-                      {review.name}
+
+                  {/* Título de la reseña */}
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-4 leading-snug">
+                    {review.title}
+                  </h3>
+
+                  {/* Cuerpo */}
+                  <p className="text-white/70 leading-relaxed mb-6 text-base md:text-lg line-clamp-6 md:line-clamp-none">
+                    {review.body}
+                  </p>
+
+                  {/* Footer: autor + plataforma */}
+                  <div className="flex items-center justify-between flex-wrap gap-3 pt-4 border-t border-white/5">
+                    <div>
+                      <p className="font-semibold text-white">{review.author}</p>
+                      <p className="text-sm text-white/50">
+                        {review.location} · {review.date}
+                        {review.travelType && (
+                          <>
+                            {" · "}
+                            {lang === "es"
+                              ? travelTypeES[review.travelType]
+                              : review.travelType}
+                          </>
+                        )}
+                      </p>
                     </div>
-                    <div className="text-gray-500 text-xs">
-                      {lang === "en" ? review.dateEn : review.dateEs}
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                      {review.source === "google" ? (
+                        <GoogleLogo />
+                      ) : (
+                        <TripAdvisorLogo />
+                      )}
+                      <span className="text-xs text-white/60 font-medium">
+                        {t.reviews.verified}
+                      </span>
                     </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.article>
+            </AnimatePresence>
+          </div>
+
+          {/* Flechas desktop */}
+          <button
+            onClick={prev}
+            aria-label={t.reviews.previous}
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 w-11 h-11 items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-amber-400/20 hover:border-amber-400/40 transition-all backdrop-blur-sm group"
+          >
+            <ChevronLeft className="w-5 h-5 text-white/60 group-hover:text-amber-400" />
+          </button>
+          <button
+            onClick={next}
+            aria-label={t.reviews.next}
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-amber-400/20 hover:border-amber-400/40 transition-all backdrop-blur-sm group"
+          >
+            <ChevronRight className="w-5 h-5 text-white/60 group-hover:text-amber-400" />
+          </button>
+        </div>
+
+        {/* Dots indicator */}
+        <div className="flex items-center justify-center gap-2 mt-8" role="tablist">
+          {reviews.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goToIndex(i, i > currentIndex ? 1 : -1)}
+              aria-label={`${t.reviews.goToReview} ${i + 1}`}
+              aria-selected={i === currentIndex}
+              role="tab"
+              className={`transition-all duration-300 rounded-full ${
+                i === currentIndex
+                  ? "w-8 h-2 bg-amber-400"
+                  : "w-2 h-2 bg-white/20 hover:bg-white/40"
+              }`}
+            />
           ))}
         </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="text-center mt-12"
-        >
-          <Button
-            onClick={openGoogleReviews}
-            size="lg"
-            className="bg-white hover:bg-gray-100 text-black font-semibold h-14 px-8 shadow-2xl"
+        {/* CTAs finales */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+          <a
+            href={reviewStats.google.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/40 transition-all text-sm font-medium text-white"
           >
-            <svg className="w-5 h-5 mr-3" viewBox="0 0 48 48">
-              <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571 c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
-              <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039 l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
-              <path fill="#4CAF50" d="M24,44c5.166,0,9.860-1.977,13.409-5.192l-6.190-5.238C29.211,35.091,26.715,36,24,36 c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
-              <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571 c0.003-0.002,0.002-0.001,0.003-0.002l6.190,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
-            </svg>
-            {t.reviews.seeAllGoogle}
-          </Button>
-        </motion.div>
+            <GoogleLogo />
+            {t.reviews.readOnGoogle}
+            <ExternalLink className="w-3.5 h-3.5 text-white/40" />
+          </a>
+          <a
+            href={reviewStats.tripadvisor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/40 transition-all text-sm font-medium text-white"
+          >
+            <TripAdvisorLogo />
+            {t.reviews.readOnTripadvisor}
+            <ExternalLink className="w-3.5 h-3.5 text-white/40" />
+          </a>
+        </div>
       </div>
     </section>
   );
 }
+
+const travelTypeES: Record<string, string> = {
+  Friends: "Con amigos",
+  Family: "Con familia",
+  Couples: "En pareja",
+  Solo: "Solo",
+  Business: "Negocios",
+};
