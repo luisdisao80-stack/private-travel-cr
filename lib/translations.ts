@@ -239,6 +239,20 @@ export const translations = {
         { strong: "Expert bilingual driver", normal: "" },
         { strong: "Door-to-door service", normal: "" },
       ],
+      extraStops: {
+        title: "Add tourist stops?",
+        subtitle: "Perfect for waterfalls, viewpoints, photo ops or lunch along the way.",
+        hour: "hour",
+        hours: "hours",
+        perHour: "per hour",
+        maxNote: "Max 3 hours",
+        noStops: "No extra stops",
+        increase: "Add one hour",
+        decrease: "Remove one hour",
+        shortLabel: "stop",
+        shortLabelPlural: "stops",
+        includedLabel: "tourist stop included",
+      },
     },
 
     // FLEET
@@ -709,6 +723,20 @@ export const translations = {
         { strong: "Chofer bilingue experto", normal: "" },
         { strong: "Servicio puerta a puerta", normal: "" },
       ],
+      extraStops: {
+        title: "¿Agregar paradas turísticas?",
+        subtitle: "Perfecto para cataratas, miradores, fotos o almuerzo en el camino.",
+        hour: "hora",
+        hours: "horas",
+        perHour: "por hora",
+        maxNote: "Máximo 3 horas",
+        noStops: "Sin paradas extra",
+        increase: "Agregar una hora",
+        decrease: "Quitar una hora",
+        shortLabel: "parada",
+        shortLabelPlural: "paradas",
+        includedLabel: "de parada turística incluida",
+      },
     },
 
     fleet: {
