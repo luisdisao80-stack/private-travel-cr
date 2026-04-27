@@ -485,6 +485,9 @@ export const translations = {
       greeting: "Hello!",
       message: "Need help with your transportation? We're here for you.",
       chat: "Chat now →",
+      close: "Close",
+      ariaLabel: "Chat on WhatsApp",
+      prefilledMessage: "Hi! I'm interested in your private transportation service in Costa Rica.",
     },
 
     // LANGUAGE SWITCHER
@@ -963,6 +966,9 @@ export const translations = {
       greeting: "¡Hola!",
       message: "¿Necesitas ayuda con tu transporte? Estamos aquí para ti.",
       chat: "Chatear ahora →",
+      close: "Cerrar",
+      ariaLabel: "Chatear por WhatsApp",
+      prefilledMessage: "¡Hola! Me interesa su servicio de transporte privado en Costa Rica.",
     },
 
     langSwitcher: {

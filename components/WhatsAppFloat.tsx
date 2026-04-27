@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function WhatsAppFloat() {
+  const { t } = useLanguage();
   const [visible, setVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipDismissed, setTooltipDismissed] = useState(false);
@@ -22,7 +24,7 @@ export default function WhatsAppFloat() {
   }, [tooltipDismissed]);
 
   const openWhatsApp = () => {
-    const msg = encodeURIComponent("¡Hola! Me interesa su servicio de transporte privado en Costa Rica.");
+    const msg = encodeURIComponent(t.whatsappFloat.prefilledMessage);
     window.open(`https://wa.me/50686334133?text=${msg}`, "_blank");
     setTooltipVisible(false);
     setTooltipDismissed(true);
@@ -51,7 +53,7 @@ export default function WhatsAppFloat() {
                 <button
                   onClick={dismissTooltip}
                   className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition-colors"
-                  aria-label="Cerrar"
+                  aria-label={t.whatsappFloat.close}
                 >
                   <X size={14} />
                 </button>
@@ -61,10 +63,10 @@ export default function WhatsAppFloat() {
                     <span className="text-black text-xs font-bold">PT</span>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-800">¡Hola! 👋</p>
-                    <p className="text-xs text-gray-600 mt-1">¿Necesitas ayuda con tu transporte? Estamos aquí para ti.</p>
+                    <p className="text-sm font-semibold text-gray-800">{t.whatsappFloat.greeting} 👋</p>
+                    <p className="text-xs text-gray-600 mt-1">{t.whatsappFloat.message}</p>
                     <button onClick={openWhatsApp} className="text-xs text-green-600 font-semibold mt-2 hover:text-green-700 transition-colors">
-                      Chatear ahora →
+                      {t.whatsappFloat.chat}
                     </button>
                   </div>
                 </div>
@@ -85,7 +87,7 @@ export default function WhatsAppFloat() {
             whileTap={{ scale: 0.95 }}
             onClick={openWhatsApp}
             className="relative w-16 h-16 rounded-full bg-green-600 hover:bg-green-700 shadow-2xl shadow-green-600/50 flex items-center justify-center transition-colors group"
-            aria-label="Chatear por WhatsApp"
+            aria-label={t.whatsappFloat.ariaLabel}
           >
             <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20" />
             <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-30" style={{ animationDelay: "1s" }} />
