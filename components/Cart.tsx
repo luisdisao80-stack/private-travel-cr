@@ -12,6 +12,7 @@ import {
   Clock,
   ShoppingCart,
   ArrowRight,
+  Plane,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/CartContext";
@@ -151,12 +152,46 @@ export default function Cart() {
                         <div className="grid grid-cols-2 gap-2 text-xs text-gray-400 mb-3">
                           <div className="flex items-center gap-1.5">
                             <Calendar size={12} />
-                            {formatDate(item.date)}
+                            <span>{formatDate(item.date)}</span>
+                            {item.pickupTime && (
+                              <>
+                                <span className="text-gray-600">·</span>
+                                <Clock size={12} className="text-amber-400/70" />
+                                <span className="text-amber-400/90 font-medium">{item.pickupTime}</span>
+                              </>
+                            )}
                           </div>
                           <div className="flex items-center gap-1.5">
                             <Users size={12} />
                             {item.passengers} {t.cart.pax}
                           </div>
+                        </div>
+
+                        {/* Pickup / Dropoff */}
+                        <div className="space-y-1.5 mb-3 pb-3 border-b border-amber-500/10 text-xs">
+                          <div className="flex items-start gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-1.5 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <span className="text-gray-500">{t.cart.pickup}: </span>
+                              <span className="text-gray-200 break-words">{item.pickupPlace}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <span className="text-gray-500">{t.cart.dropoff}: </span>
+                              <span className="text-gray-200 break-words">{item.dropoffPlace}</span>
+                            </div>
+                          </div>
+                          {item.flightNumber && (
+                            <div className="flex items-start gap-2">
+                              <Plane size={11} className="text-amber-400 mt-1 flex-shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <span className="text-gray-500">{t.cart.flight}: </span>
+                                <span className="text-amber-400 font-medium uppercase">{item.flightNumber}</span>
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Service + price */}

@@ -34,7 +34,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const isValid = form.name && form.email && form.phone && form.hotel;
+  const isValid = form.name && form.email && form.phone;
 
   const handleSubmit = async () => {
     if (!isValid || items.length === 0) return;
@@ -45,14 +45,18 @@ export default function BookingForm({ onBack }: BookingFormProps) {
       .map((item, idx) => {
         const lines = [
           `*${idx + 1}. ${item.fromName} → ${item.toName}*`,
-          `   Date: ${item.date}`,
-          `   Passengers: ${item.passengers}`,
-          `   Service: ${item.serviceType === "vip" ? "VIP (stops + drinks + snacks)" : "Standard"}${
+          `   📅 Date: ${item.date}`,
+          `   ⏰ Pick up time: ${item.pickupTime}`,
+          `   👥 Passengers: ${item.passengers}`,
+          `   📍 Pick up: ${item.pickupPlace}`,
+          `   🏁 Drop off: ${item.dropoffPlace}`,
+          item.flightNumber ? `   ✈️ Flight: ${item.flightNumber}` : null,
+          `   ⭐ Service: ${item.serviceType === "vip" ? "VIP (stops + drinks + snacks)" : "Standard"}${
             item.extraStopHours > 0 ? ` + ${item.extraStopHours}h tourist stop${item.extraStopHours > 1 ? "s" : ""}` : ""
           }`,
-          `   Vehicle: ${item.vehicleName}`,
-          `   Price: $${item.totalPrice} USD`,
-        ];
+          `   🚗 Vehicle: ${item.vehicleName}`,
+          `   💰 Price: $${item.totalPrice} USD`,
+        ].filter(Boolean);
         return lines.join("\n");
       })
       .join("\n\n");
@@ -62,7 +66,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
       `Name: ${form.name}`,
       `Email: ${form.email}`,
       `Phone: ${form.phone}`,
-      `Hotel: ${form.hotel}`,
+      form.hotel ? `Hotel: ${form.hotel}` : null,
       form.flightNumber ? `Flight: ${form.flightNumber}` : null,
       form.flightTime ? `Flight time: ${form.flightTime}` : null,
     ].filter(Boolean).join("\n");
@@ -155,7 +159,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
 
         <div className="space-y-1.5">
           <Label className="text-amber-400 text-sm">
-            {t.cart.fields.hotel} <span className="text-red-400">*</span>
+            {t.cart.fields.hotel}
           </Label>
           <Input
             value={form.hotel}

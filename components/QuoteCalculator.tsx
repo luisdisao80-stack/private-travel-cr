@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { MapPin, Users, Calendar, ArrowRight, Check, Sparkles, Crown, Plus, Minus, Clock, ShoppingCart, CheckCircle2 } from "lucide-react";
+import { MapPin, Users, Calendar, ArrowRight, Check, Sparkles, Crown, Plus, Minus, Clock, ShoppingCart, CheckCircle2, Plane } from "lucide-react";
 import { locations, calculateAllPrices, getLocationById, vehicles, VIP_EXTRA_USD, ServiceType } from "@/data/routes";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -27,6 +27,10 @@ export default function QuoteCalculator() {
   const [extraStopHours, setExtraStopHours] = useState<number>(0);
   const [showQuote, setShowQuote] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [pickupPlace, setPickupPlace] = useState<string>("");
+  const [pickupTime, setPickupTime] = useState<string>("");
+  const [dropoffPlace, setDropoffPlace] = useState<string>("");
+  const [flightNumber, setFlightNumber] = useState<string>("");
 
   useEffect(() => {
     const handleSetService = (e: Event) => {
@@ -49,6 +53,22 @@ export default function QuoteCalculator() {
     if (!from || !to || from === to) return null;
     return calculateAllPrices(from, to);
   }, [from, to]);
+
+  // Detectar si origen o destino es aeropuerto
+  const fromLocation = useMemo(() => getLocationById(from), [from]);
+  const toLocation = useMemo(() => getLocationById(to), [to]);
+  const isFromAirport = fromLocation?.isAirport === true;
+  const isToAirport = toLocation?.isAirport === true;
+  const requiresFlight = isFromAirport || isToAirport;
+  // Si es desde aeropuerto = vuelo de llegada, si es hacia aeropuerto = vuelo de salida
+  const flightDirection: "arrival" | "departure" = isFromAirport ? "arrival" : "departure";
+
+  // Reset flight number cuando cambia origen o destino (por si ya no aplica)
+  useEffect(() => {
+    if (!requiresFlight) {
+      setFlightNumber("");
+    }
+  }, [requiresFlight]);
 
   const recommendedVehicle = passengers <= 5 ? "staria" : "hiace";
 
@@ -88,7 +108,10 @@ export default function QuoteCalculator() {
     }
   };
 
-  const isValidForBooking = !!quote && !!date && !!from && !!to && from !== to;
+  const isValidForBooking =
+    !!quote && !!date && !!from && !!to && from !== to &&
+    !!pickupPlace.trim() && !!dropoffPlace.trim() && !!pickupTime &&
+    (!requiresFlight || !!flightNumber.trim());
 
   const handleAddToCart = () => {
     if (!quote || !date) return;
@@ -104,6 +127,10 @@ export default function QuoteCalculator() {
       fromName,
       toId: to,
       toName,
+      pickupPlace: pickupPlace.trim(),
+      pickupTime,
+      dropoffPlace: dropoffPlace.trim(),
+      flightNumber: requiresFlight ? flightNumber.trim() : undefined,
       passengers,
       date,
       serviceType,
@@ -125,6 +152,10 @@ export default function QuoteCalculator() {
     setDate("");
     setServiceType("standard");
     setExtraStopHours(0);
+    setPickupPlace("");
+    setPickupTime("");
+    setDropoffPlace("");
+    setFlightNumber("");
     setShowQuote(false);
   };
 
@@ -496,6 +527,104 @@ export default function QuoteCalculator() {
                 </div>
               )}
 
+              {/* Pickup & Drop-off Details */}
+              <div className="bg-gradient-to-br from-amber-500/5 to-transparent p-5 rounded-xl border border-amber-500/20 space-y-4">
+                <div>
+                  <Label className="text-amber-400 flex items-center gap-1.5 mb-1">
+                    <MapPin size={14} />
+                    {t.quote.pickupDropoff.title}
+                  </Label>
+                  <p className="text-xs text-gray-400">
+                    {t.quote.pickupDropoff.subtitle}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs text-gray-300 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-green-400" />
+                      {t.quote.pickupDropoff.pickupLabel} <span className="text-red-400">*</span>
+                    </Label>
+                    <Input
+                      value={pickupPlace}
+                      onChange={(e) => setPickupPlace(e.target.value)}
+                      placeholder={t.quote.pickupDropoff.pickupPlaceholder}
+                      className="bg-black/50 border-amber-500/30 text-white h-11"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-xs text-gray-300 flex items-center gap-1.5">
+                      <Clock size={12} className="text-amber-400" />
+                      {t.quote.pickupDropoff.pickupTimeLabel} <span className="text-red-400">*</span>
+                    </Label>
+                    <Input
+                      type="time"
+                      value={pickupTime}
+                      onChange={(e) => setPickupTime(e.target.value)}
+                      className="bg-black/50 border-amber-500/30 text-white h-11"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-xs text-gray-300 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-red-400" />
+                      {t.quote.pickupDropoff.dropoffLabel} <span className="text-red-400">*</span>
+                    </Label>
+                    <Input
+                      value={dropoffPlace}
+                      onChange={(e) => setDropoffPlace(e.target.value)}
+                      placeholder={t.quote.pickupDropoff.dropoffPlaceholder}
+                      className="bg-black/50 border-amber-500/30 text-white h-11"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Flight Information (conditional - only when origin OR destination is airport) */}
+              <AnimatePresence>
+                {requiresFlight && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="bg-gradient-to-br from-amber-500/5 to-transparent p-5 rounded-xl border border-amber-500/20 space-y-4">
+                      <div>
+                        <Label className="text-amber-400 flex items-center gap-1.5 mb-1">
+                          <Plane size={14} />
+                          {t.quote.flightInfo.title}
+                        </Label>
+                        <p className="text-xs text-gray-400">
+                          {flightDirection === "arrival"
+                            ? t.quote.flightInfo.subtitleArrival
+                            : t.quote.flightInfo.subtitleDeparture}
+                        </p>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <Label className="text-xs text-gray-300 flex items-center gap-1.5">
+                          <Plane size={12} className={flightDirection === "arrival" ? "text-green-400 rotate-90" : "text-amber-400 -rotate-45"} />
+                          {flightDirection === "arrival"
+                            ? t.quote.flightInfo.arrivalLabel
+                            : t.quote.flightInfo.departureLabel}
+                          <span className="text-red-400">*</span>
+                        </Label>
+                        <Input
+                          value={flightNumber}
+                          onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
+                          placeholder={t.quote.flightInfo.placeholder}
+                          className="bg-black/50 border-amber-500/30 text-white h-11 uppercase"
+                          autoCapitalize="characters"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* CTAs: Add to Cart + Reserve via WhatsApp */}
               <div className="space-y-2">
                 <Button
@@ -530,9 +659,15 @@ export default function QuoteCalculator() {
                   </AnimatePresence>
                 </Button>
 
-                {!date && from && to && (
+                {!isValidForBooking && from && to && (
                   <p className="text-xs text-amber-400/80 text-center">
-                    {t.quote.selectDateForCart}
+                    {!date
+                      ? t.quote.selectDateForCart
+                      : !pickupPlace.trim() || !dropoffPlace.trim() || !pickupTime
+                        ? t.quote.fillPickupDropoff
+                        : requiresFlight && !flightNumber.trim()
+                          ? t.quote.fillFlightNumber
+                          : ""}
                   </p>
                 )}
 

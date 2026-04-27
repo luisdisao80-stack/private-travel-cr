@@ -9,6 +9,10 @@ export type CartItem = {
   fromName: string;
   toId: string;
   toName: string;
+  pickupPlace: string;  // Lugar exacto de recogida (hotel, terminal, etc.)
+  pickupTime: string;   // Hora de pickup en formato HH:MM (ej: "14:30")
+  dropoffPlace: string; // Lugar exacto de destino
+  flightNumber?: string; // Solo si origen O destino es aeropuerto
   passengers: number;
   date: string;
   serviceType: ServiceType;
