@@ -29,23 +29,15 @@ export default function Navbar() {
     window.open(`https://wa.me/50686334133?text=${msg}`, "_blank");
   };
 
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-      setMobileOpen(false);
-    }
-  };
-
-  type NavLink = { label: string; id: string; href?: string };
+  type NavLink = { label: string; id: string; href: string };
 
   const navLinks: NavLink[] = [
-    { label: t.nav.home, id: "inicio" },
-    { label: t.nav.quote, id: "cotizador" },
-    { label: t.nav.fleet, id: "flota" },
-    { label: t.nav.routes, id: "rutas" },
+    { label: t.nav.home, id: "inicio", href: "/#inicio" },
+    { label: t.nav.quote, id: "cotizador", href: "/#cotizador" },
+    { label: t.nav.fleet, id: "flota", href: "/#flota" },
+    { label: t.nav.routes, id: "rutas", href: "/#rutas" },
     { label: t.nav.about, id: "about", href: "/about" },
-    { label: t.nav.contact, id: "contacto" },
+    { label: t.nav.contact, id: "contacto", href: "/#contacto" },
   ];
 
   return (
@@ -57,34 +49,27 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
-          <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-3 group">
+          <Link
+            href="/"
+            className="flex items-center gap-3 group"
+          >
             <img
               src="https://privatecr2.imgix.net/logos/logo-ptcr.svg"
               alt="Private Travel Costa Rica"
               className="h-14 w-auto group-hover:scale-105 transition-transform"
             />
-          </button>
+          </Link>
 
           <div className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) =>
-              link.href ? (
-                <Link
-                  key={link.id}
-                  href={link.href}
-                  className="px-4 py-2 text-gray-300 hover:text-amber-400 transition-colors font-medium text-sm"
-                >
-                  {link.label}
-                </Link>
-              ) : (
-                <button
-                  key={link.id}
-                  onClick={() => scrollToSection(link.id)}
-                  className="px-4 py-2 text-gray-300 hover:text-amber-400 transition-colors font-medium text-sm"
-                >
-                  {link.label}
-                </button>
-              )
-            )}
+            {navLinks.map((link) => (
+              <Link
+                key={link.id}
+                href={link.href}
+                className="px-4 py-2 text-gray-300 hover:text-amber-400 transition-colors font-medium text-sm"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
@@ -119,26 +104,16 @@ export default function Navbar() {
                 </SheetTitle>
 
                 <div className="flex flex-col gap-2">
-                  {navLinks.map((link) =>
-                    link.href ? (
-                      <Link
-                        key={link.id}
-                        href={link.href}
-                        onClick={() => setMobileOpen(false)}
-                        className="text-left px-4 py-3 text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all font-medium"
-                      >
-                        {link.label}
-                      </Link>
-                    ) : (
-                      <button
-                        key={link.id}
-                        onClick={() => scrollToSection(link.id)}
-                        className="text-left px-4 py-3 text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all font-medium"
-                      >
-                        {link.label}
-                      </button>
-                    )
-                  )}
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.id}
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-left px-4 py-3 text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all font-medium"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
                 </div>
 
                 <div className="mt-8 pt-8 border-t border-amber-500/20 space-y-4">
