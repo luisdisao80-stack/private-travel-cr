@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { LanguageProvider } from "@/lib/LanguageContext";
+import { CartProvider } from "@/lib/CartContext";
+import Cart from "@/components/Cart";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -68,7 +70,12 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <CartProvider>
+            {children}
+            <Cart />
+          </CartProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

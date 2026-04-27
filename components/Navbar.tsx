@@ -8,6 +8,7 @@ import { Menu, MessageCircle, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import CartIcon from "@/components/CartIcon";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -73,6 +74,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
+            <CartIcon />
             <LanguageSwitcher />
 
             <a href="tel:+50686334133" className="flex items-center gap-2 text-gray-300 hover:text-amber-400 transition-colors text-sm font-medium">
@@ -86,6 +88,7 @@ export default function Navbar() {
           </div>
 
           <div className="lg:hidden flex items-center gap-2">
+            <CartIcon />
             <LanguageSwitcher />
 
             <Button onClick={openWhatsApp} size="sm" className="bg-green-600 hover:bg-green-700 text-white">

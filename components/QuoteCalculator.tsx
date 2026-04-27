@@ -6,16 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { MapPin, Users, Calendar, ArrowRight, Check, Sparkles, Crown, Plus, Minus, Clock } from "lucide-react";
+import { MapPin, Users, Calendar, ArrowRight, Check, Sparkles, Crown, Plus, Minus, Clock, ShoppingBag, CheckCircle2 } from "lucide-react";
 import { locations, calculateAllPrices, getLocationById, vehicles, VIP_EXTRA_USD, ServiceType } from "@/data/routes";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useCart } from "@/lib/CartContext";
 
-const EXTRA_STOP_PRICE_PER_HOUR = 35; // USD per hour
+const EXTRA_STOP_PRICE_PER_HOUR = 35;
 const MAX_EXTRA_STOP_HOURS = 3;
 
 export default function QuoteCalculator() {
   const { t } = useLanguage();
+  const { addItem, setCartOpen } = useCart();
 
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
@@ -24,8 +26,8 @@ export default function QuoteCalculator() {
   const [serviceType, setServiceType] = useState<ServiceType>("standard");
   const [extraStopHours, setExtraStopHours] = useState<number>(0);
   const [showQuote, setShowQuote] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
 
-  // Escuchar evento para cambiar tipo de servicio desde otra seccion
   useEffect(() => {
     const handleSetService = (e: Event) => {
       const customEvent = e as CustomEvent;
@@ -37,7 +39,6 @@ export default function QuoteCalculator() {
     return () => window.removeEventListener("set-service-type", handleSetService);
   }, []);
 
-  // Reset extra stops si cambia a VIP (no aplica)
   useEffect(() => {
     if (serviceType === "vip") {
       setExtraStopHours(0);
@@ -65,8 +66,14 @@ export default function QuoteCalculator() {
       vehicleId === "staria"
         ? serviceType === "vip" ? quote.stariaVip : quote.stariaStandard
         : serviceType === "vip" ? quote.hiaceVip : quote.hiaceStandard;
-    // Solo agregar extra stops cost si es Standard
     return basePrice + (serviceType === "standard" ? extraStopsCost : 0);
+  };
+
+  const getBasePriceForVehicle = (vehicleId: string): number => {
+    if (!quote) return 0;
+    return vehicleId === "staria"
+      ? serviceType === "vip" ? quote.stariaVip : quote.stariaStandard
+      : serviceType === "vip" ? quote.hiaceVip : quote.hiaceStandard;
   };
 
   const handleAddHour = () => {
@@ -81,7 +88,46 @@ export default function QuoteCalculator() {
     }
   };
 
-  // Mensaje de WhatsApp SIEMPRE EN INGLES (decisión del cliente)
+  const isValidForBooking = !!quote && !!date && !!from && !!to && from !== to;
+
+  const handleAddToCart = () => {
+    if (!quote || !date) return;
+
+    const fromName = getLocationById(from)?.nameEn || getLocationById(from)?.name || "";
+    const toName = getLocationById(to)?.nameEn || getLocationById(to)?.name || "";
+    const vehicleName = recommendedVehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace";
+    const basePrice = getBasePriceForVehicle(recommendedVehicle);
+    const totalPrice = basePrice + (serviceType === "standard" ? extraStopsCost : 0);
+
+    addItem({
+      fromId: from,
+      fromName,
+      toId: to,
+      toName,
+      passengers,
+      date,
+      serviceType,
+      vehicleId: recommendedVehicle,
+      vehicleName,
+      basePrice,
+      extraStopHours: serviceType === "standard" ? extraStopHours : 0,
+      extraStopsCost: serviceType === "standard" ? extraStopsCost : 0,
+      totalPrice,
+    });
+
+    // Mostrar feedback visual
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000);
+
+    // Reset del cotizador para nueva entrada
+    setFrom("");
+    setTo("");
+    setDate("");
+    setServiceType("standard");
+    setExtraStopHours(0);
+    setShowQuote(false);
+  };
+
   const handleWhatsApp = () => {
     const fromName = getLocationById(from)?.name || "";
     const toName = getLocationById(to)?.name || "";
@@ -238,7 +284,6 @@ export default function QuoteCalculator() {
           </div>
         </div>
 
-        {/* Selector de paradas extra (solo para Standard) */}
         <AnimatePresence>
           {serviceType === "standard" && (
             <motion.div
@@ -260,7 +305,6 @@ export default function QuoteCalculator() {
                     </p>
                   </div>
 
-                  {/* Selector +/- */}
                   <div className="flex items-center gap-3">
                     <button
                       type="button"
@@ -293,7 +337,6 @@ export default function QuoteCalculator() {
                   </div>
                 </div>
 
-                {/* Resumen de costo */}
                 <div className="mt-4 pt-4 border-t border-amber-500/10 flex items-center justify-between flex-wrap gap-2">
                   <span className="text-xs text-gray-400">
                     ${EXTRA_STOP_PRICE_PER_HOUR} {t.quote.extraStops.perHour} · {t.quote.extraStops.maxNote}
@@ -453,9 +496,60 @@ export default function QuoteCalculator() {
                 </div>
               )}
 
-              <Button onClick={handleWhatsApp} className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-bold text-lg">
-                {t.quote.reserveWhatsapp}
-              </Button>
+              {/* CTAs: Add to Cart + Reserve via WhatsApp */}
+              <div className="space-y-2">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={!isValidForBooking || addedToCart}
+                  className="w-full h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold text-base disabled:opacity-40"
+                >
+                  <AnimatePresence mode="wait">
+                    {addedToCart ? (
+                      <motion.span
+                        key="added"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="flex items-center"
+                      >
+                        <CheckCircle2 size={18} className="mr-2" />
+                        {t.quote.addedToCart}
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="add"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="flex items-center"
+                      >
+                        <ShoppingBag size={18} className="mr-2" />
+                        {t.quote.addToCart}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </Button>
+
+                {!date && from && to && (
+                  <p className="text-xs text-amber-400/80 text-center">
+                    {t.quote.selectDateForCart}
+                  </p>
+                )}
+
+                <div className="flex items-center gap-3 my-1">
+                  <div className="flex-1 h-px bg-amber-500/10" />
+                  <span className="text-[10px] uppercase tracking-wider text-gray-500">{t.quote.or}</span>
+                  <div className="flex-1 h-px bg-amber-500/10" />
+                </div>
+
+                <Button
+                  onClick={handleWhatsApp}
+                  variant="outline"
+                  className="w-full h-12 bg-transparent border-green-600/50 hover:bg-green-600/10 hover:border-green-600 text-green-500 hover:text-green-400 font-semibold"
+                >
+                  {t.quote.reserveWhatsapp}
+                </Button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
