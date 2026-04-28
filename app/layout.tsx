@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import Cart from "@/components/Cart";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -76,6 +77,7 @@ export default function RootLayout({
             <Cart />
           </CartProvider>
         </LanguageProvider>
+        <Analytics />
       </body>
     </html>
   );
