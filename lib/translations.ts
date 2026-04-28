@@ -541,6 +541,9 @@ export const translations = {
       startBooking: "Start booking",
       formIntro: "Please complete your details so we can confirm your reservation.",
       privacyNote: "Your data is only used to process this reservation. No spam, ever.",
+      termsLabel: "I accept the",
+      termsLink: "Terms and Conditions",
+      acceptTermsPrompt: "Please accept the Terms and Conditions to continue",
       fields: {
         name: "Full name",
         email: "Email",
@@ -1091,6 +1094,9 @@ export const translations = {
       startBooking: "Empezar a reservar",
       formIntro: "Completa tus datos para que podamos confirmar tu reserva.",
       privacyNote: "Tus datos solo se usan para procesar esta reserva. Sin spam.",
+      termsLabel: "Acepto los",
+      termsLink: "Términos y Condiciones",
+      acceptTermsPrompt: "Por favor acepta los Términos y Condiciones para continuar",
       fields: {
         name: "Nombre completo",
         email: "Correo electrónico",
