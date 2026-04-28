@@ -48,6 +48,17 @@ export default function Cart() {
     });
   };
 
+  // Convierte "HH:MM" (24h) a formato 12h amigable: "11:30 PM"
+  const formatTime = (timeStr: string) => {
+    if (!timeStr || !timeStr.includes(":")) return timeStr;
+    const [hStr, mStr] = timeStr.split(":");
+    const h = parseInt(hStr, 10);
+    if (isNaN(h)) return timeStr;
+    const period = h < 12 ? "AM" : "PM";
+    const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    return `${h12}:${mStr} ${period}`;
+  };
+
   return (
     <AnimatePresence>
       {isCartOpen && (
@@ -157,7 +168,7 @@ export default function Cart() {
                               <>
                                 <span className="text-gray-600">·</span>
                                 <Clock size={12} className="text-amber-400/70" />
-                                <span className="text-amber-400/90 font-medium">{item.pickupTime}</span>
+                                <span className="text-amber-400/90 font-medium">{formatTime(item.pickupTime)}</span>
                               </>
                             )}
                           </div>

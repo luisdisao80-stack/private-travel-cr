@@ -15,6 +15,23 @@ import { useCart } from "@/lib/CartContext";
 const EXTRA_STOP_PRICE_PER_HOUR = 35;
 const MAX_EXTRA_STOP_HOURS = 3;
 
+// Genera horarios de 4:00 AM a 11:30 PM cada 30 min
+// value: formato 24h "HH:MM" (ej: "23:30")
+// label: formato 12h amigable (ej: "11:30 PM")
+const PICKUP_TIME_OPTIONS: { value: string; label: string }[] = (() => {
+  const options: { value: string; label: string }[] = [];
+  for (let h = 4; h <= 23; h++) {
+    for (const m of [0, 30]) {
+      const value = `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+      const period = h < 12 ? "AM" : "PM";
+      const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+      const label = `${h12}:${m.toString().padStart(2, "0")} ${period}`;
+      options.push({ value, label });
+    }
+  }
+  return options;
+})();
+
 export default function QuoteCalculator() {
   const { t } = useLanguage();
   const { addItem, setCartOpen } = useCart();
@@ -558,12 +575,18 @@ export default function QuoteCalculator() {
                       <Clock size={12} className="text-amber-400" />
                       {t.quote.pickupDropoff.pickupTimeLabel} <span className="text-red-400">*</span>
                     </Label>
-                    <Input
-                      type="time"
-                      value={pickupTime}
-                      onChange={(e) => setPickupTime(e.target.value)}
-                      className="bg-black/50 border-amber-500/30 text-white h-11"
-                    />
+                    <Select value={pickupTime} onValueChange={setPickupTime}>
+                      <SelectTrigger className="bg-black/50 border-amber-500/30 text-white h-11">
+                        <SelectValue placeholder={t.quote.pickupDropoff.pickupTimePlaceholder} />
+                      </SelectTrigger>
+                      <SelectContent className="bg-black border-amber-500/30 max-h-[300px]">
+                        {PICKUP_TIME_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value} className="text-white hover:bg-amber-500/10">
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-1.5">
@@ -663,11 +686,15 @@ export default function QuoteCalculator() {
                   <p className="text-xs text-amber-400/80 text-center">
                     {!date
                       ? t.quote.selectDateForCart
-                      : !pickupPlace.trim() || !dropoffPlace.trim() || !pickupTime
-                        ? t.quote.fillPickupDropoff
-                        : requiresFlight && !flightNumber.trim()
-                          ? t.quote.fillFlightNumber
-                          : ""}
+                      : !pickupPlace.trim()
+                        ? t.quote.fillPickupLocation
+                        : !pickupTime
+                          ? t.quote.fillPickupTime
+                          : !dropoffPlace.trim()
+                            ? t.quote.fillDropoffLocation
+                            : requiresFlight && !flightNumber.trim()
+                              ? t.quote.fillFlightNumber
+                              : ""}
                   </p>
                 )}
 

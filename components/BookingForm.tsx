@@ -18,6 +18,17 @@ export default function BookingForm({ onBack }: BookingFormProps) {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
 
+  // Convierte "HH:MM" (24h) a formato 12h amigable: "11:30 PM"
+  const formatTime = (timeStr: string) => {
+    if (!timeStr || !timeStr.includes(":")) return timeStr;
+    const [hStr, mStr] = timeStr.split(":");
+    const h = parseInt(hStr, 10);
+    if (isNaN(h)) return timeStr;
+    const period = h < 12 ? "AM" : "PM";
+    const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    return `${h12}:${mStr} ${period}`;
+  };
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -46,7 +57,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
         const lines = [
           `*${idx + 1}. ${item.fromName} → ${item.toName}*`,
           `   📅 Date: ${item.date}`,
-          `   ⏰ Pick up time: ${item.pickupTime}`,
+          `   ⏰ Pick up time: ${formatTime(item.pickupTime)}`,
           `   👥 Passengers: ${item.passengers}`,
           `   📍 Pick up: ${item.pickupPlace}`,
           `   🏁 Drop off: ${item.dropoffPlace}`,
