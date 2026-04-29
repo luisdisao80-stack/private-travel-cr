@@ -6,6 +6,7 @@ import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import Cart from "@/components/Cart";
 import { Analytics } from "@vercel/analytics/react";
+import { siteConfig } from "@/lib/site-config";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -20,33 +21,84 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Private Travel CR | Shuttle Privado Premium en Costa Rica",
-  description:
-    "Transporte privado premium en Costa Rica. Cotización instantánea, chofer bilingüe, servicio puerta a puerta, flota nueva. WhatsApp: +506 8633-4133. ⭐ 5.0 en Google con 190+ reseñas.",
+  metadataBase: new URL(siteConfig.siteUrl),
+  title: {
+    default: "Private Travel CR | Premium Private Shuttle Costa Rica",
+    template: "%s | Private Travel CR",
+  },
+  description: siteConfig.descriptionEN,
   keywords: [
-    "shuttle costa rica",
-    "transporte privado costa rica",
-    "private shuttle costa rica",
-    "airport transfer costa rica",
-    "san jose airport shuttle",
-    "la fortuna shuttle",
-    "private travel cr",
+    // English
+    "private shuttle Costa Rica",
+    "Costa Rica airport transfer",
+    "SJO airport shuttle",
+    "LIR airport shuttle",
+    "La Fortuna shuttle",
+    "Manuel Antonio shuttle",
+    "Monteverde shuttle",
+    "private transportation Costa Rica",
+    "Costa Rica private transfer",
+    "premium shuttle Costa Rica",
+    // Spanish
+    "shuttle privado Costa Rica",
+    "transporte privado Costa Rica",
+    "traslado aeropuerto SJO",
+    "traslado aeropuerto LIR",
+    "shuttle La Fortuna",
+    "shuttle Manuel Antonio",
+    "shuttle Monteverde",
+    "transporte premium Costa Rica",
+    // Brand
+    "Private Travel CR",
+    "privatetravelcr",
   ],
-  authors: [{ name: "Private Travel CR" }],
+  authors: [{ name: siteConfig.business.founder }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  formatDetection: {
+    telephone: true,
+    email: true,
+    address: false,
+  },
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en-US": "/",
+      "es-CR": "/",
+    },
+  },
   openGraph: {
-    title: "Private Travel CR | Shuttle Privado Premium en Costa Rica",
-    description:
-      "Transporte privado premium. Cotización instantánea, chofer bilingüe, puerta a puerta. ⭐ 5.0 Google · 190+ reseñas.",
-    url: "https://private-travel-cr.vercel.app",
-    siteName: "Private Travel CR",
-    locale: "es_CR",
+    title: "Private Travel CR | Premium Private Shuttle Costa Rica",
+    description: siteConfig.descriptionEN,
+    url: siteConfig.siteUrl,
+    siteName: siteConfig.name,
+    locale: "en_US",
+    alternateLocale: "es_CR",
     type: "website",
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: "Private Travel CR - Premium shuttle service in Costa Rica",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Private Travel CR | Shuttle Privado Premium Costa Rica",
-    description:
-      "Transporte privado premium. Cotización instantánea, WhatsApp: +506 8633-4133",
+    title: "Private Travel CR | Premium Private Shuttle Costa Rica",
+    description: siteConfig.descriptionEN,
+    images: [siteConfig.ogImage],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   icons: {
     icon: "/favicon.ico",
