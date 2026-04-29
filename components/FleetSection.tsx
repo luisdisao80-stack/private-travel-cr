@@ -103,13 +103,12 @@ export default function FleetSection() {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500 to-amber-600 rounded-3xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500" />
 
               <div className="relative bg-gradient-to-br from-gray-900 to-black border border-amber-500/20 rounded-3xl overflow-hidden group-hover:border-amber-500/50 transition-all duration-500">
-                <div className="relative h-64 md:h-80 overflow-hidden bg-gray-900">
+                <div className="relative h-56 md:h-72 overflow-hidden bg-white p-4">
                   <img
                     src={vehicle.image}
                     alt={vehicle.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
                   {vehicle.badge && (
                     <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-amber-500 text-black text-xs font-bold tracking-wider shadow-lg">
