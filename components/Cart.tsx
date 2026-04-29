@@ -183,31 +183,43 @@ export default function Cart() {
                           </div>
                         </div>
 
-                        {/* Pickup / Dropoff */}
-                        <div className="space-y-1.5 mb-3 pb-3 border-b border-amber-500/10 text-xs">
-                          <div className="flex items-start gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-1.5 flex-shrink-0" />
-                            <div className="flex-1 min-w-0">
-                              <span className="text-gray-500">{t.cart.pickup}: </span>
-                              <span className="text-gray-200 break-words">{item.pickupPlace}</span>
-                            </div>
+                        {/* Pickup / Dropoff with vehicle photo */}
+                        <div className="flex gap-3 mb-3 pb-3 border-b border-amber-500/10">
+                          {/* Vehicle photo - left side */}
+                          <div className="flex-shrink-0 w-40 h-28 rounded-lg overflow-hidden bg-white border border-amber-500/30 flex items-center justify-center p-2">
+                            <img
+                              src={item.vehicleId === "staria" ? "/staria.webp" : "/hiace.png"}
+                              alt={item.vehicleName}
+                              className="w-full h-full object-contain"
+                            />
                           </div>
-                          <div className="flex items-start gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
-                            <div className="flex-1 min-w-0">
-                              <span className="text-gray-500">{t.cart.dropoff}: </span>
-                              <span className="text-gray-200 break-words">{item.dropoffPlace}</span>
-                            </div>
-                          </div>
-                          {item.flightNumber && (
+
+                          {/* Pickup/Dropoff/Flight - right side */}
+                          <div className="flex-1 min-w-0 space-y-1.5 text-xs">
                             <div className="flex items-start gap-2">
-                              <Plane size={11} className="text-amber-400 mt-1 flex-shrink-0" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-1.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <span className="text-gray-500">{t.cart.flight}: </span>
-                                <span className="text-amber-400 font-medium uppercase">{item.flightNumber}</span>
+                                <span className="text-gray-500">{t.cart.pickup}: </span>
+                                <span className="text-gray-200 break-words">{item.pickupPlace}</span>
                               </div>
                             </div>
-                          )}
+                            <div className="flex items-start gap-2">
+                              <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <span className="text-gray-500">{t.cart.dropoff}: </span>
+                                <span className="text-gray-200 break-words">{item.dropoffPlace}</span>
+                              </div>
+                            </div>
+                            {item.flightNumber && (
+                              <div className="flex items-start gap-2">
+                                <Plane size={11} className="text-amber-400 mt-1 flex-shrink-0" />
+                                <div className="flex-1 min-w-0">
+                                  <span className="text-gray-500">{t.cart.flight}: </span>
+                                  <span className="text-amber-400 font-medium uppercase">{item.flightNumber}</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
 
                         {/* Service + price */}
