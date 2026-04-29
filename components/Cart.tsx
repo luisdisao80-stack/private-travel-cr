@@ -181,7 +181,7 @@ export default function Cart() {
                         {/* Pickup / Dropoff with vehicle photo */}
                         <div className="flex gap-3 mb-3 pb-3 border-b border-amber-500/10">
                           {/* Vehicle photo - left side */}
-                          <div className="flex-shrink-0 w-24 h-20 rounded-lg overflow-hidden bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/20 flex items-center justify-center p-1">
+                          <div className="flex-shrink-0 w-40 h-28 rounded-lg overflow-hidden bg-white border border-amber-500/30 flex items-center justify-center p-2">
                             <img
                               src={item.vehicleId === "staria" ? "/staria.webp" : "/hiace.png"}
                               alt={item.vehicleName}
