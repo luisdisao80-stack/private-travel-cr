@@ -39,6 +39,7 @@ export default function QuoteCalculator() {
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
   const [passengers, setPassengers] = useState<number>(2);
+  const [children, setChildren] = useState<number>(0);
   const [date, setDate] = useState<string>("");
   const [serviceType, setServiceType] = useState<ServiceType>("standard");
   const [extraStopHours, setExtraStopHours] = useState<number>(0);
@@ -87,7 +88,9 @@ export default function QuoteCalculator() {
     }
   }, [requiresFlight]);
 
-  const recommendedVehicle = passengers <= 5 ? "staria" : "hiace";
+  // Total de pax incluye adultos + ninos para elegir vehiculo
+  const totalPax = passengers + children;
+  const recommendedVehicle = totalPax <= 5 ? "staria" : "hiace";
 
   const extraStopsCost = extraStopHours * EXTRA_STOP_PRICE_PER_HOUR;
 
@@ -149,6 +152,7 @@ export default function QuoteCalculator() {
       dropoffPlace: dropoffPlace.trim(),
       flightNumber: requiresFlight ? flightNumber.trim() : undefined,
       passengers,
+      children,
       date,
       serviceType,
       vehicleId: recommendedVehicle,
@@ -191,7 +195,7 @@ export default function QuoteCalculator() {
       `Hello! I want to book a private shuttle:\n\n` +
       `*From:* ${fromName}\n` +
       `*To:* ${toName}\n` +
-      `*Passengers:* ${passengers}\n` +
+      `*Passengers:* ${passengers}${children > 0 ? ` adults + ${children} child${children > 1 ? "ren" : ""} under 12` : ""}\n` +
       `*Date:* ${date}\n` +
       `*Vehicle:* ${vehicleName}\n` +
       `*Service:* ${serviceTxt}\n` +
@@ -265,6 +269,22 @@ export default function QuoteCalculator() {
               onChange={(e) => setPassengers(Number(e.target.value))}
               className="bg-black/50 border-amber-500/30 text-white h-12"
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-amber-400 flex items-center gap-1.5">
+              <Users size={14} />
+              {t.quote.childrenLabel}
+            </Label>
+            <Input
+              type="number"
+              min={0}
+              max={9}
+              value={children}
+              onChange={(e) => setChildren(Number(e.target.value))}
+              className="bg-black/50 border-amber-500/30 text-white h-12"
+            />
+            <p className="text-xs text-gray-400">{t.quote.childrenHint}</p>
           </div>
 
           <div className="space-y-2">
@@ -448,7 +468,7 @@ export default function QuoteCalculator() {
                 {vehicles.map((v) => {
                   const price = getPriceForVehicle(v.id);
                   const isRecommended = v.id === recommendedVehicle;
-                  const isDisabled = passengers < v.minPax || passengers > v.maxPax;
+                  const isDisabled = totalPax < v.minPax || totalPax > v.maxPax;
 
                   return (
                     <div
@@ -478,7 +498,7 @@ export default function QuoteCalculator() {
                             : t.quote.priceTotal}
                       </p>
                       {isDisabled && (
-                        <p className="text-xs text-red-400 mt-2">{t.quote.notForPax} {passengers} {t.quote.passengersRange}</p>
+                        <p className="text-xs text-red-400 mt-2">{t.quote.notForPax} {totalPax} {t.quote.passengersRange}</p>
                       )}
                     </div>
                   );

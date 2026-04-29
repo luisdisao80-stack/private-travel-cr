@@ -39,15 +39,13 @@ export default function BookingForm({ onBack }: BookingFormProps) {
     notes: "",
   });
 
-  const [termsAccepted, setTermsAccepted] = useState(false);
-
   const handleChange = (field: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const isValid = form.name && form.email && form.phone && termsAccepted;
+  const isValid = form.name && form.email && form.phone;
 
   const handleSubmit = async () => {
     if (!isValid || items.length === 0) return;
@@ -60,7 +58,8 @@ export default function BookingForm({ onBack }: BookingFormProps) {
           `*${idx + 1}. ${item.fromName} → ${item.toName}*`,
           `   📅 Date: ${item.date}`,
           `   ⏰ Pick up time: ${formatTime(item.pickupTime)}`,
-          `   👥 Passengers: ${item.passengers}`,
+          `   👥 Passengers: ${item.passengers}${item.children > 0 ? ` (incl. ${item.children} child${item.children > 1 ? "ren" : ""} under 12)` : ""}`,
+          item.children > 0 ? `   🪑 Car seats needed: ${item.children} (FREE - included)` : null,
           `   📍 Pick up: ${item.pickupPlace}`,
           `   🏁 Drop off: ${item.dropoffPlace}`,
           item.flightNumber ? `   ✈️ Flight: ${item.flightNumber}` : null,
@@ -216,31 +215,6 @@ export default function BookingForm({ onBack }: BookingFormProps) {
         </div>
       </div>
 
-      {/* Terms & Conditions checkbox */}
-      <div className="mt-4 p-4 rounded-lg bg-amber-500/5 border border-amber-500/20">
-        <label className="flex items-start gap-3 cursor-pointer group">
-          <input
-            type="checkbox"
-            checked={termsAccepted}
-            onChange={(e) => setTermsAccepted(e.target.checked)}
-            className="mt-0.5 w-5 h-5 rounded border-2 border-amber-500/40 bg-black/50 accent-amber-500 cursor-pointer flex-shrink-0"
-          />
-          <span className="text-sm text-gray-300 group-hover:text-white transition-colors">
-            {t.cart.termsLabel}{" "}
-            <a
-              href="/terms"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-amber-400 underline hover:text-amber-300 font-medium"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {t.cart.termsLink}
-            </a>
-            <span className="text-red-400 ml-1">*</span>
-          </span>
-        </label>
-      </div>
-
       {/* Submit */}
       <Button
         onClick={handleSubmit}
@@ -256,12 +230,6 @@ export default function BookingForm({ onBack }: BookingFormProps) {
           </>
         )}
       </Button>
-
-      {!termsAccepted && (form.name || form.email || form.phone) && (
-        <p className="text-xs text-amber-400/80 text-center">
-          {t.cart.acceptTermsPrompt}
-        </p>
-      )}
 
       <p className="text-[10px] text-center text-gray-500">{t.cart.privacyNote}</p>
     </motion.div>

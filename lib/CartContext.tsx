@@ -13,7 +13,8 @@ export type CartItem = {
   pickupTime: string;   // Hora de pickup en formato HH:MM (ej: "14:30")
   dropoffPlace: string; // Lugar exacto de destino
   flightNumber?: string; // Solo si origen O destino es aeropuerto
-  passengers: number;
+  passengers: number;   // Total de pax (adultos + ninos)
+  children: number;     // Cantidad de ninos menores de 12 (subset de passengers)
   date: string;
   serviceType: ServiceType;
   vehicleId: "staria" | "hiace";
