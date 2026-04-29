@@ -7,6 +7,7 @@ import { CartProvider } from "@/lib/CartContext";
 import Cart from "@/components/Cart";
 import { Analytics } from "@vercel/analytics/react";
 import { siteConfig } from "@/lib/site-config";
+import SchemaOrg from "@/components/SchemaOrg";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -123,6 +124,7 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
+        <SchemaOrg />
         <LanguageProvider>
           <CartProvider>
             {children}
