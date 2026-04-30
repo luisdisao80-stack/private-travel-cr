@@ -38,6 +38,7 @@ export default function Navbar() {
     { label: t.nav.fleet, id: "flota", href: "/#flota" },
     { label: t.nav.routes, id: "rutas", href: "/#rutas" },
     { label: t.nav.about, id: "about", href: "/about" },
+    { label: t.nav.blog, id: "blog", href: "/blog" },
     { label: t.nav.contact, id: "contacto", href: "/#contacto" },
   ];
 
