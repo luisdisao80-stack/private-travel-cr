@@ -59,7 +59,7 @@ const faqsEs: FAQ[] = [
   {
     question: "¿Cuál es la diferencia entre Standard y VIP?",
     answer:
-      "El Standard es un traslado directo, rápido y cómodo. El VIP (+$70) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi premium, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
+      "El Standard es un traslado directo, rápido y cómodo. El VIP (+$70) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi a bordo, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
   },
 ];
 
@@ -112,7 +112,7 @@ const faqsEn: FAQ[] = [
   {
     question: "What's the difference between Standard and VIP?",
     answer:
-      "Standard is a direct, fast, and comfortable transfer. VIP (+$70) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, water and snacks, premium WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
+      "Standard is a direct, fast, and comfortable transfer. VIP (+$70) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, water and snacks, onboard WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
   },
 ];
 

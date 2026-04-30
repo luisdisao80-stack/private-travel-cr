@@ -175,7 +175,7 @@ export const translations = {
             label: "Welcome Kit:",
             sub: "local beers, sodas, snacks",
           },
-          { label: "Premium WiFi and USB chargers", sub: "" },
+          { label: "Onboard WiFi and USB chargers", sub: "" },
           { label: "Personalized recommendations", sub: "" },
           { label: "Everything in Standard", sub: "+ more" },
         ],
@@ -264,7 +264,7 @@ export const translations = {
         { strong: "Local beers", normal: "" },
         { strong: "Sodas & premium water", normal: "" },
         { strong: "Local snacks", normal: "" },
-        { strong: "Premium WiFi + chargers", normal: "" },
+        { strong: "Onboard WiFi + chargers", normal: "" },
         { strong: "Expert bilingual driver", normal: "" },
         { strong: "Door-to-door service", normal: "" },
       ],
@@ -398,7 +398,7 @@ export const translations = {
         {
           question: "What's the difference between Standard and VIP?",
           answer:
-            "Standard is a direct, fast, and comfortable transfer. VIP (+$70) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, waters and snacks, premium WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
+            "Standard is a direct, fast, and comfortable transfer. VIP (+$70) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, waters and snacks, onboard WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
         },
       ],
     },
@@ -740,7 +740,7 @@ export const translations = {
           { label: "1-2h de parada turística", sub: "(flexible)" },
           { label: "Servicio Concierge", sub: "(tu chofer te guía)" },
           { label: "Welcome Kit:", sub: "cervezas, sodas, snacks" },
-          { label: "WiFi premium y cargadores USB", sub: "" },
+          { label: "WiFi a bordo y cargadores USB", sub: "" },
           { label: "Recomendaciones personalizadas", sub: "" },
           { label: "Todo lo de Standard", sub: "+ más" },
         ],
@@ -828,7 +828,7 @@ export const translations = {
         { strong: "Cervezas locales", normal: "" },
         { strong: "Sodas & aguas premium", normal: "" },
         { strong: "Snacks locales", normal: "" },
-        { strong: "WiFi premium + cargadores", normal: "" },
+        { strong: "WiFi a bordo + cargadores", normal: "" },
         { strong: "Chofer bilingue experto", normal: "" },
         { strong: "Servicio puerta a puerta", normal: "" },
       ],
@@ -959,7 +959,7 @@ export const translations = {
         {
           question: "¿Cuál es la diferencia entre Standard y VIP?",
           answer:
-            "El Standard es un traslado directo, rápido y cómodo. El VIP (+$70) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi premium, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
+            "El Standard es un traslado directo, rápido y cómodo. El VIP (+$70) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi a bordo, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
         },
       ],
     },
