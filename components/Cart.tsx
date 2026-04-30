@@ -115,7 +115,7 @@ export default function Cart() {
                     <p className="text-gray-400 text-sm mb-6">{t.cart.emptyDescription}</p>
                     <Button
                       onClick={handleClose}
-                      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold"
+                      className="bg-amber-500 hover:bg-amber-600 text-black font-semibold"
                     >
                       {t.cart.startBooking}
                       <ArrowRight size={16} className="ml-2" />
@@ -279,7 +279,7 @@ export default function Cart() {
                 </div>
                 <Button
                   onClick={handleContinue}
-                  className="w-full h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold text-lg"
+                  className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg"
                 >
                   {t.cart.continueBooking}
                   <ArrowRight size={18} className="ml-2" />

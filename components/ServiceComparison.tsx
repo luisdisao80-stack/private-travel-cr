@@ -196,7 +196,7 @@ export default function ServiceComparison() {
               <Button
                 onClick={() => scrollToQuote("vip")}
                 size="lg"
-                className="w-full h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold text-base shadow-2xl shadow-amber-500/40 mt-auto"
+                className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/40 mt-auto"
               >
                 {t.services.vip.cta}
                 <Crown className="ml-2" size={18} />

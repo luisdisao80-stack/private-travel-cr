@@ -91,7 +91,7 @@ export default function Hero() {
             <Button
               onClick={scrollToQuote}
               size="lg"
-              className="h-12 md:h-14 px-6 md:px-8 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold text-sm md:text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all w-full sm:w-auto"
+              className="h-12 md:h-14 px-6 md:px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all w-full sm:w-auto"
             >
               {t.hero.ctaQuote}
               <ArrowDown className="ml-2 animate-bounce" size={16} />

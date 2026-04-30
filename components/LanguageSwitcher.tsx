@@ -11,7 +11,7 @@ export default function LanguageSwitcher() {
         onClick={() => setLang("en")}
         className={`px-3 py-1 rounded-full text-xs font-bold tracking-wider transition-all ${
           lang === "en"
-            ? "bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-md"
+            ? "bg-amber-500 text-black shadow-md"
             : "text-gray-400 hover:text-white"
         }`}
         aria-label="Switch to English"
@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
         onClick={() => setLang("es")}
         className={`px-3 py-1 rounded-full text-xs font-bold tracking-wider transition-all ${
           lang === "es"
-            ? "bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-md"
+            ? "bg-amber-500 text-black shadow-md"
             : "text-gray-400 hover:text-white"
         }`}
         aria-label="Cambiar a Español"

@@ -321,7 +321,7 @@ export default function ContactForm() {
               <Button
                 type="submit"
                 disabled={sent}
-                className="w-full h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold text-lg shadow-2xl shadow-amber-500/30 disabled:opacity-70"
+                className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg shadow-2xl shadow-amber-500/30 disabled:opacity-70"
               >
                 {sent ? (
                   <>

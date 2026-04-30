@@ -423,7 +423,7 @@ export default function QuoteCalculator() {
         <Button
           onClick={handleCalculate}
           disabled={!from || !to || from === to}
-          className="w-full h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold text-lg disabled:opacity-40"
+          className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg disabled:opacity-40"
         >
           {t.quote.calculate}
           <ArrowRight className="ml-2" />
@@ -673,7 +673,7 @@ export default function QuoteCalculator() {
                 <Button
                   onClick={handleAddToCart}
                   disabled={!isValidForBooking || addedToCart}
-                  className="w-full h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold text-base disabled:opacity-40"
+                  className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-base disabled:opacity-40"
                 >
                   <AnimatePresence mode="wait">
                     {addedToCart ? (

@@ -154,7 +154,7 @@ export default function FleetSection() {
 
                     <Button
                       onClick={scrollToQuote}
-                      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold h-12 px-6 shadow-lg shadow-amber-500/30"
+                      className="bg-amber-500 hover:bg-amber-600 text-black font-bold h-12 px-6 shadow-lg shadow-amber-500/30"
                     >
                       {t.fleet.cta}
                     </Button>

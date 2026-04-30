@@ -206,7 +206,7 @@ export default function PopularRoutes() {
           <Button
             onClick={scrollToQuote}
             size="lg"
-            className="h-14 px-8 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold shadow-2xl shadow-amber-500/30"
+            className="h-14 px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold shadow-2xl shadow-amber-500/30"
           >
             Ver todas las rutas y cotizar
             <ArrowRight className="ml-2" size={18} />
