@@ -57,7 +57,7 @@ export default function FleetPage() {
               <img
                 src="/blog/la-fortuna-arenal.jpg"
                 alt={lang === "en" ? "Private Travel CR Hyundai Staria with Arenal Volcano" : "Hyundai Staria de Private Travel CR con Volcán Arenal"}
-                className="w-full h-48 md:h-72 object-cover"
+                className="w-full h-48 md:h-72 object-contain"
               />
             </motion.div>
           </div>
