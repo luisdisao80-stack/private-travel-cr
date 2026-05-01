@@ -35,7 +35,7 @@ export default function Navbar() {
   const navLinks: NavLink[] = [
     { label: t.nav.home, id: "inicio", href: "/#inicio" },
     { label: t.nav.quote, id: "cotizador", href: "/#cotizador" },
-    { label: t.nav.fleet, id: "flota", href: "/#flota" },
+    { label: t.nav.fleet, id: "fleet", href: "/fleet" },
     { label: t.nav.routes, id: "rutas", href: "/#rutas" },
     { label: t.nav.about, id: "about", href: "/about" },
     { label: t.nav.blog, id: "blog", href: "/blog" },

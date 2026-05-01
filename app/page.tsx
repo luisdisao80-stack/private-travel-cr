@@ -1,5 +1,5 @@
 import BenefitsSection from "@/components/BenefitsSection";
-import FleetSection from "@/components/FleetSection";
+import FleetPreview from "@/components/FleetPreview";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import QuoteSection from "@/components/QuoteSection";
@@ -29,7 +29,7 @@ export default function Home() {
       {/* COTIZADOR */}
       <QuoteSection />
 
-      <FleetSection />
+      <FleetPreview />
 
       <PopularRoutes />
 
