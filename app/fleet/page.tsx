@@ -48,18 +48,6 @@ export default function FleetPage() {
               </p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="rounded-2xl overflow-hidden border border-amber-500/20"
-            >
-              <img
-                src="/blog/la-fortuna-arenal.jpg"
-                alt={lang === "en" ? "Private Travel CR Hyundai Staria with Arenal Volcano" : "Hyundai Staria de Private Travel CR con Volcán Arenal"}
-                className="w-full h-48 md:h-72 object-contain"
-              />
-            </motion.div>
           </div>
         </section>
 
