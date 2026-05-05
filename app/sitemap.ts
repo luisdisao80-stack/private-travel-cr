@@ -1,52 +1,38 @@
-import type { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
-import { getAllPosts } from "@/lib/blog";
+import { getAllPostSlugs } from "@/lib/blog";
+import { getIndexableSlugs } from "@/lib/routes-db";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = siteConfig.siteUrl;
 
-  // URLs estáticas
-  const staticUrls: MetadataRoute.Sitemap = [
-    {
-      url: siteConfig.siteUrl,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: `${siteConfig.siteUrl}/fleet`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${siteConfig.siteUrl}/about`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteConfig.siteUrl}/blog`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${siteConfig.siteUrl}/terms`,
-      lastModified,
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
+  // Páginas estáticas
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: baseUrl, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
+    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/fleet`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${baseUrl}/routes`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
+    { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
 
-  // URLs dinámicas de blog posts
-  const posts = getAllPosts();
-  const blogUrls: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${siteConfig.siteUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
+  // Posts del blog
+  const blogSlugs = getAllPostSlugs();
+  const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+    url: `${baseUrl}/blog/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  // Rutas indexables (las top ~780)
+  const routeSlugs = await getIndexableSlugs();
+  const routePages: MetadataRoute.Sitemap = routeSlugs.map((slug) => ({
+    url: `${baseUrl}/routes/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
     priority: 0.7,
   }));
 
-  return [...staticUrls, ...blogUrls];
+  return [...staticPages, ...blogPages, ...routePages];
 }
