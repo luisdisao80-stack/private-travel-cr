@@ -14,14 +14,12 @@ type Route = {
 };
 
 const popularRoutes: Route[] = [
-  { from: "SJO Airport", to: "La Fortuna", priceFrom: 190, duration: "3h", popular: true },
-  { from: "SJO Airport", to: "Manuel Antonio", priceFrom: 210, duration: "3h 30min", popular: true },
-  { from: "LIR Airport", to: "Tamarindo", priceFrom: 120, duration: "1h 30min" },
-  { from: "La Fortuna", to: "Monteverde", priceFrom: 170, duration: "3h", popular: true },
-  { from: "LIR Airport", to: "La Fortuna", priceFrom: 230, duration: "3h 30min" },
-  { from: "La Fortuna", to: "Manuel Antonio", priceFrom: 280, duration: "5h" },
-  { from: "SJO Airport", to: "Monteverde", priceFrom: 210, duration: "3h 30min" },
-  { from: "La Fortuna", to: "Tamarindo", priceFrom: 260, duration: "4h" },
+  { from: "SJO Airport", to: "La Fortuna", priceFrom: 220, duration: "3h", popular: true },
+  { from: "LIR Airport", to: "La Fortuna", priceFrom: 225, duration: "3h", popular: true },
+  { from: "La Fortuna", to: "Monteverde", priceFrom: 245, duration: "4h", popular: true },
+  { from: "La Fortuna", to: "Tamarindo", priceFrom: 305, duration: "4h 30min" },
+  { from: "La Fortuna", to: "Manuel Antonio", priceFrom: 320, duration: "5h 30min" },
+  { from: "SJO Airport", to: "Manuel Antonio", priceFrom: 220, duration: "3h" },
 ];
 
 export default function PopularRoutes() {
@@ -133,6 +131,9 @@ export default function PopularRoutes() {
 
                 {/* Ruta */}
                 <div style={{ marginBottom: "12px", flexGrow: 1 }}>
+                  <div style={{ color: "#fbbf24", fontWeight: 600, fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
+                    Private Shuttle
+                  </div>
                   <div style={{ color: "white", fontWeight: 700, fontSize: "14px", marginBottom: "6px", lineHeight: "1.2" }}>
                     {route.from}
                   </div>
