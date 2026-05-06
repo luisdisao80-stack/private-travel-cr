@@ -9,12 +9,16 @@ import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby } from "
 type Props = { locations: string[] };
 const WHATSAPP_NUMBER = "50686334133";
 
-function generateTimeOptions(): string[] {
-  const times: string[] = [];
+function generateTimeOptions(): { value: string; label: string }[] {
+  const times: { value: string; label: string }[] = [];
   for (let h = 0; h < 24; h++) {
     const hh = h.toString().padStart(2, "0");
-    times.push(hh + ":00");
-    times.push(hh + ":30");
+    const period = h < 12 ? "AM" : "PM";
+    let display = h % 12;
+    if (display === 0) display = 12;
+    const dd = display.toString();
+    times.push({ value: hh + ":00", label: dd + ":00 " + period });
+    times.push({ value: hh + ":30", label: dd + ":30 " + period });
   }
   return times;
 }
@@ -78,8 +82,8 @@ function AutocompleteInput({ value, onChange, placeholder, locations, excludeLoc
 export default function QuoteCalculatorV2({ locations }: Props) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
+  const [adultsStr, setAdultsStr] = useState("2");
+  const [childrenStr, setChildrenStr] = useState("0");
   const [serviceType, setServiceType] = useState<"standard" | "vip">("standard");
   const [route, setRoute] = useState<Route | null>(null);
   const [loading, setLoading] = useState(false);
@@ -92,6 +96,8 @@ export default function QuoteCalculatorV2({ locations }: Props) {
   const [convertibleSeats, setConvertibleSeats] = useState(0);
   const [boosterSeats, setBoosterSeats] = useState(0);
 
+  const adults = parseInt(adultsStr) || 0;
+  const children = parseInt(childrenStr) || 0;
   const totalPax = adults + children;
 
   useEffect(() => {
@@ -108,12 +114,13 @@ export default function QuoteCalculatorV2({ locations }: Props) {
     findRoute();
   }, [from, to]);
 
-  const basePrice = route ? getPriceForGroupSize(route, totalPax) : 0;
+  const basePrice = route ? getPriceForGroupSize(route, totalPax || 1) : 0;
   const vipExtra = serviceType === "vip" ? VIP_EXTRA_USD : 0;
   const totalPrice = basePrice + vipExtra;
-  const vehicle = getVehicleForPax(totalPax);
+  const vehicle = getVehicleForPax(totalPax || 1);
   const requiresFlight = (from && isAirport(from)) || (to && isAirport(to));
   const totalChildSeats = infantSeats + convertibleSeats + boosterSeats;
+  const timeLabel = TIME_OPTIONS.find(t => t.value === travelTime)?.label || travelTime;
 
   function buildWhatsappMessage() {
     const lines: string[] = [];
@@ -127,7 +134,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
       lines.push("Vehicle: " + (vehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace"));
       lines.push("Service: " + (serviceType === "vip" ? "VIP" : "Standard"));
       if (travelDate) lines.push("Date: " + travelDate);
-      if (travelTime) lines.push("Time: " + travelTime);
+      if (travelTime) lines.push("Time: " + timeLabel);
       if (flightNumber) lines.push("Flight: " + flightNumber);
       if (totalChildSeats > 0) {
         const seats: string[] = [];
@@ -145,8 +152,15 @@ export default function QuoteCalculatorV2({ locations }: Props) {
       lines.push("Adults: " + adults);
       if (children > 0) lines.push("Children: " + children);
       if (travelDate) lines.push("Date: " + travelDate);
-      if (travelTime) lines.push("Time: " + travelTime);
+      if (travelTime) lines.push("Time: " + timeLabel);
       if (flightNumber) lines.push("Flight: " + flightNumber);
+      if (totalChildSeats > 0) {
+        const seats: string[] = [];
+        if (infantSeats > 0) seats.push(infantSeats + " infant");
+        if (convertibleSeats > 0) seats.push(convertibleSeats + " convertible");
+        if (boosterSeats > 0) seats.push(boosterSeats + " booster");
+        lines.push("Child seats: " + seats.join(", "));
+      }
       lines.push("");
       lines.push("Could you help me with a quote?");
     }
@@ -165,6 +179,28 @@ export default function QuoteCalculatorV2({ locations }: Props) {
 
   const todayStr = new Date().toISOString().split("T")[0];
   const overCapacity = totalPax > 12;
+
+  function handleAdultsChange(val: string) {
+    if (val === "") { setAdultsStr(""); return; }
+    const n = parseInt(val);
+    if (isNaN(n)) return;
+    setAdultsStr(Math.max(0, Math.min(12, n)).toString());
+  }
+
+  function handleChildrenChange(val: string) {
+    if (val === "") { setChildrenStr(""); return; }
+    const n = parseInt(val);
+    if (isNaN(n)) return;
+    setChildrenStr(Math.max(0, Math.min(11, n)).toString());
+  }
+
+  function handleAdultsBlur() {
+    if (adultsStr === "" || parseInt(adultsStr) === 0) setAdultsStr("1");
+  }
+
+  function handleChildrenBlur() {
+    if (childrenStr === "") setChildrenStr("0");
+  }
 
   return (
     <div className="bg-gradient-to-br from-gray-900 to-black border border-amber-500/30 rounded-2xl p-6 md:p-8">
@@ -199,7 +235,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
           </label>
           <select value={travelTime} onChange={(e) => setTravelTime(e.target.value)} className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none">
             <option value="">Select time...</option>
-            {TIME_OPTIONS.map((t) => (<option key={t} value={t}>{t}</option>))}
+            {TIME_OPTIONS.map((t) => (<option key={t.value} value={t.value}>{t.label}</option>))}
           </select>
         </div>
       </div>
@@ -224,12 +260,28 @@ export default function QuoteCalculatorV2({ locations }: Props) {
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
             <div className="text-xs text-gray-400 mb-1">Adults</div>
             <div className="text-xs text-gray-500 mb-2">12+ years</div>
-            <input type="number" min="1" max="12" value={adults} onChange={(e) => setAdults(Math.max(1, Math.min(12, parseInt(e.target.value) || 1)))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-2 text-base" />
+            <input
+              type="number"
+              min="1"
+              max="12"
+              value={adultsStr}
+              onChange={(e) => handleAdultsChange(e.target.value)}
+              onBlur={handleAdultsBlur}
+              className="w-full bg-black border border-white/20 text-white rounded px-2 py-2 text-base"
+            />
           </div>
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
             <div className="text-xs text-gray-400 mb-1">Children</div>
             <div className="text-xs text-gray-500 mb-2">0-11 years</div>
-            <input type="number" min="0" max="11" value={children} onChange={(e) => setChildren(Math.max(0, Math.min(11, parseInt(e.target.value) || 0)))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-2 text-base" />
+            <input
+              type="number"
+              min="0"
+              max="11"
+              value={childrenStr}
+              onChange={(e) => handleChildrenChange(e.target.value)}
+              onBlur={handleChildrenBlur}
+              className="w-full bg-black border border-white/20 text-white rounded px-2 py-2 text-base"
+            />
           </div>
         </div>
         {!overCapacity ? (
