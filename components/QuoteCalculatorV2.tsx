@@ -9,6 +9,17 @@ import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby } from "
 type Props = { locations: string[] };
 const WHATSAPP_NUMBER = "50686334133";
 
+function generateTimeOptions(): string[] {
+  const times: string[] = [];
+  for (let h = 0; h < 24; h++) {
+    const hh = h.toString().padStart(2, "0");
+    times.push(hh + ":00");
+    times.push(hh + ":30");
+  }
+  return times;
+}
+const TIME_OPTIONS = generateTimeOptions();
+
 type AutocompleteInputProps = {
   value: string;
   onChange: (val: string) => void;
@@ -67,19 +78,21 @@ function AutocompleteInput({ value, onChange, placeholder, locations, excludeLoc
 export default function QuoteCalculatorV2({ locations }: Props) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [pax, setPax] = useState(2);
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
   const [serviceType, setServiceType] = useState<"standard" | "vip">("standard");
   const [route, setRoute] = useState<Route | null>(null);
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
 
-  // ETAPA 1: fecha, hora, vuelo, sillas
   const [travelDate, setTravelDate] = useState("");
   const [travelTime, setTravelTime] = useState("");
   const [flightNumber, setFlightNumber] = useState("");
   const [infantSeats, setInfantSeats] = useState(0);
   const [convertibleSeats, setConvertibleSeats] = useState(0);
   const [boosterSeats, setBoosterSeats] = useState(0);
+
+  const totalPax = adults + children;
 
   useEffect(() => {
     async function findRoute() {
@@ -95,21 +108,22 @@ export default function QuoteCalculatorV2({ locations }: Props) {
     findRoute();
   }, [from, to]);
 
-  const basePrice = route ? getPriceForGroupSize(route, pax) : 0;
+  const basePrice = route ? getPriceForGroupSize(route, totalPax) : 0;
   const vipExtra = serviceType === "vip" ? VIP_EXTRA_USD : 0;
   const totalPrice = basePrice + vipExtra;
-  const vehicle = getVehicleForPax(pax);
+  const vehicle = getVehicleForPax(totalPax);
   const requiresFlight = (from && isAirport(from)) || (to && isAirport(to));
   const totalChildSeats = infantSeats + convertibleSeats + boosterSeats;
 
-  // Construir mensaje de WhatsApp con TODOS los detalles
   function buildWhatsappMessage() {
     const lines: string[] = [];
     if (route) {
       lines.push("Hi! I want to book a shuttle:");
       lines.push("");
       lines.push("Route: " + from + " to " + to);
-      lines.push("Passengers: " + pax);
+      lines.push("Adults: " + adults);
+      if (children > 0) lines.push("Children: " + children);
+      lines.push("Total passengers: " + totalPax);
       lines.push("Vehicle: " + (vehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace"));
       lines.push("Service: " + (serviceType === "vip" ? "VIP" : "Standard"));
       if (travelDate) lines.push("Date: " + travelDate);
@@ -128,17 +142,11 @@ export default function QuoteCalculatorV2({ locations }: Props) {
       lines.push("Hi! I need a custom quote:");
       lines.push("");
       lines.push("Route: " + from + " to " + to);
-      lines.push("Passengers: " + pax);
+      lines.push("Adults: " + adults);
+      if (children > 0) lines.push("Children: " + children);
       if (travelDate) lines.push("Date: " + travelDate);
       if (travelTime) lines.push("Time: " + travelTime);
       if (flightNumber) lines.push("Flight: " + flightNumber);
-      if (totalChildSeats > 0) {
-        const seats: string[] = [];
-        if (infantSeats > 0) seats.push(infantSeats + " infant");
-        if (convertibleSeats > 0) seats.push(convertibleSeats + " convertible");
-        if (boosterSeats > 0) seats.push(boosterSeats + " booster");
-        lines.push("Child seats: " + seats.join(", "));
-      }
       lines.push("");
       lines.push("Could you help me with a quote?");
     }
@@ -155,12 +163,11 @@ export default function QuoteCalculatorV2({ locations }: Props) {
     ? "py-3 rounded-lg border-2 transition-all border-amber-500 bg-amber-500/20 text-amber-400"
     : "py-3 rounded-lg border-2 transition-all border-white/10 text-gray-400 hover:border-white/30";
 
-  // Fecha mínima = hoy
   const todayStr = new Date().toISOString().split("T")[0];
+  const overCapacity = totalPax > 12;
 
   return (
     <div className="bg-gradient-to-br from-gray-900 to-black border border-amber-500/30 rounded-2xl p-6 md:p-8">
-      {/* PICKUP */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <MapPin size={16} />
@@ -169,7 +176,6 @@ export default function QuoteCalculatorV2({ locations }: Props) {
         <AutocompleteInput value={from} onChange={setFrom} placeholder="Type or select pickup..." locations={locations} excludeLocation={to} />
       </div>
 
-      {/* DROP-OFF */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <MapPin size={16} />
@@ -178,68 +184,65 @@ export default function QuoteCalculatorV2({ locations }: Props) {
         <AutocompleteInput value={to} onChange={setTo} placeholder="Type or select destination..." locations={locations} excludeLocation={from} />
       </div>
 
-      {/* DATE + TIME */}
       <div className="mb-5 grid grid-cols-2 gap-3">
         <div>
           <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
             <Calendar size={16} />
             <span>Date</span>
           </label>
-          <input
-            type="date"
-            value={travelDate}
-            min={todayStr}
-            onChange={(e) => setTravelDate(e.target.value)}
-            className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none"
-          />
+          <input type="date" value={travelDate} min={todayStr} onChange={(e) => setTravelDate(e.target.value)} className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none" />
         </div>
         <div>
           <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
             <Clock size={16} />
             <span>Pickup Time</span>
           </label>
-          <input
-            type="time"
-            value={travelTime}
-            onChange={(e) => setTravelTime(e.target.value)}
-            className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none"
-          />
+          <select value={travelTime} onChange={(e) => setTravelTime(e.target.value)} className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none">
+            <option value="">Select time...</option>
+            {TIME_OPTIONS.map((t) => (<option key={t} value={t}>{t}</option>))}
+          </select>
         </div>
       </div>
 
-      {/* FLIGHT NUMBER (condicional) */}
       {requiresFlight ? (
         <div className="mb-5">
           <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
             <Plane size={16} />
             <span>Flight Number (optional)</span>
           </label>
-          <input
-            type="text"
-            value={flightNumber}
-            onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
-            placeholder="e.g. UA1234, AV628"
-            className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
-          />
+          <input type="text" value={flightNumber} onChange={(e) => setFlightNumber(e.target.value.toUpperCase())} placeholder="e.g. UA1234, AV628" className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none" />
           <p className="text-xs text-gray-500 mt-1">We track your flight to ensure on-time pickup</p>
         </div>
       ) : null}
 
-      {/* PASSENGERS */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <Users size={16} />
-          <span>Passengers ({pax})</span>
+          <span>Passengers</span>
         </label>
-        <input type="range" min="1" max="12" value={pax} onChange={(e) => setPax(parseInt(e.target.value))} className="w-full accent-amber-500" />
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
-          <span>1</span>
-          <span>{pax} people - {vehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace"}</span>
-          <span>12</span>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-black/50 border border-white/10 rounded-lg p-3">
+            <div className="text-xs text-gray-400 mb-1">Adults</div>
+            <div className="text-xs text-gray-500 mb-2">12+ years</div>
+            <input type="number" min="1" max="12" value={adults} onChange={(e) => setAdults(Math.max(1, Math.min(12, parseInt(e.target.value) || 1)))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-2 text-base" />
+          </div>
+          <div className="bg-black/50 border border-white/10 rounded-lg p-3">
+            <div className="text-xs text-gray-400 mb-1">Children</div>
+            <div className="text-xs text-gray-500 mb-2">0-11 years</div>
+            <input type="number" min="0" max="11" value={children} onChange={(e) => setChildren(Math.max(0, Math.min(11, parseInt(e.target.value) || 0)))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-2 text-base" />
+          </div>
         </div>
+        {!overCapacity ? (
+          <div className="text-xs text-gray-500 mt-2 text-center">
+            Total: {totalPax} {totalPax === 1 ? "passenger" : "passengers"} - {vehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace"}
+          </div>
+        ) : (
+          <div className="text-xs text-red-400 mt-2 text-center">
+            Max 12 total. Contact us via WhatsApp for larger groups.
+          </div>
+        )}
       </div>
 
-      {/* CHILD SEATS */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <Baby size={16} />
@@ -250,36 +253,26 @@ export default function QuoteCalculatorV2({ locations }: Props) {
             <div className="text-xs text-gray-400 mb-1">Infant</div>
             <div className="text-xs text-gray-500 mb-2">0-12 months</div>
             <select value={infantSeats} onChange={(e) => setInfantSeats(parseInt(e.target.value))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-1 text-sm">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
             <div className="text-xs text-gray-400 mb-1">Convertible</div>
             <div className="text-xs text-gray-500 mb-2">1-4 years</div>
             <select value={convertibleSeats} onChange={(e) => setConvertibleSeats(parseInt(e.target.value))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-1 text-sm">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
             <div className="text-xs text-gray-400 mb-1">Booster</div>
             <div className="text-xs text-gray-500 mb-2">4-12 years</div>
             <select value={boosterSeats} onChange={(e) => setBoosterSeats(parseInt(e.target.value))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-1 text-sm">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
         </div>
       </div>
 
-      {/* SERVICE TYPE */}
       <div className="mb-6">
         <label className="text-sm text-amber-400 font-semibold mb-2 block">Service Type</label>
         <div className="grid grid-cols-2 gap-3">
@@ -297,7 +290,6 @@ export default function QuoteCalculatorV2({ locations }: Props) {
         </div>
       </div>
 
-      {/* RESULT */}
       {loading ? (
         <div className="bg-black/50 border border-white/10 rounded-lg p-6 text-center text-gray-400">Looking for route...</div>
       ) : notFound ? (
