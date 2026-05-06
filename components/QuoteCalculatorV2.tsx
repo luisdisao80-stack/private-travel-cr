@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Route } from "@/lib/types";
 import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
@@ -11,6 +11,75 @@ type Props = {
 };
 
 const WHATSAPP_NUMBER = "50686334133";
+
+type AutocompleteInputProps = {
+  value: string;
+  onChange: (val: string) => void;
+  placeholder: string;
+  locations: string[];
+  excludeLocation?: string;
+};
+
+function AutocompleteInput({ value, onChange, placeholder, locations, excludeLocation }: AutocompleteInputProps) {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [filtered, setFiltered] = useState<string[]>([]);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!value) {
+      setFiltered(locations.filter(l => l !== excludeLocation));
+      return;
+    }
+    const lowerValue = value.toLowerCase();
+    const matches = locations
+      .filter(l => l !== excludeLocation && l.toLowerCase().includes(lowerValue))
+      .slice(0, 8);
+    setFiltered(matches);
+  }, [value, locations, excludeLocation]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={wrapperRef} className="relative">
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value);
+          setShowDropdown(true);
+        }}
+        onFocus={() => setShowDropdown(true)}
+        placeholder={placeholder}
+        className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
+      />
+      {showDropdown && filtered.length > 0 ? (
+        <div className="absolute z-20 w-full mt-1 bg-gray-900 border border-amber-500/30 rounded-lg shadow-xl max-h-64 overflow-y-auto">
+          {filtered.map((loc) => (
+            <button
+              key={loc}
+              type="button"
+              onClick={() => {
+                onChange(loc);
+                setShowDropdown(false);
+              }}
+              className="w-full text-left px-4 py-2 text-white hover:bg-amber-500/20 transition-colors text-sm"
+            >
+              {loc}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export default function QuoteCalculatorV2({ locations }: Props) {
   const [from, setFrom] = useState("");
@@ -31,7 +100,6 @@ export default function QuoteCalculatorV2({ locations }: Props) {
       setLoading(true);
       setNotFound(false);
 
-      // Try forward: from -> to
       const result1 = await supabase
         .from("routes")
         .select("*")
@@ -46,7 +114,6 @@ export default function QuoteCalculatorV2({ locations }: Props) {
         return;
       }
 
-      // Try reverse: to -> from
       const result2 = await supabase
         .from("routes")
         .select("*")
@@ -74,7 +141,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
 
   const whatsappMessage = route
     ? "Hi! I want to book: " + from + " to " + to + " for " + pax + " people. Service: " + (serviceType === "vip" ? "VIP" : "Standard") + ". Total: $" + totalPrice + " USD"
-    : "";
+    : "Hi! I need a quote for: " + from + " to " + to + " for " + pax + " people. Could you help me?";
 
   const whatsappUrl = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(whatsappMessage);
 
@@ -93,16 +160,13 @@ export default function QuoteCalculatorV2({ locations }: Props) {
           <MapPin size={16} />
           <span>Pickup Location</span>
         </label>
-        <select
+        <AutocompleteInput
           value={from}
-          onChange={(e) => setFrom(e.target.value)}
-          className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
-        >
-          <option value="">Select pickup...</option>
-          {locations.map((loc) => (
-            <option key={loc} value={loc}>{loc}</option>
-          ))}
-        </select>
+          onChange={setFrom}
+          placeholder="Type or select pickup..."
+          locations={locations}
+          excludeLocation={to}
+        />
       </div>
 
       <div className="mb-5">
@@ -110,16 +174,13 @@ export default function QuoteCalculatorV2({ locations }: Props) {
           <MapPin size={16} />
           <span>Drop-off Location</span>
         </label>
-        <select
+        <AutocompleteInput
           value={to}
-          onChange={(e) => setTo(e.target.value)}
-          className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
-        >
-          <option value="">Select destination...</option>
-          {locations.map((loc) => (
-            <option key={loc} value={loc} disabled={loc === from}>{loc}</option>
-          ))}
-        </select>
+          onChange={setTo}
+          placeholder="Type or select destination..."
+          locations={locations}
+          excludeLocation={from}
+        />
       </div>
 
       <div className="mb-5">
@@ -164,11 +225,14 @@ export default function QuoteCalculatorV2({ locations }: Props) {
           Looking for route...
         </div>
       ) : notFound ? (
-        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6 text-center">
-          <p className="text-red-400 font-semibold">Route not available</p>
-          <p className="text-sm text-gray-400 mt-1">
-            We dont have a direct shuttle for this combination. Contact us via WhatsApp for a custom quote.
+        <div className="bg-amber-900/20 border border-amber-500/30 rounded-lg p-6 text-center">
+          <p className="text-amber-400 font-semibold mb-2">Custom route requested</p>
+          <p className="text-sm text-gray-400 mb-4">
+            We dont have a fixed price for this combinacion. Contact us via WhatsApp for a custom quote.
           </p>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+            <span>Get Custom Quote on WhatsApp</span>
+          </a>
         </div>
       ) : route ? (
         <div className="bg-black/50 border border-amber-500/30 rounded-lg p-6">

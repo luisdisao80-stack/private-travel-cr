@@ -1,9 +1,6 @@
 import { supabase } from "./supabase";
 import type { Route } from "./types";
 
-/**
- * Obtener TODAS las rutas (para listado)
- */
 export async function getAllRoutes(): Promise<Route[]> {
   const { data, error } = await supabase
     .from("routes")
@@ -18,9 +15,6 @@ export async function getAllRoutes(): Promise<Route[]> {
   return data || [];
 }
 
-/**
- * Obtener SOLO rutas indexables (para sitemap y SEO)
- */
 export async function getIndexableRoutes(): Promise<Route[]> {
   const { data, error } = await supabase
     .from("routes")
@@ -35,9 +29,6 @@ export async function getIndexableRoutes(): Promise<Route[]> {
   return data || [];
 }
 
-/**
- * Obtener UNA ruta por slug (para página individual)
- */
 export async function getRouteBySlug(slug: string): Promise<Route | null> {
   const { data, error } = await supabase
     .from("routes")
@@ -52,9 +43,6 @@ export async function getRouteBySlug(slug: string): Promise<Route | null> {
   return data;
 }
 
-/**
- * Obtener slugs de rutas indexables (para generateStaticParams)
- */
 export async function getIndexableSlugs(): Promise<string[]> {
   const { data, error } = await supabase
     .from("routes")
@@ -68,9 +56,6 @@ export async function getIndexableSlugs(): Promise<string[]> {
   return (data || []).map(r => r.slug).filter(Boolean) as string[];
 }
 
-/**
- * Obtener rutas relacionadas (mismo origen)
- */
 export async function getRelatedRoutes(origen: string, currentSlug: string, limit = 4): Promise<Route[]> {
   const { data, error } = await supabase
     .from("routes")
@@ -86,38 +71,71 @@ export async function getRelatedRoutes(origen: string, currentSlug: string, limi
 
 /**
  * COTIZADOR: Obtener todas las locations únicas (orígenes + destinos)
+ * IMPORTANTE: Usa paginación para traer TODAS las 1240 rutas
  */
 export async function getAllLocations(): Promise<string[]> {
-  const { data: origenes } = await supabase
-    .from("routes")
-    .select("origen");
+  const allOrigenes: string[] = [];
+  const allDestinos: string[] = [];
   
-  const { data: destinos } = await supabase
-    .from("routes")
-    .select("destino");
+  // Paginar para traer todas las rutas (más de 1000)
+  const PAGE_SIZE = 1000;
+  let page = 0;
+  let hasMore = true;
+  
+  while (hasMore) {
+    const from = page * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    
+    const { data, error } = await supabase
+      .from("routes")
+      .select("origen, destino")
+      .range(from, to);
+    
+    if (error || !data || data.length === 0) {
+      hasMore = false;
+      break;
+    }
+    
+    data.forEach(r => {
+      if (r.origen) allOrigenes.push(r.origen);
+      if (r.destino) allDestinos.push(r.destino);
+    });
+    
+    if (data.length < PAGE_SIZE) {
+      hasMore = false;
+    } else {
+      page++;
+    }
+  }
   
   const allLocations = new Set<string>();
-  (origenes || []).forEach(r => r.origen && allLocations.add(r.origen));
-  (destinos || []).forEach(r => r.destino && allLocations.add(r.destino));
+  allOrigenes.forEach(o => allLocations.add(o));
+  allDestinos.forEach(d => allLocations.add(d));
   
   return Array.from(allLocations).sort();
 }
 
 /**
  * COTIZADOR: Obtener UNA ruta por origen + destino
- * Busca en ambas direcciones (origen->destino o destino->origen)
  */
 export async function getRouteByLocations(origen: string, destino: string): Promise<Route | null> {
-  const { data, error } = await supabase
+  // Try forward: origen -> destino
+  const result1 = await supabase
     .from("routes")
     .select("*")
-    .or(`and(origen.eq.${origen},destino.eq.${destino}),and(origen.eq.${destino},destino.eq.${origen})`)
-    .limit(1)
+    .eq("origen", origen)
+    .eq("destino", destino)
     .maybeSingle();
 
-  if (error) {
-    console.error(`Error fetching route ${origen} -> ${destino}:`, error);
-    return null;
-  }
-  return data;
+  if (result1.data) return result1.data as Route;
+
+  // Try reverse: destino -> origen
+  const result2 = await supabase
+    .from("routes")
+    .select("*")
+    .eq("origen", destino)
+    .eq("destino", origen)
+    .maybeSingle();
+
+  return (result2.data as Route) || null;
 }
