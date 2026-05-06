@@ -31,16 +31,31 @@ export default function QuoteCalculatorV2({ locations }: Props) {
       setLoading(true);
       setNotFound(false);
 
-      const filter = "and(origen.eq." + from + ",destino.eq." + to + "),and(origen.eq." + to + ",destino.eq." + from + ")";
-      const { data } = await supabase
+      // Try forward: from -> to
+      const result1 = await supabase
         .from("routes")
         .select("*")
-        .or(filter)
-        .limit(1)
+        .eq("origen", from)
+        .eq("destino", to)
         .maybeSingle();
 
-      if (data) {
-        setRoute(data as Route);
+      if (result1.data) {
+        setRoute(result1.data as Route);
+        setNotFound(false);
+        setLoading(false);
+        return;
+      }
+
+      // Try reverse: to -> from
+      const result2 = await supabase
+        .from("routes")
+        .select("*")
+        .eq("origen", to)
+        .eq("destino", from)
+        .maybeSingle();
+
+      if (result2.data) {
+        setRoute(result2.data as Route);
         setNotFound(false);
       } else {
         setRoute(null);
