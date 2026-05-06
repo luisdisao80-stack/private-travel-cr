@@ -1,16 +1,15 @@
-// Tipos TypeScript para la tabla routes en Supabase
+// lib/types.ts
 
 export type Route = {
   id: number;
-  created_at: string;
   origen: string;
   destino: string;
   precio1a6: number | null;
-  kilometros: string | null;
-  duracion: string | null;
   precio7a9: number | null;
   precio10a12: number | null;
   precio13a18: number | null;
+  duracion: string | null;
+  kilometros: number | null;
   alias: string | null;
   slug: string | null;
   descripcion_viaje: string | null;

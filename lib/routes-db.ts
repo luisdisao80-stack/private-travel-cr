@@ -83,3 +83,41 @@ export async function getRelatedRoutes(origen: string, currentSlug: string, limi
   if (error) return [];
   return data || [];
 }
+
+/**
+ * COTIZADOR: Obtener todas las locations únicas (orígenes + destinos)
+ */
+export async function getAllLocations(): Promise<string[]> {
+  const { data: origenes } = await supabase
+    .from("routes")
+    .select("origen");
+  
+  const { data: destinos } = await supabase
+    .from("routes")
+    .select("destino");
+  
+  const allLocations = new Set<string>();
+  (origenes || []).forEach(r => r.origen && allLocations.add(r.origen));
+  (destinos || []).forEach(r => r.destino && allLocations.add(r.destino));
+  
+  return Array.from(allLocations).sort();
+}
+
+/**
+ * COTIZADOR: Obtener UNA ruta por origen + destino
+ * Busca en ambas direcciones (origen->destino o destino->origen)
+ */
+export async function getRouteByLocations(origen: string, destino: string): Promise<Route | null> {
+  const { data, error } = await supabase
+    .from("routes")
+    .select("*")
+    .or(`and(origen.eq.${origen},destino.eq.${destino}),and(origen.eq.${destino},destino.eq.${origen})`)
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error(`Error fetching route ${origen} -> ${destino}:`, error);
+    return null;
+  }
+  return data;
+}
