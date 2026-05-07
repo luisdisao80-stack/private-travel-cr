@@ -4,10 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Route } from "@/lib/types";
 import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
-import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby } from "lucide-react";
+import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
 
 type Props = { locations: string[] };
 const WHATSAPP_NUMBER = "50686334133";
+const EXTRA_STOP_PRICE = 35;
 
 function generateTimeOptions(): { value: string; label: string }[] {
   const times: { value: string; label: string }[] = [];
@@ -95,6 +96,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
   const [infantSeats, setInfantSeats] = useState(0);
   const [convertibleSeats, setConvertibleSeats] = useState(0);
   const [boosterSeats, setBoosterSeats] = useState(0);
+  const [extraStops, setExtraStops] = useState(0);
 
   const adults = parseInt(adultsStr) || 0;
   const children = parseInt(childrenStr) || 0;
@@ -116,7 +118,8 @@ export default function QuoteCalculatorV2({ locations }: Props) {
 
   const basePrice = route ? getPriceForGroupSize(route, totalPax || 1) : 0;
   const vipExtra = serviceType === "vip" ? VIP_EXTRA_USD : 0;
-  const totalPrice = basePrice + vipExtra;
+  const stopsExtra = extraStops * EXTRA_STOP_PRICE;
+  const totalPrice = basePrice + vipExtra + stopsExtra;
   const vehicle = getVehicleForPax(totalPax || 1);
   const requiresFlight = (from && isAirport(from)) || (to && isAirport(to));
   const totalChildSeats = infantSeats + convertibleSeats + boosterSeats;
@@ -136,6 +139,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
       if (travelDate) lines.push("Date: " + travelDate);
       if (travelTime) lines.push("Time: " + timeLabel);
       if (flightNumber) lines.push("Flight: " + flightNumber);
+      if (extraStops > 0) lines.push("Extra stops: " + extraStops + "hr (+$" + stopsExtra + ")");
       if (totalChildSeats > 0) {
         const seats: string[] = [];
         if (infantSeats > 0) seats.push(infantSeats + " infant");
@@ -154,6 +158,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
       if (travelDate) lines.push("Date: " + travelDate);
       if (travelTime) lines.push("Time: " + timeLabel);
       if (flightNumber) lines.push("Flight: " + flightNumber);
+      if (extraStops > 0) lines.push("Extra stops: " + extraStops + "hr");
       if (totalChildSeats > 0) {
         const seats: string[] = [];
         if (infantSeats > 0) seats.push(infantSeats + " infant");
@@ -297,6 +302,24 @@ export default function QuoteCalculatorV2({ locations }: Props) {
 
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
+          <MapPinned size={16} />
+          <span>Extra Stops (optional)</span>
+        </label>
+        <select
+          value={extraStops}
+          onChange={(e) => setExtraStops(parseInt(e.target.value))}
+          className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none"
+        >
+          <option value="0">No extra stops</option>
+          <option value="1">1 hour stop (+$35)</option>
+          <option value="2">2 hour stop (+$70)</option>
+          <option value="3">3 hour stop (+$105)</option>
+        </select>
+        <p className="text-xs text-gray-500 mt-1">Add stops for restaurants, scenic viewpoints, photo opportunities, etc.</p>
+      </div>
+
+      <div className="mb-5">
+        <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <Baby size={16} />
           <span>Child Seats (FREE)</span>
         </label>
@@ -364,10 +387,11 @@ export default function QuoteCalculatorV2({ locations }: Props) {
               <div className="text-xs text-gray-500 uppercase tracking-wider">Total Price</div>
               <div className="text-4xl font-bold text-amber-400">${totalPrice}<span className="text-base text-gray-400 font-normal"> USD</span></div>
             </div>
-            {serviceType === "vip" ? (
+            {(serviceType === "vip" || extraStops > 0) ? (
               <div className="text-right">
-                <div className="text-xs text-gray-500">Standard: ${basePrice}</div>
-                <div className="text-xs text-amber-400">+ VIP: ${VIP_EXTRA_USD}</div>
+                <div className="text-xs text-gray-500">Base: ${basePrice}</div>
+                {serviceType === "vip" ? (<div className="text-xs text-amber-400">+ VIP: ${VIP_EXTRA_USD}</div>) : null}
+                {extraStops > 0 ? (<div className="text-xs text-amber-400">+ Stops: ${stopsExtra}</div>) : null}
               </div>
             ) : null}
           </div>
