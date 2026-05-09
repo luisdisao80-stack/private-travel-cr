@@ -91,8 +91,27 @@ export default function QuoteCalculatorV2({ locations }: Props) {
       const params = new URLSearchParams(window.location.search);
       const fromParam = params.get("from");
       const toParam = params.get("to");
-      if (fromParam) setFrom(fromParam);
-      if (toParam) setTo(toParam);
+      // Si hay params, setearlos. Si NO hay params, limpiar TODO el formulario.
+      if (fromParam || toParam) {
+        if (fromParam) setFrom(fromParam);
+        if (toParam) setTo(toParam);
+      } else {
+        // Reset completo (Add Another Trip)
+        setFrom("");
+        setTo("");
+        setTravelDate("");
+        setTravelTime("");
+        setFlightNumber("");
+        setAdultsStr("2");
+        setChildrenStr("0");
+        setInfantSeats(0);
+        setConvertibleSeats(0);
+        setBoosterSeats(0);
+        setExtraStops(0);
+        setServiceType("standard");
+        setRoute(null);
+        setNotFound(false);
+      }
     }
     syncFromUrl();
     window.addEventListener("popstate", syncFromUrl);

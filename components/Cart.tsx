@@ -287,6 +287,11 @@ export default function Cart() {
                 <button
                   onClick={() => {
                     setCartOpen(false);
+                    // Clear URL params and dispatch popstate so cotizador resets
+                    if (typeof window !== "undefined") {
+                      window.history.replaceState({}, "", window.location.pathname);
+                      window.dispatchEvent(new PopStateEvent("popstate"));
+                    }
                     setTimeout(() => {
                       const el = document.getElementById("cotizador");
                       if (el) el.scrollIntoView({ behavior: "smooth" });
