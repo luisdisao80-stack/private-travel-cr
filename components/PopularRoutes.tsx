@@ -27,11 +27,20 @@ const popularRoutes: Route[] = [
 export default function PopularRoutes() {
   const { t, lang } = useLanguage();
 
-  const scrollToQuote = () => {
-    const quoteSection = document.getElementById("cotizador");
-    if (quoteSection) {
-      quoteSection.scrollIntoView({ behavior: "smooth" });
+  const scrollToQuote = (from?: string, to?: string) => {
+    if (from && to) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("from", from);
+      url.searchParams.set("to", to);
+      window.history.replaceState({}, "", url.toString());
+      window.dispatchEvent(new PopStateEvent("popstate"));
     }
+    setTimeout(() => {
+      const quoteSection = document.getElementById("cotizador");
+      if (quoteSection) {
+        quoteSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
   };
 
   return (
@@ -84,7 +93,7 @@ export default function PopularRoutes() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              onClick={scrollToQuote}
+              onClick={() => scrollToQuote(route.from, route.to)}
               className="group relative text-left"
             >
               <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/0 to-amber-600/0 group-hover:from-amber-500/30 group-hover:to-amber-600/10 rounded-2xl blur-xl transition-all duration-500" />
@@ -188,7 +197,7 @@ export default function PopularRoutes() {
                       gap: "4px",
                     }}
                   >
-                    {t.routes.quote}
+                    <span>Book Now</span>
                     <ArrowRight size={11} />
                   </span>
                 </div>
@@ -211,7 +220,7 @@ export default function PopularRoutes() {
             {t.routes.inCostaRica}
           </p>
           <Button
-            onClick={scrollToQuote}
+            onClick={() => scrollToQuote()}
             size="lg"
             className="h-14 px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold shadow-2xl shadow-amber-500/30"
           >

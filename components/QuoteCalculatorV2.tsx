@@ -83,6 +83,19 @@ function AutocompleteInput({ value, onChange, placeholder, locations, excludeLoc
 export default function QuoteCalculatorV2({ locations }: Props) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+
+  useEffect(() => {
+    function syncFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const fromParam = params.get("from");
+      const toParam = params.get("to");
+      if (fromParam) setFrom(fromParam);
+      if (toParam) setTo(toParam);
+    }
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, []);
   const [adultsStr, setAdultsStr] = useState("2");
   const [childrenStr, setChildrenStr] = useState("0");
   const [serviceType, setServiceType] = useState<"standard" | "vip">("standard");
