@@ -284,6 +284,19 @@ export default function Cart() {
                   {t.cart.continueBooking}
                   <ArrowRight size={18} className="ml-2" />
                 </Button>
+                <button
+                  onClick={() => {
+                    setCartOpen(false);
+                    setTimeout(() => {
+                      const el = document.getElementById("cotizador");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }, 350);
+                  }}
+                  className="w-full h-12 border border-amber-500/30 hover:border-amber-500/60 hover:bg-amber-500/5 text-amber-400 font-semibold rounded-md transition-all flex items-center justify-center gap-2"
+                >
+                  <span className="text-lg">+</span>
+                  <span>Add Another Trip</span>
+                </button>
               </div>
             )}
           </motion.div>

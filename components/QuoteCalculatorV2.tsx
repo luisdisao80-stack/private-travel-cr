@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Route } from "@/lib/types";
 import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
+import { useCart } from "@/lib/CartContext";
 import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
 
 type Props = { locations: string[] };
@@ -81,6 +82,7 @@ function AutocompleteInput({ value, onChange, placeholder, locations, excludeLoc
 }
 
 export default function QuoteCalculatorV2({ locations }: Props) {
+  const { addItem: cartAddItem } = useCart();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
 
@@ -408,10 +410,36 @@ export default function QuoteCalculatorV2({ locations }: Props) {
               </div>
             ) : null}
           </div>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg text-center transition-colors">
-            <span>Book via WhatsApp</span>
+          <button
+            type="button"
+            onClick={() => {
+              cartAddItem({
+                fromName: from,
+                toName: to,
+                date: travelDate,
+                pickupTime: travelTime,
+                passengers: totalPax,
+                children: parseInt(childrenStr) || 0,
+                flightNumber: flightNumber || undefined,
+                pickupPlace: from,
+                dropoffPlace: to,
+                vehicleId: vehicle,
+                vehicleName: vehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace",
+                serviceType,
+                extraStopHours: extraStops,
+                basePrice,
+                totalPrice,
+                duration: route ? formatDuration(route.duracion) : "",
+                infantSeats,
+                convertibleSeats,
+                boosterSeats,
+              });
+            }}
+            className="block w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-4 rounded-lg text-center transition-colors"
+          >
+            <span>Add to Cart</span>
             <ArrowRight size={16} className="inline ml-1" />
-          </a>
+          </button>
         </div>
       ) : null}
     </div>
