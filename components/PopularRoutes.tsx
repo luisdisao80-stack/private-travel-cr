@@ -8,20 +8,22 @@ import { useLanguage } from "@/lib/LanguageContext";
 type Route = {
   from: string;
   to: string;
+  fromDb: string;
+  toDb: string;
   priceFrom: number;
   duration: string;
   popular?: boolean;
 };
 
 const popularRoutes: Route[] = [
-  { from: "SJO Airport", to: "La Fortuna", priceFrom: 220, duration: "3h", popular: true },
-  { from: "LIR Airport", to: "La Fortuna", priceFrom: 225, duration: "3h", popular: true },
-  { from: "La Fortuna", to: "Monteverde", priceFrom: 245, duration: "4h", popular: true },
-  { from: "La Fortuna", to: "Tamarindo", priceFrom: 305, duration: "4h 30min" },
-  { from: "La Fortuna", to: "Manuel Antonio", priceFrom: 320, duration: "5h 30min" },
-  { from: "SJO Airport", to: "Manuel Antonio", priceFrom: 220, duration: "3h" },
-  { from: "SJO Airport", to: "Puerto Viejo", priceFrom: 310, duration: "4h 30min" },
-  { from: "SJO Airport", to: "Tamarindo", priceFrom: 335, duration: "5h" },
+  { from: "SJO Airport", to: "La Fortuna", fromDb: "SJO - Juan Santamaria Int. Airport", toDb: "La Fortuna (Arenal)", priceFrom: 220, duration: "3h", popular: true },
+  { from: "LIR Airport", to: "La Fortuna", fromDb: "LIR - Liberia Int. Airport", toDb: "La Fortuna (Arenal)", priceFrom: 225, duration: "3h", popular: true },
+  { from: "La Fortuna", to: "Monteverde", fromDb: "La Fortuna (Arenal)", toDb: "Monteverde (Cloud Forest)", priceFrom: 245, duration: "4h", popular: true },
+  { from: "La Fortuna", to: "Tamarindo", fromDb: "La Fortuna (Arenal)", toDb: "Tamarindo (Guanacaste)", priceFrom: 305, duration: "4h 30min" },
+  { from: "La Fortuna", to: "Manuel Antonio", fromDb: "La Fortuna (Arenal)", toDb: "Manuel Antonio / Quepos", priceFrom: 320, duration: "5h 30min" },
+  { from: "SJO Airport", to: "Manuel Antonio", fromDb: "SJO - Juan Santamaria Int. Airport", toDb: "Manuel Antonio / Quepos", priceFrom: 220, duration: "3h" },
+  { from: "SJO Airport", to: "Puerto Viejo", fromDb: "SJO - Juan Santamaria Int. Airport", toDb: "Puerto Viejo (Caribbean Coast)", priceFrom: 310, duration: "4h 30min" },
+  { from: "SJO Airport", to: "Tamarindo", fromDb: "SJO - Juan Santamaria Int. Airport", toDb: "Tamarindo (Guanacaste)", priceFrom: 335, duration: "5h" },
 ];
 
 export default function PopularRoutes() {
@@ -93,7 +95,7 @@ export default function PopularRoutes() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              onClick={() => scrollToQuote(route.from, route.to)}
+              onClick={() => scrollToQuote(route.fromDb, route.toDb)}
               className="group relative text-left"
             >
               <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/0 to-amber-600/0 group-hover:from-amber-500/30 group-hover:to-amber-600/10 rounded-2xl blur-xl transition-all duration-500" />
