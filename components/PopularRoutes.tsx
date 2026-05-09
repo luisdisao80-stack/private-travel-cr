@@ -20,6 +20,8 @@ const popularRoutes: Route[] = [
   { from: "La Fortuna", to: "Tamarindo", priceFrom: 305, duration: "4h 30min" },
   { from: "La Fortuna", to: "Manuel Antonio", priceFrom: 320, duration: "5h 30min" },
   { from: "SJO Airport", to: "Manuel Antonio", priceFrom: 220, duration: "3h" },
+  { from: "SJO Airport", to: "Puerto Viejo", priceFrom: 310, duration: "4h 30min" },
+  { from: "SJO Airport", to: "Tamarindo", priceFrom: 335, duration: "5h" },
 ];
 
 export default function PopularRoutes() {
