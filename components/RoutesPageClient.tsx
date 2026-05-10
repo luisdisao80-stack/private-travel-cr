@@ -270,13 +270,13 @@ export default function RoutesPageClient({ routes }: Props) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
-                    className="relative bg-gradient-to-br from-gray-900 to-black border border-amber-500/20 rounded-3xl p-8 md:p-12 shadow-2xl shadow-black/40 text-center"
+                    className="relative bg-gradient-to-br from-gray-900 to-black border border-amber-500/20 rounded-2xl p-6 md:p-8 shadow-xl shadow-black/40 text-center"
                   >
-                    {/* Big centered route title */}
-                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
+                    {/* Centered route title */}
+                    <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight tracking-tight">
                       {route.origen}
-                      <span className="block my-2 md:my-3">
-                        <ArrowRight size={32} className="inline text-amber-400" strokeWidth={2.5} />
+                      <span className="block my-1.5">
+                        <ArrowRight size={22} className="inline text-amber-400" strokeWidth={2.5} />
                       </span>
                       <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
                         {route.destino}
@@ -284,38 +284,38 @@ export default function RoutesPageClient({ routes }: Props) {
                     </h3>
 
                     {route.duracion && (
-                      <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/30 border border-white/10 text-sm md:text-base text-gray-200">
-                        <Clock size={16} className="text-amber-400" />
+                      <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/30 border border-white/10 text-xs md:text-sm text-gray-200">
+                        <Clock size={13} className="text-amber-400" />
                         {route.duracion}
                       </div>
                     )}
 
                     {/* Price */}
-                    <div className="mt-8">
-                      <div className="text-xs md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-2">
+                    <div className="mt-5">
+                      <div className="text-xs text-gray-400 uppercase tracking-[0.18em] mb-1">
                         {lang === "en" ? "From" : "Desde"}
                       </div>
-                      <div className="text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-none">
+                      <div className="text-4xl md:text-5xl font-bold text-white leading-none">
                         ${route.precio1a6}
-                        <span className="text-2xl md:text-3xl text-gray-400 font-normal ml-2">USD</span>
+                        <span className="text-base md:text-lg text-gray-400 font-normal ml-2">USD</span>
                       </div>
-                      <div className="text-xs md:text-sm text-amber-400 mt-3">
+                      <div className="text-xs text-amber-400 mt-2">
                         {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
                       </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="mt-10 flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+                    <div className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
                       <Link
                         href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base md:text-lg transition-colors shadow-2xl shadow-amber-500/40"
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base transition-colors shadow-lg shadow-amber-500/30"
                       >
                         {lang === "en" ? "Book Now" : "Reservar"}
-                        <ArrowRight size={18} />
+                        <ArrowRight size={16} />
                       </Link>
                       <Link
                         href={`/routes/${route.slug}`}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-base md:text-lg transition-colors"
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm md:text-base transition-colors"
                       >
                         {lang === "en" ? "View route details" : "Ver detalles"}
                       </Link>
