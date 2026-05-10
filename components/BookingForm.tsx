@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, MessageCircle, Loader2 } from "lucide-react";
+import { ArrowLeft, CreditCard, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -14,20 +14,10 @@ type BookingFormProps = {
 };
 
 export default function BookingForm({ onBack }: BookingFormProps) {
-  const { items, totalPrice, clearCart, setCartOpen } = useCart();
+  const { items, totalPrice } = useCart();
   const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
-
-  // Convierte "HH:MM" (24h) a formato 12h amigable: "11:30 PM"
-  const formatTime = (timeStr: string) => {
-    if (!timeStr || !timeStr.includes(":")) return timeStr;
-    const [hStr, mStr] = timeStr.split(":");
-    const h = parseInt(hStr, 10);
-    if (isNaN(h)) return timeStr;
-    const period = h < 12 ? "AM" : "PM";
-    const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
-    return `${h12}:${mStr} ${period}`;
-  };
+  const [error, setError] = useState<string | null>(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -50,56 +40,40 @@ export default function BookingForm({ onBack }: BookingFormProps) {
   const handleSubmit = async () => {
     if (!isValid || items.length === 0) return;
     setLoading(true);
+    setError(null);
 
-    // Build the WhatsApp message
-    const transfersText = items
-      .map((item, idx) => {
-        const lines = [
-          `*${idx + 1}. ${item.fromName} → ${item.toName}*`,
-          `   📅 Date: ${item.date}`,
-          `   ⏰ Pick up time: ${formatTime(item.pickupTime)}`,
-          `   👥 Passengers: ${item.passengers}${item.children > 0 ? ` (incl. ${item.children} child${item.children > 1 ? "ren" : ""} under 12)` : ""}`,
-          item.children > 0 ? `   🪑 Car seats needed: ${item.children} (FREE - included)` : null,
-          `   📍 Pick up: ${item.pickupPlace}`,
-          `   🏁 Drop off: ${item.dropoffPlace}`,
-          item.flightNumber ? `   ✈️ Flight: ${item.flightNumber}` : null,
-          `   ⭐ Service: ${item.serviceType === "vip" ? "VIP (stops + drinks + snacks)" : "Standard"}${
-            item.extraStopHours > 0 ? ` + ${item.extraStopHours}h tourist stop${item.extraStopHours > 1 ? "s" : ""}` : ""
-          }`,
-          `   🚗 Vehicle: ${item.vehicleName}`,
-          `   💰 Price: $${item.totalPrice} USD`,
-        ].filter(Boolean);
-        return lines.join("\n");
-      })
-      .join("\n\n");
+    try {
+      const resp = await fetch("/api/payment/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer: {
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            hotel: form.hotel || undefined,
+            flightNumber: form.flightNumber || undefined,
+            flightTime: form.flightTime || undefined,
+            notes: form.notes || undefined,
+          },
+          items,
+          totalUsd: totalPrice,
+        }),
+      });
 
-    const customerInfo = [
-      `*CUSTOMER:*`,
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      `Phone: ${form.phone}`,
-      form.hotel ? `Hotel: ${form.hotel}` : null,
-      form.flightNumber ? `Flight: ${form.flightNumber}` : null,
-      form.flightTime ? `Flight time: ${form.flightTime}` : null,
-    ].filter(Boolean).join("\n");
+      const data = (await resp.json()) as { checkoutUrl?: string; error?: string };
 
-    const messageText =
-      `Hello! I want to book ${items.length} transfer${items.length > 1 ? "s" : ""}:\n\n` +
-      `${customerInfo}\n\n` +
-      `*TRANSFERS:*\n\n${transfersText}\n\n` +
-      `*TOTAL: $${totalPrice} USD*` +
-      (form.notes ? `\n\n*Notes:*\n${form.notes}` : "") +
-      `\n\nPlease confirm availability. Thanks!`;
+      if (!resp.ok || !data.checkoutUrl) {
+        throw new Error(data.error || `Server returned ${resp.status}`);
+      }
 
-    const message = encodeURIComponent(messageText);
-    window.open(`https://wa.me/50686334133?text=${message}`, "_blank");
-
-    // Limpiar carrito y cerrar drawer después de un breve delay
-    setTimeout(() => {
-      clearCart();
-      setCartOpen(false);
+      // Cart is kept until payment confirms via /booking/success, so users can retry on failure.
+      window.location.href = data.checkoutUrl;
+    } catch (e) {
+      console.error("Payment start failed:", e);
+      setError(e instanceof Error ? e.message : "Could not start payment. Please try again.");
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -215,18 +189,24 @@ export default function BookingForm({ onBack }: BookingFormProps) {
         </div>
       </div>
 
+      {error ? (
+        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-xs">
+          {error}
+        </div>
+      ) : null}
+
       {/* Submit */}
       <Button
         onClick={handleSubmit}
         disabled={!isValid || loading}
-        className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-bold text-base disabled:opacity-40 mt-4"
+        className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-base disabled:opacity-40 mt-4"
       >
         {loading ? (
           <Loader2 size={18} className="animate-spin" />
         ) : (
           <>
-            <MessageCircle size={18} className="mr-2" />
-            {t.cart.sendBooking}
+            <CreditCard size={18} className="mr-2" />
+            Pay ${totalPrice} USD
           </>
         )}
       </Button>
