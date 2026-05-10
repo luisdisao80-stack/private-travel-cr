@@ -89,7 +89,7 @@ export default async function RoutePage({ params }: Props) {
             ) : null}
             <span className="flex items-center gap-2 text-sm">
               <Users size={16} className="text-amber-400" />
-              1-9 passengers
+              1-12 passengers
             </span>
             <span className="flex items-center gap-2 text-sm">
               <Car size={16} className="text-amber-400" />
@@ -100,25 +100,34 @@ export default async function RoutePage({ params }: Props) {
 
         <section className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/30 rounded-2xl p-6 md:p-8 mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">Pricing</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-gray-900/50 rounded-xl p-4 text-center">
-              <div className="text-xs text-gray-400 mb-1">1-6 PAX</div>
+              <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
+                <img src="/staria.webp" alt="Hyundai Staria" className="max-h-full max-w-full object-contain" />
+              </div>
+              <div className="text-xs text-gray-400 mb-1">1-6 PAX · Hyundai Staria</div>
               <div className="text-2xl font-bold text-amber-400">${route.precio1a6}</div>
             </div>
             {route.precio7a9 ? (
               <div className="bg-gray-900/50 rounded-xl p-4 text-center">
-                <div className="text-xs text-gray-400 mb-1">7-9 PAX</div>
+                <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
+                  <img src="/hiace.png" alt="Toyota Hiace" className="max-h-full max-w-full object-contain" />
+                </div>
+                <div className="text-xs text-gray-400 mb-1">7-9 PAX · Toyota Hiace</div>
                 <div className="text-2xl font-bold text-amber-400">${route.precio7a9}</div>
               </div>
             ) : null}
             {route.precio10a12 ? (
               <div className="bg-gray-900/50 rounded-xl p-4 text-center">
-                <div className="text-xs text-gray-400 mb-1">10-12 PAX</div>
+                <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
+                  <img src="/maxus-v90.webp" alt="Maxus V90" className="max-h-full max-w-full object-contain" />
+                </div>
+                <div className="text-xs text-gray-400 mb-1">10-12 PAX · Maxus V90</div>
                 <div className="text-2xl font-bold text-amber-400">${route.precio10a12}</div>
               </div>
             ) : null}
             {route.precio13a18 ? (
-              <div className="bg-gray-900/50 rounded-xl p-4 text-center">
+              <div className="bg-gray-900/50 rounded-xl p-4 text-center sm:col-span-2 md:col-span-3">
                 <div className="text-xs text-gray-400 mb-1">13-18 PAX</div>
                 <div className="text-2xl font-bold text-amber-400">${route.precio13a18}</div>
               </div>
