@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Users, ArrowRight } from "lucide-react";
+import { Users, ArrowRight, MessageCircle, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 
@@ -29,11 +29,11 @@ export default function FleetPreview() {
       badge: t.fleet.largeGroups,
     },
     {
-      id: "sprinter",
-      name: "Mercedes-Benz Sprinter",
+      id: "maxus",
+      name: "Maxus V90",
       model: "Executive Van",
       paxRange: `10 - 12 ${t.fleet.paxLabel}`,
-      image: "/sprinter.png",
+      image: "/maxus-v90.jpg",
       priceFrom: 180,
       badge: lang === "en" ? "XL GROUPS" : "GRUPOS XL",
     },
@@ -132,6 +132,38 @@ export default function FleetPreview() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mb-8 mx-auto max-w-3xl rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 text-center"
+        >
+          <p className="text-sm md:text-base text-gray-300">
+            {lang === "en"
+              ? "Traveling with more than 12 passengers? Contact us for a custom quote:"
+              : "¿Viajan más de 12 personas? Contáctanos para una cotización personalizada:"}
+          </p>
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="https://wa.me/50686334133"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 hover:bg-green-500/20 transition-colors text-sm font-medium"
+            >
+              <MessageCircle size={14} />
+              WhatsApp
+            </a>
+            <a
+              href="mailto:info@privatetravelcr.com"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 transition-colors text-sm font-medium"
+            >
+              <Mail size={14} />
+              info@privatetravelcr.com
+            </a>
+          </div>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}

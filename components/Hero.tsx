@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Star, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { reviewStats } from "@/lib/reviews-data";
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -42,6 +43,31 @@ export default function Hero() {
           >
             {t.hero.subtitle}
           </motion.p>
+
+          <motion.a
+            href={reviewStats.google.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-8"
+          >
+            <span className="font-bold text-base bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">
+              G
+            </span>
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <span className="text-sm text-white">
+              <strong>{reviewStats.google.rating.toFixed(1)}</strong>{" "}
+              <span className="text-gray-300">·</span>{" "}
+              <strong>{reviewStats.google.count}+</strong> Google Reviews
+            </span>
+            <ExternalLink size={12} className="text-white/40" />
+          </motion.a>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
