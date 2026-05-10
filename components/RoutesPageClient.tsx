@@ -166,10 +166,10 @@ export default function RoutesPageClient({ routes }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-2xl sm:text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-4 whitespace-nowrap"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4"
             >
-              {lang === "en" ? "Private Shuttle Routes " : "Rutas de Shuttle Privado "}
-              <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+              {lang === "en" ? "Private Shuttle Routes" : "Rutas de Shuttle Privado"}
+              <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent mt-1">
                 {lang === "en" ? "in Costa Rica" : "en Costa Rica"}
               </span>
             </motion.h1>
