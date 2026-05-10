@@ -160,16 +160,16 @@ export default function RoutesPageClient({ routes }: Props) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />
 
-        <div className="relative z-10 container mx-auto px-4 pt-28 pb-10 md:pt-32 md:pb-12">
+        <div className="relative z-10 container mx-auto px-4 pt-24 pb-6 md:pt-24 md:pb-8">
           <div className="max-w-5xl mx-auto text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.05] mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4"
             >
               {lang === "en" ? "Private Shuttle Routes" : "Rutas de Shuttle Privado"}
-              <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent mt-2">
+              <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent mt-1">
                 {lang === "en" ? "in Costa Rica" : "en Costa Rica"}
               </span>
             </motion.h1>
@@ -181,7 +181,7 @@ export default function RoutesPageClient({ routes }: Props) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-10"
+              className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-6"
             >
               <span className="font-bold text-base bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">
                 G
