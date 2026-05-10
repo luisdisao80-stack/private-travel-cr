@@ -324,7 +324,7 @@ export default function RoutesPageClient({ routes }: Props) {
                     : "Obtené una cotización al instante y completá tu reserva en minutos."}
                 </p>
                 <Link
-                  href={`/?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}#cotizador`}
+                  href={`/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`}
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
                 >
                   {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}

@@ -2,7 +2,6 @@ import BenefitsSection from "@/components/BenefitsSection";
 import FleetPreview from "@/components/FleetPreview";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
-import QuoteSection from "@/components/QuoteSection";
 import Reviews from "@/components/Reviews";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
@@ -24,9 +23,6 @@ export default function Home() {
 
       {/* STANDARD VS VIP */}
       <ServiceComparison />
-
-      {/* COTIZADOR */}
-      <QuoteSection />
 
       <FleetPreview />
 

@@ -236,7 +236,7 @@ export default function AboutPage() {
                   {t.about.cta.whatsapp}
                 </a>
                 <Link
-                  href="/#cotizador"
+                  href="/book"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/20 text-white font-bold text-lg hover:bg-white/5 transition-colors"
                 >
                   {t.about.cta.quote}

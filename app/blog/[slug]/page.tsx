@@ -144,7 +144,7 @@ export default async function BlogPostPage({
               instant quote.
             </p>
             <Link
-              href="/#cotizador"
+              href="/book"
               className="inline-block bg-amber-500 hover:bg-amber-600 text-black font-bold px-8 py-3 rounded-lg transition-colors"
             >
               Get a Quote

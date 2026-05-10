@@ -146,7 +146,7 @@ export default function FleetPage() {
                     </div>
                   </div>
 
-                  <Link href="/#cotizador">
+                  <Link href="/book">
                     <Button className="bg-amber-500 hover:bg-amber-600 text-black font-bold h-12 px-6">
                       {lang === "en" ? "Get a Quote" : "Cotizar"}
                     </Button>
@@ -238,7 +238,7 @@ export default function FleetPage() {
                     </div>
                   </div>
 
-                  <Link href="/#cotizador">
+                  <Link href="/book">
                     <Button className="bg-amber-500 hover:bg-amber-600 text-black font-bold h-12 px-6">
                       {lang === "en" ? "Get a Quote" : "Cotizar"}
                     </Button>
@@ -390,7 +390,7 @@ export default function FleetPage() {
                   ? "Get your private shuttle quote in seconds. Door-to-door service from SJO and LIR airports."
                   : "Cotizá tu shuttle privado en segundos. Servicio puerta a puerta desde aeropuertos SJO y LIR."}
               </p>
-              <Link href="/#cotizador">
+              <Link href="/book">
                 <Button className="bg-amber-500 hover:bg-amber-600 text-black font-bold h-14 px-10 text-lg">
                   {lang === "en" ? "Get Quote Now" : "Cotizar Ahora"}
                   <ArrowRight size={20} className="ml-2" />
