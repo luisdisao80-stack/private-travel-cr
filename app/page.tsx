@@ -7,7 +7,6 @@ import Reviews from "@/components/Reviews";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import PopularRoutes from "@/components/PopularRoutes";
-import ContactForm from "@/components/ContactForm";
 import ServiceComparison from "@/components/ServiceComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
@@ -36,8 +35,6 @@ export default function Home() {
       <Reviews />
 
       <FAQSection />
-
-      <ContactForm />
 
       <Footer />
 

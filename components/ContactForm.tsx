@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
 import { useLanguage } from "@/lib/LanguageContext";
 
 export default function ContactForm() {
@@ -247,13 +248,10 @@ export default function ContactForm() {
                     <Calendar size={14} />
                     {t.contact.date} *
                   </Label>
-                  <Input
-                    type="date"
-                    required
+                  <DatePicker
                     value={formData.fecha}
-                    onChange={(e) => handleChange("fecha", e.target.value)}
-                    min={new Date().toISOString().split("T")[0]}
-                    className="bg-black/50 border-amber-500/30 text-white h-12 focus:border-amber-500"
+                    onChange={(iso) => handleChange("fecha", iso)}
+                    lang={lang === "es" ? "es" : "en"}
                   />
                 </div>
               </div>

@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import type { Route } from "@/lib/types";
 import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
 import { useCart } from "@/lib/CartContext";
+import { DatePicker } from "@/components/ui/date-picker";
 import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
 
 type Props = { locations: string[] };
@@ -216,7 +217,6 @@ export default function QuoteCalculatorV2({ locations }: Props) {
     ? "py-3 rounded-lg border-2 transition-all border-amber-500 bg-amber-500/20 text-amber-400"
     : "py-3 rounded-lg border-2 transition-all border-white/10 text-gray-400 hover:border-white/30";
 
-  const todayStr = new Date().toISOString().split("T")[0];
   const overCapacity = totalPax > 12;
 
   function handleAdultsChange(val: string) {
@@ -265,7 +265,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
             <Calendar size={16} />
             <span>Date</span>
           </label>
-          <input type="date" value={travelDate} min={todayStr} onChange={(e) => setTravelDate(e.target.value)} className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none" />
+          <DatePicker value={travelDate} onChange={setTravelDate} placeholder="Select date..." />
         </div>
         <div>
           <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
