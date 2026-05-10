@@ -103,7 +103,6 @@ export default function RoutesPageClient({ routes }: Props) {
   const { lang } = useLanguage();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
-  const resultsRef = useRef<HTMLElement | null>(null);
 
   const origenes = useMemo(
     () => Array.from(new Set(routes.map((r) => r.origen))).sort(),
@@ -126,15 +125,6 @@ export default function RoutesPageClient({ routes }: Props) {
       return matchOrigen && matchDestino;
     });
   }, [routes, pickup, dropoff, hasSearch]);
-
-  // Scroll results into view when a search becomes active (or when narrowing it).
-  useEffect(() => {
-    if (!hasSearch || !resultsRef.current) return;
-    const id = window.setTimeout(() => {
-      resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 80);
-    return () => window.clearTimeout(id);
-  }, [hasSearch, filteredRoutes.length]);
 
   const perks = lang === "en"
     ? [
@@ -256,7 +246,7 @@ export default function RoutesPageClient({ routes }: Props) {
 
       {/* SEARCH RESULTS — only visible when searching */}
       {hasSearch && (
-        <section ref={resultsRef} className="container mx-auto px-4 py-6 md:py-8 scroll-mt-24">
+        <section className="container mx-auto px-4 py-6 md:py-8">
           <div className="max-w-5xl mx-auto">
             <p className="text-amber-400 text-sm font-bold tracking-wider uppercase mb-6">
               {lang === "en"
