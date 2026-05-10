@@ -80,19 +80,11 @@ export default function Navbar() {
               <Phone size={16} />
               +506 8633-4133
             </a>
-            <Button onClick={openWhatsApp} className="bg-green-600 hover:bg-green-700 text-white font-semibold">
-              <MessageCircle size={16} className="mr-2" />
-              {t.nav.whatsapp}
-            </Button>
           </div>
 
           <div className="lg:hidden flex items-center gap-2">
             <CartIcon />
             <LanguageSwitcher />
-
-            <Button onClick={openWhatsApp} size="sm" className="bg-green-600 hover:bg-green-700 text-white">
-              <MessageCircle size={16} />
-            </Button>
 
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
