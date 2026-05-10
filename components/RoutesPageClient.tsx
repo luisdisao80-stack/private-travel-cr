@@ -21,6 +21,7 @@ import {
 import { useLanguage } from "@/lib/LanguageContext";
 import type { Route } from "@/lib/types";
 import { reviewStats } from "@/lib/reviews-data";
+import { isPopularRoute } from "@/lib/popular-routes";
 
 interface Props {
   routes: Route[];
@@ -322,7 +323,11 @@ export default function RoutesPageClient({ routes }: Props) {
                         <ArrowRight size={14} />
                       </Link>
                       <Link
-                        href={`/routes/${route.slug}`}
+                        href={
+                          isPopularRoute(route.origen, route.destino)
+                            ? `/private-shuttle/${route.slug}`
+                            : `/routes/${route.slug}`
+                        }
                         className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm transition-colors"
                       >
                         {lang === "en" ? "View route details" : "Ver detalles"}
