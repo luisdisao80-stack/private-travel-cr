@@ -1,4 +1,7 @@
 import { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 import RoutesPageClient from "@/components/RoutesPageClient";
 import { getAllRoutes } from "@/lib/routes-db";
 
@@ -28,5 +31,12 @@ export const revalidate = 3600;
 
 export default async function RoutesPage() {
   const routes = await getAllRoutes();
-  return <RoutesPageClient routes={routes} />;
+  return (
+    <>
+      <Navbar />
+      <RoutesPageClient routes={routes} />
+      <Footer />
+      <WhatsAppFloat />
+    </>
+  );
 }
