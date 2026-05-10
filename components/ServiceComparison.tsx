@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Check, Crown, ArrowRight, Sparkles, Clock, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,15 +8,6 @@ import { useLanguage } from "@/lib/LanguageContext";
 
 export default function ServiceComparison() {
   const { t } = useLanguage();
-
-  const scrollToQuote = (service: "standard" | "vip") => {
-    const event = new CustomEvent("set-service-type", { detail: service });
-    window.dispatchEvent(event);
-    const quoteSection = document.getElementById("cotizador");
-    if (quoteSection) {
-      quoteSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   // Iconos especiales para los primeros 3 features del VIP
   const vipIcons = [Clock, MapPin, Sparkles, Check, Check, Check];
@@ -106,13 +98,15 @@ export default function ServiceComparison() {
 
               {/* CTA */}
               <Button
-                onClick={() => scrollToQuote("standard")}
+                asChild
                 size="lg"
                 variant="outline"
                 className="w-full h-14 border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold mt-auto"
               >
-                {t.services.standard.cta}
-                <ArrowRight className="ml-2" size={18} />
+                <Link href="/routes">
+                  {t.services.standard.cta}
+                  <ArrowRight className="ml-2" size={18} />
+                </Link>
               </Button>
 
               <p className="text-xs text-gray-500 text-center mt-4">
@@ -194,12 +188,14 @@ export default function ServiceComparison() {
 
               {/* CTA */}
               <Button
-                onClick={() => scrollToQuote("vip")}
+                asChild
                 size="lg"
                 className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/40 mt-auto"
               >
-                {t.services.vip.cta}
-                <Crown className="ml-2" size={18} />
+                <Link href="/routes">
+                  {t.services.vip.cta}
+                  <Crown className="ml-2" size={18} />
+                </Link>
               </Button>
 
               <p className="text-xs text-amber-400/70 text-center mt-4">
