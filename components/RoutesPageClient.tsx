@@ -263,63 +263,59 @@ export default function RoutesPageClient({ routes }: Props) {
                 </p>
               </div>
             ) : (
-              <div className="space-y-5">
+              <div className="space-y-6">
                 {filteredRoutes.map((route, i) => (
                   <motion.div
                     key={route.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
-                    className="relative bg-gradient-to-br from-amber-500/15 to-amber-600/5 border border-amber-500/30 rounded-2xl p-6 md:p-8 shadow-2xl shadow-amber-500/10"
+                    className="relative bg-gradient-to-br from-amber-500/15 to-amber-600/5 border border-amber-500/30 rounded-3xl p-8 md:p-12 shadow-2xl shadow-amber-500/10 text-center"
                   >
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                      {/* Origin → destination + duration */}
-                      <div className="flex items-start gap-4 flex-1 min-w-0">
-                        <div
-                          style={{ width: "48px", height: "48px" }}
-                          className="rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0"
-                        >
-                          <MapPin size={20} className="text-amber-400" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-xl md:text-2xl font-bold text-white leading-tight break-words">
-                            {route.origen} <span className="text-amber-400">→</span> {route.destino}
-                          </h3>
-                          {route.duracion && (
-                            <div className="mt-2 inline-flex items-center gap-1.5 text-sm text-gray-400">
-                              <Clock size={14} />
-                              {route.duracion}
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                    {/* Big centered route title */}
+                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
+                      {route.origen}
+                      <span className="block my-2 md:my-3">
+                        <ArrowRight size={32} className="inline text-amber-400" strokeWidth={2.5} />
+                      </span>
+                      <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                        {route.destino}
+                      </span>
+                    </h3>
 
-                      {/* Price */}
-                      <div className="md:text-right">
-                        <div className="text-xs text-gray-400 uppercase tracking-wider">
-                          {lang === "en" ? "From" : "Desde"}
-                        </div>
-                        <div className="text-4xl md:text-5xl font-bold text-white leading-none">
-                          ${route.precio1a6}
-                        </div>
-                        <div className="text-xs text-amber-400 mt-1">
-                          {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
-                        </div>
+                    {route.duracion && (
+                      <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/30 border border-white/10 text-sm md:text-base text-gray-200">
+                        <Clock size={16} className="text-amber-400" />
+                        {route.duracion}
+                      </div>
+                    )}
+
+                    {/* Price */}
+                    <div className="mt-8">
+                      <div className="text-xs md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-2">
+                        {lang === "en" ? "From" : "Desde"}
+                      </div>
+                      <div className="text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-none">
+                        ${route.precio1a6}
+                        <span className="text-2xl md:text-3xl text-gray-400 font-normal ml-2">USD</span>
+                      </div>
+                      <div className="text-xs md:text-sm text-amber-400 mt-3">
+                        {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
                       </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                    <div className="mt-10 flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
                       <Link
                         href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base transition-colors shadow-lg shadow-amber-500/30"
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base md:text-lg transition-colors shadow-2xl shadow-amber-500/40"
                       >
                         {lang === "en" ? "Book Now" : "Reservar"}
-                        <ArrowRight size={16} />
+                        <ArrowRight size={18} />
                       </Link>
                       <Link
                         href={`/routes/${route.slug}`}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm md:text-base transition-colors"
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-base md:text-lg transition-colors"
                       >
                         {lang === "en" ? "View route details" : "Ver detalles"}
                       </Link>
