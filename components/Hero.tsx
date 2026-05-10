@@ -1,19 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Hero() {
   const { t } = useLanguage();
-
-  const scrollToQuote = () => {
-    const quoteSection = document.getElementById("cotizador");
-    if (quoteSection) {
-      quoteSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <section className="relative min-h-[85vh] md:min-h-screen w-full flex items-center justify-center overflow-hidden">
@@ -56,12 +50,14 @@ export default function Hero() {
             className="flex justify-center items-center"
           >
             <Button
-              onClick={scrollToQuote}
+              asChild
               size="lg"
               className="h-12 md:h-14 px-6 md:px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all w-full sm:w-auto"
             >
-              Book Your Private Shuttle
-              <ArrowDown className="ml-2 animate-bounce" size={16} />
+              <Link href="/routes">
+                Book Your Private Shuttle
+                <ArrowRight className="ml-2" size={16} />
+              </Link>
             </Button>
           </motion.div>
         </div>
