@@ -306,6 +306,32 @@ export default function RoutesPageClient({ routes }: Props) {
                 ))}
               </div>
             )}
+
+            {filteredRoutes.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="mt-12 max-w-3xl mx-auto text-center bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30 rounded-3xl p-8 md:p-10"
+              >
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                  {lang === "en" ? "Ready to book?" : "¿Listo para reservar?"}
+                </h3>
+                <p className="text-gray-400 mb-6 max-w-xl mx-auto">
+                  {lang === "en"
+                    ? "Get an instant quote and complete your booking in minutes."
+                    : "Obtené una cotización al instante y completá tu reserva en minutos."}
+                </p>
+                <Link
+                  href={`/?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}#cotizador`}
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
+                >
+                  {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
+                  <ArrowRight size={18} />
+                </Link>
+              </motion.div>
+            )}
           </div>
         </section>
       )}
