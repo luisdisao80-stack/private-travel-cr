@@ -160,7 +160,7 @@ export default function RoutesPageClient({ routes }: Props) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />
 
-        <div className="relative z-10 container mx-auto px-4 pt-32 pb-16 md:pt-40 md:pb-24">
+        <div className="relative z-10 container mx-auto px-4 pt-28 pb-10 md:pt-32 md:pb-12">
           <div className="max-w-5xl mx-auto text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -246,7 +246,7 @@ export default function RoutesPageClient({ routes }: Props) {
 
       {/* SEARCH RESULTS — only visible when searching */}
       {hasSearch && (
-        <section className="container mx-auto px-4 py-12">
+        <section className="container mx-auto px-4 py-6 md:py-8">
           <div className="max-w-5xl mx-auto">
             <p className="text-amber-400 text-sm font-bold tracking-wider uppercase mb-6">
               {lang === "en"
@@ -337,9 +337,9 @@ export default function RoutesPageClient({ routes }: Props) {
       )}
 
       {/* INCLUDED IN EVERY SHUTTLE */}
-      <section className="container mx-auto px-4 py-16 md:py-24">
+      <section className="container mx-auto px-4 py-10 md:py-14">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <span className="text-amber-400 text-xs font-bold tracking-[0.2em] uppercase">
               {lang === "en" ? "Included in every shuttle" : "Incluido en cada shuttle"}
             </span>
@@ -378,7 +378,7 @@ export default function RoutesPageClient({ routes }: Props) {
 
       {/* READY TO BOOK — only when there are search results */}
       {hasSearch && filteredRoutes.length > 0 && (
-        <section className="container mx-auto px-4 pb-16 md:pb-24">
+        <section className="container mx-auto px-4 pb-10 md:pb-14">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
