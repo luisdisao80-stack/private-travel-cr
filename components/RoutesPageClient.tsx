@@ -270,7 +270,7 @@ export default function RoutesPageClient({ routes }: Props) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
-                    className="relative bg-gradient-to-br from-amber-500/15 to-amber-600/5 border border-amber-500/30 rounded-3xl p-8 md:p-12 shadow-2xl shadow-amber-500/10 text-center"
+                    className="relative bg-gradient-to-br from-gray-900 to-black border border-amber-500/20 rounded-3xl p-8 md:p-12 shadow-2xl shadow-black/40 text-center"
                   >
                     {/* Big centered route title */}
                     <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
@@ -278,7 +278,7 @@ export default function RoutesPageClient({ routes }: Props) {
                       <span className="block my-2 md:my-3">
                         <ArrowRight size={32} className="inline text-amber-400" strokeWidth={2.5} />
                       </span>
-                      <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                      <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
                         {route.destino}
                       </span>
                     </h3>
