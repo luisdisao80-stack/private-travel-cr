@@ -1,32 +1,47 @@
 import { supabase } from "./supabase";
 import type { Route } from "./types";
 
-export async function getAllRoutes(): Promise<Route[]> {
-  const { data, error } = await supabase
-    .from("routes")
-    .select("*")
-    .order("origen", { ascending: true })
-    .order("destino", { ascending: true });
+// Supabase returns max 1000 rows per request; paginate for the full 1240+ routes.
+const PAGE_SIZE = 1000;
 
-  if (error) {
-    console.error("Error fetching routes:", error);
-    return [];
+async function fetchAllRoutesPaginated(filter?: { is_indexable?: boolean }): Promise<Route[]> {
+  const all: Route[] = [];
+  let page = 0;
+
+  while (true) {
+    const from = page * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
+    let query = supabase
+      .from("routes")
+      .select("*")
+      .order("origen", { ascending: true })
+      .order("destino", { ascending: true })
+      .range(from, to);
+
+    if (filter?.is_indexable) query = query.eq("is_indexable", true);
+
+    const { data, error } = await query;
+    if (error) {
+      console.error("Error fetching routes:", error);
+      return all;
+    }
+    if (!data || data.length === 0) break;
+
+    all.push(...data);
+    if (data.length < PAGE_SIZE) break;
+    page++;
   }
-  return data || [];
+
+  return all;
+}
+
+export async function getAllRoutes(): Promise<Route[]> {
+  return fetchAllRoutesPaginated();
 }
 
 export async function getIndexableRoutes(): Promise<Route[]> {
-  const { data, error } = await supabase
-    .from("routes")
-    .select("*")
-    .eq("is_indexable", true)
-    .order("origen", { ascending: true });
-
-  if (error) {
-    console.error("Error fetching indexable routes:", error);
-    return [];
-  }
-  return data || [];
+  return fetchAllRoutesPaginated({ is_indexable: true });
 }
 
 export async function getRouteBySlug(slug: string): Promise<Route | null> {
@@ -44,16 +59,31 @@ export async function getRouteBySlug(slug: string): Promise<Route | null> {
 }
 
 export async function getIndexableSlugs(): Promise<string[]> {
-  const { data, error } = await supabase
-    .from("routes")
-    .select("slug")
-    .eq("is_indexable", true);
+  const slugs: string[] = [];
+  let page = 0;
 
-  if (error) {
-    console.error("Error fetching slugs:", error);
-    return [];
+  while (true) {
+    const from = page * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
+    const { data, error } = await supabase
+      .from("routes")
+      .select("slug")
+      .eq("is_indexable", true)
+      .range(from, to);
+
+    if (error) {
+      console.error("Error fetching slugs:", error);
+      return slugs;
+    }
+    if (!data || data.length === 0) break;
+
+    slugs.push(...data.map(r => r.slug).filter(Boolean) as string[]);
+    if (data.length < PAGE_SIZE) break;
+    page++;
   }
-  return (data || []).map(r => r.slug).filter(Boolean) as string[];
+
+  return slugs;
 }
 
 export async function getRelatedRoutes(origen: string, currentSlug: string, limit = 4): Promise<Route[]> {

@@ -14,22 +14,21 @@ interface Props {
 export default function RoutesPageClient({ routes }: Props) {
   const { lang } = useLanguage();
   const [search, setSearch] = useState("");
-  const [filterOrigen, setFilterOrigen] = useState("");
-
-  const origenes = useMemo(() => {
-    return Array.from(new Set(routes.map((r) => r.origen))).sort();
-  }, [routes]);
 
   const filteredRoutes = useMemo(() => {
+    const tokens = search
+      .toLowerCase()
+      .split(/\s+/)
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0 && t !== "to" && t !== "a");
+
+    if (tokens.length === 0) return routes;
+
     return routes.filter((r) => {
-      const matchesSearch =
-        search === "" ||
-        r.origen.toLowerCase().includes(search.toLowerCase()) ||
-        r.destino.toLowerCase().includes(search.toLowerCase());
-      const matchesOrigen = filterOrigen === "" || r.origen === filterOrigen;
-      return matchesSearch && matchesOrigen;
+      const haystack = `${r.origen} ${r.destino}`.toLowerCase();
+      return tokens.every((t) => haystack.includes(t));
     });
-  }, [routes, search, filterOrigen]);
+  }, [routes, search]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
@@ -62,28 +61,18 @@ export default function RoutesPageClient({ routes }: Props) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid md:grid-cols-2 gap-4 mb-8 max-w-4xl mx-auto"
+          className="mb-8 max-w-3xl mx-auto"
         >
           <div className="relative">
             <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" />
             <input
               type="text"
-              placeholder={lang === "en" ? "Search by destination..." : "Buscar por destino..."}
+              placeholder={lang === "en" ? "e.g. La Fortuna to Tamarindo" : "ej. La Fortuna a Tamarindo"}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-gray-900 border border-amber-500/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 transition"
+              className="w-full pl-12 pr-4 py-4 bg-gray-900 border border-amber-500/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 transition"
             />
           </div>
-          <select
-            value={filterOrigen}
-            onChange={(e) => setFilterOrigen(e.target.value)}
-            className="px-4 py-3 bg-gray-900 border border-amber-500/20 rounded-xl text-white focus:outline-none focus:border-amber-500/50 transition"
-          >
-            <option value="">{lang === "en" ? "All origins" : "Todos los orígenes"}</option>
-            {origenes.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
         </motion.div>
 
         <p className="text-center text-gray-400 text-sm mb-8">
