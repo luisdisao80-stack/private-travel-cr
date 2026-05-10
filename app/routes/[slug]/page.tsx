@@ -126,7 +126,7 @@ export default async function RoutePage({ params }: Props) {
           </div>
           <p className="text-xs text-gray-400 mb-6">Prices in USD per vehicle. All-inclusive: A/C, WiFi, water, child seats, door-to-door.</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl text-center transition">Book via WhatsApp</a>
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl text-center transition">Book Now</a>
             <Link href="/#cotizador" className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-6 rounded-xl text-center transition">Get a Quote</Link>
           </div>
         </section>
@@ -224,7 +224,7 @@ export default async function RoutePage({ params }: Props) {
         <section className="bg-gradient-to-br from-amber-500/20 to-amber-500/10 border border-amber-500/40 rounded-2xl p-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Ready to book?</h2>
           <p className="text-gray-300 mb-6">Get your private shuttle from {route.origen} to {route.destino} starting at ${route.precio1a6} USD</p>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition">Book via WhatsApp</a>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition">Book Now</a>
         </section>
       </div>
     </main>
