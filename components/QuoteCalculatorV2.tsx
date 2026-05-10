@@ -443,7 +443,12 @@ export default function QuoteCalculatorV2({ locations }: Props) {
                 pickupPlace: from,
                 dropoffPlace: to,
                 vehicleId: vehicle,
-                vehicleName: vehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace",
+                vehicleName:
+                  vehicle === "staria"
+                    ? "Hyundai Staria"
+                    : vehicle === "hiace"
+                      ? "Toyota Hiace"
+                      : "Maxus V90",
                 serviceType,
                 extraStopHours: extraStops,
                 basePrice,

@@ -6,7 +6,7 @@ import type { Route } from "./types";
 export const VIP_EXTRA_USD = 80;
 
 export type ServiceType = "standard" | "vip";
-export type VehicleType = "staria" | "hiace";
+export type VehicleType = "staria" | "hiace" | "maxus";
 
 export const AIRPORT_NAMES = [
   "SJO - Juan Santamaria Int. Airport",
@@ -18,7 +18,9 @@ export function isAirport(locationName: string): boolean {
 }
 
 export function getVehicleForPax(totalPax: number): VehicleType {
-  return totalPax <= 6 ? "staria" : "hiace";
+  if (totalPax <= 6) return "staria";
+  if (totalPax <= 9) return "hiace";
+  return "maxus";
 }
 
 export function getPriceForGroupSize(route: Route, totalPax: number): number {

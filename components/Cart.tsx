@@ -188,7 +188,13 @@ export default function Cart() {
                           {/* Vehicle photo - left side */}
                           <div className="flex-shrink-0 w-40 h-28 rounded-lg overflow-hidden bg-white border border-amber-500/30 flex items-center justify-center p-2">
                             <img
-                              src={item.vehicleId === "staria" ? "/staria.webp" : "/hiace.png"}
+                              src={
+                                item.vehicleId === "staria"
+                                  ? "/staria.webp"
+                                  : item.vehicleId === "maxus"
+                                    ? "/maxus-v90.webp"
+                                    : "/hiace.png"
+                              }
                               alt={item.vehicleName}
                               className="w-full h-full object-contain"
                             />

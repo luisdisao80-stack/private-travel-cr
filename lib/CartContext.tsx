@@ -13,7 +13,7 @@ export type CartItem = {
   flightNumber?: string;
   pickupPlace?: string;
   dropoffPlace?: string;
-  vehicleId: "staria" | "hiace";
+  vehicleId: "staria" | "hiace" | "maxus";
   vehicleName: string;
   serviceType: "standard" | "vip";
   extraStopHours: number;
