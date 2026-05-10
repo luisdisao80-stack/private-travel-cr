@@ -17,6 +17,8 @@ import {
   CheckCircle2,
   ExternalLink,
   Star,
+  Snowflake,
+  Droplet,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { Route } from "@/lib/types";
@@ -247,11 +249,11 @@ export default function RoutesPageClient({ routes }: Props) {
       {/* SEARCH RESULTS — only visible when searching */}
       {hasSearch && (
         <section className="container mx-auto px-4 py-12">
-          <div className="max-w-7xl mx-auto">
-            <p className="text-center text-gray-400 text-sm mb-8">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-amber-400 text-sm font-bold tracking-wider uppercase mb-6">
               {lang === "en"
-                ? `Showing ${filteredRoutes.length} routes`
-                : `Mostrando ${filteredRoutes.length} rutas`}
+                ? `${filteredRoutes.length} ${filteredRoutes.length === 1 ? "route" : "routes"} found`
+                : `${filteredRoutes.length} ${filteredRoutes.length === 1 ? "ruta encontrada" : "rutas encontradas"}`}
             </p>
 
             {filteredRoutes.length === 0 ? (
@@ -263,47 +265,89 @@ export default function RoutesPageClient({ routes }: Props) {
                 </p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredRoutes.map((route, i) => (
-                  <motion.div
-                    key={route.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: Math.min(i * 0.01, 0.4) }}
-                  >
-                    <Link
-                      href={`/routes/${route.slug}`}
-                      className="group block bg-gray-900/50 border border-amber-500/10 hover:border-amber-500/40 rounded-xl p-5 transition-all hover:bg-gray-900"
+              <div className="space-y-5">
+                {filteredRoutes.map((route, i) => {
+                  const inclusions = [
+                    { icon: Snowflake, label: "A/C" },
+                    { icon: Wifi, label: "WiFi" },
+                    { icon: Droplet, label: lang === "en" ? "Water" : "Agua" },
+                    { icon: Baby, label: lang === "en" ? "Child seats" : "Sillas para niños" },
+                    { icon: Briefcase, label: lang === "en" ? "Luggage" : "Equipaje" },
+                  ];
+
+                  return (
+                    <motion.div
+                      key={route.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
+                      className="relative bg-gradient-to-br from-amber-500/15 to-amber-600/5 border border-amber-500/30 rounded-2xl p-6 md:p-8 shadow-2xl shadow-amber-500/10"
                     >
-                      <div className="flex items-start gap-2 mb-3">
-                        <MapPin size={16} className="text-amber-400 mt-1 flex-shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white font-medium leading-tight truncate">{route.origen}</p>
-                          <ArrowRight size={14} className="text-amber-400 my-1" />
-                          <p className="text-white font-medium leading-tight truncate">{route.destino}</p>
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                        {/* Origin → destination + duration */}
+                        <div className="flex items-start gap-4 flex-1 min-w-0">
+                          <div
+                            style={{ width: "48px", height: "48px" }}
+                            className="rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0"
+                          >
+                            <MapPin size={20} className="text-amber-400" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-xl md:text-2xl font-bold text-white leading-tight break-words">
+                              {route.origen} <span className="text-amber-400">→</span> {route.destino}
+                            </h3>
+                            {route.duracion && (
+                              <div className="mt-2 inline-flex items-center gap-1.5 text-sm text-gray-400">
+                                <Clock size={14} />
+                                {route.duracion}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Price */}
+                        <div className="md:text-right">
+                          <div className="text-xs text-gray-400 uppercase tracking-wider">
+                            {lang === "en" ? "From" : "Desde"}
+                          </div>
+                          <div className="text-4xl md:text-5xl font-bold text-white leading-none">
+                            ${route.precio1a6}
+                          </div>
+                          <div className="text-xs text-amber-400 mt-1">
+                            {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between pt-3 border-t border-amber-500/10">
-                        <div className="flex items-center gap-3 text-xs text-gray-400">
-                          {route.duracion && (
-                            <span className="flex items-center gap-1">
-                              <Clock size={12} />
-                              {route.duracion}
-                            </span>
-                          )}
-                          <span className="flex items-center gap-1">
-                            <Users size={12} />
-                            1-9
+
+                      {/* Inclusions */}
+                      <div className="mt-5 pt-5 border-t border-amber-500/20 flex flex-wrap gap-x-5 gap-y-2">
+                        {inclusions.map(({ icon: Icon, label }) => (
+                          <span key={label} className="inline-flex items-center gap-1.5 text-xs md:text-sm text-gray-300">
+                            <Icon size={14} className="text-amber-400" />
+                            {label}
                           </span>
-                        </div>
-                        <div className="text-amber-400 font-bold">
-                          ${route.precio1a6}
-                          <span className="text-xs font-normal text-gray-500"> USD</span>
-                        </div>
+                        ))}
                       </div>
-                    </Link>
-                  </motion.div>
-                ))}
+
+                      {/* Actions */}
+                      <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                        <Link
+                          href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
+                          className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base transition-colors shadow-lg shadow-amber-500/30"
+                        >
+                          {lang === "en" ? "Book Now" : "Reservar"}
+                          <ArrowRight size={16} />
+                        </Link>
+                        <Link
+                          href={`/routes/${route.slug}`}
+                          className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm md:text-base transition-colors"
+                        >
+                          {lang === "en" ? "View route details" : "Ver detalles"}
+                        </Link>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
             )}
 
