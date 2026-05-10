@@ -247,7 +247,7 @@ export default function RoutesPageClient({ routes }: Props) {
       {/* SEARCH RESULTS — only visible when searching */}
       {hasSearch && (
         <section className="container mx-auto px-4 py-12">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <p className="text-amber-400 text-sm font-bold tracking-wider uppercase mb-6">
               {lang === "en"
                 ? `${filteredRoutes.length} ${filteredRoutes.length === 1 ? "route" : "routes"} found`
@@ -270,7 +270,7 @@ export default function RoutesPageClient({ routes }: Props) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
-                    className="relative bg-gradient-to-br from-gray-900 to-black border border-amber-500/20 rounded-2xl p-5 md:p-6 shadow-lg shadow-black/30 text-center max-w-2xl mx-auto"
+                    className="relative bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 text-center"
                   >
                     {/* Centered route title */}
                     <h3 className="text-lg md:text-xl font-bold text-white leading-tight tracking-tight">
