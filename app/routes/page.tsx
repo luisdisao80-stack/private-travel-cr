@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import FAQSection from "@/components/FAQSection";
 import RoutesPageClient from "@/components/RoutesPageClient";
 import { getAllRoutes } from "@/lib/routes-db";
 
@@ -35,6 +36,7 @@ export default async function RoutesPage() {
     <>
       <Navbar />
       <RoutesPageClient routes={routes} />
+      <FAQSection />
       <Footer />
       <WhatsAppFloat />
     </>
