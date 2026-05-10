@@ -49,15 +49,6 @@ export default function Hero() {
             {t.hero.subtitle}
           </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-sm md:text-lg text-gray-400 mb-6 md:mb-10 max-w-xl mx-auto px-2"
-          >
-            {t.hero.features}
-          </motion.p>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
