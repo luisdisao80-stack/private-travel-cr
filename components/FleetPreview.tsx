@@ -28,6 +28,15 @@ export default function FleetPreview() {
       priceFrom: 117,
       badge: t.fleet.largeGroups,
     },
+    {
+      id: "sprinter",
+      name: "Mercedes-Benz Sprinter",
+      model: "Executive Van",
+      paxRange: `10 - 12 ${t.fleet.paxLabel}`,
+      image: "/sprinter.png",
+      priceFrom: 180,
+      badge: lang === "en" ? "XL GROUPS" : "GRUPOS XL",
+    },
   ];
 
   return (
@@ -62,7 +71,7 @@ export default function FleetPreview() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {vehicles.map((vehicle, index) => (
             <motion.div
               key={vehicle.id}
