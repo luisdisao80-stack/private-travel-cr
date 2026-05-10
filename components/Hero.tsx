@@ -51,22 +51,25 @@ export default function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-8"
+            className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-10 shadow-2xl shadow-black/40"
           >
-            <span className="font-bold text-base bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">
+            <span className="font-bold text-3xl md:text-4xl bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent leading-none">
               G
             </span>
-            <div className="flex items-center gap-1">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
-              ))}
+            <div className="flex flex-col items-start gap-1">
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Star key={i} size={20} className="fill-amber-400 text-amber-400" />
+                ))}
+                <span className="ml-2 text-base md:text-lg font-bold text-white">
+                  {reviewStats.google.rating.toFixed(1)}
+                </span>
+              </div>
+              <span className="text-xs md:text-sm text-gray-300">
+                <strong className="text-white">{reviewStats.google.count}+</strong> Google Reviews
+              </span>
             </div>
-            <span className="text-sm text-white">
-              <strong>{reviewStats.google.rating.toFixed(1)}</strong>{" "}
-              <span className="text-gray-300">·</span>{" "}
-              <strong>{reviewStats.google.count}+</strong> Google Reviews
-            </span>
-            <ExternalLink size={12} className="text-white/40" />
+            <ExternalLink size={14} className="text-white/40" />
           </motion.a>
 
           <motion.div
