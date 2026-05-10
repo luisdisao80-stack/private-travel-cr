@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Search, MapPin, ArrowRight, Users, Clock } from "lucide-react";
+import { MapPin, ArrowRight, Users, Clock, ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { Route } from "@/lib/types";
 
@@ -11,24 +11,105 @@ interface Props {
   routes: Route[];
 }
 
+type LocationInputProps = {
+  value: string;
+  onChange: (val: string) => void;
+  placeholder: string;
+  locations: string[];
+  icon: React.ReactNode;
+  label: string;
+};
+
+function LocationInput({ value, onChange, placeholder, locations, icon, label }: LocationInputProps) {
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const suggestions = useMemo(() => {
+    if (!value) return locations.slice(0, 8);
+    const lv = value.toLowerCase();
+    return locations.filter((l) => l.toLowerCase().includes(lv)).slice(0, 8);
+  }, [value, locations]);
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  return (
+    <div ref={wrapperRef} className="relative">
+      <label className="absolute -top-2 left-4 px-2 bg-gray-950 text-amber-400 text-xs font-semibold tracking-wider uppercase z-10">
+        {label}
+      </label>
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 pointer-events-none">{icon}</div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => setOpen(true)}
+        placeholder={placeholder}
+        className="w-full pl-12 pr-10 py-4 bg-gray-900 border border-amber-500/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 transition"
+      />
+      {value && (
+        <button
+          type="button"
+          onClick={() => onChange("")}
+          aria-label="Clear"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors text-xl leading-none"
+        >
+          ×
+        </button>
+      )}
+      {open && suggestions.length > 0 && (
+        <div className="absolute z-30 w-full mt-1 bg-gray-900 border border-amber-500/30 rounded-lg shadow-2xl max-h-72 overflow-y-auto">
+          {suggestions.map((loc) => (
+            <button
+              key={loc}
+              type="button"
+              onClick={() => {
+                onChange(loc);
+                setOpen(false);
+              }}
+              className="w-full text-left px-4 py-2.5 text-white hover:bg-amber-500/20 transition-colors text-sm"
+            >
+              {loc}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function RoutesPageClient({ routes }: Props) {
   const { lang } = useLanguage();
-  const [search, setSearch] = useState("");
+  const [pickup, setPickup] = useState("");
+  const [dropoff, setDropoff] = useState("");
+
+  const origenes = useMemo(
+    () => Array.from(new Set(routes.map((r) => r.origen))).sort(),
+    [routes]
+  );
+  const destinos = useMemo(
+    () => Array.from(new Set(routes.map((r) => r.destino))).sort(),
+    [routes]
+  );
 
   const filteredRoutes = useMemo(() => {
-    const tokens = search
-      .toLowerCase()
-      .split(/\s+/)
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0 && t !== "to" && t !== "a");
-
-    if (tokens.length === 0) return routes;
-
+    const p = pickup.trim().toLowerCase();
+    const d = dropoff.trim().toLowerCase();
+    if (!p && !d) return routes;
     return routes.filter((r) => {
-      const haystack = `${r.origen} ${r.destino}`.toLowerCase();
-      return tokens.every((t) => haystack.includes(t));
+      const matchOrigen = !p || r.origen.toLowerCase().includes(p);
+      const matchDestino = !d || r.destino.toLowerCase().includes(d);
+      return matchOrigen && matchDestino;
     });
-  }, [routes, search]);
+  }, [routes, pickup, dropoff]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
@@ -61,18 +142,24 @@ export default function RoutesPageClient({ routes }: Props) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-8 max-w-3xl mx-auto"
+          className="mb-10 max-w-4xl mx-auto grid md:grid-cols-2 gap-4"
         >
-          <div className="relative">
-            <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" />
-            <input
-              type="text"
-              placeholder={lang === "en" ? "e.g. La Fortuna to Tamarindo" : "ej. La Fortuna a Tamarindo"}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-gray-900 border border-amber-500/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 transition"
-            />
-          </div>
+          <LocationInput
+            value={pickup}
+            onChange={setPickup}
+            placeholder={lang === "en" ? "e.g. La Fortuna" : "ej. La Fortuna"}
+            locations={origenes}
+            icon={<ArrowUpFromLine size={18} />}
+            label={lang === "en" ? "Pick-up" : "Origen"}
+          />
+          <LocationInput
+            value={dropoff}
+            onChange={setDropoff}
+            placeholder={lang === "en" ? "e.g. Tamarindo" : "ej. Tamarindo"}
+            locations={destinos}
+            icon={<ArrowDownToLine size={18} />}
+            label={lang === "en" ? "Drop-off" : "Destino"}
+          />
         </motion.div>
 
         <p className="text-center text-gray-400 text-sm mb-8">
