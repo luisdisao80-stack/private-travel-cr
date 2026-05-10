@@ -17,8 +17,6 @@ import {
   CheckCircle2,
   ExternalLink,
   Star,
-  Snowflake,
-  Droplet,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { Route } from "@/lib/types";
@@ -266,115 +264,69 @@ export default function RoutesPageClient({ routes }: Props) {
               </div>
             ) : (
               <div className="space-y-5">
-                {filteredRoutes.map((route, i) => {
-                  const inclusions = [
-                    { icon: Snowflake, label: "A/C" },
-                    { icon: Wifi, label: "WiFi" },
-                    { icon: Droplet, label: lang === "en" ? "Water" : "Agua" },
-                    { icon: Baby, label: lang === "en" ? "Child seats" : "Sillas para niños" },
-                    { icon: Briefcase, label: lang === "en" ? "Luggage" : "Equipaje" },
-                  ];
-
-                  return (
-                    <motion.div
-                      key={route.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
-                      className="relative bg-gradient-to-br from-amber-500/15 to-amber-600/5 border border-amber-500/30 rounded-2xl p-6 md:p-8 shadow-2xl shadow-amber-500/10"
-                    >
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                        {/* Origin → destination + duration */}
-                        <div className="flex items-start gap-4 flex-1 min-w-0">
-                          <div
-                            style={{ width: "48px", height: "48px" }}
-                            className="rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0"
-                          >
-                            <MapPin size={20} className="text-amber-400" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-xl md:text-2xl font-bold text-white leading-tight break-words">
-                              {route.origen} <span className="text-amber-400">→</span> {route.destino}
-                            </h3>
-                            {route.duracion && (
-                              <div className="mt-2 inline-flex items-center gap-1.5 text-sm text-gray-400">
-                                <Clock size={14} />
-                                {route.duracion}
-                              </div>
-                            )}
-                          </div>
+                {filteredRoutes.map((route, i) => (
+                  <motion.div
+                    key={route.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
+                    className="relative bg-gradient-to-br from-amber-500/15 to-amber-600/5 border border-amber-500/30 rounded-2xl p-6 md:p-8 shadow-2xl shadow-amber-500/10"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                      {/* Origin → destination + duration */}
+                      <div className="flex items-start gap-4 flex-1 min-w-0">
+                        <div
+                          style={{ width: "48px", height: "48px" }}
+                          className="rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0"
+                        >
+                          <MapPin size={20} className="text-amber-400" />
                         </div>
-
-                        {/* Price */}
-                        <div className="md:text-right">
-                          <div className="text-xs text-gray-400 uppercase tracking-wider">
-                            {lang === "en" ? "From" : "Desde"}
-                          </div>
-                          <div className="text-4xl md:text-5xl font-bold text-white leading-none">
-                            ${route.precio1a6}
-                          </div>
-                          <div className="text-xs text-amber-400 mt-1">
-                            {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
-                          </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-xl md:text-2xl font-bold text-white leading-tight break-words">
+                            {route.origen} <span className="text-amber-400">→</span> {route.destino}
+                          </h3>
+                          {route.duracion && (
+                            <div className="mt-2 inline-flex items-center gap-1.5 text-sm text-gray-400">
+                              <Clock size={14} />
+                              {route.duracion}
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      {/* Inclusions */}
-                      <div className="mt-5 pt-5 border-t border-amber-500/20 flex flex-wrap gap-x-5 gap-y-2">
-                        {inclusions.map(({ icon: Icon, label }) => (
-                          <span key={label} className="inline-flex items-center gap-1.5 text-xs md:text-sm text-gray-300">
-                            <Icon size={14} className="text-amber-400" />
-                            {label}
-                          </span>
-                        ))}
+                      {/* Price */}
+                      <div className="md:text-right">
+                        <div className="text-xs text-gray-400 uppercase tracking-wider">
+                          {lang === "en" ? "From" : "Desde"}
+                        </div>
+                        <div className="text-4xl md:text-5xl font-bold text-white leading-none">
+                          ${route.precio1a6}
+                        </div>
+                        <div className="text-xs text-amber-400 mt-1">
+                          {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
+                        </div>
                       </div>
+                    </div>
 
-                      {/* Actions */}
-                      <div className="mt-5 flex flex-col sm:flex-row gap-3">
-                        <Link
-                          href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
-                          className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base transition-colors shadow-lg shadow-amber-500/30"
-                        >
-                          {lang === "en" ? "Book Now" : "Reservar"}
-                          <ArrowRight size={16} />
-                        </Link>
-                        <Link
-                          href={`/routes/${route.slug}`}
-                          className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm md:text-base transition-colors"
-                        >
-                          {lang === "en" ? "View route details" : "Ver detalles"}
-                        </Link>
-                      </div>
-                    </motion.div>
-                  );
-                })}
+                    {/* Actions */}
+                    <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                      <Link
+                        href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base transition-colors shadow-lg shadow-amber-500/30"
+                      >
+                        {lang === "en" ? "Book Now" : "Reservar"}
+                        <ArrowRight size={16} />
+                      </Link>
+                      <Link
+                        href={`/routes/${route.slug}`}
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm md:text-base transition-colors"
+                      >
+                        {lang === "en" ? "View route details" : "Ver detalles"}
+                      </Link>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-            )}
-
-            {filteredRoutes.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="mt-12 max-w-3xl mx-auto text-center bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30 rounded-3xl p-8 md:p-10"
-              >
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                  {lang === "en" ? "Ready to book?" : "¿Listo para reservar?"}
-                </h3>
-                <p className="text-gray-400 mb-6 max-w-xl mx-auto">
-                  {lang === "en"
-                    ? "Get an instant quote and complete your booking in minutes."
-                    : "Obtené una cotización al instante y completá tu reserva en minutos."}
-                </p>
-                <Link
-                  href={`/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
-                >
-                  {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
-                  <ArrowRight size={18} />
-                </Link>
-              </motion.div>
             )}
           </div>
         </section>
@@ -419,6 +371,35 @@ export default function RoutesPageClient({ routes }: Props) {
           </div>
         </div>
       </section>
+
+      {/* READY TO BOOK — only when there are search results */}
+      {hasSearch && filteredRoutes.length > 0 && (
+        <section className="container mx-auto px-4 pb-16 md:pb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl mx-auto text-center bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30 rounded-3xl p-8 md:p-10"
+          >
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+              {lang === "en" ? "Ready to book?" : "¿Listo para reservar?"}
+            </h3>
+            <p className="text-gray-400 mb-6 max-w-xl mx-auto">
+              {lang === "en"
+                ? "Get an instant quote and complete your booking in minutes."
+                : "Obtené una cotización al instante y completá tu reserva en minutos."}
+            </p>
+            <Link
+              href={`/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
+            >
+              {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
+              <ArrowRight size={18} />
+            </Link>
+          </motion.div>
+        </section>
+      )}
     </main>
   );
 }
