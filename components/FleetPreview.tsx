@@ -33,7 +33,7 @@ export default function FleetPreview() {
       name: "Maxus V90",
       model: "Executive Van",
       paxRange: `10 - 12 ${t.fleet.paxLabel}`,
-      image: "/maxus-v90.jpg",
+      image: "/maxus-v90.webp",
       priceFrom: 180,
       badge: lang === "en" ? "XL GROUPS" : "GRUPOS XL",
     },

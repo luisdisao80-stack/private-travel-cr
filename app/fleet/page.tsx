@@ -274,7 +274,7 @@ export default function FleetPage() {
               {/* Foto */}
               <div className="relative bg-white rounded-2xl p-6 border border-amber-500/20">
                 <img
-                  src="/maxus-v90.jpg"
+                  src="/maxus-v90.webp"
                   alt="Maxus V90 - Private Travel Costa Rica"
                   className="w-full h-auto object-contain"
                 />
