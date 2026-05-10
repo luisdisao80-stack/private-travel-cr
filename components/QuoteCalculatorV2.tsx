@@ -394,7 +394,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
               <Crown size={14} />
               <span>VIP</span>
             </div>
-            <div className="text-xs mt-1">+$70 USD</div>
+            <div className="text-xs mt-1">+$80 USD</div>
           </button>
         </div>
       </div>

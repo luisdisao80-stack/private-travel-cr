@@ -3,7 +3,7 @@
 
 import type { Route } from "./types";
 
-export const VIP_EXTRA_USD = 70;
+export const VIP_EXTRA_USD = 80;
 
 export type ServiceType = "standard" | "vip";
 export type VehicleType = "staria" | "hiace";

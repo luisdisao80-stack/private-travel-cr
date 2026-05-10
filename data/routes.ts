@@ -131,7 +131,7 @@ export const routes: Route[] = [
 
 export type ServiceType = "standard" | "vip";
 
-export const VIP_EXTRA_USD = 70;
+export const VIP_EXTRA_USD = 80;
 
 export function getLocationById(id: string): Location | undefined {
   return locations.find((loc) => loc.id === id);

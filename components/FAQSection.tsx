@@ -49,7 +49,7 @@ const faqsEs: FAQ[] = [
   {
     question: "¿Pueden hacer paradas durante el viaje?",
     answer:
-      "¡Por supuesto! Paradas cortas (baño, café, fotos) están incluidas sin costo. Si quieres una experiencia más completa con paradas turísticas de 1-2 horas (cataratas, cafetales, miradores), te recomendamos nuestro servicio VIP por solo $70 extra, que incluye paradas flexibles, bebidas y snacks.",
+      "¡Por supuesto! Paradas cortas (baño, café, fotos) están incluidas sin costo. Si quieres una experiencia más completa con paradas turísticas de 1-2 horas (cataratas, cafetales, miradores), te recomendamos nuestro servicio VIP por solo $80 extra, que incluye paradas flexibles, bebidas y snacks.",
   },
   {
     question: "¿El precio es por persona o por vehículo?",
@@ -59,7 +59,7 @@ const faqsEs: FAQ[] = [
   {
     question: "¿Cuál es la diferencia entre Standard y VIP?",
     answer:
-      "El Standard es un traslado directo, rápido y cómodo. El VIP (+$70) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi a bordo, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
+      "El Standard es un traslado directo, rápido y cómodo. El VIP (+$80) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi a bordo, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
   },
 ];
 
@@ -102,7 +102,7 @@ const faqsEn: FAQ[] = [
   {
     question: "Can you make stops during the trip?",
     answer:
-      "Of course! Short stops (restroom, coffee, photos) are included at no cost. If you want a more complete experience with 1-2 hour tourist stops (waterfalls, coffee plantations, lookout points), we recommend our VIP service for just $70 extra, which includes flexible stops, drinks, and snacks.",
+      "Of course! Short stops (restroom, coffee, photos) are included at no cost. If you want a more complete experience with 1-2 hour tourist stops (waterfalls, coffee plantations, lookout points), we recommend our VIP service for just $80 extra, which includes flexible stops, drinks, and snacks.",
   },
   {
     question: "Is the price per person or per vehicle?",
@@ -112,7 +112,7 @@ const faqsEn: FAQ[] = [
   {
     question: "What's the difference between Standard and VIP?",
     answer:
-      "Standard is a direct, fast, and comfortable transfer. VIP (+$70) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, water and snacks, onboard WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
+      "Standard is a direct, fast, and comfortable transfer. VIP (+$80) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, water and snacks, onboard WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
   },
 ];
 
