@@ -25,7 +25,7 @@ export default function FleetPreview() {
       model: "High Roof Van",
       paxRange: `6 - 9 ${t.fleet.paxLabel}`,
       image: "/hiace.png",
-      priceFrom: 117,
+      priceFrom: 120,
       badge: t.fleet.largeGroups,
     },
     {

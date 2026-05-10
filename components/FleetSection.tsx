@@ -40,7 +40,7 @@ export default function FleetSection() {
       paxRange: `6 - 9 ${t.fleet.paxLabel}`,
       image: "/hiace.png",
       description: t.fleet.hiaceDesc,
-      priceFrom: 117,
+      priceFrom: 120,
       badge: t.fleet.largeGroups,
       features: [
         { icon: <Snowflake size={16} />, label: lang === "en" ? "Dual A/C" : "A/C Dual" },

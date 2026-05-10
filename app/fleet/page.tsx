@@ -234,7 +234,7 @@ export default function FleetPage() {
                       {lang === "en" ? "Starting from" : "Desde"}
                     </div>
                     <div className="text-3xl font-bold text-white">
-                      $117 <span className="text-sm text-gray-400 font-normal">USD</span>
+                      $120 <span className="text-sm text-gray-400 font-normal">USD</span>
                     </div>
                   </div>
 
@@ -439,7 +439,7 @@ export default function FleetPage() {
                   { label: lang === "en" ? "Air conditioning" : "Aire acondicionado", staria: "Premium", hiace: "Dual", maxus: "Dual" },
                   { label: lang === "en" ? "Luggage capacity" : "Capacidad de equipaje", staria: lang === "en" ? "Large" : "Grande", hiace: lang === "en" ? "Extra large" : "Extra grande", maxus: "XL" },
                   { label: lang === "en" ? "Best for" : "Mejor para", staria: lang === "en" ? "Couples, families" : "Parejas, familias", hiace: lang === "en" ? "Large groups" : "Grupos grandes", maxus: lang === "en" ? "XL groups, events" : "Grupos XL, eventos" },
-                  { label: lang === "en" ? "Starting price" : "Precio desde", staria: "$90", hiace: "$117", maxus: "$180" },
+                  { label: lang === "en" ? "Starting price" : "Precio desde", staria: "$90", hiace: "$120", maxus: "$180" },
                 ].map((row, i) => (
                   <div key={i} className="contents">
                     <div className="p-4 border-b border-white/5 text-gray-400">{row.label}</div>
