@@ -270,42 +270,50 @@ export default function RoutesPageClient({ routes }: Props) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
-                    className="relative bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 text-center"
+                    className="relative bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50"
                   >
-                    {/* Centered route title */}
-                    <h3 className="text-lg md:text-xl font-bold text-white leading-tight tracking-tight">
-                      {route.origen}
-                      <span className="block my-1">
-                        <ArrowRight size={16} className="inline text-amber-400" strokeWidth={2.5} />
-                      </span>
-                      <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-                        {route.destino}
-                      </span>
-                    </h3>
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+                      {/* Left: route + duration */}
+                      <div className="flex items-center gap-4 flex-1 min-w-0">
+                        <div
+                          style={{ width: "44px", height: "44px" }}
+                          className="rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0"
+                        >
+                          <MapPin size={18} className="text-amber-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-base md:text-lg font-bold text-white leading-tight">
+                            {route.origen} <span className="text-amber-400">→</span>{" "}
+                            <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                              {route.destino}
+                            </span>
+                          </h3>
+                          {route.duracion && (
+                            <div className="mt-1 inline-flex items-center gap-1 text-xs text-gray-400">
+                              <Clock size={11} />
+                              {route.duracion}
+                            </div>
+                          )}
+                        </div>
+                      </div>
 
-                    {route.duracion && (
-                      <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/30 border border-white/10 text-xs text-gray-200">
-                        <Clock size={12} className="text-amber-400" />
-                        {route.duracion}
-                      </div>
-                    )}
-
-                    {/* Price */}
-                    <div className="mt-4">
-                      <div className="text-[10px] text-gray-400 uppercase tracking-[0.18em] mb-0.5">
-                        {lang === "en" ? "From" : "Desde"}
-                      </div>
-                      <div className="text-3xl md:text-4xl font-bold text-white leading-none">
-                        ${route.precio1a6}
-                        <span className="text-sm text-gray-400 font-normal ml-1.5">USD</span>
-                      </div>
-                      <div className="text-[11px] text-amber-400 mt-1.5">
-                        {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
+                      {/* Right: price */}
+                      <div className="md:text-right shrink-0">
+                        <div className="text-[10px] text-gray-400 uppercase tracking-[0.18em]">
+                          {lang === "en" ? "From" : "Desde"}
+                        </div>
+                        <div className="text-2xl md:text-3xl font-bold text-white leading-none">
+                          ${route.precio1a6}
+                          <span className="text-xs text-gray-400 font-normal ml-1">USD</span>
+                        </div>
+                        <div className="text-[10px] text-amber-400 mt-0.5">
+                          {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
+                        </div>
                       </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="mt-5 flex flex-col sm:flex-row gap-2.5">
+                    <div className="mt-5 pt-5 border-t border-white/5 flex flex-col sm:flex-row gap-2.5">
                       <Link
                         href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
                         className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition-colors shadow shadow-amber-500/20"
