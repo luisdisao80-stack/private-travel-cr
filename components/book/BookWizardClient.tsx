@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
@@ -14,6 +14,7 @@ type View = "configuring" | "review" | "checkout";
 
 export default function BookWizardClient({ locations }: Props) {
   const { items, isCartOpen, setCartOpen, totalPrice } = useCart();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
 
@@ -29,8 +30,6 @@ export default function BookWizardClient({ locations }: Props) {
     if (items.length > 0) return "review";
     return "configuring";
   });
-  const [calcKey, setCalcKey] = useState(0); // bump to force-remount the QuoteCalc
-
   const prevItemsCount = useRef(items.length);
 
   // React to cart-count changes. New item → review. All cleared → configuring.
@@ -53,12 +52,7 @@ export default function BookWizardClient({ locations }: Props) {
   }, [items.length]);
 
   const handleAddAnother = () => {
-    // Clear the URL params so syncFromUrl inside QuoteCalc resets the form.
-    if (typeof window !== "undefined") {
-      window.history.replaceState({}, "", "/book");
-    }
-    setCalcKey((k) => k + 1);
-    setView("configuring");
+    router.push("/routes");
   };
 
   const currentStep = view === "checkout" ? "checkout" : "trip";
@@ -135,7 +129,7 @@ export default function BookWizardClient({ locations }: Props) {
           </div>
         ) : (
           <div className="max-w-2xl mx-auto">
-            <QuoteCalculatorV2 key={calcKey} locations={locations} />
+            <QuoteCalculatorV2 locations={locations} />
           </div>
         )}
       </section>
