@@ -1,15 +1,32 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, ExternalLink } from "lucide-react";
+import { ArrowRight, Star, ExternalLink, Shield, Zap, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
 import GoogleGLogo from "@/components/GoogleGLogo";
+import LocationInput from "@/components/LocationInput";
 
-export default function Hero() {
-  const { t } = useLanguage();
+type Props = {
+  locations: string[];
+};
+
+export default function Hero({ locations }: Props) {
+  const { t, lang } = useLanguage();
+  const router = useRouter();
+  const [pickup, setPickup] = useState("");
+  const [dropoff, setDropoff] = useState("");
+
+  const canContinue = pickup.trim().length > 0 && dropoff.trim().length > 0;
+
+  const handleContinue = () => {
+    if (!canContinue) return;
+    router.push(
+      `/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`
+    );
+  };
 
   return (
     <section className="relative min-h-[85vh] md:min-h-screen w-full flex items-center justify-center overflow-hidden">
@@ -52,7 +69,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-10 shadow-2xl shadow-black/40"
+            className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-8 shadow-2xl shadow-black/40"
           >
             <GoogleGLogo size={32} className="shrink-0" />
             <div className="flex flex-col items-start gap-1">
@@ -75,18 +92,52 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex justify-center items-center"
+            className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl shadow-black/50 text-left"
           >
-            <Button
-              asChild
-              size="lg"
-              className="h-12 md:h-14 px-6 md:px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all w-full sm:w-auto"
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-5 text-center">
+              {lang === "en" ? "Where are you headed?" : "¿A dónde vas?"}
+            </h2>
+
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-2">
+              <LocationInput
+                value={pickup}
+                onChange={setPickup}
+                placeholder={lang === "en" ? "Where from?" : "¿De dónde?"}
+                locations={locations}
+              />
+              <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
+              <LocationInput
+                value={dropoff}
+                onChange={setDropoff}
+                placeholder={lang === "en" ? "Where to?" : "¿A dónde?"}
+                locations={locations}
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={handleContinue}
+              disabled={!canContinue}
+              className="mt-4 w-full inline-flex items-center justify-center gap-2 h-12 md:h-14 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"
             >
-              <Link href="/routes">
-                Book Your Private Shuttle
-                <ArrowRight className="ml-2" size={16} />
-              </Link>
-            </Button>
+              {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
+              <ArrowRight size={18} />
+            </button>
+
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
+              <span className="flex items-center gap-1.5">
+                <Zap size={12} className="text-amber-400" />
+                {lang === "en" ? "Instant pricing" : "Precio al instante"}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Shield size={12} className="text-amber-400" />
+                {lang === "en" ? "Free cancellation" : "Cancelación gratis"}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 size={12} className="text-amber-400" />
+                {lang === "en" ? "No hidden fees" : "Sin cargos ocultos"}
+              </span>
+            </div>
           </motion.div>
         </div>
       </div>

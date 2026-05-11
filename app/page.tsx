@@ -8,14 +8,18 @@ import Footer from "@/components/Footer";
 import PopularRoutes from "@/components/PopularRoutes";
 import ServiceComparison from "@/components/ServiceComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import { getAllLocations } from "@/lib/routes-db";
 
-export default function Home() {
+export const revalidate = 3600;
+
+export default async function Home() {
+  const locations = await getAllLocations();
   return (
     <main className="min-h-screen bg-black">
       <Navbar />
 
       <section id="inicio">
-        <Hero />
+        <Hero locations={locations} />
       </section>
 
       {/* BENEFICIOS CON ICONOS */}
