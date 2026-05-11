@@ -2,82 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
 export default function WhatsAppFloat() {
   const { t } = useLanguage();
   const [visible, setVisible] = useState(false);
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [tooltipDismissed, setTooltipDismissed] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    if (!tooltipDismissed) {
-      const timer = setTimeout(() => setTooltipVisible(true), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [tooltipDismissed]);
-
   const openWhatsApp = () => {
     const msg = encodeURIComponent(t.whatsappFloat.prefilledMessage);
     window.open(`https://wa.me/50686334133?text=${msg}`, "_blank");
-    setTooltipVisible(false);
-    setTooltipDismissed(true);
-  };
-
-  const dismissTooltip = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setTooltipVisible(false);
-    setTooltipDismissed(true);
   };
 
   return (
     <AnimatePresence>
       {visible && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
-          <AnimatePresence>
-            {tooltipVisible && (
-              <motion.div
-                initial={{ opacity: 0, x: 20, scale: 0.8 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 20, scale: 0.8 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white rounded-2xl rounded-br-none shadow-2xl p-4 max-w-xs relative mb-2"
-                style={{ transformOrigin: "bottom right" }}
-              >
-                <button
-                  onClick={dismissTooltip}
-                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition-colors"
-                  aria-label={t.whatsappFloat.close}
-                >
-                  <X size={14} />
-                </button>
-
-                <div className="flex items-start gap-2 pr-4">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center flex-shrink-0">
-                    <span className="text-black text-xs font-bold">PT</span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-800">{t.whatsappFloat.greeting} 👋</p>
-                    <p className="text-xs text-gray-600 mt-1">{t.whatsappFloat.message}</p>
-                    <button onClick={openWhatsApp} className="text-xs text-green-600 font-semibold mt-2 hover:text-green-700 transition-colors">
-                      {t.whatsappFloat.chat}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="absolute bottom-0 right-0 translate-x-[1px] translate-y-[1px]">
-                  <div className="w-0 h-0 border-l-[12px] border-l-transparent border-t-[12px] border-t-white" />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
+        <div className="fixed bottom-6 right-6 z-50">
           <motion.button
             initial={{ opacity: 0, scale: 0, rotate: -180 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
