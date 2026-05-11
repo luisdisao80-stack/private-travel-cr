@@ -245,54 +245,85 @@ export default function QuoteCalculatorV2({ locations }: Props) {
     if (childrenStr === "") setChildrenStr("0");
   }
 
+  const routeLocked = !!from && !!to;
+
   return (
     <div className="bg-gradient-to-br from-gray-900 to-black border border-amber-500/30 rounded-2xl p-6 md:p-8">
-      <div className="mb-5">
-        <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
-          <MapPin size={16} />
-          <span>Pickup Location</span>
-        </label>
-        <AutocompleteInput value={from} onChange={setFrom} placeholder="Type or select pickup..." locations={locations} excludeLocation={to} />
-      </div>
+      {routeLocked ? (
+        <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] text-amber-400 font-bold tracking-[0.18em] uppercase mb-1">
+                Selected route
+              </div>
+              <div className="text-base md:text-lg font-bold text-white leading-tight break-words">
+                {from} <span className="text-amber-400">→</span> {to}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setFrom("");
+                setTo("");
+                setPickupAddress("");
+                setDropoffAddress("");
+              }}
+              className="text-xs text-gray-400 hover:text-amber-400 transition-colors shrink-0"
+            >
+              Change
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="mb-5">
+            <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
+              <MapPin size={16} />
+              <span>Pickup Location</span>
+            </label>
+            <AutocompleteInput value={from} onChange={setFrom} placeholder="Type or select pickup..." locations={locations} excludeLocation={to} />
+          </div>
 
-      <div className="mb-5">
-        <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
-          <MapPin size={16} />
-          <span>Drop-off Location</span>
-        </label>
-        <AutocompleteInput value={to} onChange={setTo} placeholder="Type or select destination..." locations={locations} excludeLocation={from} />
-      </div>
+          <div className="mb-5">
+            <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
+              <MapPin size={16} />
+              <span>Drop-off Location</span>
+            </label>
+            <AutocompleteInput value={to} onChange={setTo} placeholder="Type or select destination..." locations={locations} excludeLocation={from} />
+          </div>
+        </>
+      )}
 
       {/* Specific pickup address (hotel, Airbnb, exact street) */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <MapPin size={16} />
-          <span>Pickup address (hotel, Airbnb, address...)</span>
+          <span>Pickup address</span>
         </label>
         <input
           type="text"
           value={pickupAddress}
           onChange={(e) => setPickupAddress(e.target.value)}
-          placeholder="e.g. Hotel Tabacón Resort, La Fortuna"
+          placeholder="Hotel, Airbnb, or exact address..."
           className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
         />
-        <p className="text-xs text-gray-500 mt-1">Optional — leave blank to use the pickup location above</p>
+        <p className="text-xs text-gray-500 mt-1">Where should the driver pick you up?</p>
       </div>
 
       {/* Specific drop-off address */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <MapPin size={16} />
-          <span>Drop-off address (hotel, Airbnb, address...)</span>
+          <span>Drop-off address</span>
         </label>
         <input
           type="text"
           value={dropoffAddress}
           onChange={(e) => setDropoffAddress(e.target.value)}
-          placeholder="e.g. JW Marriott Guanacaste, Hacienda Pinilla"
+          placeholder="Hotel, Airbnb, or exact address..."
           className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
         />
-        <p className="text-xs text-gray-500 mt-1">Optional — leave blank to use the drop-off location above</p>
+        <p className="text-xs text-gray-500 mt-1">Where would you like to be dropped off?</p>
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3">
