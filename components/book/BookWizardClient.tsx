@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
@@ -10,7 +10,18 @@ import { useCart } from "@/lib/CartContext";
 type Props = { locations: string[] };
 
 export default function BookWizardClient({ locations }: Props) {
-  const { items, setCartOpen, totalPrice } = useCart();
+  const { items, isCartOpen, setCartOpen, totalPrice } = useCart();
+
+  // CartContext.addItem auto-opens the drawer. On /book the inline checkout already takes
+  // over, so close the drawer when an item is added. Manual opens (clicking the cart icon
+  // without adding) are left alone.
+  const prevCount = useRef(items.length);
+  useEffect(() => {
+    if (items.length > prevCount.current && isCartOpen) {
+      setCartOpen(false);
+    }
+    prevCount.current = items.length;
+  }, [items.length, isCartOpen, setCartOpen]);
 
   // Step 2 (Trip Details) while building the cart, Step 3 (Checkout) once there's at least one trip.
   const hasTrip = items.length > 0;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -22,7 +23,12 @@ import BookingForm from "@/components/BookingForm";
 export default function Cart() {
   const { items, removeItem, clearCart, totalPrice, isCartOpen, setCartOpen } = useCart();
   const { t, lang } = useLanguage();
+  const pathname = usePathname();
+  const router = useRouter();
   const [showBookingForm, setShowBookingForm] = useState(false);
+
+  // /book already renders the checkout form inline — the drawer should not duplicate it.
+  const onBookPage = pathname === "/book";
 
   const handleClose = () => {
     setCartOpen(false);
@@ -31,7 +37,14 @@ export default function Cart() {
 
   const handleContinue = () => {
     if (items.length === 0) return;
-    setShowBookingForm(true);
+    if (onBookPage) {
+      // Inline form on /book already shows the checkout — just close the drawer.
+      setCartOpen(false);
+      return;
+    }
+    // Other pages don't have the inline form, so navigate to /book where it'll render.
+    setCartOpen(false);
+    router.push("/book");
   };
 
   const handleBack = () => {
