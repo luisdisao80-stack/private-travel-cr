@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
@@ -10,13 +10,7 @@ import { useCart } from "@/lib/CartContext";
 type Props = { locations: string[] };
 
 export default function BookWizardClient({ locations }: Props) {
-  const { items, isCartOpen, setCartOpen, totalPrice } = useCart();
-
-  // On /book we render the checkout form inline; the slide-over cart drawer
-  // would duplicate it, so force it closed whenever it tries to open.
-  useEffect(() => {
-    if (isCartOpen) setCartOpen(false);
-  }, [isCartOpen, setCartOpen]);
+  const { items, setCartOpen, totalPrice } = useCart();
 
   // Step 2 (Trip Details) while building the cart, Step 3 (Checkout) once there's at least one trip.
   const hasTrip = items.length > 0;
@@ -36,6 +30,7 @@ export default function BookWizardClient({ locations }: Props) {
       duration: latest?.duration,
       totalPrice,
       vehicleName: latest?.vehicleName,
+      vehicleId: latest?.vehicleId,
     }),
     [latest, totalPrice]
   );

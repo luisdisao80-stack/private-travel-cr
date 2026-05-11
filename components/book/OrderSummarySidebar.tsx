@@ -29,7 +29,15 @@ type Props = {
   duration?: string;
   totalPrice: number;
   vehicleName?: string;
+  vehicleId?: "staria" | "hiace" | "maxus";
 };
+
+function vehicleImage(id?: Props["vehicleId"]): string | null {
+  if (id === "staria") return "/staria.webp";
+  if (id === "hiace") return "/hiace.png";
+  if (id === "maxus") return "/maxus-v90.webp";
+  return null;
+}
 
 function formatDateShort(iso?: string): string {
   if (!iso) return "—";
@@ -92,8 +100,10 @@ export default function OrderSummarySidebar({
   duration,
   totalPrice,
   vehicleName,
+  vehicleId,
 }: Props) {
   const [openIncluded, setOpenIncluded] = useState(false);
+  const vehicleImg = vehicleImage(vehicleId);
 
   return (
     <aside className="lg:sticky lg:top-24">
@@ -140,9 +150,15 @@ export default function OrderSummarySidebar({
           </div>
 
           {vehicleName ? (
-            <div className="rounded-lg bg-amber-500/5 border border-amber-500/20 px-3 py-2 text-xs text-amber-200">
-              <span className="text-gray-400">Vehicle: </span>
-              <span className="font-semibold">{vehicleName}</span>
+            <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-3">
+              <div className="text-[10px] text-amber-300 font-bold tracking-wider uppercase mb-1.5">Your vehicle</div>
+              {vehicleImg ? (
+                <div className="bg-white rounded-lg p-2 mb-2 h-24 flex items-center justify-center">
+                  <img src={vehicleImg} alt={vehicleName} className="max-h-full max-w-full object-contain" />
+                </div>
+              ) : null}
+              <div className="text-sm font-semibold text-white">{vehicleName}</div>
+              <div className="text-[11px] text-gray-400">2023+ · ICT licensed</div>
             </div>
           ) : null}
 
