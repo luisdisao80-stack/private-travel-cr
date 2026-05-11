@@ -1,40 +1,68 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
 import OrderSummarySidebar from "@/components/book/OrderSummarySidebar";
+import TripsList from "@/components/book/TripsList";
 import { useCart } from "@/lib/CartContext";
 
 type Props = { locations: string[] };
+type View = "configuring" | "review" | "checkout";
 
 export default function BookWizardClient({ locations }: Props) {
   const { items, isCartOpen, setCartOpen, totalPrice } = useCart();
 
-  // CartContext.addItem auto-opens the drawer. On /book the inline checkout already takes
-  // over, so close the drawer when an item is added. Manual opens (clicking the cart icon
-  // without adding) are left alone.
-  const prevCount = useRef(items.length);
+  // Three sub-views inside Step 2:
+  //   configuring – QuoteCalculator only (cart empty, or visitor clicked 'Add another trip')
+  //   review      – TripsList only (one+ trips already added, awaiting next action)
+  // Step 3 is `checkout` – the BookingForm.
+  const [view, setView] = useState<View>("configuring");
+  const [calcKey, setCalcKey] = useState(0); // bump to force-remount the QuoteCalc
+
+  const prevItemsCount = useRef(items.length);
+
+  // React to cart-count changes. New item → review. All cleared → configuring.
   useEffect(() => {
-    if (items.length > prevCount.current && isCartOpen) {
+    if (items.length > prevItemsCount.current) {
+      setView("review");
+    } else if (items.length === 0) {
+      setView("configuring");
+    }
+    prevItemsCount.current = items.length;
+  }, [items.length]);
+
+  // The cart drawer auto-opens on addItem; on /book we render the cart inline, so close it.
+  useEffect(() => {
+    if (isCartOpen && items.length > prevItemsCount.current) {
       setCartOpen(false);
     }
-    prevCount.current = items.length;
-  }, [items.length, isCartOpen, setCartOpen]);
+    // intentionally not depending on isCartOpen — only react to count changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items.length]);
 
-  // Step 2 (Trip Details) while building the cart, Step 3 (Checkout) once there's at least one trip.
-  const hasTrip = items.length > 0;
-  const currentStep = hasTrip ? "checkout" : "trip";
+  const handleAddAnother = () => {
+    // Clear the URL params so syncFromUrl inside QuoteCalc resets the form.
+    if (typeof window !== "undefined") {
+      window.history.replaceState({}, "", "/book");
+    }
+    setCalcKey((k) => k + 1);
+    setView("configuring");
+  };
 
-  // Drive the OrderSummary sidebar from the latest cart item (or placeholders).
+  const currentStep = view === "checkout" ? "checkout" : "trip";
+
+  // Drive Order Summary sidebar from the latest cart item (only relevant in checkout view).
   const latest = items[items.length - 1];
   const summary = useMemo(
     () => ({
       from: latest?.fromName || "",
       to: latest?.toName || "",
-      pickupAddress: latest?.pickupPlace && latest.pickupPlace !== latest.fromName ? latest.pickupPlace : undefined,
-      dropoffAddress: latest?.dropoffPlace && latest.dropoffPlace !== latest.toName ? latest.dropoffPlace : undefined,
+      pickupAddress:
+        latest?.pickupPlace && latest.pickupPlace !== latest.fromName ? latest.pickupPlace : undefined,
+      dropoffAddress:
+        latest?.dropoffPlace && latest.dropoffPlace !== latest.toName ? latest.dropoffPlace : undefined,
       travelDate: latest?.date,
       pickupTime: latest?.pickupTime,
       passengers: latest?.passengers || 0,
@@ -45,6 +73,19 @@ export default function BookWizardClient({ locations }: Props) {
     }),
     [latest, totalPrice]
   );
+
+  const heroTitle =
+    view === "checkout"
+      ? "Confirm your booking"
+      : view === "review"
+        ? "Your trips"
+        : "Book your private shuttle";
+  const heroSub =
+    view === "checkout"
+      ? "Enter your details and we'll handle the rest"
+      : view === "review"
+        ? "Add another or continue to checkout"
+        : "Pick your route, your date, and ride in comfort";
 
   return (
     <>
@@ -59,30 +100,32 @@ export default function BookWizardClient({ locations }: Props) {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />
         <div className="relative z-10 container mx-auto px-4 pt-24 pb-10 md:pt-28 md:pb-12 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-3">
-            {hasTrip ? "Confirm your booking" : "Book your private shuttle"}
+            {heroTitle}
           </h1>
-          <p className="text-gray-300 text-sm md:text-base max-w-xl mx-auto">
-            {hasTrip
-              ? "Enter your details and we'll handle the rest"
-              : "Pick your route, your date, and ride in comfort"}
-          </p>
+          <p className="text-gray-300 text-sm md:text-base max-w-xl mx-auto">{heroSub}</p>
         </div>
       </section>
 
       <WizardProgress current={currentStep} />
 
-      {/* Layout: two-column once a trip is in the cart, single narrow column while configuring */}
       <section className="container mx-auto px-4 py-8 md:py-12">
-        {hasTrip ? (
+        {view === "checkout" ? (
           <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-10">
             <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
-              <BookingForm onBack={() => setCartOpen(true)} />
+              <BookingForm onBack={() => setView("review")} />
             </div>
             <OrderSummarySidebar {...summary} />
           </div>
+        ) : view === "review" ? (
+          <div className="max-w-2xl mx-auto">
+            <TripsList
+              onAddAnother={handleAddAnother}
+              onContinue={() => setView("checkout")}
+            />
+          </div>
         ) : (
           <div className="max-w-2xl mx-auto">
-            <QuoteCalculatorV2 locations={locations} />
+            <QuoteCalculatorV2 key={calcKey} locations={locations} />
           </div>
         )}
       </section>
