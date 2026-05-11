@@ -29,6 +29,7 @@ type CartContextType = {
   items: CartItem[];
   isCartOpen: boolean;
   addItem: (item: Omit<CartItem, "id">) => void;
+  updateItem: (id: string, patch: Partial<Omit<CartItem, "id">>) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
   setCartOpen: (open: boolean) => void;
@@ -72,6 +73,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCartOpen(true);
   };
 
+  const updateItem = (id: string, patch: Partial<Omit<CartItem, "id">>) => {
+    setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
+  };
+
   const removeItem = (id: string) => {
     setItems((prev) => prev.filter((it) => it.id !== id));
   };
@@ -83,7 +88,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, isCartOpen, addItem, removeItem, clearCart, setCartOpen, totalPrice, itemCount }}
+      value={{ items, isCartOpen, addItem, updateItem, removeItem, clearCart, setCartOpen, totalPrice, itemCount }}
     >
       {children}
     </CartContext.Provider>
