@@ -2,6 +2,7 @@ import Link from "next/link";
 import { XCircle, MessageCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WizardProgress from "@/components/book/WizardProgress";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +36,10 @@ export default async function BookingErrorPage({
   return (
     <main className="min-h-screen bg-black text-white">
       <Navbar />
-      <section className="pt-32 pb-20 px-4">
+      <div className="pt-24">
+        <WizardProgress current="checkout" />
+      </div>
+      <section className="pt-10 pb-20 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="bg-gradient-to-br from-red-500/10 to-amber-500/5 border border-red-500/30 rounded-3xl p-8 md:p-12 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/15 border border-red-500/40 mb-6">
