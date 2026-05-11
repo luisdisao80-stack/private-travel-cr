@@ -8,6 +8,7 @@ import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
 import OrderSummarySidebar from "@/components/book/OrderSummarySidebar";
 import LocationInput from "@/components/LocationInput";
+import RoutePricePreview from "@/components/RoutePricePreview";
 import { useCart } from "@/lib/CartContext";
 
 type Props = { locations: string[] };
@@ -139,6 +140,7 @@ export default function BookWizardClient({ locations }: Props) {
                     locations={locations}
                   />
                 </div>
+                <RoutePricePreview from={heroFrom} to={heroTo} />
                 <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
                   <span className="flex items-center gap-1.5">
                     <Zap size={12} className="text-amber-400" />

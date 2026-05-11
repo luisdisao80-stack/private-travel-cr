@@ -8,6 +8,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
 import GoogleGLogo from "@/components/GoogleGLogo";
 import LocationInput from "@/components/LocationInput";
+import RoutePricePreview from "@/components/RoutePricePreview";
 
 type Props = {
   locations: string[];
@@ -113,6 +114,8 @@ export default function Hero({ locations }: Props) {
                 locations={locations}
               />
             </div>
+
+            <RoutePricePreview from={pickup} to={dropoff} />
 
             <button
               type="button"
