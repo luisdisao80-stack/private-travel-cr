@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
@@ -13,6 +13,7 @@ type View = "configuring" | "checkout";
 
 export default function BookWizardClient({ locations }: Props) {
   const { items, isCartOpen, setCartOpen, hydrated, totalPrice } = useCart();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
   const wantsCheckout = searchParams.get("checkout") === "1";
@@ -26,7 +27,6 @@ export default function BookWizardClient({ locations }: Props) {
   // (or 'checkout' if the URL explicitly asked for it) and let the
   // post-hydration effect promote the view if the cart has items.
   const [view, setView] = useState<View>(wantsCheckout ? "checkout" : "configuring");
-  const [calcKey, setCalcKey] = useState(0);
   const prevItemsCount = useRef(0);
   const settledFromHydration = useRef(false);
 
@@ -43,20 +43,17 @@ export default function BookWizardClient({ locations }: Props) {
       }
       return;
     }
-    // After Add to Cart: reset the calculator and stay in 'configuring' so
-    // the visitor can add another trip. They reach checkout via the cart
-    // drawer's "Continue to booking" or /routes' "Continue to booking".
+    // After Add to Cart: bounce the visitor to /routes so they can pick
+    // the next route. From there, "Continue to booking" leads to checkout.
     if (items.length > prevItemsCount.current) {
-      setCalcKey((k) => k + 1);
-      if (typeof window !== "undefined") {
-        window.history.replaceState({}, "", "/book");
-      }
-      setView("configuring");
-    } else if (items.length === 0) {
+      router.push("/routes");
+      return;
+    }
+    if (items.length === 0) {
       setView("configuring");
     }
     prevItemsCount.current = items.length;
-  }, [items.length, hydrated, hasUrlRoute, wantsCheckout]);
+  }, [items.length, hydrated, hasUrlRoute, wantsCheckout, router]);
 
   // The cart drawer auto-opens on addItem; on /book the cart is reachable
   // through the navbar icon, so close the drawer to keep the page calm.
@@ -129,7 +126,7 @@ export default function BookWizardClient({ locations }: Props) {
           </div>
         ) : (
           <div className="max-w-2xl mx-auto">
-            <QuoteCalculatorV2 key={calcKey} locations={locations} />
+            <QuoteCalculatorV2 locations={locations} />
           </div>
         )}
       </section>
