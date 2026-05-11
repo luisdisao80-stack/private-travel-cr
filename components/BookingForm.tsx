@@ -55,6 +55,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
     phoneLocal: "",
     notes: "",
   });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   // Per-trip flight-time state lives only in the form — the cart item already
   // stores flightNumber; flightTime is just a hint sent in the booking payload.
@@ -70,7 +71,8 @@ export default function BookingForm({ onBack }: BookingFormProps) {
     form.name.trim().length > 1 &&
     /\S+@\S+\.\S+/.test(form.email) &&
     form.phoneLocal.trim().length >= 5 &&
-    items.length > 0;
+    items.length > 0 &&
+    acceptedTerms;
 
   const handleSubmit = async () => {
     if (!isValid) return;
@@ -239,6 +241,27 @@ export default function BookingForm({ onBack }: BookingFormProps) {
           {error}
         </div>
       ) : null}
+
+      <label className="flex items-start gap-2.5 cursor-pointer select-none">
+        <input
+          type="checkbox"
+          checked={acceptedTerms}
+          onChange={(e) => setAcceptedTerms(e.target.checked)}
+          className="mt-0.5 h-4 w-4 rounded border-amber-500/40 bg-black/50 accent-amber-500 shrink-0"
+        />
+        <span className="text-xs text-gray-300 leading-snug">
+          I have read and accept the{" "}
+          <a
+            href="/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-400 hover:text-amber-300 underline underline-offset-2"
+          >
+            Terms &amp; Conditions
+          </a>
+          .
+        </span>
+      </label>
 
       <Button
         onClick={handleSubmit}
