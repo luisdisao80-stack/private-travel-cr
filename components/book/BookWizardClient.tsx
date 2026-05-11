@@ -163,7 +163,7 @@ export default function BookWizardClient({ locations }: Props) {
 
       <section className="container mx-auto px-4 py-8 md:py-12">
         {view === "checkout" ? (
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-10">
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_440px] gap-8 lg:gap-10">
             <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
               <BookingForm onBack={() => setView("configuring")} />
             </div>
