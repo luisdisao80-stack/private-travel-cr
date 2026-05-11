@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -11,11 +11,13 @@ import {
   Plane,
   Clock,
   Check,
+  ArrowDown,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useCart } from "@/lib/CartContext";
+import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
 import { isAirport, VIP_EXTRA_USD } from "@/lib/quote-helpers";
 
@@ -39,44 +41,24 @@ type BookingFormProps = {
   onBack: () => void;
 };
 
+type FlightStateMap = Record<string, { number: string; time: string }>;
+
 export default function BookingForm({ onBack }: BookingFormProps) {
-  const { items, updateItem, totalPrice } = useCart();
+  const { items, updateItem, removeItem, totalPrice } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // For the checkout we focus on the most recent cart item. Multi-trip carts still total
-  // correctly via totalPrice — the service-type cards apply to the latest trip.
-  const item = items[items.length - 1];
-  const showFlight = !!item && isAirport(item.fromName);
-
-  // Customer form state
   const [country, setCountry] = useState<Country>(DEFAULT_COUNTRY);
   const [form, setForm] = useState({
     name: "",
     email: "",
     phoneLocal: "",
-    pickupAddress: "",
-    dropoffAddress: "",
-    flightNumber: "",
-    flightTime: "",
     notes: "",
   });
 
-  // Seed pickup/dropoff addresses from cart item once it's available.
-  useEffect(() => {
-    if (!item) return;
-    setForm((prev) => ({
-      ...prev,
-      pickupAddress:
-        prev.pickupAddress ||
-        (item.pickupPlace && item.pickupPlace !== item.fromName ? item.pickupPlace : ""),
-      dropoffAddress:
-        prev.dropoffAddress ||
-        (item.dropoffPlace && item.dropoffPlace !== item.toName ? item.dropoffPlace : ""),
-      flightNumber: prev.flightNumber || item.flightNumber || "",
-    }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item?.id]);
+  // Per-trip flight-time state lives only in the form — the cart item already
+  // stores flightNumber; flightTime is just a hint sent in the booking payload.
+  const [flightByItem, setFlightByItem] = useState<FlightStateMap>({});
 
   const handleChange = (field: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -87,42 +69,21 @@ export default function BookingForm({ onBack }: BookingFormProps) {
   const isValid =
     form.name.trim().length > 1 &&
     /\S+@\S+\.\S+/.test(form.email) &&
-    form.phoneLocal.trim().length >= 5;
-
-  // Recompute the latest item's price when the visitor switches Standard/VIP.
-  const setService = (service: "standard" | "vip") => {
-    if (!item) return;
-    const stopsCost = item.extraStopHours * EXTRA_STOP_PRICE;
-    const totalForItem = item.basePrice + (service === "vip" ? VIP_EXTRA_USD : 0) + stopsCost;
-    updateItem(item.id, { serviceType: service, totalPrice: totalForItem });
-  };
-
-  // Persist address / flight edits into the cart item so they appear in Order Summary + payload.
-  useEffect(() => {
-    if (!item) return;
-    const pickup = form.pickupAddress.trim() || item.fromName;
-    const dropoff = form.dropoffAddress.trim() || item.toName;
-    const flight = form.flightNumber.trim() || undefined;
-    if (item.pickupPlace !== pickup || item.dropoffPlace !== dropoff || item.flightNumber !== flight) {
-      updateItem(item.id, { pickupPlace: pickup, dropoffPlace: dropoff, flightNumber: flight });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.pickupAddress, form.dropoffAddress, form.flightNumber]);
-
-  // Price preview for the service cards (latest item only — totalPrice already includes the change).
-  const standardPriceForItem = useMemo(() => {
-    if (!item) return 0;
-    return item.basePrice + item.extraStopHours * EXTRA_STOP_PRICE;
-  }, [item]);
-  const vipPriceForItem = standardPriceForItem + VIP_EXTRA_USD;
+    form.phoneLocal.trim().length >= 5 &&
+    items.length > 0;
 
   const handleSubmit = async () => {
-    if (!isValid || items.length === 0) return;
+    if (!isValid) return;
     setLoading(true);
     setError(null);
 
     try {
       const phone = `${country.dial} ${form.phoneLocal.trim()}`;
+      // Decorate each item with its flightTime so the booking record carries it.
+      const decoratedItems = items.map((it) => {
+        const flight = flightByItem[it.id];
+        return flight?.time ? { ...it, flightTime: flight.time } : it;
+      });
       const resp = await fetch("/api/payment/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -131,12 +92,9 @@ export default function BookingForm({ onBack }: BookingFormProps) {
             name: form.name,
             email: form.email,
             phone,
-            hotel: undefined,
-            flightNumber: showFlight ? form.flightNumber || undefined : undefined,
-            flightTime: showFlight ? form.flightTime || undefined : undefined,
             notes: form.notes || undefined,
           },
-          items,
+          items: decoratedItems,
           totalUsd: totalPrice,
         }),
       });
@@ -153,7 +111,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
     }
   };
 
-  if (!item) {
+  if (items.length === 0) {
     return (
       <div className="p-6 text-center text-gray-400">
         <p>Your cart is empty.</p>
@@ -170,43 +128,34 @@ export default function BookingForm({ onBack }: BookingFormProps) {
       animate={{ opacity: 1, y: 0 }}
       className="p-5 md:p-6 space-y-6"
     >
-      {/* Back */}
       <button
         onClick={onBack}
         className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-amber-400 transition-colors"
       >
         <ArrowLeft size={14} />
-        Back to cart
+        Back
       </button>
 
-      {/* Service Type cards (Standard vs VIP) */}
-      <section>
-        <div className="text-amber-400 text-xs font-bold tracking-[0.18em] uppercase mb-3">
-          Choose your shuttle service
+      {/* One card per cart item — addresses, service type, flight all per-trip. */}
+      <section className="space-y-4">
+        <div className="text-amber-400 text-xs font-bold tracking-[0.18em] uppercase">
+          Your trips
         </div>
-        <div className="grid sm:grid-cols-2 gap-3">
-          <ServiceCard
-            label="Standard"
-            description="Direct ride to your destination"
-            price={standardPriceForItem}
-            selected={item.serviceType === "standard"}
-            onClick={() => setService("standard")}
-            features={["A/C", "WiFi", "Bottled water", "Luggage included"]}
+        {items.map((item, idx) => (
+          <TripConfigCard
+            key={item.id}
+            index={idx}
+            item={item}
+            flight={flightByItem[item.id] ?? { number: item.flightNumber ?? "", time: "" }}
+            onFlightChange={(next) =>
+              setFlightByItem((prev) => ({ ...prev, [item.id]: next }))
+            }
+            onUpdateItem={(patch) => updateItem(item.id, patch)}
+            onRemove={items.length > 1 ? () => removeItem(item.id) : undefined}
           />
-          <ServiceCard
-            label="VIP"
-            description="Tourist stops, drinks & snacks, concierge"
-            price={vipPriceForItem}
-            selected={item.serviceType === "vip"}
-            onClick={() => setService("vip")}
-            badge="MOST POPULAR"
-            crown
-            features={["1-2h tourist stop", "Welcome kit", "Concierge driver", `+$${VIP_EXTRA_USD}`]}
-          />
-        </div>
+        ))}
       </section>
 
-      {/* Customer details */}
       <section className="space-y-4">
         <div className="text-amber-400 text-xs font-bold tracking-[0.18em] uppercase">
           Your information
@@ -239,7 +188,6 @@ export default function BookingForm({ onBack }: BookingFormProps) {
           </div>
         </div>
 
-        {/* Phone with country code dropdown */}
         <div className="space-y-1.5">
           <Label className="text-gray-300 text-sm">
             Phone <span className="text-red-400">*</span>
@@ -273,76 +221,6 @@ export default function BookingForm({ onBack }: BookingFormProps) {
             Selected: <span className="text-amber-400">{country.flag} {country.name} ({country.dial})</span>
           </p>
         </div>
-      </section>
-
-      {/* Trip-specific pickup / dropoff / flight */}
-      <section className="space-y-4">
-        <div className="text-amber-400 text-xs font-bold tracking-[0.18em] uppercase">
-          Trip details
-        </div>
-
-        <div className="space-y-1.5">
-          <Label className="text-gray-300 text-sm flex items-center gap-1.5">
-            <MapPin size={14} className="text-amber-400" />
-            Pickup address
-          </Label>
-          <Input
-            value={form.pickupAddress}
-            onChange={handleChange("pickupAddress")}
-            placeholder={`Hotel, Airbnb or specific address in ${item.fromName}`}
-            className="bg-black/50 border-amber-500/30 text-white h-11"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <Label className="text-gray-300 text-sm flex items-center gap-1.5">
-            <MapPin size={14} className="text-amber-400" />
-            Drop-off address
-          </Label>
-          <Input
-            value={form.dropoffAddress}
-            onChange={handleChange("dropoffAddress")}
-            placeholder={`Hotel, Airbnb or specific address in ${item.toName}`}
-            className="bg-black/50 border-amber-500/30 text-white h-11"
-          />
-        </div>
-
-        {showFlight ? (
-          <div className="grid sm:grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label className="text-gray-300 text-sm flex items-center gap-1.5">
-                <Plane size={14} className="text-amber-400" />
-                Flight number
-              </Label>
-              <Input
-                value={form.flightNumber}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, flightNumber: e.target.value.toUpperCase() }))
-                }
-                placeholder="e.g. UA1234"
-                className="bg-black/50 border-amber-500/30 text-white h-11 uppercase"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-gray-300 text-sm flex items-center gap-1.5">
-                <Clock size={14} className="text-amber-400" />
-                Flight time
-              </Label>
-              <select
-                value={form.flightTime}
-                onChange={handleChange("flightTime")}
-                className="w-full bg-black/50 border border-amber-500/30 text-white h-11 rounded-md px-3 text-sm focus:border-amber-500 outline-none"
-              >
-                <option value="">Select time…</option>
-                {TIME_OPTIONS.map((t) => (
-                  <option key={t.value} value={t.value} className="bg-gray-900">
-                    {t.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        ) : null}
 
         <div className="space-y-1.5">
           <Label className="text-gray-300 text-sm">Special requests (optional)</Label>
@@ -384,6 +262,179 @@ export default function BookingForm({ onBack }: BookingFormProps) {
   );
 }
 
+type TripConfigCardProps = {
+  index: number;
+  item: CartItem;
+  flight: { number: string; time: string };
+  onFlightChange: (next: { number: string; time: string }) => void;
+  onUpdateItem: (patch: Partial<Omit<CartItem, "id">>) => void;
+  onRemove?: () => void;
+};
+
+function TripConfigCard({
+  index,
+  item,
+  flight,
+  onFlightChange,
+  onUpdateItem,
+  onRemove,
+}: TripConfigCardProps) {
+  const showFlight = isAirport(item.fromName);
+
+  const standardPrice = item.basePrice + item.extraStopHours * EXTRA_STOP_PRICE;
+  const vipPrice = standardPrice + VIP_EXTRA_USD;
+
+  const setService = (service: "standard" | "vip") => {
+    const stopsCost = item.extraStopHours * EXTRA_STOP_PRICE;
+    const totalForItem =
+      item.basePrice + (service === "vip" ? VIP_EXTRA_USD : 0) + stopsCost;
+    onUpdateItem({ serviceType: service, totalPrice: totalForItem });
+  };
+
+  const setPickup = (value: string) => {
+    onUpdateItem({ pickupPlace: value.trim() || item.fromName });
+  };
+  const setDropoff = (value: string) => {
+    onUpdateItem({ dropoffPlace: value.trim() || item.toName });
+  };
+  const setFlightNumber = (value: string) => {
+    onUpdateItem({ flightNumber: value.trim() || undefined });
+    onFlightChange({ ...flight, number: value });
+  };
+
+  return (
+    <div className="rounded-2xl border border-amber-500/20 bg-black/30 p-4 md:p-5 space-y-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-2 min-w-0">
+          <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-amber-500/20 border border-amber-500/30 text-xs font-bold text-amber-300 shrink-0">
+            #{index + 1}
+          </span>
+          <div className="min-w-0">
+            <div className="text-sm font-semibold text-white flex items-start gap-1.5">
+              <MapPin size={13} className="text-amber-400 mt-0.5 shrink-0" />
+              <span className="break-words">{item.fromName}</span>
+            </div>
+            <div className="pl-[18px]">
+              <ArrowDown size={11} className="text-amber-400/60" />
+            </div>
+            <div className="text-sm font-semibold text-white flex items-start gap-1.5">
+              <MapPin size={13} className="text-amber-400 mt-0.5 shrink-0" />
+              <span className="break-words">{item.toName}</span>
+            </div>
+          </div>
+        </div>
+        {onRemove ? (
+          <button
+            type="button"
+            onClick={onRemove}
+            className="text-gray-500 hover:text-red-400 transition-colors p-1"
+            aria-label="Remove trip"
+          >
+            <Trash2 size={15} />
+          </button>
+        ) : null}
+      </div>
+
+      <div>
+        <div className="text-[10px] text-amber-300 font-bold tracking-[0.18em] uppercase mb-2">
+          Service
+        </div>
+        <div className="grid sm:grid-cols-2 gap-2">
+          <ServiceCard
+            label="Standard"
+            description="Direct ride"
+            price={standardPrice}
+            selected={item.serviceType === "standard"}
+            onClick={() => setService("standard")}
+            features={["A/C", "WiFi", "Water", "Luggage"]}
+          />
+          <ServiceCard
+            label="VIP"
+            description="Tourist stops, snacks, concierge"
+            price={vipPrice}
+            selected={item.serviceType === "vip"}
+            onClick={() => setService("vip")}
+            crown
+            features={["1-2h stop", "Welcome kit", `+$${VIP_EXTRA_USD}`]}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <div className="space-y-1.5">
+          <Label className="text-gray-300 text-xs flex items-center gap-1.5">
+            <MapPin size={12} className="text-amber-400" />
+            Pickup address
+          </Label>
+          <Input
+            defaultValue={
+              item.pickupPlace && item.pickupPlace !== item.fromName ? item.pickupPlace : ""
+            }
+            onBlur={(e) => setPickup(e.target.value)}
+            placeholder={`Hotel, Airbnb or address in ${item.fromName}`}
+            className="bg-black/50 border-amber-500/30 text-white h-10"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <Label className="text-gray-300 text-xs flex items-center gap-1.5">
+            <MapPin size={12} className="text-amber-400" />
+            Drop-off address
+          </Label>
+          <Input
+            defaultValue={
+              item.dropoffPlace && item.dropoffPlace !== item.toName ? item.dropoffPlace : ""
+            }
+            onBlur={(e) => setDropoff(e.target.value)}
+            placeholder={`Hotel, Airbnb or address in ${item.toName}`}
+            className="bg-black/50 border-amber-500/30 text-white h-10"
+          />
+        </div>
+
+        {showFlight ? (
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-gray-300 text-xs flex items-center gap-1.5">
+                <Plane size={12} className="text-amber-400" />
+                Flight number
+              </Label>
+              <Input
+                defaultValue={item.flightNumber ?? ""}
+                onBlur={(e) => setFlightNumber(e.target.value.toUpperCase())}
+                placeholder="e.g. UA1234"
+                className="bg-black/50 border-amber-500/30 text-white h-10 uppercase"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-gray-300 text-xs flex items-center gap-1.5">
+                <Clock size={12} className="text-amber-400" />
+                Flight time
+              </Label>
+              <select
+                value={flight.time}
+                onChange={(e) => onFlightChange({ ...flight, time: e.target.value })}
+                className="w-full bg-black/50 border border-amber-500/30 text-white h-10 rounded-md px-3 text-sm focus:border-amber-500 outline-none"
+              >
+                <option value="">Select time…</option>
+                {TIME_OPTIONS.map((t) => (
+                  <option key={t.value} value={t.value} className="bg-gray-900">
+                    {t.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="flex items-center justify-between pt-2 border-t border-white/5">
+        <span className="text-xs text-gray-400">Trip total</span>
+        <span className="text-lg font-bold text-white">${item.totalPrice.toFixed(2)}</span>
+      </div>
+    </div>
+  );
+}
+
 function ServiceCard({
   label,
   description,
@@ -391,7 +442,6 @@ function ServiceCard({
   selected,
   onClick,
   features,
-  badge,
   crown,
 }: {
   label: string;
@@ -400,7 +450,6 @@ function ServiceCard({
   selected: boolean;
   onClick: () => void;
   features: string[];
-  badge?: string;
   crown?: boolean;
 }) {
   return (
@@ -408,37 +457,32 @@ function ServiceCard({
       type="button"
       onClick={onClick}
       className={
-        "relative text-left rounded-2xl p-5 border-2 transition-all " +
+        "relative text-left rounded-xl p-3 border-2 transition-all " +
         (selected
-          ? "border-amber-500 bg-amber-500/10 shadow-lg shadow-amber-500/20"
+          ? "border-amber-500 bg-amber-500/10 shadow-md shadow-amber-500/20"
           : "border-white/10 bg-gray-900/40 hover:border-amber-500/40")
       }
     >
-      {badge ? (
-        <span className="absolute -top-3 right-3 px-3 py-0.5 rounded-full bg-amber-500 text-black text-[10px] font-bold tracking-wider shadow">
-          {badge}
-        </span>
-      ) : null}
-      <div className="flex items-start justify-between mb-2">
-        <div className="font-bold text-white text-base flex items-center gap-1.5">
-          {crown ? <Crown size={16} className="text-amber-400" /> : null}
+      <div className="flex items-start justify-between mb-1">
+        <div className="font-bold text-white text-sm flex items-center gap-1.5">
+          {crown ? <Crown size={14} className="text-amber-400" /> : null}
           {label}
         </div>
         {selected ? (
-          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-500 text-black">
-            <Check size={14} strokeWidth={3} />
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-black">
+            <Check size={11} strokeWidth={3} />
           </span>
         ) : null}
       </div>
-      <p className="text-xs text-gray-400 mb-3">{description}</p>
-      <div className="text-2xl font-bold text-white mb-2">
+      <p className="text-[10px] text-gray-400 mb-1.5">{description}</p>
+      <div className="text-lg font-bold text-white mb-1.5">
         ${price.toFixed(0)}
-        <span className="text-xs text-gray-400 font-normal ml-1">USD</span>
+        <span className="text-[10px] text-gray-400 font-normal ml-1">USD</span>
       </div>
-      <ul className="space-y-1">
+      <ul className="space-y-0.5">
         {features.map((f) => (
-          <li key={f} className="flex items-center gap-1.5 text-xs text-gray-300">
-            <Check size={12} className="text-amber-400 shrink-0" />
+          <li key={f} className="flex items-center gap-1 text-[10px] text-gray-300">
+            <Check size={10} className="text-amber-400 shrink-0" />
             {f}
           </li>
         ))}

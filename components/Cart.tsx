@@ -297,15 +297,7 @@ export default function Cart() {
                 <button
                   onClick={() => {
                     setCartOpen(false);
-                    // Clear URL params and dispatch popstate so cotizador resets
-                    if (typeof window !== "undefined") {
-                      window.history.replaceState({}, "", window.location.pathname);
-                      window.dispatchEvent(new PopStateEvent("popstate"));
-                    }
-                    setTimeout(() => {
-                      const el = document.getElementById("cotizador");
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
-                    }, 350);
+                    router.push("/routes");
                   }}
                   className="w-full h-12 border border-amber-500/30 hover:border-amber-500/60 hover:bg-amber-500/5 text-amber-400 font-semibold rounded-md transition-all flex items-center justify-center gap-2"
                 >

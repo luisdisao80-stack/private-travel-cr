@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
@@ -67,27 +67,6 @@ export default function BookWizardClient({ locations }: Props) {
 
   const currentStep = view === "checkout" ? "checkout" : "trip";
 
-  // Drive the Order Summary sidebar from the latest cart item.
-  const latest = items[items.length - 1];
-  const summary = useMemo(
-    () => ({
-      from: latest?.fromName || "",
-      to: latest?.toName || "",
-      pickupAddress:
-        latest?.pickupPlace && latest.pickupPlace !== latest.fromName ? latest.pickupPlace : undefined,
-      dropoffAddress:
-        latest?.dropoffPlace && latest.dropoffPlace !== latest.toName ? latest.dropoffPlace : undefined,
-      travelDate: latest?.date,
-      pickupTime: latest?.pickupTime,
-      passengers: latest?.passengers || 0,
-      duration: latest?.duration,
-      totalPrice,
-      vehicleName: latest?.vehicleName,
-      vehicleId: latest?.vehicleId,
-    }),
-    [latest, totalPrice]
-  );
-
   const heroTitle =
     view === "checkout" ? "Confirm your booking" : "Book your private shuttle";
   const heroSub =
@@ -122,7 +101,7 @@ export default function BookWizardClient({ locations }: Props) {
             <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
               <BookingForm onBack={() => setView("configuring")} />
             </div>
-            <OrderSummarySidebar {...summary} />
+            <OrderSummarySidebar items={items} totalPrice={totalPrice} />
           </div>
         ) : (
           <div className="max-w-2xl mx-auto">

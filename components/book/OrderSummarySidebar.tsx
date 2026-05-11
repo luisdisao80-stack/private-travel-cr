@@ -5,7 +5,6 @@ import {
   Calendar,
   Clock,
   Users,
-  Hourglass,
   MapPin,
   ArrowDown,
   ChevronDown,
@@ -17,22 +16,14 @@ import {
   Coffee,
   CheckCircle2,
 } from "lucide-react";
+import type { CartItem } from "@/lib/CartContext";
 
 type Props = {
-  from: string;
-  to: string;
-  pickupAddress?: string;
-  dropoffAddress?: string;
-  travelDate?: string; // ISO yyyy-mm-dd
-  pickupTime?: string; // "HH:MM"
-  passengers: number;
-  duration?: string;
+  items: CartItem[];
   totalPrice: number;
-  vehicleName?: string;
-  vehicleId?: "staria" | "hiace" | "maxus";
 };
 
-function vehicleImage(id?: Props["vehicleId"]): string | null {
+function vehicleImage(id?: CartItem["vehicleId"]): string | null {
   if (id === "staria") return "/staria.webp";
   if (id === "hiace") return "/hiace.png";
   if (id === "maxus") return "/maxus-v90.webp";
@@ -56,30 +47,6 @@ function format12h(time?: string): string {
   return `${h12}:${mStr} ${period}`;
 }
 
-function Chip({
-  icon: Icon,
-  label,
-  tone = "gray",
-}: {
-  icon: typeof Calendar;
-  label: string;
-  tone?: "gray" | "green" | "amber";
-}) {
-  const tones: Record<string, string> = {
-    gray: "bg-gray-800/60 border-gray-700 text-gray-300",
-    green: "bg-green-500/10 border-green-500/30 text-green-300",
-    amber: "bg-amber-500/10 border-amber-500/30 text-amber-300",
-  };
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-medium ${tones[tone]}`}
-    >
-      <Icon size={12} />
-      {label}
-    </span>
-  );
-}
-
 const INCLUDED = [
   { icon: Shield, label: "Licensed & insured" },
   { icon: Wifi, label: "Free WiFi" },
@@ -89,80 +56,79 @@ const INCLUDED = [
   { icon: CheckCircle2, label: "No hidden fees" },
 ];
 
-export default function OrderSummarySidebar({
-  from,
-  to,
-  pickupAddress,
-  dropoffAddress,
-  travelDate,
-  pickupTime,
-  passengers,
-  duration,
-  totalPrice,
-  vehicleName,
-  vehicleId,
-}: Props) {
+export default function OrderSummarySidebar({ items, totalPrice }: Props) {
   const [openIncluded, setOpenIncluded] = useState(false);
-  const vehicleImg = vehicleImage(vehicleId);
 
   return (
     <aside className="lg:sticky lg:top-24">
       <div className="rounded-2xl overflow-hidden border border-amber-500/20 bg-gradient-to-br from-gray-900 to-black shadow-2xl shadow-black/40">
-        {/* Header */}
         <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 border-b border-amber-500/20 px-5 py-4">
           <h2 className="text-lg font-bold text-white">Order Summary</h2>
-          <p className="text-xs text-amber-200/80 mt-0.5">Review your shuttle details</p>
+          <p className="text-xs text-amber-200/80 mt-0.5">
+            {items.length} {items.length === 1 ? "trip" : "trips"} in cart
+          </p>
         </div>
 
-        {/* Body */}
         <div className="p-5 space-y-5">
-          {/* Route */}
-          <div className="space-y-2">
-            <div className="flex items-start gap-2">
-              <MapPin size={16} className="text-amber-400 mt-0.5 shrink-0" />
-              <div className="flex-1 min-w-0">
-                <div className="text-white font-semibold leading-tight break-words">{from || "—"}</div>
-                {pickupAddress ? (
-                  <div className="text-xs text-gray-400 mt-0.5">{pickupAddress}</div>
-                ) : null}
-              </div>
-            </div>
-            <div className="pl-1.5">
-              <ArrowDown size={14} className="text-amber-400/60" />
-            </div>
-            <div className="flex items-start gap-2">
-              <MapPin size={16} className="text-amber-400 mt-0.5 shrink-0" />
-              <div className="flex-1 min-w-0">
-                <div className="text-white font-semibold leading-tight break-words">{to || "—"}</div>
-                {dropoffAddress ? (
-                  <div className="text-xs text-gray-400 mt-0.5">{dropoffAddress}</div>
-                ) : null}
-              </div>
-            </div>
-          </div>
+          <div className="space-y-3">
+            {items.map((it, idx) => {
+              const img = vehicleImage(it.vehicleId);
+              return (
+                <div
+                  key={it.id}
+                  className="rounded-xl border border-amber-500/15 bg-black/30 p-3"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">
+                        #{idx + 1}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-wider text-gray-400">
+                        {it.serviceType === "vip" ? "VIP" : "Standard"} · {it.vehicleName}
+                      </span>
+                    </span>
+                    <span className="text-sm font-bold text-white">${it.totalPrice.toFixed(0)}</span>
+                  </div>
 
-          {/* Chips */}
-          <div className="flex flex-wrap gap-2">
-            <Chip icon={Calendar} label={formatDateShort(travelDate)} tone={travelDate ? "amber" : "gray"} />
-            <Chip icon={Clock} label={format12h(pickupTime)} tone={pickupTime ? "amber" : "gray"} />
-            <Chip icon={Users} label={`${passengers} pax`} tone="green" />
-            {duration ? <Chip icon={Hourglass} label={duration} tone="gray" /> : null}
-          </div>
-
-          {vehicleName ? (
-            <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-3">
-              <div className="text-[10px] text-amber-300 font-bold tracking-wider uppercase mb-1.5">Your vehicle</div>
-              {vehicleImg ? (
-                <div className="bg-white rounded-lg p-2 mb-2 h-24 flex items-center justify-center">
-                  <img src={vehicleImg} alt={vehicleName} className="max-h-full max-w-full object-contain" />
+                  <div className="flex gap-2">
+                    {img ? (
+                      <div className="hidden sm:flex w-14 h-10 bg-white rounded-md p-1 items-center justify-center shrink-0">
+                        <img src={img} alt={it.vehicleName} className="max-h-full max-w-full object-contain" />
+                      </div>
+                    ) : null}
+                    <div className="flex-1 min-w-0 text-xs">
+                      <div className="flex items-start gap-1.5">
+                        <MapPin size={11} className="text-amber-400 mt-0.5 shrink-0" />
+                        <span className="text-white font-medium break-words">{it.fromName}</span>
+                      </div>
+                      <div className="pl-[14px]">
+                        <ArrowDown size={10} className="text-amber-400/60" />
+                      </div>
+                      <div className="flex items-start gap-1.5">
+                        <MapPin size={11} className="text-amber-400 mt-0.5 shrink-0" />
+                        <span className="text-white font-medium break-words">{it.toName}</span>
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] text-gray-400">
+                        <span className="inline-flex items-center gap-1">
+                          <Calendar size={9} className="text-amber-400" />
+                          {formatDateShort(it.date)}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <Clock size={9} className="text-amber-400" />
+                          {format12h(it.pickupTime)}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <Users size={9} className="text-amber-400" />
+                          {it.passengers} pax
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ) : null}
-              <div className="text-sm font-semibold text-white">{vehicleName}</div>
-              <div className="text-[11px] text-gray-400">2023+ · ICT licensed</div>
-            </div>
-          ) : null}
+              );
+            })}
+          </div>
 
-          {/* Price */}
           <div className="pt-4 border-t border-amber-500/10">
             <div className="flex items-end justify-between">
               <span className="text-gray-400 text-sm">Total</span>
@@ -173,7 +139,6 @@ export default function OrderSummarySidebar({
             </div>
           </div>
 
-          {/* Included accordion */}
           <button
             type="button"
             onClick={() => setOpenIncluded((v) => !v)}
