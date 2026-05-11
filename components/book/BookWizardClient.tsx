@@ -13,43 +13,54 @@ type Props = { locations: string[] };
 type View = "configuring" | "review" | "checkout";
 
 export default function BookWizardClient({ locations }: Props) {
-  const { items, isCartOpen, setCartOpen, totalPrice } = useCart();
+  const { items, isCartOpen, setCartOpen, hydrated, totalPrice } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
   const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
 
   // Three sub-views inside Step 2:
-  //   configuring – QuoteCalculator only (cart empty, or 'Add another trip', or arriving from /routes)
+  //   configuring – QuoteCalculator only (cart empty, or arriving from /routes)
   //   review      – TripsList only (one+ trips already added, awaiting next action)
   // Step 3 is `checkout` – the BookingForm.
   //
-  // Initial view: if the URL carries ?from=…&to=… we always start in configuring so
-  // the visitor can build the new trip — even when the cart already has items.
-  const [view, setView] = useState<View>(() => {
-    if (hasUrlRoute) return "configuring";
-    if (items.length > 0) return "review";
-    return "configuring";
-  });
-  const prevItemsCount = useRef(items.length);
+  // The cart hydrates from localStorage AFTER mount, so we can't pick the
+  // initial view from `items.length` synchronously. Start in 'configuring'
+  // and let the post-hydration effect settle the view.
+  const [view, setView] = useState<View>("configuring");
+  const prevItemsCount = useRef(0);
+  const settledFromHydration = useRef(false);
 
-  // React to cart-count changes. New item → review. All cleared → configuring.
+  // Settle view once the cart finishes hydrating, then react to real changes.
+  // Hydration looks like "items.length went 0 → N" but it's not a user add,
+  // so we must not treat it as one (otherwise arriving with ?from=&to= and a
+  // pre-existing cart bounces the visitor into 'review').
   useEffect(() => {
+    if (!hydrated) return;
+    if (!settledFromHydration.current) {
+      settledFromHydration.current = true;
+      prevItemsCount.current = items.length;
+      if (!hasUrlRoute && items.length > 0) {
+        setView("review");
+      }
+      return;
+    }
     if (items.length > prevItemsCount.current) {
       setView("review");
     } else if (items.length === 0) {
       setView("configuring");
     }
     prevItemsCount.current = items.length;
-  }, [items.length]);
+  }, [items.length, hydrated, hasUrlRoute]);
 
   // The cart drawer auto-opens on addItem; on /book we render the cart inline, so close it.
   useEffect(() => {
+    if (!hydrated) return;
     if (isCartOpen && items.length > prevItemsCount.current) {
       setCartOpen(false);
     }
     // intentionally not depending on isCartOpen — only react to count changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items.length]);
+  }, [items.length, hydrated]);
 
   const handleAddAnother = () => {
     router.push("/routes");
