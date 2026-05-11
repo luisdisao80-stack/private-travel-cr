@@ -71,26 +71,20 @@ export default function BookWizardClient({ locations }: Props) {
 
       <WizardProgress current={currentStep} />
 
-      {/* Layout: two-column once a trip is in the cart, single-column while configuring */}
+      {/* Layout: two-column once a trip is in the cart, single narrow column while configuring */}
       <section className="container mx-auto px-4 py-8 md:py-12">
-        <div
-          className={
-            "max-w-6xl mx-auto gap-8 lg:gap-10 " +
-            (hasTrip ? "grid lg:grid-cols-[1fr_360px]" : "max-w-2xl")
-          }
-        >
-          <div className="min-w-0">
-            {hasTrip ? (
-              <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
-                <BookingForm onBack={() => setCartOpen(true)} />
-              </div>
-            ) : (
-              <QuoteCalculatorV2 locations={locations} />
-            )}
+        {hasTrip ? (
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-10">
+            <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
+              <BookingForm onBack={() => setCartOpen(true)} />
+            </div>
+            <OrderSummarySidebar {...summary} />
           </div>
-
-          {hasTrip ? <OrderSummarySidebar {...summary} /> : null}
-        </div>
+        ) : (
+          <div className="max-w-2xl mx-auto">
+            <QuoteCalculatorV2 locations={locations} />
+          </div>
+        )}
       </section>
     </>
   );
