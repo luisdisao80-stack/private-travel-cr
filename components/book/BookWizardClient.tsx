@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
@@ -13,12 +14,21 @@ type View = "configuring" | "review" | "checkout";
 
 export default function BookWizardClient({ locations }: Props) {
   const { items, isCartOpen, setCartOpen, totalPrice } = useCart();
+  const searchParams = useSearchParams();
+  const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
 
   // Three sub-views inside Step 2:
-  //   configuring – QuoteCalculator only (cart empty, or visitor clicked 'Add another trip')
+  //   configuring – QuoteCalculator only (cart empty, or 'Add another trip', or arriving from /routes)
   //   review      – TripsList only (one+ trips already added, awaiting next action)
   // Step 3 is `checkout` – the BookingForm.
-  const [view, setView] = useState<View>("configuring");
+  //
+  // Initial view: if the URL carries ?from=…&to=… we always start in configuring so
+  // the visitor can build the new trip — even when the cart already has items.
+  const [view, setView] = useState<View>(() => {
+    if (hasUrlRoute) return "configuring";
+    if (items.length > 0) return "review";
+    return "configuring";
+  });
   const [calcKey, setCalcKey] = useState(0); // bump to force-remount the QuoteCalc
 
   const prevItemsCount = useRef(items.length);
