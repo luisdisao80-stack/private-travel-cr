@@ -342,20 +342,40 @@ function TripConfigCard({
         <div className="grid sm:grid-cols-2 gap-2">
           <ServiceCard
             label="Standard"
-            description="Direct ride"
+            tagline="Fast & efficient"
+            description="Private direct ride — no stops, no waiting"
             price={standardPrice}
             selected={item.serviceType === "standard"}
             onClick={() => setService("standard")}
-            features={["A/C", "WiFi", "Water", "Luggage"]}
+            features={[
+              "Direct route, no detours",
+              "Door-to-door service",
+              "Bilingual professional driver",
+              "Onboard WiFi & bottled water",
+              "Free child seats on request",
+              "Flight tracking & full insurance",
+            ]}
+            ideal="Ideal for airport transfers and tight schedules"
           />
           <ServiceCard
             label="VIP"
-            description="Tourist stops, snacks, concierge"
+            tagline="Premium experience"
+            description="Tourist stops, welcome kit, driver who guides you"
             price={vipPrice}
+            priceNote={`+$${VIP_EXTRA_USD} over Standard`}
             selected={item.serviceType === "vip"}
             onClick={() => setService("vip")}
             crown
-            features={["1-2h stop", "Welcome kit", `+$${VIP_EXTRA_USD}`]}
+            badge="MOST POPULAR"
+            features={[
+              "1–2h flexible tourist stop",
+              "Welcome Kit: local beers, sodas, snacks",
+              "Concierge driver — personalized tips",
+              "USB chargers & onboard WiFi",
+              "Recommended for honeymoons",
+              "Everything in Standard, plus more",
+            ]}
+            ideal="Perfect for honeymoons and unforgettable trips"
           />
         </div>
       </div>
@@ -437,56 +457,91 @@ function TripConfigCard({
 
 function ServiceCard({
   label,
+  tagline,
   description,
   price,
+  priceNote,
   selected,
   onClick,
   features,
   crown,
+  badge,
+  ideal,
 }: {
   label: string;
+  tagline?: string;
   description: string;
   price: number;
+  priceNote?: string;
   selected: boolean;
   onClick: () => void;
   features: string[];
   crown?: boolean;
+  badge?: string;
+  ideal?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={
-        "relative text-left rounded-xl p-3 border-2 transition-all " +
+        "relative text-left rounded-xl p-4 border-2 transition-all " +
         (selected
           ? "border-amber-500 bg-amber-500/10 shadow-md shadow-amber-500/20"
           : "border-white/10 bg-gray-900/40 hover:border-amber-500/40")
       }
     >
+      {badge ? (
+        <span className="absolute -top-2.5 right-3 px-2.5 py-0.5 rounded-full bg-amber-500 text-black text-[9px] font-bold tracking-wider shadow">
+          {badge}
+        </span>
+      ) : null}
+
       <div className="flex items-start justify-between mb-1">
-        <div className="font-bold text-white text-sm flex items-center gap-1.5">
-          {crown ? <Crown size={14} className="text-amber-400" /> : null}
-          {label}
+        <div>
+          <div className="font-bold text-white text-base flex items-center gap-1.5 leading-tight">
+            {crown ? <Crown size={15} className="text-amber-400" /> : null}
+            {label}
+          </div>
+          {tagline ? (
+            <div className="text-[10px] text-amber-300/80 font-semibold tracking-wider uppercase mt-0.5">
+              {tagline}
+            </div>
+          ) : null}
         </div>
         {selected ? (
-          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-black">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-black shrink-0">
             <Check size={11} strokeWidth={3} />
           </span>
         ) : null}
       </div>
-      <p className="text-[10px] text-gray-400 mb-1.5">{description}</p>
-      <div className="text-lg font-bold text-white mb-1.5">
-        ${price.toFixed(0)}
-        <span className="text-[10px] text-gray-400 font-normal ml-1">USD</span>
+
+      <p className="text-[11px] text-gray-400 mb-2 leading-snug">{description}</p>
+
+      <div className="mb-2">
+        <div className="text-xl font-bold text-white leading-none">
+          ${price.toFixed(0)}
+          <span className="text-[10px] text-gray-400 font-normal ml-1">USD</span>
+        </div>
+        {priceNote ? (
+          <div className="text-[10px] text-amber-400/90 mt-0.5">{priceNote}</div>
+        ) : null}
       </div>
-      <ul className="space-y-0.5">
+
+      <ul className="space-y-1 mb-2">
         {features.map((f) => (
-          <li key={f} className="flex items-center gap-1 text-[10px] text-gray-300">
-            <Check size={10} className="text-amber-400 shrink-0" />
-            {f}
+          <li key={f} className="flex items-start gap-1.5 text-[11px] text-gray-300 leading-tight">
+            <Check size={11} className="text-amber-400 shrink-0 mt-0.5" />
+            <span>{f}</span>
           </li>
         ))}
       </ul>
+
+      {ideal ? (
+        <div className="pt-2 mt-2 border-t border-white/5 text-[10px] text-gray-400 italic leading-tight">
+          {ideal}
+        </div>
+      ) : null}
     </button>
   );
 }
