@@ -75,8 +75,12 @@ export default function BookWizardClient({ locations }: Props) {
       router.push("/routes");
       return;
     }
-    if (items.length === 0) {
-      setView("configuring");
+    // Cart just emptied (cleared or last trip removed) — send them back to
+    // /routes to start fresh. /book with no items leaves them stranded with
+    // a half-built calculator state inherited from URL params.
+    if (items.length === 0 && prevItemsCount.current > 0) {
+      router.push("/routes");
+      return;
     }
     prevItemsCount.current = items.length;
   }, [items.length, hydrated, hasUrlRoute, wantsCheckout, router]);
