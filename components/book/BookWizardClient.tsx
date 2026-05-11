@@ -1,74 +1,76 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
 import OrderSummarySidebar from "@/components/book/OrderSummarySidebar";
-import TripsList from "@/components/book/TripsList";
 import { useCart } from "@/lib/CartContext";
 
 type Props = { locations: string[] };
-type View = "configuring" | "review" | "checkout";
+type View = "configuring" | "checkout";
 
 export default function BookWizardClient({ locations }: Props) {
   const { items, isCartOpen, setCartOpen, hydrated, totalPrice } = useCart();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
+  const wantsCheckout = searchParams.get("checkout") === "1";
 
-  // Three sub-views inside Step 2:
-  //   configuring – QuoteCalculator only (cart empty, or arriving from /routes)
-  //   review      – TripsList only (one+ trips already added, awaiting next action)
-  // Step 3 is `checkout` – the BookingForm.
+  // Two views on /book:
+  //   configuring – QuoteCalculator (pick a route, add to cart)
+  //   checkout    – BookingForm (finalize the booking)
   //
   // The cart hydrates from localStorage AFTER mount, so we can't pick the
   // initial view from `items.length` synchronously. Start in 'configuring'
-  // and let the post-hydration effect settle the view.
-  const [view, setView] = useState<View>("configuring");
+  // (or 'checkout' if the URL explicitly asked for it) and let the
+  // post-hydration effect promote the view if the cart has items.
+  const [view, setView] = useState<View>(wantsCheckout ? "checkout" : "configuring");
+  const [calcKey, setCalcKey] = useState(0);
   const prevItemsCount = useRef(0);
   const settledFromHydration = useRef(false);
 
-  // Settle view once the cart finishes hydrating, then react to real changes.
-  // Hydration looks like "items.length went 0 → N" but it's not a user add,
-  // so we must not treat it as one (otherwise arriving with ?from=&to= and a
-  // pre-existing cart bounces the visitor into 'review').
   useEffect(() => {
     if (!hydrated) return;
     if (!settledFromHydration.current) {
       settledFromHydration.current = true;
       prevItemsCount.current = items.length;
-      if (!hasUrlRoute && items.length > 0) {
-        setView("review");
+      // First settle: if the visitor arrived without an explicit intent
+      // (no ?from=&to= and no ?checkout=1) but already has cart items,
+      // jump straight to checkout — they're returning to finalize.
+      if (!hasUrlRoute && !wantsCheckout && items.length > 0) {
+        setView("checkout");
       }
       return;
     }
+    // After Add to Cart: reset the calculator and stay in 'configuring' so
+    // the visitor can add another trip. They reach checkout via the cart
+    // drawer's "Continue to booking" or /routes' "Continue to booking".
     if (items.length > prevItemsCount.current) {
-      setView("review");
+      setCalcKey((k) => k + 1);
+      if (typeof window !== "undefined") {
+        window.history.replaceState({}, "", "/book");
+      }
+      setView("configuring");
     } else if (items.length === 0) {
       setView("configuring");
     }
     prevItemsCount.current = items.length;
-  }, [items.length, hydrated, hasUrlRoute]);
+  }, [items.length, hydrated, hasUrlRoute, wantsCheckout]);
 
-  // The cart drawer auto-opens on addItem; on /book we render the cart inline, so close it.
+  // The cart drawer auto-opens on addItem; on /book the cart is reachable
+  // through the navbar icon, so close the drawer to keep the page calm.
   useEffect(() => {
     if (!hydrated) return;
     if (isCartOpen && items.length > prevItemsCount.current) {
       setCartOpen(false);
     }
-    // intentionally not depending on isCartOpen — only react to count changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items.length, hydrated]);
 
-  const handleAddAnother = () => {
-    router.push("/routes");
-  };
-
   const currentStep = view === "checkout" ? "checkout" : "trip";
 
-  // Drive Order Summary sidebar from the latest cart item (only relevant in checkout view).
+  // Drive the Order Summary sidebar from the latest cart item.
   const latest = items[items.length - 1];
   const summary = useMemo(
     () => ({
@@ -90,17 +92,11 @@ export default function BookWizardClient({ locations }: Props) {
   );
 
   const heroTitle =
-    view === "checkout"
-      ? "Confirm your booking"
-      : view === "review"
-        ? "Your trips"
-        : "Book your private shuttle";
+    view === "checkout" ? "Confirm your booking" : "Book your private shuttle";
   const heroSub =
     view === "checkout"
       ? "Enter your details and we'll handle the rest"
-      : view === "review"
-        ? "Add another or continue to checkout"
-        : "Pick your route, your date, and ride in comfort";
+      : "Pick your route, your date, and ride in comfort";
 
   return (
     <>
@@ -127,20 +123,13 @@ export default function BookWizardClient({ locations }: Props) {
         {view === "checkout" ? (
           <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-10">
             <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
-              <BookingForm onBack={() => setView("review")} />
+              <BookingForm onBack={() => setView("configuring")} />
             </div>
             <OrderSummarySidebar {...summary} />
           </div>
-        ) : view === "review" ? (
-          <div className="max-w-2xl mx-auto">
-            <TripsList
-              onAddAnother={handleAddAnother}
-              onContinue={() => setView("checkout")}
-            />
-          </div>
         ) : (
           <div className="max-w-2xl mx-auto">
-            <QuoteCalculatorV2 locations={locations} />
+            <QuoteCalculatorV2 key={calcKey} locations={locations} />
           </div>
         )}
       </section>
