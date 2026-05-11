@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
@@ -17,7 +18,9 @@ export default async function BookPage() {
   return (
     <main className="min-h-screen bg-black">
       <Navbar />
-      <BookWizardClient locations={locations} />
+      <Suspense fallback={null}>
+        <BookWizardClient locations={locations} />
+      </Suspense>
       <Footer />
       <WhatsAppFloat />
     </main>
