@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ArrowRight, CheckCircle2, Shield, Zap } from "lucide-react";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
 import OrderSummarySidebar from "@/components/book/OrderSummarySidebar";
+import LocationInput from "@/components/LocationInput";
 import { useCart } from "@/lib/CartContext";
 
 type Props = { locations: string[] };
@@ -29,6 +31,30 @@ export default function BookWizardClient({ locations }: Props) {
   const [view, setView] = useState<View>(wantsCheckout ? "checkout" : "configuring");
   const prevItemsCount = useRef(0);
   const settledFromHydration = useRef(false);
+
+  // Hero search card state — kept in sync with ?from=&to= so the calculator
+  // below pre-fills via its existing syncFromUrl listener.
+  const [heroFrom, setHeroFrom] = useState<string>(searchParams.get("from") ?? "");
+  const [heroTo, setHeroTo] = useState<string>(searchParams.get("to") ?? "");
+
+  const pushRouteParams = (from: string, to: string) => {
+    if (typeof window === "undefined") return;
+    const next = new URLSearchParams();
+    if (from) next.set("from", from);
+    if (to) next.set("to", to);
+    const qs = next.toString();
+    window.history.replaceState({}, "", qs ? `/book?${qs}` : "/book");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
+
+  const handleHeroFrom = (val: string) => {
+    setHeroFrom(val);
+    pushRouteParams(val, heroTo);
+  };
+  const handleHeroTo = (val: string) => {
+    setHeroTo(val);
+    pushRouteParams(heroFrom, val);
+  };
 
   useEffect(() => {
     if (!hydrated) return;
@@ -67,13 +93,6 @@ export default function BookWizardClient({ locations }: Props) {
 
   const currentStep = view === "checkout" ? "checkout" : "trip";
 
-  const heroTitle =
-    view === "checkout" ? "Confirm your booking" : "Book your private shuttle";
-  const heroSub =
-    view === "checkout"
-      ? "Enter your details and we'll handle the rest"
-      : "Pick your route, your date, and ride in comfort";
-
   return (
     <>
       {/* Hero */}
@@ -85,11 +104,54 @@ export default function BookWizardClient({ locations }: Props) {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />
-        <div className="relative z-10 container mx-auto px-4 pt-24 pb-10 md:pt-28 md:pb-12 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-3">
-            {heroTitle}
-          </h1>
-          <p className="text-gray-300 text-sm md:text-base max-w-xl mx-auto">{heroSub}</p>
+        <div className="relative z-10 container mx-auto px-4 pt-24 pb-10 md:pt-28 md:pb-12">
+          {view === "checkout" ? (
+            <div className="text-center">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-3">
+                Confirm your booking
+              </h1>
+              <p className="text-gray-300 text-sm md:text-base max-w-xl mx-auto">
+                Enter your details and we&apos;ll handle the rest
+              </p>
+            </div>
+          ) : (
+            <div className="max-w-3xl mx-auto">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-5 text-center">
+                Where are you headed?
+              </h1>
+              <div className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
+                <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-2">
+                  <LocationInput
+                    value={heroFrom}
+                    onChange={handleHeroFrom}
+                    placeholder="Where from?"
+                    locations={locations}
+                  />
+                  <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
+                  <LocationInput
+                    value={heroTo}
+                    onChange={handleHeroTo}
+                    placeholder="Where to?"
+                    locations={locations}
+                  />
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
+                  <span className="flex items-center gap-1.5">
+                    <Zap size={12} className="text-amber-400" />
+                    Instant pricing
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Shield size={12} className="text-amber-400" />
+                    Free cancellation
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 size={12} className="text-amber-400" />
+                    No hidden fees
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
