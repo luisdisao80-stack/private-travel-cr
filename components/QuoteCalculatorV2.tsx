@@ -86,6 +86,8 @@ export default function QuoteCalculatorV2({ locations }: Props) {
   const { addItem: cartAddItem } = useCart();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [pickupAddress, setPickupAddress] = useState("");
+  const [dropoffAddress, setDropoffAddress] = useState("");
 
   useEffect(() => {
     function syncFromUrl() {
@@ -100,6 +102,8 @@ export default function QuoteCalculatorV2({ locations }: Props) {
         // Reset completo (Add Another Trip)
         setFrom("");
         setTo("");
+        setPickupAddress("");
+        setDropoffAddress("");
         setTravelDate("");
         setTravelTime("");
         setFlightNumber("");
@@ -257,6 +261,38 @@ export default function QuoteCalculatorV2({ locations }: Props) {
           <span>Drop-off Location</span>
         </label>
         <AutocompleteInput value={to} onChange={setTo} placeholder="Type or select destination..." locations={locations} excludeLocation={from} />
+      </div>
+
+      {/* Specific pickup address (hotel, Airbnb, exact street) */}
+      <div className="mb-5">
+        <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
+          <MapPin size={16} />
+          <span>Pickup address (hotel, Airbnb, address...)</span>
+        </label>
+        <input
+          type="text"
+          value={pickupAddress}
+          onChange={(e) => setPickupAddress(e.target.value)}
+          placeholder="e.g. Hotel Tabacón Resort, La Fortuna"
+          className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
+        />
+        <p className="text-xs text-gray-500 mt-1">Optional — leave blank to use the pickup location above</p>
+      </div>
+
+      {/* Specific drop-off address */}
+      <div className="mb-5">
+        <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
+          <MapPin size={16} />
+          <span>Drop-off address (hotel, Airbnb, address...)</span>
+        </label>
+        <input
+          type="text"
+          value={dropoffAddress}
+          onChange={(e) => setDropoffAddress(e.target.value)}
+          placeholder="e.g. JW Marriott Guanacaste, Hacienda Pinilla"
+          className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
+        />
+        <p className="text-xs text-gray-500 mt-1">Optional — leave blank to use the drop-off location above</p>
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3">
@@ -440,8 +476,8 @@ export default function QuoteCalculatorV2({ locations }: Props) {
                 passengers: totalPax,
                 children: parseInt(childrenStr) || 0,
                 flightNumber: flightNumber || undefined,
-                pickupPlace: from,
-                dropoffPlace: to,
+                pickupPlace: pickupAddress.trim() || from,
+                dropoffPlace: dropoffAddress.trim() || to,
                 vehicleId: vehicle,
                 vehicleName:
                   vehicle === "staria"
