@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Star, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
+import GoogleGLogo from "@/components/GoogleGLogo";
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -53,9 +54,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-10 shadow-2xl shadow-black/40"
           >
-            <span className="font-bold text-3xl md:text-4xl bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent leading-none">
-              G
-            </span>
+            <GoogleGLogo size={32} className="shrink-0" />
             <div className="flex flex-col items-start gap-1">
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map((i) => (

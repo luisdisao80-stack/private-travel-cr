@@ -22,6 +22,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import type { Route } from "@/lib/types";
 import { reviewStats } from "@/lib/reviews-data";
 import { isPopularRoute } from "@/lib/popular-routes";
+import GoogleGLogo from "@/components/GoogleGLogo";
 
 interface Props {
   routes: Route[];
@@ -184,9 +185,7 @@ export default function RoutesPageClient({ routes }: Props) {
               transition={{ duration: 0.6, delay: 0.15 }}
               className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-6"
             >
-              <span className="font-bold text-base bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">
-                G
-              </span>
+              <GoogleGLogo size={20} className="shrink-0" />
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
