@@ -60,25 +60,25 @@ export default function BookWizardClient({ locations }: Props) {
 
       <WizardProgress current={currentStep} />
 
-      {/* Two-column layout: main left, sticky Order Summary right */}
+      {/* Layout: two-column once a trip is in the cart, single-column while configuring */}
       <section className="container mx-auto px-4 py-8 md:py-12">
-        <div className="grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-10 max-w-6xl mx-auto">
+        <div
+          className={
+            "max-w-6xl mx-auto gap-8 lg:gap-10 " +
+            (hasTrip ? "grid lg:grid-cols-[1fr_360px]" : "max-w-2xl")
+          }
+        >
           <div className="min-w-0">
             {hasTrip ? (
               <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
-                <BookingForm
-                  onBack={() => {
-                    // Re-open cart drawer so visitor can add another trip or edit.
-                    setCartOpen(true);
-                  }}
-                />
+                <BookingForm onBack={() => setCartOpen(true)} />
               </div>
             ) : (
               <QuoteCalculatorV2 locations={locations} />
             )}
           </div>
 
-          <OrderSummarySidebar {...summary} />
+          {hasTrip ? <OrderSummarySidebar {...summary} /> : null}
         </div>
       </section>
     </>
