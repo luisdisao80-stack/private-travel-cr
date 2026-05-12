@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from "react";
+import { events } from "@/lib/analytics";
 
 export type CartItem = {
   id: string;
@@ -72,6 +73,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     };
     setItems((prev) => [...prev, newItem]);
     setCartOpen(true);
+    events.addToCart({
+      value: item.totalPrice,
+      currency: "USD",
+      routeFrom: item.fromName,
+      routeTo: item.toName,
+      vehicleId: item.vehicleId,
+      serviceType: item.serviceType,
+    });
   }, []);
 
   const updateItem = useCallback((id: string, patch: Partial<Omit<CartItem, "id">>) => {

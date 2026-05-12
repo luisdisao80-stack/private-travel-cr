@@ -6,6 +6,7 @@ import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import Cart from "@/components/Cart";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { siteConfig } from "@/lib/site-config";
 import SchemaOrg from "@/components/SchemaOrg";
 
@@ -138,6 +139,12 @@ export default function RootLayout({
           </CartProvider>
         </LanguageProvider>
         <Analytics />
+        {process.env.NEXT_PUBLIC_GA_ID ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        ) : null}
+        {process.env.NEXT_PUBLIC_GTM_ID ? (
+          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        ) : null}
       </body>
     </html>
   );

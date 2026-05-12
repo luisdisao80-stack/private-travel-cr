@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
 import { isAirport, VIP_EXTRA_USD } from "@/lib/quote-helpers";
+import { events } from "@/lib/analytics";
 
 const EXTRA_STOP_PRICE = 35;
 
@@ -76,6 +77,11 @@ export default function BookingForm({ onBack }: BookingFormProps) {
 
   const handleSubmit = async () => {
     if (!isValid) return;
+    events.beginCheckout({
+      value: totalPrice,
+      currency: "USD",
+      itemCount: items.length,
+    });
     setLoading(true);
     setError(null);
 

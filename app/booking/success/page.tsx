@@ -37,7 +37,17 @@ export default async function BookingSuccessPage({
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <ClearCartOnMount />
+      <ClearCartOnMount
+        purchase={
+          booking
+            ? {
+                orderNumber: booking.order_number,
+                totalUsd: Number(booking.total_usd),
+                itemCount: Array.isArray(booking.items) ? booking.items.length : 0,
+              }
+            : undefined
+        }
+      />
       <Navbar />
       <div className="pt-24">
         <WizardProgress current="done" />
