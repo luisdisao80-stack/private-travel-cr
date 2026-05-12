@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Menu, MessageCircle, Phone } from "lucide-react";
+import { Menu, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -20,15 +20,6 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const openWhatsApp = () => {
-    const greetingMsg =
-      lang === "en"
-        ? "Hello! I'm interested in your private transportation service."
-        : "¡Hola! Me interesa su servicio de transporte privado.";
-    const msg = encodeURIComponent(greetingMsg);
-    window.open(`https://wa.me/50686334133?text=${msg}`, "_blank");
-  };
 
   type NavLink = { label: string; id: string; href: string };
 
@@ -115,11 +106,6 @@ export default function Navbar() {
                     <Phone size={18} />
                     +506 8633-4133
                   </a>
-
-                  <Button onClick={openWhatsApp} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold h-12">
-                    <MessageCircle size={18} className="mr-2" />
-                    {lang === "en" ? "Chat on WhatsApp" : "Chatear por WhatsApp"}
-                  </Button>
                 </div>
               </SheetContent>
             </Sheet>
