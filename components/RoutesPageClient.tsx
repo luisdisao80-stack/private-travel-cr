@@ -19,7 +19,6 @@ import {
   Star,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
-import { useCart } from "@/lib/CartContext";
 import type { Route } from "@/lib/types";
 import { reviewStats } from "@/lib/reviews-data";
 import { isPopularRoute } from "@/lib/popular-routes";
@@ -32,7 +31,6 @@ interface Props {
 
 export default function RoutesPageClient({ routes }: Props) {
   const { lang } = useLanguage();
-  const { items: cartItems } = useCart();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
 
@@ -329,11 +327,7 @@ export default function RoutesPageClient({ routes }: Props) {
                 : "Obtené una cotización al instante y completá tu reserva en minutos."}
             </p>
             <Link
-              href={
-                cartItems.length > 0
-                  ? "/book?checkout=1"
-                  : `/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`
-              }
+              href={`/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`}
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
             >
               {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
