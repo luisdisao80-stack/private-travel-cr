@@ -49,16 +49,34 @@ A gringo-friendly spot on the main strip with a huge menu — burgers, wraps, sa
 - **When:** Anytime; it's open all day.
 - **Why we send guests here:** Big families, picky eaters, or that first night after a long travel day when nobody can agree on a cuisine.
 
-## 5. Rancho La Cascada — Live Music & Typical Food
+## 5. El Chante Verde — Farm-to-Table, Plant-Forward
 
-A traditional rancho-style restaurant on the main park corner. Big roof, open air, live marimba or guitar on most evenings. The food is solid Costa Rican fare and the *patacones con frijoles* are a crowd favorite.
+A relaxed, plant-forward spot with a strong vegetarian and vegan menu, but the meat dishes are equally well-executed. Ingredients are sourced locally and the kitchen leans into Costa Rican flavors with a lighter touch. Cozy atmosphere, friendly staff.
 
-- **Price:** $12–18 per person
-- **Order:** The mixed grill platter or the whole fried fish
-- **When:** Evening, for the music
-- **Why we send guests here:** Anyone wanting the "Costa Rica vibe" night — open air, music, casados, a cold Imperial.
+- **Price:** $12–22 per person
+- **Order:** The veggie casado, or the catch of the day with chimichurri
+- **When:** Lunch or early dinner
+- **Why we send guests here:** Couples, vegetarians, anyone wanting a healthy meal that still tastes like Costa Rica.
 
-## 6. Benedictus Steakhouse — Up the Hill, Best Volcano Views
+## 6. Tiquicia — Traditional Costa Rican Done Right
+
+A classic *comida típica* spot — what locals call "comida de la abuela" (grandmother's food). Generous portions of casados, *olla de carne* (beef stew), *arroz con pollo*, and *gallo pinto*. Unpretentious, consistent, and reliably good.
+
+- **Price:** $10–18 per person
+- **Order:** The casado with *bistec encebollado* (onion-smothered steak), or the arroz con pollo
+- **When:** Lunch, when locals fill the place
+- **Why we send guests here:** Travelers who want one really solid plate of authentic Costa Rican food without the soda's plastic-chair vibe.
+
+## 7. Selva Rústica — Jungle Setting, Wood-Grilled Meats
+
+A bit outside the town center, set among the trees with an open-air dining room and the sound of the forest in the background. Wood-grilled meats, fresh tilapia, big sharing plates. Great for sunset.
+
+- **Price:** $18–30 per person
+- **Order:** The grilled tenderloin or the whole tilapia
+- **When:** Late afternoon into evening — the setting shines as the light fades
+- **Why we send guests here:** Anyone who wants to feel like they're eating *in* Costa Rica, not just *in* La Fortuna. Pairs perfectly with a hot-springs evening.
+
+## 8. Benedictus Steakhouse — Up the Hill, Best Volcano Views
 
 A 5-minute drive out of town up toward El Castillo, with floor-to-ceiling windows facing Arenal Volcano. Meat-focused, but the side dishes (yuca, plantains, roasted vegetables) are excellent. Service is patient — they know people are here for the view too.
 
@@ -67,7 +85,7 @@ A 5-minute drive out of town up toward El Castillo, with floor-to-ceiling window
 - **When:** Sunset (around 5:30pm) for the best volcano light
 - **Why we send guests here:** A splurge night with a view that beats any postcard.
 
-## 7. Café Mediterráneo — Wood-Fire Pizza With a Twist
+## 9. Café Mediterráneo — Wood-Fire Pizza With a Twist
 
 A bit harder to find (a few blocks off the main strip) but worth the walk. Italian owner who's been in La Fortuna for 20+ years, makes everything by hand. The bread basket alone is worth the trip.
 
@@ -76,7 +94,7 @@ A bit harder to find (a few blocks off the main strip) but worth the walk. Itali
 - **When:** Dinner, lighter crowd than Anch'io
 - **Why we send guests here:** People who already had pizza at Anch'io and want to compare, or who want a quieter Italian dinner.
 
-## 8. Organico — Health-Focused, Vegan-Friendly
+## 10. Organico — Health-Focused, Vegan-Friendly
 
 Bright, plant-forward menu with bowls, smoothies, fresh juices, and a few well-done meat dishes for the omnivores. They make their own kombucha. Strong WiFi if you're working remotely between trips.
 
@@ -91,9 +109,9 @@ Costa Rican restaurants automatically add a **10% service charge** and a **13% s
 
 ## Getting There From Your Hotel
 
-Most of these spots are within a 5-minute walk of La Fortuna's central park. Don Rufino, Rancho La Cascada, Soda La Hormiga, Lava Lounge, and Anch'io are all walkable from downtown hotels.
+Most of these spots are within a 5-minute walk of La Fortuna's central park. Don Rufino, Soda La Hormiga, Lava Lounge, Anch'io, El Chante Verde, and Tiquicia are all walkable from downtown hotels.
 
-Benedictus Steakhouse is a 5–10 minute drive up the hill toward El Castillo — if you're at a hotel like Tabacón, Nayara, or The Springs, your hotel can call a local taxi, or just ask your shuttle driver to add it as a quick stop on your transfer day.
+Benedictus Steakhouse and Selva Rústica are a 5–10 minute drive out of town. If you're at a hotel like Tabacón, Nayara, or The Springs, your hotel can call a local taxi, or just ask your shuttle driver to add it as a quick stop on your transfer day.
 
 If you're arriving from **SJO airport** or **LIR airport** and want us to recommend a dinner stop on the way in, let your driver know — most of these places are an easy detour, and it's a great way to break a long transfer day.
 
