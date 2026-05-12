@@ -3,6 +3,7 @@ import { CheckCircle2, Mail, MessageCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WizardProgress from "@/components/book/WizardProgress";
+import ClearCartOnMount from "@/components/book/ClearCartOnMount";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
@@ -36,6 +37,7 @@ export default async function BookingSuccessPage({
 
   return (
     <main className="min-h-screen bg-black text-white">
+      <ClearCartOnMount />
       <Navbar />
       <div className="pt-24">
         <WizardProgress current="done" />
