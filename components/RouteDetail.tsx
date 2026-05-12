@@ -3,6 +3,8 @@ import { MapPin, Clock, Users, Car, ArrowRight } from "lucide-react";
 import type { Route } from "@/lib/types";
 import { isPopularRoute } from "@/lib/popular-routes";
 import RouteSchema from "@/components/RouteSchema";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import FAQSchema from "@/components/FAQSchema";
 
 function parsePOI(json: string | null): string[] {
   if (!json) return [];
@@ -40,6 +42,40 @@ export default function RouteDetail({ route, related, basePath }: Props) {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
       <RouteSchema route={route} basePath={basePath} />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Routes", url: "/routes" },
+          {
+            name: `${route.origen} to ${route.destino}`,
+            url: `${basePath}/${route.slug}`,
+          },
+        ]}
+      />
+      <FAQSchema
+        faqs={[
+          {
+            question: `How much does a private shuttle from ${route.origen} to ${route.destino} cost?`,
+            answer: `Private shuttle from ${route.origen} to ${route.destino} starts at $${route.precio1a6} USD per vehicle (1-6 passengers). The price is per vehicle, not per person — everyone in your group travels together for the same flat rate. Larger vehicles for 7-18 passengers are available at higher tiers.`,
+          },
+          ...(route.duracion
+            ? [
+                {
+                  question: `How long does the drive from ${route.origen} to ${route.destino} take?`,
+                  answer: `The drive from ${route.origen} to ${route.destino} takes approximately ${route.duracion}. Travel times can vary slightly depending on traffic, weather, and road conditions. Our drivers monitor conditions in real time to choose the fastest safe route.`,
+                },
+              ]
+            : []),
+          {
+            question: `Is the shuttle from ${route.origen} to ${route.destino} private?`,
+            answer: `Yes. Every Private Travel CR shuttle is fully private — you ride only with your group, no shared seats with strangers. The price covers the entire vehicle door-to-door, including a professional bilingual driver, free WiFi, bottled water, free child seats on request, and full insurance.`,
+          },
+          {
+            question: `Do you pick up at any address in ${route.origen}?`,
+            answer: `Yes, we offer door-to-door pickup anywhere in ${route.origen} — hotels, Airbnbs, private villas, or any specific address you give us at booking. We confirm the exact pickup location 24 hours before your trip.`,
+          },
+        ]}
+      />
       <div className="max-w-5xl mx-auto px-4">
         <nav className="text-sm text-gray-500 mb-6">
           <Link href="/" className="hover:text-amber-400">Home</Link>

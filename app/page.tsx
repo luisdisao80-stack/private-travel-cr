@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import PopularRoutes from "@/components/PopularRoutes";
 import ServiceComparison from "@/components/ServiceComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import FAQSchema from "@/components/FAQSchema";
 import { getAllLocations } from "@/lib/routes-db";
 
 export const revalidate = 3600;
@@ -16,6 +17,7 @@ export default async function Home() {
   const locations = await getAllLocations();
   return (
     <main className="min-h-screen bg-black">
+      <FAQSchema />
       <Navbar />
 
       <section id="inicio">
