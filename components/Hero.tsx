@@ -33,7 +33,13 @@ export default function Hero({ locations }: Props) {
     <section className="relative min-h-[85vh] md:min-h-screen w-full flex items-center justify-center overflow-hidden">
       <img
         src="https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=60&w=2000"
-        alt="Costa Rica"
+        alt="Costa Rica private shuttle"
+        width={2000}
+        height={1125}
+        // eslint-disable-next-line @next/next/no-img-element
+        fetchPriority="high"
+        loading="eager"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover object-center"
       />
 

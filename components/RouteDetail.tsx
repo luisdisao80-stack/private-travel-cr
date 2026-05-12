@@ -117,7 +117,7 @@ export default function RouteDetail({ route, related, basePath }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-gray-900/50 rounded-xl p-4 text-center">
               <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
-                <img src="/staria.webp" alt="Hyundai Staria" className="max-h-full max-w-full object-contain" />
+                <img src="/staria.webp" alt="Hyundai Staria" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
               </div>
               <div className="text-xs text-gray-400 mb-1">1-6 PAX · Hyundai Staria</div>
               <div className="text-2xl font-bold text-amber-400">${route.precio1a6}</div>
@@ -125,7 +125,7 @@ export default function RouteDetail({ route, related, basePath }: Props) {
             {route.precio7a9 ? (
               <div className="bg-gray-900/50 rounded-xl p-4 text-center">
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
-                  <img src="/hiace.png" alt="Toyota Hiace" className="max-h-full max-w-full object-contain" />
+                  <img src="/hiace.png" alt="Toyota Hiace" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
                 <div className="text-xs text-gray-400 mb-1">7-9 PAX · Toyota Hiace</div>
                 <div className="text-2xl font-bold text-amber-400">${route.precio7a9}</div>
@@ -134,7 +134,7 @@ export default function RouteDetail({ route, related, basePath }: Props) {
             {route.precio10a12 ? (
               <div className="bg-gray-900/50 rounded-xl p-4 text-center">
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
-                  <img src="/maxus-v90.webp" alt="Maxus V90" className="max-h-full max-w-full object-contain" />
+                  <img src="/maxus-v90.webp" alt="Maxus V90" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
                 <div className="text-xs text-gray-400 mb-1">10-12 PAX · Maxus V90</div>
                 <div className="text-2xl font-bold text-amber-400">${route.precio10a12}</div>

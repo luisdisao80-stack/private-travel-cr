@@ -14,11 +14,20 @@ export default function LocationInput({ value, onChange, placeholder, locations 
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  // Debounce the filter input so a fast typist doesn't trigger 1,200+
+  // String.includes() calls on every keystroke. 150ms is below the
+  // perception threshold but cuts the work to one pass per pause.
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedValue(value), 150);
+    return () => clearTimeout(t);
+  }, [value]);
+
   const suggestions = useMemo(() => {
-    if (!value) return locations.slice(0, 8);
-    const lv = value.toLowerCase();
+    if (!debouncedValue) return locations.slice(0, 8);
+    const lv = debouncedValue.toLowerCase();
     return locations.filter((l) => l.toLowerCase().includes(lv)).slice(0, 8);
-  }, [value, locations]);
+  }, [debouncedValue, locations]);
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {

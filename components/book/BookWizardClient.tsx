@@ -107,6 +107,11 @@ export default function BookWizardClient({ locations }: Props) {
         <img
           src="https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=60&w=2000"
           alt="Costa Rica private shuttle"
+          width={2000}
+          height={1125}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />

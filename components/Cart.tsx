@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -25,6 +25,17 @@ export default function Cart() {
   const { t, lang } = useLanguage();
   const router = useRouter();
   const [showBookingForm, setShowBookingForm] = useState(false);
+
+  // Lock body scroll while the drawer is open so the underlying page can't
+  // scroll behind the overlay (also kills mobile rubber-banding).
+  useEffect(() => {
+    if (!isCartOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isCartOpen]);
 
   const handleClose = () => {
     setCartOpen(false);
@@ -200,6 +211,10 @@ export default function Cart() {
                                     : "/hiace.png"
                               }
                               alt={item.vehicleName}
+                              width={160}
+                              height={112}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-contain"
                             />
                           </div>
