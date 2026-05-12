@@ -5,6 +5,7 @@ import { isPopularRoute } from "@/lib/popular-routes";
 import RouteSchema from "@/components/RouteSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
+import StickyBookCTA from "@/components/StickyBookCTA";
 
 function parsePOI(json: string | null): string[] {
   if (!json) return [];
@@ -266,6 +267,11 @@ export default function RouteDetail({ route, related, basePath }: Props) {
           </Link>
         </section>
       </div>
+      <StickyBookCTA
+        origen={route.origen}
+        destino={route.destino}
+        priceFrom={route.precio1a6 ?? 0}
+      />
     </main>
   );
 }

@@ -21,7 +21,7 @@ export default function WhatsAppFloat() {
   return (
     <AnimatePresence>
       {visible && (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed right-6 bottom-24 lg:bottom-6 z-50">
           <motion.button
             initial={{ opacity: 0, scale: 0, rotate: -180 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
