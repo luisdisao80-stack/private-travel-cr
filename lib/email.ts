@@ -66,6 +66,91 @@ function escapeHtml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
+/** Format an ISO date `YYYY-MM-DD` + `HH:MM` (Costa Rica local) as the
+ *  basic UTC date-time form ICS expects: `YYYYMMDDTHHMMSSZ`. CR is UTC-6
+ *  with no DST. */
+function toIcsUtc(dateIso: string, time: string, offsetMin = 0): string {
+  // Treat input as Costa Rica local (UTC-6), convert to UTC.
+  const [y, m, d] = dateIso.split("-").map((s) => parseInt(s, 10));
+  const [h, mi] = time.split(":").map((s) => parseInt(s, 10));
+  if ([y, m, d, h, mi].some((n) => Number.isNaN(n))) return "";
+  // Local time → minutes since epoch in CR → add 6h to get UTC, add offset.
+  const utcMs = Date.UTC(y, m - 1, d, h + 6, mi + offsetMin, 0);
+  const dt = new Date(utcMs);
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  return (
+    `${dt.getUTCFullYear()}${pad(dt.getUTCMonth() + 1)}${pad(dt.getUTCDate())}` +
+    `T${pad(dt.getUTCHours())}${pad(dt.getUTCMinutes())}00Z`
+  );
+}
+
+function escapeIcs(s: string): string {
+  return s.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
+}
+
+/** Build a multi-event .ics file covering every trip in the booking. */
+export function buildBookingIcs(data: BookingEmailInput): string {
+  const dtstamp = toIcsUtc(
+    new Date().toISOString().slice(0, 10),
+    new Date().toISOString().slice(11, 16)
+  );
+  const events = data.items
+    .map((it, idx) => {
+      // Try to parse the duration like "3h" / "3h 30min" into minutes; default 180.
+      let durMin = 180;
+      const dur = it.duration?.trim();
+      if (dur) {
+        const h = dur.match(/(\d+)\s*h/i);
+        const m = dur.match(/(\d+)\s*min/i);
+        if (h) durMin = parseInt(h[1], 10) * 60 + (m ? parseInt(m[1], 10) : 0);
+      }
+      const start = toIcsUtc(it.date, it.pickupTime);
+      const end = toIcsUtc(it.date, it.pickupTime, durMin);
+      if (!start || !end) return "";
+      const pickup =
+        it.pickupPlace && it.pickupPlace !== it.fromName ? it.pickupPlace : it.fromName;
+      const dropoff =
+        it.dropoffPlace && it.dropoffPlace !== it.toName ? it.dropoffPlace : it.toName;
+      const desc = [
+        `Private Travel CR · Order ${data.orderNumber}`,
+        `From: ${pickup}`,
+        `To: ${dropoff}`,
+        `Passengers: ${it.passengers}`,
+        `Service: ${it.serviceType === "vip" ? "VIP" : "Standard"}`,
+        `Vehicle: ${it.vehicleName}`,
+        it.flightNumber ? `Flight: ${it.flightNumber}` : "",
+        "",
+        "Questions? WhatsApp +506 8633-4133",
+      ]
+        .filter(Boolean)
+        .join("\\n");
+      return [
+        "BEGIN:VEVENT",
+        `UID:${data.orderNumber}-${idx}@privatetravelcr.com`,
+        `DTSTAMP:${dtstamp}`,
+        `DTSTART:${start}`,
+        `DTEND:${end}`,
+        `SUMMARY:${escapeIcs(`Private Shuttle: ${it.fromName} → ${it.toName}`)}`,
+        `DESCRIPTION:${desc}`,
+        `LOCATION:${escapeIcs(pickup)}`,
+        "STATUS:CONFIRMED",
+        "END:VEVENT",
+      ].join("\r\n");
+    })
+    .filter(Boolean)
+    .join("\r\n");
+
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Private Travel CR//Booking//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    events,
+    "END:VCALENDAR",
+  ].join("\r\n");
+}
+
 function tripRowsHtml(items: CartItem[]): string {
   return items
     .map((it, idx) => {
@@ -235,6 +320,13 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
     showCustomer: true,
   });
 
+  const ics = buildBookingIcs(data);
+  const icsAttachment = {
+    filename: `private-travel-cr-${data.orderNumber}.ics`,
+    content: Buffer.from(ics, "utf-8").toString("base64"),
+    contentType: "text/calendar; charset=utf-8; method=PUBLISH",
+  };
+
   // Fire both in parallel; one failing must not stop the other.
   const [customerRes, internalRes] = await Promise.allSettled([
     resend.emails.send({
@@ -243,6 +335,7 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
       subject: `Booking Confirmed · ${data.orderNumber}`,
       html: customerHtml,
       replyTo: businessTo,
+      attachments: [icsAttachment],
     }),
     resend.emails.send({
       from,
