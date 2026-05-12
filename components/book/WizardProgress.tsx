@@ -4,11 +4,11 @@ import { Check } from "lucide-react";
 
 export type WizardStep = "search" | "trip" | "checkout" | "done";
 
-const STEPS: { id: WizardStep; label: string }[] = [
-  { id: "search", label: "Search" },
-  { id: "trip", label: "Trip Details" },
-  { id: "checkout", label: "Checkout" },
-  { id: "done", label: "Done" },
+const STEPS: { id: WizardStep; label: string; shortLabel: string }[] = [
+  { id: "search", label: "Search", shortLabel: "Search" },
+  { id: "trip", label: "Trip Details", shortLabel: "Trip" },
+  { id: "checkout", label: "Checkout", shortLabel: "Pay" },
+  { id: "done", label: "Done", shortLabel: "Done" },
 ];
 
 type Props = {
@@ -61,6 +61,7 @@ export default function WizardProgress({ current, onStepClick }: Props) {
                   {st === "done" ? <Check size={14} strokeWidth={3} /> : i + 1}
                 </span>
                 <span className="hidden sm:inline">{s.label}</span>
+                <span className="inline sm:hidden text-[11px]">{s.shortLabel}</span>
               </Tag>
             );
           })}

@@ -60,7 +60,7 @@ export default function OrderSummarySidebar({ items, totalPrice }: Props) {
   const [openIncluded, setOpenIncluded] = useState(false);
 
   return (
-    <aside className="lg:sticky lg:top-24">
+    <aside className="hidden lg:block lg:sticky lg:top-24">
       <div className="rounded-2xl overflow-hidden border border-amber-500/20 bg-gradient-to-br from-gray-900 to-black shadow-2xl shadow-black/40">
         <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 border-b border-amber-500/20 px-6 py-5">
           <h2 className="text-xl md:text-2xl font-bold text-white">Order Summary</h2>

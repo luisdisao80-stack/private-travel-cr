@@ -163,7 +163,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
           Your information
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-3">
+        <div className="grid md:grid-cols-2 gap-3">
           <div className="space-y-1.5">
             <Label className="text-gray-300 text-sm">
               Full name <span className="text-red-400">*</span>
@@ -201,7 +201,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
                 const next = COUNTRY_CODES.find((c) => c.iso2 === e.target.value);
                 if (next) setCountry(next);
               }}
-              className="w-32 bg-black/50 border border-amber-500/30 text-white h-11 rounded-md px-2 text-sm focus:border-amber-500 outline-none"
+              className="w-24 sm:w-28 md:w-32 bg-black/50 border border-amber-500/30 text-white h-11 rounded-md px-2 text-sm focus:border-amber-500 outline-none shrink-0"
               aria-label="Country code"
             >
               {COUNTRY_CODES.map((c) => (
