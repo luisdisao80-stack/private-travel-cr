@@ -7,6 +7,7 @@
 "use client";
 
 import { track as vercelTrack } from "@vercel/analytics";
+import { hasAnalyticsConsent } from "@/components/CookieBanner";
 
 type GtagFn = (
   command: "event",
@@ -30,6 +31,10 @@ export function track(
   params: Record<string, unknown> = {}
 ): void {
   if (typeof window === "undefined") return;
+  // Respect the visitor's cookie-consent choice. Vercel Analytics is
+  // first-party and aggregated, but we still gate it together with GA4
+  // so the banner's 'Essential only' option is honored across the board.
+  if (!hasAnalyticsConsent()) return;
   try {
     vercelTrack(event, params as Record<string, string | number | boolean | null>);
   } catch {

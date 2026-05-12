@@ -31,6 +31,7 @@ export default function Footer() {
       ];
 
   const termsLabel = lang === "en" ? "Terms and Conditions" : "Términos y Condiciones";
+  const privacyLabel = lang === "en" ? "Privacy Policy" : "Política de Privacidad";
   const rightsText = lang === "en"
     ? "All Rights Reserved."
     : "Todos los derechos reservados.";
@@ -112,6 +113,18 @@ export default function Footer() {
                     →
                   </span>
                   {termsLabel}
+                </Link>
+              </li>
+              {/* Link a Privacy */}
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-gray-400 hover:text-amber-400 transition-colors text-sm flex items-center gap-1.5 group"
+                >
+                  <span className="text-amber-500/0 group-hover:text-amber-500 transition-colors">
+                    →
+                  </span>
+                  {privacyLabel}
                 </Link>
               </li>
             </ul>
@@ -304,6 +317,13 @@ export default function Footer() {
                 className="hover:text-amber-400 transition-colors underline-offset-4 hover:underline"
               >
                 {termsLabel}
+              </Link>
+              <span className="hidden md:inline text-gray-700">·</span>
+              <Link
+                href="/privacy"
+                className="hover:text-amber-400 transition-colors underline-offset-4 hover:underline"
+              >
+                {privacyLabel}
               </Link>
             </div>
             <p className="text-gray-500 text-sm text-center md:text-right">
