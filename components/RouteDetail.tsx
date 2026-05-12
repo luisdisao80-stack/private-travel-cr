@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MapPin, Clock, Users, Car, ArrowRight } from "lucide-react";
 import type { Route } from "@/lib/types";
 import { isPopularRoute } from "@/lib/popular-routes";
+import RouteSchema from "@/components/RouteSchema";
 
 function parsePOI(json: string | null): string[] {
   if (!json) return [];
@@ -38,6 +39,7 @@ export default function RouteDetail({ route, related, basePath }: Props) {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
+      <RouteSchema route={route} basePath={basePath} />
       <div className="max-w-5xl mx-auto px-4">
         <nav className="text-sm text-gray-500 mb-6">
           <Link href="/" className="hover:text-amber-400">Home</Link>
