@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 
 export type CartItem = {
   id: string;
@@ -65,35 +65,50 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, hydrated]);
 
-  const addItem = (item: Omit<CartItem, "id">) => {
+  const addItem = useCallback((item: Omit<CartItem, "id">) => {
     const newItem: CartItem = {
       ...item,
       id: `trip_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     };
     setItems((prev) => [...prev, newItem]);
     setCartOpen(true);
-  };
+  }, []);
 
-  const updateItem = (id: string, patch: Partial<Omit<CartItem, "id">>) => {
+  const updateItem = useCallback((id: string, patch: Partial<Omit<CartItem, "id">>) => {
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
-  };
+  }, []);
 
-  const removeItem = (id: string) => {
+  const removeItem = useCallback((id: string) => {
     setItems((prev) => prev.filter((it) => it.id !== id));
-  };
+  }, []);
 
-  const clearCart = () => setItems([]);
+  const clearCart = useCallback(() => setItems([]), []);
 
-  const totalPrice = items.reduce((sum, it) => sum + it.totalPrice, 0);
-  const itemCount = items.length;
+  const { totalPrice, itemCount } = useMemo(() => {
+    let total = 0;
+    for (const it of items) total += it.totalPrice;
+    return { totalPrice: total, itemCount: items.length };
+  }, [items]);
 
-  return (
-    <CartContext.Provider
-      value={{ items, isCartOpen, hydrated, addItem, updateItem, removeItem, clearCart, setCartOpen, totalPrice, itemCount }}
-    >
-      {children}
-    </CartContext.Provider>
+  // Memoize the context value so consumers don't re-render every time the
+  // Provider re-renders — only when one of these dependencies actually flips.
+  const value = useMemo(
+    () => ({
+      items,
+      isCartOpen,
+      hydrated,
+      addItem,
+      updateItem,
+      removeItem,
+      clearCart,
+      setCartOpen,
+      totalPrice,
+      itemCount,
+    }),
+    [items, isCartOpen, hydrated, addItem, updateItem, removeItem, clearCart, totalPrice, itemCount]
   );
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 export function useCart() {

@@ -80,14 +80,7 @@ export default function PopularRoutes() {
           </p>
         </motion.div>
 
-        {/* Grid de rutas - forzado con style inline */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: "16px",
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
           {popularRoutes.map((route, index) => (
             <motion.button
               key={`${route.from}-${route.to}`}
@@ -100,105 +93,56 @@ export default function PopularRoutes() {
             >
               <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/0 to-amber-600/0 group-hover:from-amber-500/30 group-hover:to-amber-600/10 rounded-2xl blur-xl transition-all duration-500" />
 
-              <div
-                className="relative bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-2xl p-5 hover:border-amber-500/40 transition-all duration-300"
-                style={{ display: "flex", flexDirection: "column", height: "100%" }}
-              >
-                {/* Top */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
-                  <div
-                    style={{
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "8px",
-                      background: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.05))",
-                      border: "1px solid rgba(245,158,11,0.3)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <MapPin size={16} color="#fbbf24" strokeWidth={1.5} />
+              <div className="relative flex h-full flex-col bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-2xl p-5 hover:border-amber-500/40 transition-all duration-300">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-600/5 border border-amber-500/30 flex items-center justify-center">
+                    <MapPin size={16} className="text-amber-400" strokeWidth={1.5} />
                   </div>
 
                   {route.popular && (
-                    <span
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        padding: "2px 8px",
-                        borderRadius: "9999px",
-                        background: "rgba(245,158,11,0.2)",
-                        border: "1px solid rgba(245,158,11,0.4)",
-                        color: "#fbbf24",
-                        fontSize: "9px",
-                        fontWeight: 700,
-                      }}
-                    >
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[9px] font-bold">
                       <Sparkles size={8} />
                       {t.routes.popular}
                     </span>
                   )}
                 </div>
 
-                {/* Ruta */}
-                <div style={{ marginBottom: "12px", flexGrow: 1 }}>
-                  <div style={{ color: "#fbbf24", fontWeight: 600, fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
+                <div className="mb-3 flex-1">
+                  <div className="text-amber-400 font-semibold text-[10px] tracking-[0.08em] uppercase mb-2">
                     Private Shuttle
                   </div>
-                  <div style={{ color: "white", fontWeight: 700, fontSize: "14px", marginBottom: "6px", lineHeight: "1.2" }}>
+                  <div className="text-white font-bold text-sm leading-tight mb-1.5">
                     {route.from}
                   </div>
 
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", margin: "6px 0" }}>
-                    <div style={{ flex: 1, height: "1px", background: "linear-gradient(to right, rgba(245,158,11,0.4), transparent)" }} />
-                    <ArrowRight size={12} color="#fbbf24" />
-                    <div style={{ flex: 1, height: "1px", background: "linear-gradient(to left, rgba(245,158,11,0.4), transparent)" }} />
+                  <div className="flex items-center gap-2 my-1.5">
+                    <div className="flex-1 h-px bg-gradient-to-r from-amber-500/40 to-transparent" />
+                    <ArrowRight size={12} className="text-amber-400" />
+                    <div className="flex-1 h-px bg-gradient-to-l from-amber-500/40 to-transparent" />
                   </div>
 
-                  <div style={{ color: "white", fontWeight: 700, fontSize: "14px", lineHeight: "1.2" }}>
+                  <div className="text-white font-bold text-sm leading-tight">
                     {route.to}
                   </div>
                 </div>
 
-                {/* Meta info */}
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", color: "#9ca3af", marginBottom: "12px" }}>
-                  <Clock size={10} color="rgba(245,158,11,0.7)" />
+                <div className="flex items-center gap-1.5 text-[11px] text-gray-400 mb-3">
+                  <Clock size={10} className="text-amber-400/70" />
                   <span>{route.duration}</span>
-                  <span style={{ color: "#4b5563" }}>·</span>
+                  <span className="text-gray-600">·</span>
                   <span>{t.routes.private}</span>
                 </div>
 
-                {/* Precio y CTA */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    paddingTop: "12px",
-                    borderTop: "1px solid rgba(255,255,255,0.05)",
-                  }}
-                >
+                <div className="flex items-center justify-between pt-3 border-t border-white/5">
                   <div>
-                    <div style={{ fontSize: "9px", color: "#6b7280", lineHeight: "1", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                    <div className="text-[9px] text-gray-500 leading-none tracking-[0.05em] uppercase">
                       {t.routes.from}
                     </div>
-                    <div style={{ fontSize: "20px", fontWeight: 700, color: "#fbbf24", lineHeight: "1.2" }}>
+                    <div className="text-xl font-bold text-amber-400 leading-tight">
                       ${route.priceFrom}
                     </div>
                   </div>
-                  <span
-                    className="group-hover:translate-x-1 transition-transform"
-                    style={{
-                      fontSize: "11px",
-                      color: "#fbbf24",
-                      fontWeight: 600,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                    }}
-                  >
+                  <span className="inline-flex items-center gap-1 text-[11px] text-amber-400 font-semibold group-hover:translate-x-1 transition-transform">
                     <span>Book Now</span>
                     <ArrowRight size={11} />
                   </span>
