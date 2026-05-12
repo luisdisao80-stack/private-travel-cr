@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { consultTransaction, isApproved } from "@/lib/tilopay";
+import { sendBookingEmails } from "@/lib/email";
+import type { CartItem } from "@/lib/CartContext";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,6 +35,33 @@ export async function GET(req: NextRequest) {
           consulted_at: new Date().toISOString(),
         })
         .eq("order_number", orderNumber);
+
+      // Fire confirmation emails to the customer and the business. We swallow
+      // failures so a flaky email provider can't block the redirect.
+      try {
+        const { data: booking } = await supabaseAdmin
+          .from("bookings")
+          .select(
+            "order_number, customer_name, customer_email, customer_phone, total_usd, items, tilopay_auth, tilopay_last4"
+          )
+          .eq("order_number", orderNumber)
+          .maybeSingle();
+        if (booking) {
+          await sendBookingEmails({
+            orderNumber: booking.order_number,
+            customerName: booking.customer_name,
+            customerEmail: booking.customer_email,
+            customerPhone: booking.customer_phone,
+            totalUsd: Number(booking.total_usd),
+            authCode: booking.tilopay_auth,
+            cardLast4: booking.tilopay_last4,
+            items: (booking.items as CartItem[]) || [],
+          });
+        }
+      } catch (mailErr) {
+        console.error("[payment/callback] email send failed:", mailErr);
+      }
+
       return NextResponse.redirect(
         `${origin}/booking/success?orderNumber=${encodeURIComponent(orderNumber)}`
       );
