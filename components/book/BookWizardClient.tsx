@@ -62,10 +62,10 @@ export default function BookWizardClient({ locations }: Props) {
     if (!settledFromHydration.current) {
       settledFromHydration.current = true;
       prevItemsCount.current = items.length;
-      // First settle: if the visitor arrived without an explicit intent
-      // (no ?from=&to= and no ?checkout=1) but already has cart items,
-      // jump straight to checkout — they're returning to finalize.
-      if (!hasUrlRoute && !wantsCheckout && items.length > 0) {
+      // First settle: once cart has items, the only sensible /book view is
+      // checkout. URL params from a fresh search are ignored — visitors
+      // reach the calculator only when the cart is empty.
+      if (items.length > 0) {
         setView("checkout");
       }
       return;
