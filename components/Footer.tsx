@@ -12,22 +12,22 @@ export default function Footer() {
   // Enlaces rapidos segun idioma
   const quickLinks = lang === "en"
     ? [
-        { label: "Home", href: "#inicio" },
-        { label: "Benefits", href: "#beneficios" },
-        { label: "Services", href: "#servicios" },
+        { label: "Home", href: "/#inicio" },
+        { label: "Benefits", href: "/#beneficios" },
+        { label: "Services", href: "/#servicios" },
         { label: "Get Quote", href: "/book" },
-        { label: "Fleet", href: "#flota" },
-        { label: "Reviews", href: "#reviews" },
-        { label: "FAQ", href: "#faq" },
+        { label: "Fleet", href: "/#flota" },
+        { label: "Reviews", href: "/#reseñas" },
+        { label: "FAQ", href: "/#faq" },
       ]
     : [
-        { label: "Inicio", href: "#inicio" },
-        { label: "Beneficios", href: "#beneficios" },
-        { label: "Servicios", href: "#servicios" },
+        { label: "Inicio", href: "/#inicio" },
+        { label: "Beneficios", href: "/#beneficios" },
+        { label: "Servicios", href: "/#servicios" },
         { label: "Cotizador", href: "/book" },
-        { label: "Flota", href: "#flota" },
-        { label: "Reseñas", href: "#reviews" },
-        { label: "FAQ", href: "#faq" },
+        { label: "Flota", href: "/#flota" },
+        { label: "Reseñas", href: "/#reseñas" },
+        { label: "FAQ", href: "/#faq" },
       ];
 
   const termsLabel = lang === "en" ? "Terms and Conditions" : "Términos y Condiciones";
