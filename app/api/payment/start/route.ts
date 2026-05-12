@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { processPayment } from "@/lib/tilopay";
+import { processPayment, isSandboxMode } from "@/lib/tilopay";
 import type { CartItem } from "@/lib/CartContext";
 
 export const runtime = "nodejs";
@@ -92,6 +92,10 @@ export async function POST(req: NextRequest) {
 
   const origin = siteOrigin(req);
   const { first, last } = splitName(body.customer.name);
+
+  console.log(
+    `[payment/start] order=${orderNumber} mode=${isSandboxMode() ? "sandbox" : "production"} total=${body.totalUsd}`
+  );
 
   try {
     const result = await processPayment({

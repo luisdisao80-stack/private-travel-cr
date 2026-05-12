@@ -8,24 +8,52 @@
 //   4. POST /consult (key, orderNumber) → transaction status (code "1" = approved).
 //
 // Env vars (server only):
-//   TILOPAY_API_USER       - "apiuser" credential
-//   TILOPAY_API_PASSWORD   - "password" credential
-//   TILOPAY_API_KEY        - merchant key sent in payment requests
-//   TILOPAY_API_URL        - optional, defaults to https://app.tilopay.com
+//   TILOPAY_MODE                     - "sandbox" | "production" (default: production)
+//
+//   Production credentials (used when TILOPAY_MODE != "sandbox"):
+//     TILOPAY_API_USER               - "apiuser" credential
+//     TILOPAY_API_PASSWORD           - "password" credential
+//     TILOPAY_API_KEY                - merchant key
+//     TILOPAY_API_URL                - optional, defaults to https://app.tilopay.com
+//
+//   Sandbox credentials (used when TILOPAY_MODE == "sandbox"):
+//     TILOPAY_SANDBOX_API_USER
+//     TILOPAY_SANDBOX_API_PASSWORD
+//     TILOPAY_SANDBOX_API_KEY
+//     TILOPAY_SANDBOX_API_URL        - optional, defaults to https://app.tilopay.com
+//
+// Flip TILOPAY_MODE in Vercel and redeploy to switch — both credential sets
+// can sit side-by-side so production keys aren't lost while testing.
 
 const DEFAULT_BASE = "https://app.tilopay.com";
 
+export function isSandboxMode(): boolean {
+  return (process.env.TILOPAY_MODE || "").toLowerCase() === "sandbox";
+}
+
 function env() {
-  const apiUser = process.env.TILOPAY_API_USER;
-  const apiPassword = process.env.TILOPAY_API_PASSWORD;
-  const apiKey = process.env.TILOPAY_API_KEY;
-  const baseUrl = process.env.TILOPAY_API_URL || DEFAULT_BASE;
+  const sandbox = isSandboxMode();
+  const apiUser = sandbox
+    ? process.env.TILOPAY_SANDBOX_API_USER
+    : process.env.TILOPAY_API_USER;
+  const apiPassword = sandbox
+    ? process.env.TILOPAY_SANDBOX_API_PASSWORD
+    : process.env.TILOPAY_API_PASSWORD;
+  const apiKey = sandbox
+    ? process.env.TILOPAY_SANDBOX_API_KEY
+    : process.env.TILOPAY_API_KEY;
+  const baseUrl =
+    (sandbox
+      ? process.env.TILOPAY_SANDBOX_API_URL
+      : process.env.TILOPAY_API_URL) || DEFAULT_BASE;
+
   if (!apiUser || !apiPassword || !apiKey) {
+    const prefix = sandbox ? "TILOPAY_SANDBOX_" : "TILOPAY_";
     throw new Error(
-      "Missing Tilopay env vars: TILOPAY_API_USER, TILOPAY_API_PASSWORD, TILOPAY_API_KEY"
+      `Missing Tilopay env vars for ${sandbox ? "sandbox" : "production"} mode: ${prefix}API_USER, ${prefix}API_PASSWORD, ${prefix}API_KEY`
     );
   }
-  return { apiUser, apiPassword, apiKey, baseUrl };
+  return { apiUser, apiPassword, apiKey, baseUrl, sandbox };
 }
 
 // In-memory token cache so we don't hit /login on every request.
