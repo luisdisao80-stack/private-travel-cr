@@ -5,8 +5,8 @@ date: "2026-05-12"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 7
-image: "/blog/casado-la-fortuna.jpg"
-imageAlt: "Traditional Costa Rican casado plate with rice, beans, and plantains"
+image: "/blog/gallo-pinto-la-fortuna.jpg"
+imageAlt: "Costa Rican gallo pinto plate with rice, black beans, avocado, plantain, and fresh salsa"
 ---
 
 We drive guests in and out of La Fortuna every day, and the question we get most after "where can I see the volcano?" is "where should we eat?" Below is the shortlist we actually give people — a mix of touristy classics, local sodas where you'll see no tourists, and the spot we recommend for a special night out.
