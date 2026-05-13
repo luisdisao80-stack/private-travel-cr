@@ -86,7 +86,7 @@ export const translations = {
     // HERO
     hero: {
       badge: "PREMIUM PRIVATE TRANSPORTATION",
-      titlePart1: "Private Shuttle Transportation",
+      titlePart1: "Private Shuttle",
       titlePart2: "in Costa Rica",
       subtitle: "Private Shuttle Service",
       features: "Instant quotes · Bilingual drivers · Door-to-door",
@@ -658,7 +658,7 @@ export const translations = {
 
     hero: {
       badge: "PREMIUM PRIVATE TRANSPORTATION",
-      titlePart1: "Transporte Privado",
+      titlePart1: "Shuttle Privado",
       titlePart2: "En Costa Rica",
       subtitle: "Private Shuttle Service",
       features: "Cotización instantánea · Chofer bilingüe · Puerta a puerta",
