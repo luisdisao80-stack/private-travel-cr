@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
+import { readPostMarkdown, extractHowToSteps } from "@/lib/blog-howto";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import HowToSchema from "@/components/HowToSchema";
+import ArticleSchema from "@/components/ArticleSchema";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
@@ -76,8 +79,35 @@ export default async function BlogPostPage({
     notFound();
   }
 
+  const canonicalUrl = `${siteConfig.siteUrl}/blog/${slug}`;
+  const rawMarkdown = readPostMarkdown(slug);
+  const howToSteps = rawMarkdown ? extractHowToSteps(rawMarkdown) : [];
+
   return (
     <>
+      <ArticleSchema
+        headline={post.title}
+        description={post.description}
+        url={canonicalUrl}
+        image={post.image}
+        datePublished={post.date}
+        authorName={post.author}
+      />
+      {howToSteps.length > 0 && (
+        <HowToSchema
+          name={post.title}
+          description={post.description}
+          url={canonicalUrl}
+          image={
+            post.image
+              ? post.image.startsWith("http")
+                ? post.image
+                : `${siteConfig.siteUrl}${post.image}`
+              : undefined
+          }
+          steps={howToSteps}
+        />
+      )}
       <Navbar />
       <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-4">
