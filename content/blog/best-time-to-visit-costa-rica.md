@@ -5,8 +5,8 @@ date: "2026-05-14"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 7
-image: "/blog/costa-rica-rainforest.jpg"
-imageAlt: "Aerial view of Costa Rica rainforest meeting the Pacific coastline"
+image: "/blog/arenal-volcano.jpg"
+imageAlt: "Arenal Volcano rising above the lush Costa Rican rainforest"
 ---
 
 There's no "wrong" month to visit Costa Rica — we drive guests year-round and every season has something good. But there's a right month for your trip depending on what you're after. Here's the local breakdown.

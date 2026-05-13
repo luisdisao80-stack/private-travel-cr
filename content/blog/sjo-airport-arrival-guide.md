@@ -5,8 +5,8 @@ date: "2026-05-13"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 6
-image: "/blog/sjo-airport.jpg"
-imageAlt: "View of the Costa Rica coastline and mountains from an airplane window on approach"
+image: "/blog/sjo-san-jose-aerial.jpg"
+imageAlt: "Aerial view of San José, Costa Rica with the surrounding Central Valley mountains"
 ---
 
 Juan Santamaría International Airport (SJO) is the main gateway to Costa Rica. About 80% of our pickups happen here. The arrival process is generally smooth, but there are a few things first-time visitors don't expect — especially the part right after you clear customs. Here's exactly what to do, in order.

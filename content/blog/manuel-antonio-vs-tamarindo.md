@@ -5,8 +5,8 @@ date: "2026-05-16"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 8
-image: "/blog/manuel-antonio-beach.jpg"
-imageAlt: "Aerial view of a tropical Costa Rica beach with turquoise water and palm trees"
+image: "/blog/manuel-antonio-jungle-coast.jpg"
+imageAlt: "Lush rainforest meeting the bright blue Pacific coast at Manuel Antonio, Costa Rica"
 ---
 
 Most first-time visitors to Costa Rica end up choosing between **Manuel Antonio** and **Tamarindo**. Both are on the Pacific Coast. Both have beautiful beaches. Both are easy to reach. But they are very different trips. After driving guests to both for years, here's the honest breakdown.
