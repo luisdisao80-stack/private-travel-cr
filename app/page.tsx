@@ -26,6 +26,8 @@ export default async function Home() {
         <Hero locations={locations} />
       </section>
 
+      <Reviews />
+
       {/* BENEFICIOS CON ICONOS */}
       <BenefitsSection />
 
@@ -35,8 +37,6 @@ export default async function Home() {
       <FleetPreview />
 
       <PopularRoutes />
-
-      <Reviews />
 
       <FAQSection />
 
