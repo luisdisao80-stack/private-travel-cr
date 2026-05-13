@@ -14,10 +14,11 @@ export default function GoogleReviewsWidget() {
     document.body.appendChild(s);
   }, []);
 
+  // Reserved min-height stops layout shift while the widget boots, and gives
+  // a visible "something is loading" footprint instead of a blank gap.
   return (
-    <div
-      className={`elfsight-app-${ELFSIGHT_APP_ID}`}
-      data-elfsight-app-lazy
-    />
+    <div className="min-h-[400px]">
+      <div className={`elfsight-app-${ELFSIGHT_APP_ID}`} />
+    </div>
   );
 }
