@@ -101,6 +101,7 @@ Full refund up to 24 hours before pickup. Inside 24 hours, contact us on WhatsAp
 
 ## Data & inventory
 
+- Full content (FAQs + blog guides inline): ${url}/llms-full.txt
 - Sitemap: ${url}/sitemap.xml
 - Robots: ${url}/robots.txt
 `;
