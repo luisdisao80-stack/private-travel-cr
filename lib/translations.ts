@@ -660,7 +660,7 @@ export const translations = {
       badge: "PREMIUM PRIVATE TRANSPORTATION",
       titlePart1: "Transporte Privado",
       titlePart2: "En Costa Rica",
-      subtitle: "Servicio de Shuttle Privado",
+      subtitle: "Private Shuttle Service",
       features: "Cotización instantánea · Chofer bilingüe · Puerta a puerta",
       ctaQuote: "Cotizar Ahora",
       ctaWhatsapp: "WhatsApp Directo",
