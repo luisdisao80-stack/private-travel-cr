@@ -9,6 +9,7 @@ import PopularRoutes from "@/components/PopularRoutes";
 import ServiceComparison from "@/components/ServiceComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import FAQSchema from "@/components/FAQSchema";
+import ReviewSchema from "@/components/ReviewSchema";
 import { getAllLocations } from "@/lib/routes-db";
 
 export const revalidate = 3600;
@@ -18,6 +19,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-black">
       <FAQSchema />
+      <ReviewSchema />
       <Navbar />
 
       <section id="inicio">
