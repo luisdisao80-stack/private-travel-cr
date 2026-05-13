@@ -38,7 +38,7 @@ export default function LocationInput({ value, onChange, placeholder, locations 
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative flex-1 min-w-0">
+    <div ref={wrapperRef} className="relative z-40 flex-1 min-w-0">
       <MapPin
         size={18}
         className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 pointer-events-none"
