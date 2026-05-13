@@ -114,7 +114,9 @@ export default function RouteDetail({ route, related, basePath }: Props) {
         </section>
 
         <section className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/30 rounded-2xl p-6 md:p-8 mb-12">
-          <h2 className="text-2xl font-bold text-white mb-6">Pricing</h2>
+          <h2 className="text-2xl font-bold text-white mb-6">
+            How much does a private shuttle from {route.origen} to {route.destino} cost?
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-gray-900/50 rounded-xl p-4 text-center">
               <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
@@ -164,14 +166,18 @@ export default function RouteDetail({ route, related, basePath }: Props) {
 
         {route.journey_description ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">About this journey</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              What is the drive from {route.origen} to {route.destino} like?
+            </h2>
             <p className="text-gray-300 leading-relaxed">{route.journey_description}</p>
           </section>
         ) : null}
 
         {points.length > 0 ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">Points of interest along the way</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              What can you see between {route.origen} and {route.destino}?
+            </h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {points.map((p, i) => (
                 <div key={i} className="flex items-start gap-2 text-gray-300">
@@ -185,7 +191,9 @@ export default function RouteDetail({ route, related, basePath }: Props) {
 
         {route.road_type ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">Road conditions</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              What are the road conditions from {route.origen} to {route.destino}?
+            </h2>
             <p className="text-gray-300 leading-relaxed">{route.road_type}</p>
           </section>
         ) : null}
@@ -199,7 +207,9 @@ export default function RouteDetail({ route, related, basePath }: Props) {
 
         {route.family_info ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">Traveling with family</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Is the shuttle from {route.origen} to {route.destino} family-friendly?
+            </h2>
             <p className="text-gray-300 leading-relaxed">{route.family_info}</p>
           </section>
         ) : null}
@@ -220,7 +230,9 @@ export default function RouteDetail({ route, related, basePath }: Props) {
 
         {route.late_night_info ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">Available 24/7</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Is the shuttle from {route.origen} to {route.destino} available 24/7?
+            </h2>
             <p className="text-gray-300 leading-relaxed">{route.late_night_info}</p>
           </section>
         ) : null}
