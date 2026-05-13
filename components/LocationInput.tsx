@@ -65,7 +65,7 @@ export default function LocationInput({ value, onChange, placeholder, locations 
         </button>
       )}
       {open && suggestions.length > 0 && (
-        <div className="absolute z-30 w-full mt-1 bg-gray-900 border border-amber-500/30 rounded-lg shadow-2xl max-h-72 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-2 bg-gradient-to-br from-gray-900/98 to-black/98 backdrop-blur-xl border border-amber-500/30 rounded-xl shadow-2xl shadow-black/60 max-h-72 overflow-y-auto">
           {suggestions.map((loc) => (
             <button
               key={loc}
@@ -74,7 +74,7 @@ export default function LocationInput({ value, onChange, placeholder, locations 
                 onChange(loc);
                 setOpen(false);
               }}
-              className="w-full text-left px-4 py-2.5 text-white hover:bg-amber-500/20 transition-colors text-sm"
+              className="w-full text-left px-4 py-3 text-white hover:bg-amber-500/15 transition-colors text-sm border-b border-white/5 last:border-b-0"
             >
               {loc}
             </button>
