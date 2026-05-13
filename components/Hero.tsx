@@ -30,7 +30,7 @@ export default function Hero({ locations }: Props) {
   };
 
   return (
-    <section className="relative min-h-[85vh] md:min-h-screen w-full flex items-center justify-center overflow-hidden">
+    <section className="relative z-20 min-h-[85vh] md:min-h-screen w-full flex items-center justify-center isolate">
       <img
         src="https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=60&w=2000"
         alt="Costa Rica private shuttle"
