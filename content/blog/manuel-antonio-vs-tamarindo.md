@@ -110,4 +110,4 @@ A common 7–10 day itinerary is: SJO → La Fortuna (3 nights) → Manuel Anton
 
 ---
 
-Whichever you pick, getting there from the airport is the start of your trip. [See our shuttle routes to Manuel Antonio](/private-shuttle/sjo-juan-santamaria-int-airport-to-manuel-antonio-quepos) or [to Tamarindo](/private-shuttle/sjo-juan-santamaria-int-airport-to-tamarindo).
+Whichever you pick, getting there from the airport is the start of your trip. [See our shuttle routes to Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) or [to Tamarindo](/private-shuttle/sjo-juan-santamaria-int-airport-to-tamarindo).

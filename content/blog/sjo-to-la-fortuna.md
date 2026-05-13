@@ -23,7 +23,7 @@ Here are your five real options, in order from "we recommend" to "only if you mu
 - **Cons:** Cheapest per person if you're 4+ — gets pricey for solo travelers.
 - **Best for:** Couples, families, groups of 4+. Anyone landing late or with kids.
 
-[See our private shuttle from SJO to La Fortuna →](/private-shuttle/sjo-juan-santamaria-int-airport-to-la-fortuna)
+[See our private shuttle from SJO to La Fortuna →](/private-shuttle/sjo-to-la-fortuna)
 
 ## 2. Shared shuttle van (~$55–65 USD per person)
 
@@ -96,4 +96,4 @@ If you book with us, just tell your driver if you want to stop. It's included.
 
 ---
 
-[Book your private shuttle from SJO to La Fortuna →](/private-shuttle/sjo-juan-santamaria-int-airport-to-la-fortuna)
+[Book your private shuttle from SJO to La Fortuna →](/private-shuttle/sjo-to-la-fortuna)
