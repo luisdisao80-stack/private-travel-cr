@@ -4,6 +4,7 @@ import { getAllLocations } from "@/lib/routes-db";
 export const metadata = {
   title: "Test Quote V2 | Private Travel CR",
   description: "Testing new quote calculator",
+  robots: { index: false, follow: false },
 };
 
 export const revalidate = 3600;

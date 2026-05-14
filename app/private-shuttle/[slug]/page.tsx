@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getRouteBySlug, getRelatedRoutes, getIndexableRoutes } from "@/lib/routes-db";
 import { isPopularRoute } from "@/lib/popular-routes";
+import { siteConfig } from "@/lib/site-config";
 import RouteDetail from "@/components/RouteDetail";
 
 interface Props {
@@ -40,7 +41,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description: description.substring(0, 160),
+      url: `${siteConfig.siteUrl}/private-shuttle/${slug}`,
+      siteName: siteConfig.name,
       type: "website",
+      locale: "en_US",
+      alternateLocale: "es_CR",
+      images: [
+        {
+          url: siteConfig.ogImage,
+          width: 1200,
+          height: 630,
+          alt: `Private shuttle from ${route.origen} to ${route.destino}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: description.substring(0, 160),
+      images: [siteConfig.ogImage],
     },
     robots: { index: true, follow: true },
     alternates: { canonical: "/private-shuttle/" + slug },
