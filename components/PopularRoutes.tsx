@@ -27,7 +27,7 @@ const popularRoutes: Route[] = [
   { from: "La Fortuna", to: "Manuel Antonio", slug: "la-fortuna-to-manuel-antonio", hub: "private-shuttle", priceFrom: 320, duration: "5h 30min" },
   { from: "SJO Airport", to: "Manuel Antonio", slug: "sjo-to-manuel-antonio", hub: "private-shuttle", priceFrom: 220, duration: "3h" },
   { from: "SJO Airport", to: "Puerto Viejo", slug: "sjo-to-puerto-viejo", hub: "private-shuttle", priceFrom: 310, duration: "4h 30min" },
-  { from: "SJO Airport", to: "Tamarindo", slug: "sjo-juan-santamaria-int-airport-to-tamarindo", hub: "routes", priceFrom: 335, duration: "5h" },
+  { from: "SJO Airport", to: "Tamarindo", slug: "sjo-to-tamarindo", hub: "private-shuttle", priceFrom: 335, duration: "5h" },
 ];
 
 export default function PopularRoutes() {

@@ -1294,7 +1294,7 @@ export const VALID_ROUTE_SLUGS = new Set<string>([
   "sjo-juan-santamaria-int-airport-to-san-gerardo-de-dota",
   "sjo-juan-santamaria-int-airport-to-santa-teresa",
   "sjo-juan-santamaria-int-airport-to-sarapiqui-heredia",
-  "sjo-juan-santamaria-int-airport-to-tamarindo",
+  "sjo-to-tamarindo",
   "sjo-juan-santamaria-int-airport-to-uvita",
   "sjo-to-la-fortuna",
   "sjo-to-manuel-antonio",
