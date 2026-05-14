@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Clock, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,42 +9,29 @@ import { useLanguage } from "@/lib/LanguageContext";
 type Route = {
   from: string;
   to: string;
-  fromDb: string;
-  toDb: string;
+  slug: string;
+  // Whether this slug lives under /private-shuttle/ (both endpoints popular)
+  // or /routes/ (long-tail). Matches the routing in app/sitemap.ts.
+  hub: "private-shuttle" | "routes";
   priceFrom: number;
   duration: string;
   popular?: boolean;
 };
 
+// Slugs verificados contra data/migration/new-route-slugs.txt
 const popularRoutes: Route[] = [
-  { from: "SJO Airport", to: "La Fortuna", fromDb: "SJO - Juan Santamaria Int. Airport", toDb: "La Fortuna (Arenal)", priceFrom: 220, duration: "3h", popular: true },
-  { from: "LIR Airport", to: "La Fortuna", fromDb: "LIR - Liberia Int. Airport", toDb: "La Fortuna (Arenal)", priceFrom: 225, duration: "3h", popular: true },
-  { from: "La Fortuna", to: "Monteverde", fromDb: "La Fortuna (Arenal)", toDb: "Monteverde (Cloud Forest)", priceFrom: 245, duration: "4h", popular: true },
-  { from: "La Fortuna", to: "Tamarindo", fromDb: "La Fortuna (Arenal)", toDb: "Tamarindo (Guanacaste)", priceFrom: 305, duration: "4h 30min" },
-  { from: "La Fortuna", to: "Manuel Antonio", fromDb: "La Fortuna (Arenal)", toDb: "Manuel Antonio / Quepos", priceFrom: 320, duration: "5h 30min" },
-  { from: "SJO Airport", to: "Manuel Antonio", fromDb: "SJO - Juan Santamaria Int. Airport", toDb: "Manuel Antonio / Quepos", priceFrom: 220, duration: "3h" },
-  { from: "SJO Airport", to: "Puerto Viejo", fromDb: "SJO - Juan Santamaria Int. Airport", toDb: "Puerto Viejo (Caribbean Coast)", priceFrom: 310, duration: "4h 30min" },
-  { from: "SJO Airport", to: "Tamarindo", fromDb: "SJO - Juan Santamaria Int. Airport", toDb: "Tamarindo (Guanacaste)", priceFrom: 335, duration: "5h" },
+  { from: "SJO Airport", to: "La Fortuna", slug: "sjo-to-la-fortuna", hub: "private-shuttle", priceFrom: 220, duration: "3h", popular: true },
+  { from: "LIR Airport", to: "La Fortuna", slug: "lir-to-la-fortuna", hub: "private-shuttle", priceFrom: 225, duration: "3h", popular: true },
+  { from: "La Fortuna", to: "Monteverde", slug: "la-fortuna-to-monteverde", hub: "private-shuttle", priceFrom: 245, duration: "4h", popular: true },
+  { from: "La Fortuna", to: "Tamarindo", slug: "la-fortuna-to-tamarindo", hub: "private-shuttle", priceFrom: 305, duration: "4h 30min" },
+  { from: "La Fortuna", to: "Manuel Antonio", slug: "la-fortuna-to-manuel-antonio", hub: "private-shuttle", priceFrom: 320, duration: "5h 30min" },
+  { from: "SJO Airport", to: "Manuel Antonio", slug: "sjo-to-manuel-antonio", hub: "private-shuttle", priceFrom: 220, duration: "3h" },
+  { from: "SJO Airport", to: "Puerto Viejo", slug: "sjo-to-puerto-viejo", hub: "private-shuttle", priceFrom: 310, duration: "4h 30min" },
+  { from: "SJO Airport", to: "Tamarindo", slug: "sjo-juan-santamaria-int-airport-to-tamarindo", hub: "routes", priceFrom: 335, duration: "5h" },
 ];
 
 export default function PopularRoutes() {
   const { t, lang } = useLanguage();
-
-  const scrollToQuote = (from?: string, to?: string) => {
-    if (from && to) {
-      const url = new URL(window.location.href);
-      url.searchParams.set("from", from);
-      url.searchParams.set("to", to);
-      window.history.replaceState({}, "", url.toString());
-      window.dispatchEvent(new PopStateEvent("popstate"));
-    }
-    setTimeout(() => {
-      const quoteSection = document.getElementById("cotizador");
-      if (quoteSection) {
-        quoteSection.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
-  };
 
   return (
     <section
@@ -82,14 +70,16 @@ export default function PopularRoutes() {
 
         <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
           {popularRoutes.map((route, index) => (
-            <motion.button
-              key={`${route.from}-${route.to}`}
+            <motion.div
+              key={route.slug}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              onClick={() => scrollToQuote(route.fromDb, route.toDb)}
-              className="group relative text-left"
+            >
+            <Link
+              href={`/${route.hub}/${route.slug}`}
+              className="group relative text-left block"
             >
               <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/0 to-amber-600/0 group-hover:from-amber-500/30 group-hover:to-amber-600/10 rounded-2xl blur-xl transition-all duration-500" />
 
@@ -148,7 +138,8 @@ export default function PopularRoutes() {
                   </span>
                 </div>
               </div>
-            </motion.button>
+            </Link>
+            </motion.div>
           ))}
         </div>
 
@@ -165,14 +156,15 @@ export default function PopularRoutes() {
             <span className="text-amber-400 font-semibold">{t.routes.routesAvailable}</span>{" "}
             {t.routes.inCostaRica}
           </p>
-          <Button
-            onClick={() => scrollToQuote()}
-            size="lg"
-            className="h-14 px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold shadow-2xl shadow-amber-500/30"
-          >
-            {t.routes.seeAll}
-            <ArrowRight className="ml-2" size={18} />
-          </Button>
+          <Link href="/routes">
+            <Button
+              size="lg"
+              className="h-14 px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold shadow-2xl shadow-amber-500/30"
+            >
+              {t.routes.seeAll}
+              <ArrowRight className="ml-2" size={18} />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
