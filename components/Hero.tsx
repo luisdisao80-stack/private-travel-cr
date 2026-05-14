@@ -6,9 +6,24 @@ import { motion } from "framer-motion";
 import { ArrowRight, Star, ExternalLink, Shield, Zap, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
+import { matchScore } from "@/lib/locations";
 import GoogleGLogo from "@/components/GoogleGLogo";
 import LocationInput from "@/components/LocationInput";
 import RoutePricePreview from "@/components/RoutePricePreview";
+
+// User may type free-text without clicking a suggestion ("la fortuna" lowercase,
+// "fortuna", etc.). Resolve to the best DB name via the same alias-aware match
+// the dropdown uses, so the booking flow always gets a canonical location.
+function resolveLocation(input: string, locations: string[]): string {
+  const trimmed = input.trim();
+  if (!trimmed) return "";
+  if (locations.includes(trimmed)) return trimmed;
+  const best = locations
+    .map((l) => ({ l, s: matchScore(l, trimmed) }))
+    .filter((x) => x.s > 0)
+    .sort((a, b) => b.s - a.s)[0];
+  return best?.l ?? trimmed;
+}
 
 type Props = {
   locations: string[];
@@ -24,11 +39,16 @@ export default function Hero({ locations }: Props) {
 
   const handleContinue = () => {
     if (!canContinue) return;
+    // Resolve free-text to a canonical DB location so /book can match the
+    // route. Without this, "la fortuna" (lowercase, no suggestion clicked)
+    // never finds the row and the wizard renders empty.
+    const resolvedPickup = resolveLocation(pickup, locations);
+    const resolvedDropoff = resolveLocation(dropoff, locations);
+    if (!resolvedPickup || !resolvedDropoff) return;
     // /book decides server-side whether to render the wizard or 307 to the
     // SEO landing page (/routes/<slug>) when the pair exists in the DB.
-    // Keeps the home payload lean (no slug map shipped to every visitor).
     router.push(
-      `/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`
+      `/book?from=${encodeURIComponent(resolvedPickup)}&to=${encodeURIComponent(resolvedDropoff)}`
     );
   };
 
