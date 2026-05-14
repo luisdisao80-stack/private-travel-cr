@@ -243,7 +243,7 @@ export default function RoutesPageClient({ routes }: Props) {
                     {/* Actions */}
                     <div className="mt-5 pt-5 border-t border-white/5 flex flex-col sm:flex-row gap-2.5">
                       <Link
-                        href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
+                        href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
                         className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition-colors shadow shadow-amber-500/20"
                       >
                         {lang === "en" ? "Book Now" : "Reservar"}

@@ -153,7 +153,7 @@ export default function RouteDetail({ route, related, basePath }: Props) {
           <p className="text-xs text-gray-400 mb-6">Prices in USD per vehicle. All-inclusive: A/C, WiFi, water, child seats, door-to-door.</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
-              href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
+              href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
               className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-6 rounded-xl text-center transition"
             >
               Book Now
@@ -272,7 +272,7 @@ export default function RouteDetail({ route, related, basePath }: Props) {
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Ready to book?</h2>
           <p className="text-gray-300 mb-6">Get your private shuttle from {route.origen} to {route.destino} starting at ${route.precio1a6} USD</p>
           <Link
-            href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}`}
+            href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
             className="inline-block bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-8 rounded-xl transition"
           >
             Book Now

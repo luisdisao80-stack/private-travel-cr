@@ -56,7 +56,7 @@ export default function StickyBookCTA({
             </div>
           </div>
           <Link
-            href={`/book?from=${encodeURIComponent(origen)}&to=${encodeURIComponent(destino)}`}
+            href={`/book?from=${encodeURIComponent(origen)}&to=${encodeURIComponent(destino)}&direct=1`}
             className="flex-1 inline-flex items-center justify-center gap-2 h-12 px-5 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm shadow-lg shadow-amber-500/30 transition"
           >
             Book Now

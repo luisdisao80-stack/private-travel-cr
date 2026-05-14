@@ -24,6 +24,9 @@ export default function Hero({ locations }: Props) {
 
   const handleContinue = () => {
     if (!canContinue) return;
+    // /book decides server-side whether to render the wizard or 307 to the
+    // SEO landing page (/routes/<slug>) when the pair exists in the DB.
+    // Keeps the home payload lean (no slug map shipped to every visitor).
     router.push(
       `/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`
     );
