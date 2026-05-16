@@ -28,9 +28,10 @@ function resolveLocation(input: string, locations: string[]): string {
 
 type Props = {
   locations: string[];
+  hotels?: import("@/lib/types").Hotel[];
 };
 
-export default function Hero({ locations }: Props) {
+export default function Hero({ locations, hotels = [] }: Props) {
   const { t, lang } = useLanguage();
   const router = useRouter();
   const [pickup, setPickup] = useState("");
@@ -143,15 +144,17 @@ export default function Hero({ locations }: Props) {
               <LocationInput
                 value={pickup}
                 onChange={setPickup}
-                placeholder={lang === "en" ? "Where from?" : "¿De dónde?"}
+                placeholder={lang === "en" ? "Where from? (location or hotel)" : "¿De dónde? (lugar u hotel)"}
                 locations={locations}
+                hotels={hotels}
               />
               <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
               <LocationInput
                 value={dropoff}
                 onChange={setDropoff}
-                placeholder={lang === "en" ? "Where to?" : "¿A dónde?"}
+                placeholder={lang === "en" ? "Where to? (location or hotel)" : "¿A dónde? (lugar u hotel)"}
                 locations={locations}
+                hotels={hotels}
               />
             </div>
 

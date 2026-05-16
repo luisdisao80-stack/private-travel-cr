@@ -11,11 +11,15 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import FAQSchema from "@/components/FAQSchema";
 import ReviewSchema from "@/components/ReviewSchema";
 import { getAllLocations } from "@/lib/routes-db";
+import { getAllHotels } from "@/lib/hotels-db";
 
 export const revalidate = 3600;
 
 export default async function Home() {
-  const locations = await getAllLocations();
+  const [locations, hotels] = await Promise.all([
+    getAllLocations(),
+    getAllHotels(),
+  ]);
   return (
     <main className="min-h-screen bg-black">
       <FAQSchema />
@@ -23,7 +27,7 @@ export default async function Home() {
       <Navbar />
 
       <section id="inicio">
-        <Hero locations={locations} />
+        <Hero locations={locations} hotels={hotels} />
       </section>
 
       <Reviews />
