@@ -86,6 +86,22 @@ export async function getIndexableSlugs(): Promise<string[]> {
   return slugs;
 }
 
+// All indexable routes from a given origen. Used by hotel landing pages
+// to build the "shuttle from <hotel>" pricing grid.
+export async function getRoutesFromOrigen(origen: string): Promise<Route[]> {
+  const { data, error } = await supabase
+    .from("routes")
+    .select("*")
+    .eq("origen", origen)
+    .eq("is_indexable", true)
+    .order("precio1a6", { ascending: true });
+  if (error) {
+    console.error(`Error fetching routes from ${origen}:`, error);
+    return [];
+  }
+  return data || [];
+}
+
 export async function getRelatedRoutes(origen: string, currentSlug: string, limit = 4): Promise<Route[]> {
   const { data, error } = await supabase
     .from("routes")

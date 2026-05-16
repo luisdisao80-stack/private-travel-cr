@@ -9,6 +9,22 @@ export type RouteFAQ = {
   answer: string;
 };
 
+// Hotel landing pages live at /hotels/[slug]. Each hotel maps to an
+// area_origen that exactly matches a routes.origen value, so the page
+// can derive shuttle prices from existing route rows.
+export type Hotel = {
+  id: number;
+  slug: string;
+  name: string;
+  area_origen: string;
+  city: string;
+  description: string | null;
+  image_url: string | null;
+  amenities: string[] | null;
+  is_indexable: boolean;
+  created_at: string;
+};
+
 export type Route = {
   id: number;
   origen: string;
