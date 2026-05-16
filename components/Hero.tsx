@@ -77,7 +77,7 @@ export default function Hero({ locations }: Props) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 md:mb-8 tracking-tight leading-[1.1]"
           >
-            {t.hero.titlePart1}
+            {t.hero.titlePart1}{" "}
             <span className="block bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent mt-2 md:mt-3">
               {t.hero.titlePart2}
             </span>

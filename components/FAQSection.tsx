@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { FAQS_EN, FAQS_ES } from "@/lib/faqs";
@@ -77,6 +77,8 @@ export default function FAQSection() {
               >
                 <button
                   onClick={() => toggleFAQ(index)}
+                  aria-expanded={openIndex === index}
+                  aria-controls={`faq-answer-${index}`}
                   className="w-full flex items-center justify-between gap-4 p-6 text-left"
                 >
                   <div className="flex items-start gap-4 flex-1">
@@ -118,23 +120,28 @@ export default function FAQSection() {
                   </motion.div>
                 </button>
 
-                <AnimatePresence>
-                  {openIndex === index && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-6 pl-20">
-                        <p className="text-gray-300 leading-relaxed">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Answer stays in the DOM so Google indexes every Q&A,
+                    even when visually collapsed. We use the grid-rows trick
+                    (0fr → 1fr) for the height animation instead of
+                    AnimatePresence's conditional mount. */}
+                <div
+                  id={`faq-answer-${index}`}
+                  role="region"
+                  aria-hidden={openIndex !== index}
+                  className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                    openIndex === index
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-6 pb-6 pl-20">
+                      <p className="text-gray-300 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}

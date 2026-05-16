@@ -32,35 +32,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: "Private Travel CR | Premium Private Shuttle Costa Rica",
+    default: "Private Shuttle Costa Rica | Premium Door-to-Door Service ⭐ 5.0",
     template: "%s | Private Travel CR",
   },
   description: siteConfig.descriptionEN,
-  keywords: [
-    // English
-    "private shuttle Costa Rica",
-    "Costa Rica airport transfer",
-    "SJO airport shuttle",
-    "LIR airport shuttle",
-    "La Fortuna shuttle",
-    "Manuel Antonio shuttle",
-    "Monteverde shuttle",
-    "private transportation Costa Rica",
-    "Costa Rica private transfer",
-    "premium shuttle Costa Rica",
-    // Spanish
-    "shuttle privado Costa Rica",
-    "transporte privado Costa Rica",
-    "traslado aeropuerto SJO",
-    "traslado aeropuerto LIR",
-    "shuttle La Fortuna",
-    "shuttle Manuel Antonio",
-    "shuttle Monteverde",
-    "transporte premium Costa Rica",
-    // Brand
-    "Private Travel CR",
-    "privatetravelcr",
-  ],
+  // meta-keywords removed — Google has ignored this since 2009 and other
+  // engines do too. Keywords belong in real visible copy and structured data.
   authors: [{ name: siteConfig.business.founder }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
@@ -77,7 +54,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Private Travel CR | Premium Private Shuttle Costa Rica",
+    title: "Private Shuttle Costa Rica | Premium Door-to-Door Service",
     description: siteConfig.descriptionEN,
     url: siteConfig.siteUrl,
     siteName: siteConfig.name,
@@ -95,7 +72,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Private Travel CR | Premium Private Shuttle Costa Rica",
+    title: "Private Shuttle Costa Rica | Premium Door-to-Door Service",
     description: siteConfig.descriptionEN,
     images: [siteConfig.ogImage],
   },
