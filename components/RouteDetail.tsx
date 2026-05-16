@@ -1,11 +1,39 @@
 import Link from "next/link";
-import { MapPin, Clock, Users, Car, ArrowRight } from "lucide-react";
-import type { Route } from "@/lib/types";
+import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle } from "lucide-react";
+import type { Route, RouteFAQ } from "@/lib/types";
 import { isPopularRoute } from "@/lib/popular-routes";
 import RouteSchema from "@/components/RouteSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
 import StickyBookCTA from "@/components/StickyBookCTA";
+
+// Generic auto-FAQs that work for every route. Manual route.faqs land
+// above these (they're more route-specific = higher SEO value).
+function buildAutoFAQs(route: Route): RouteFAQ[] {
+  const baseList: RouteFAQ[] = [
+    {
+      question: `How much does a private shuttle from ${route.origen} to ${route.destino} cost?`,
+      answer: `Private shuttle from ${route.origen} to ${route.destino} starts at $${route.precio1a6} USD per vehicle (1-6 passengers). The price is per vehicle, not per person — everyone in your group travels together for the same flat rate. Larger vehicles for 7-18 passengers are available at higher tiers.`,
+    },
+  ];
+  if (route.duracion) {
+    baseList.push({
+      question: `How long does the drive from ${route.origen} to ${route.destino} take?`,
+      answer: `The drive from ${route.origen} to ${route.destino} takes approximately ${route.duracion}. Travel times can vary slightly depending on traffic, weather, and road conditions. Our drivers monitor conditions in real time to choose the fastest safe route.`,
+    });
+  }
+  baseList.push(
+    {
+      question: `Is the shuttle from ${route.origen} to ${route.destino} private?`,
+      answer: `Yes. Every Private Travel CR shuttle is fully private — you ride only with your group, no shared seats with strangers. The price covers the entire vehicle door-to-door, including a professional bilingual driver, free WiFi, bottled water, free child seats on request, and full insurance.`,
+    },
+    {
+      question: `Do you pick up at any address in ${route.origen}?`,
+      answer: `Yes, we offer door-to-door pickup anywhere in ${route.origen} — hotels, Airbnbs, private villas, or any specific address you give us at booking. We confirm the exact pickup location 24 hours before your trip.`,
+    }
+  );
+  return baseList;
+}
 
 function parsePOI(json: string | null): string[] {
   if (!json) return [];
@@ -40,6 +68,12 @@ export default function RouteDetail({ route, related, basePath }: Props) {
       "Hello! I'm interested in a private shuttle from " + route.origen + " to " + route.destino + "."
     );
 
+  // Manual FAQs (from Supabase routes.faqs JSONB) win the top slots —
+  // they're route-specific and more valuable for long-tail SEO. Auto-FAQs
+  // fill in below so every route page still ships with at least 3-4 Q&As.
+  const manualFAQs = Array.isArray(route.faqs) ? route.faqs : [];
+  const allFAQs: RouteFAQ[] = [...manualFAQs, ...buildAutoFAQs(route)];
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
       <RouteSchema route={route} basePath={basePath} />
@@ -53,30 +87,7 @@ export default function RouteDetail({ route, related, basePath }: Props) {
           },
         ]}
       />
-      <FAQSchema
-        faqs={[
-          {
-            question: `How much does a private shuttle from ${route.origen} to ${route.destino} cost?`,
-            answer: `Private shuttle from ${route.origen} to ${route.destino} starts at $${route.precio1a6} USD per vehicle (1-6 passengers). The price is per vehicle, not per person — everyone in your group travels together for the same flat rate. Larger vehicles for 7-18 passengers are available at higher tiers.`,
-          },
-          ...(route.duracion
-            ? [
-                {
-                  question: `How long does the drive from ${route.origen} to ${route.destino} take?`,
-                  answer: `The drive from ${route.origen} to ${route.destino} takes approximately ${route.duracion}. Travel times can vary slightly depending on traffic, weather, and road conditions. Our drivers monitor conditions in real time to choose the fastest safe route.`,
-                },
-              ]
-            : []),
-          {
-            question: `Is the shuttle from ${route.origen} to ${route.destino} private?`,
-            answer: `Yes. Every Private Travel CR shuttle is fully private — you ride only with your group, no shared seats with strangers. The price covers the entire vehicle door-to-door, including a professional bilingual driver, free WiFi, bottled water, free child seats on request, and full insurance.`,
-          },
-          {
-            question: `Do you pick up at any address in ${route.origen}?`,
-            answer: `Yes, we offer door-to-door pickup anywhere in ${route.origen} — hotels, Airbnbs, private villas, or any specific address you give us at booking. We confirm the exact pickup location 24 hours before your trip.`,
-          },
-        ]}
-      />
+      <FAQSchema faqs={allFAQs} />
       <div className="max-w-5xl mx-auto px-4">
         <nav className="text-sm text-gray-500 mb-6">
           <Link href="/" className="hover:text-amber-400">Home</Link>
@@ -243,6 +254,44 @@ export default function RouteDetail({ route, related, basePath }: Props) {
             <p className="text-gray-300 leading-relaxed">{route.local_recommendation}</p>
           </section>
         ) : null}
+
+        {/* FAQ section — visible Q&As (manual + auto). Native <details> so
+            every answer is in SSR HTML, indexable by Google, and works
+            without JS. */}
+        <section className="mb-12" aria-labelledby="route-faq-heading">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+              <HelpCircle size={20} className="text-amber-400" />
+            </div>
+            <h2 id="route-faq-heading" className="text-2xl font-bold text-white">
+              Frequently asked about {route.origen} → {route.destino}
+            </h2>
+          </div>
+          <div className="space-y-3">
+            {allFAQs.map((faq, i) => (
+              <details
+                key={i}
+                // First Q&A opens by default so the page lands with visible
+                // content; the rest stay collapsed but in the DOM.
+                open={i === 0}
+                className="group bg-gradient-to-br from-gray-900/80 to-black border border-white/5 hover:border-white/20 rounded-2xl overflow-hidden transition-colors open:border-amber-500/40"
+              >
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-4 p-5 text-white font-semibold group-open:text-amber-400 [&::-webkit-details-marker]:hidden">
+                  <span>{faq.question}</span>
+                  <span
+                    aria-hidden="true"
+                    className="shrink-0 text-amber-400 transition-transform duration-300 group-open:rotate-45 text-xl leading-none"
+                  >
+                    +
+                  </span>
+                </summary>
+                <div className="px-5 pb-5 text-gray-300 leading-relaxed">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
 
         {related.length > 0 ? (
           <section className="mb-12">

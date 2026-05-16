@@ -1,5 +1,14 @@
 // lib/types.ts
 
+// Manually-curated FAQs stored in routes.faqs (JSONB column). Optional —
+// most routes fall back to the 4 auto-generated FAQs in RouteDetail.tsx.
+// Curate route-specific Q&A for high-traffic pairs to capture long-tail
+// queries Google's PAA panel surfaces.
+export type RouteFAQ = {
+  question: string;
+  answer: string;
+};
+
 export type Route = {
   id: number;
   origen: string;
@@ -26,4 +35,5 @@ export type Route = {
   budget_tip: string | null;
   local_recommendation: string | null;
   is_indexable: boolean;
+  faqs: RouteFAQ[] | null;
 };
