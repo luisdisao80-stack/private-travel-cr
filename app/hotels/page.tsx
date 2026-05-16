@@ -40,7 +40,10 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 3600;
+// 60s instead of the usual 3600 so new hotels added via SQL show up within
+// a minute (the page is cheap — single Supabase query — so frequent
+// revalidation has negligible cost).
+export const revalidate = 60;
 
 export default async function HotelsIndexPage() {
   const hotels = await getAllHotels();
