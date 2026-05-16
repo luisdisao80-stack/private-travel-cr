@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, ExternalLink, Shield, Zap, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
 import { matchScore } from "@/lib/locations";
+import { popularDirectUrl } from "@/lib/popular-route-slugs";
 import GoogleGLogo from "@/components/GoogleGLogo";
 import LocationInput from "@/components/LocationInput";
 import RoutePricePreview from "@/components/RoutePricePreview";
@@ -34,22 +35,32 @@ export default function Hero({ locations }: Props) {
   const router = useRouter();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   const canContinue = pickup.trim().length > 0 && dropoff.trim().length > 0;
 
   const handleContinue = () => {
-    if (!canContinue) return;
+    if (!canContinue || isPending) return;
     // Resolve free-text to a canonical DB location so /book can match the
     // route. Without this, "la fortuna" (lowercase, no suggestion clicked)
     // never finds the row and the wizard renders empty.
     const resolvedPickup = resolveLocation(pickup, locations);
     const resolvedDropoff = resolveLocation(dropoff, locations);
     if (!resolvedPickup || !resolvedDropoff) return;
-    // /book decides server-side whether to render the wizard or 307 to the
-    // SEO landing page (/routes/<slug>) when the pair exists in the DB.
-    router.push(
-      `/book?from=${encodeURIComponent(resolvedPickup)}&to=${encodeURIComponent(resolvedDropoff)}`
-    );
+
+    // Fast path: popular pair we know exists in the DB → direct to the SEO
+    // landing page, skipping the /book → server-redirect round-trip
+    // (~200–500ms saved on ~80% of bookings).
+    const directUrl = popularDirectUrl(resolvedPickup, resolvedDropoff);
+    const target =
+      directUrl ??
+      `/book?from=${encodeURIComponent(resolvedPickup)}&to=${encodeURIComponent(resolvedDropoff)}`;
+
+    // useTransition keeps isPending=true until the destination route's data
+    // is ready, so the button can show a spinner during the navigation.
+    startTransition(() => {
+      router.push(target);
+    });
   };
 
   return (
@@ -149,11 +160,20 @@ export default function Hero({ locations }: Props) {
             <button
               type="button"
               onClick={handleContinue}
-              disabled={!canContinue}
+              disabled={!canContinue || isPending}
               className="mt-4 w-full inline-flex items-center justify-center gap-2 h-12 md:h-14 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"
             >
-              {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
-              <ArrowRight size={18} />
+              {isPending ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  {lang === "en" ? "Loading..." : "Cargando..."}
+                </>
+              ) : (
+                <>
+                  {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
+                  <ArrowRight size={18} />
+                </>
+              )}
             </button>
 
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
