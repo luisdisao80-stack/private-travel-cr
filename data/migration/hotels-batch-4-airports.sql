@@ -27,7 +27,11 @@ INSERT INTO hotels (slug, name, area_origen, city, description, amenities) VALUE
 -- Cerca de LIR (Liberia Int. Airport)
 ('hilton-garden-inn-liberia', 'Hilton Garden Inn Liberia Airport', 'LIR - Liberia Int. Airport', 'Liberia',
  'Hilton Garden Inn directly across from LIR airport. Restaurant, outdoor pool, fitness center, and the most convenient airport stay for early flights or late arrivals to Guanacaste.',
- ARRAY['Across from LIR airport','Restaurant','Pool','Fitness center','Early flights'])
+ ARRAY['Across from LIR airport','Restaurant','Pool','Fitness center','Early flights']),
+
+('hampton-inn-liberia', 'Hampton Inn by Hilton Liberia Airport', 'LIR - Liberia Int. Airport', 'Liberia',
+ 'Hampton Inn next to LIR airport with free hot breakfast, outdoor pool, fitness center, and free WiFi. Walking distance to the LIR terminal — ideal for early Guanacaste flights.',
+ ARRAY['Next to LIR airport','Free breakfast','Pool','Free WiFi','Walking distance to terminal'])
 
 ON CONFLICT (slug) DO NOTHING;
 
