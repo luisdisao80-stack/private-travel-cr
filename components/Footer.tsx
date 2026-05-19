@@ -39,45 +39,6 @@ export default function Footer() {
     ? "Made with ❤️ in Costa Rica 🇨🇷"
     : "Hecho con ❤️ en Costa Rica 🇨🇷";
 
-  // Sitemap-style cross-links for SEO + discovery. Hand-picked surface
-  // of the most valuable destinations / hotels — keeps every page on the
-  // site exactly 1 click away from any other and gives Google clear
-  // signals about which pages we consider canonical.
-  const topRoutes = [
-    { label: "SJO → La Fortuna", href: "/private-shuttle/sjo-to-la-fortuna" },
-    { label: "SJO → Manuel Antonio", href: "/private-shuttle/sjo-to-manuel-antonio" },
-    { label: "SJO → Monteverde", href: "/private-shuttle/sjo-to-monteverde" },
-    { label: "SJO → Tamarindo", href: "/private-shuttle/sjo-to-tamarindo" },
-    { label: "LIR → La Fortuna", href: "/private-shuttle/lir-to-la-fortuna" },
-    { label: "LIR → Tamarindo", href: "/private-shuttle/lir-liberia-int-airport-to-tamarindo" },
-    { label: "La Fortuna → Monteverde", href: "/private-shuttle/la-fortuna-to-monteverde" },
-    { label: "La Fortuna → Manuel Antonio", href: "/private-shuttle/la-fortuna-to-manuel-antonio" },
-  ];
-
-  const topHotels = [
-    { label: "Tabacón Thermal Resort", href: "/hotels/tabacon-thermal-resort" },
-    { label: "Nayara Springs", href: "/hotels/nayara-springs" },
-    { label: "Four Seasons Papagayo", href: "/hotels/four-seasons-papagayo" },
-    { label: "Nekajui Ritz-Carlton", href: "/hotels/nekajui-ritz-carlton" },
-    { label: "JW Marriott Guanacaste", href: "/hotels/jw-marriott-guanacaste" },
-    { label: "Westin Reserva Conchal", href: "/hotels/westin-reserva-conchal" },
-    { label: "Tulemar Manuel Antonio", href: "/hotels/tulemar-resort" },
-    { label: "Hotel Belmar Monteverde", href: "/hotels/hotel-belmar" },
-  ];
-
-  const explorePages = [
-    { label: lang === "en" ? "All Routes" : "Todas las Rutas", href: "/routes" },
-    { label: lang === "en" ? "All Hotels" : "Todos los Hoteles", href: "/hotels" },
-    { label: lang === "en" ? "Our Fleet" : "Nuestra Flota", href: "/fleet" },
-    { label: "Blog", href: "/blog" },
-    { label: lang === "en" ? "About Us" : "Nosotros", href: "/about" },
-    { label: lang === "en" ? "Get a Quote" : "Cotizar", href: "/book" },
-  ];
-
-  const exploreHeading = lang === "en" ? "Popular Routes" : "Rutas Populares";
-  const hotelsHeading = lang === "en" ? "Featured Hotels" : "Hoteles Destacados";
-  const browseHeading = lang === "en" ? "Browse" : "Explorar";
-
   return (
     <footer
       key={lang}
@@ -86,68 +47,6 @@ export default function Footer() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.05),transparent_70%)]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-16">
-        {/* SITEMAP — surfaces top routes / hotels / pages so every page is
-            at most 1 click away from every other. Big win for crawl depth
-            and discovery. */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12 pb-12 border-b border-white/5">
-          <div>
-            <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase flex items-center gap-2">
-              <span className="text-amber-400">✦</span>
-              {exploreHeading}
-            </h3>
-            <ul className="space-y-2">
-              {topRoutes.map((r) => (
-                <li key={r.href}>
-                  <Link
-                    href={r.href}
-                    className="text-gray-400 hover:text-amber-400 transition-colors text-sm"
-                  >
-                    {r.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase flex items-center gap-2">
-              <span className="text-amber-400">✦</span>
-              {hotelsHeading}
-            </h3>
-            <ul className="space-y-2">
-              {topHotels.map((h) => (
-                <li key={h.href}>
-                  <Link
-                    href={h.href}
-                    className="text-gray-400 hover:text-amber-400 transition-colors text-sm"
-                  >
-                    {h.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase flex items-center gap-2">
-              <span className="text-amber-400">✦</span>
-              {browseHeading}
-            </h3>
-            <ul className="space-y-2">
-              {explorePages.map((p) => (
-                <li key={p.href}>
-                  <Link
-                    href={p.href}
-                    className="text-gray-400 hover:text-amber-400 transition-colors text-sm"
-                  >
-                    {p.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* COLUMNA 1: BRANDING */}
