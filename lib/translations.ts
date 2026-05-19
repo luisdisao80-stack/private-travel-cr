@@ -75,6 +75,60 @@ export const translations = {
             "This is our country. We know every curve, every viewpoint, every hidden waterfall. When you travel with us, you travel with locals who genuinely love showing you home.",
         },
       },
+      team: {
+        badge: "✦ MEET THE TEAM",
+        title: "The people behind every ride",
+        subtitle:
+          "Two cousins, 15+ years driving travelers across Costa Rica, and a personally trained team of bilingual drivers who treat every guest like family.",
+        founder: {
+          name: "Diego Salas Oviedo",
+          role: "Founder & Lead Driver",
+          bio: "Driving travelers across Costa Rica since 2006. After almost 15 years at two of the country's largest transportation companies, Diego founded Private Travel CR in 2021 to bring the personal care that big operators couldn't. He personally trains every driver on the team and still drives several routes per week from La Fortuna.",
+        },
+        coFounder: {
+          name: "Anthony",
+          role: "Co-Founder & Operations",
+          bio: "Diego's cousin and the operational backbone of Private Travel CR. Anthony coordinates every booking, matches each guest with the right vehicle and driver, and handles all incoming WhatsApp questions before, during, and after each trip. If you message us, Anthony is usually who replies first.",
+        },
+      },
+      credentials: {
+        badge: "✦ CREDENTIALS YOU CAN VERIFY",
+        title: "Real licenses, real reviews, real trust",
+        subtitle:
+          "Everything you'd want to check before handing your family over to a driver in a foreign country — verified and public.",
+        items: {
+          ict: {
+            title: "ICT Registered",
+            description:
+              "Officially registered with the Instituto Costarricense de Turismo (ICT) — Costa Rica's national tourism authority.",
+          },
+          ins: {
+            title: "Fully Insured",
+            description:
+              "Commercial passenger insurance through Instituto Nacional de Seguros (INS), Costa Rica's national insurer.",
+          },
+          tripadvisor: {
+            title: "Travelers' Choice 2025",
+            description:
+              "Top 10% of attractions worldwide, awarded by TripAdvisor based on consistent 5-star reviews from real travelers.",
+          },
+          google: {
+            title: "5.0 ★ on Google",
+            description:
+              "190+ verified reviews from travelers who actually rode with us. Read every one — we respond to all.",
+          },
+          founded: {
+            title: "Founded 2021",
+            description:
+              "Family-owned and independently operated from La Fortuna, Costa Rica. We work directly with you — no middlemen, no call centers.",
+          },
+          local: {
+            title: "Local Experts",
+            description:
+              "Every driver is Costa Rican, bilingual (English/Spanish), and personally trained. They know the roads, the shortcuts, and the best photo stops.",
+          },
+        },
+      },
       cta: {
         title: "Ready to travel with people who care?",
         subtitle:
@@ -647,6 +701,60 @@ export const translations = {
           title: "Raíces Ticas",
           description:
             "Este es nuestro país. Conocemos cada curva, cada mirador, cada catarata escondida. Cuando viajás con nosotros, viajás con costarricenses que aman mostrarte su tierra.",
+        },
+      },
+      team: {
+        badge: "✦ CONOCÉ AL EQUIPO",
+        title: "Las personas detrás de cada viaje",
+        subtitle:
+          "Dos primos, más de 15 años manejando viajeros por Costa Rica, y un equipo de choferes bilingües entrenados personalmente que tratan a cada huésped como familia.",
+        founder: {
+          name: "Diego Salas Oviedo",
+          role: "Fundador y Chofer Principal",
+          bio: "Manejando viajeros por Costa Rica desde 2006. Después de casi 15 años en dos de las empresas de transporte más grandes del país, Diego fundó Private Travel CR en 2021 para traer el cuidado personal que las grandes operadoras no podían dar. Entrena personalmente a cada chofer del equipo y todavía maneja varias rutas por semana desde La Fortuna.",
+        },
+        coFounder: {
+          name: "Anthony",
+          role: "Co-Fundador y Operaciones",
+          bio: "El primo de Diego y la columna vertebral operativa de Private Travel CR. Anthony coordina cada reserva, asigna el vehículo y chofer correctos a cada huésped, y maneja todas las consultas por WhatsApp antes, durante y después de cada viaje. Si nos escribís, Anthony es quien responde primero.",
+        },
+      },
+      credentials: {
+        badge: "✦ CREDENCIALES VERIFICABLES",
+        title: "Licencias reales, reseñas reales, confianza real",
+        subtitle:
+          "Todo lo que querrías revisar antes de poner a tu familia en manos de un chofer en un país extranjero — verificado y público.",
+        items: {
+          ict: {
+            title: "Registrados ante el ICT",
+            description:
+              "Oficialmente registrados ante el Instituto Costarricense de Turismo (ICT), la autoridad nacional de turismo de Costa Rica.",
+          },
+          ins: {
+            title: "Totalmente Asegurados",
+            description:
+              "Seguro comercial de pasajeros a través del Instituto Nacional de Seguros (INS), la aseguradora nacional de Costa Rica.",
+          },
+          tripadvisor: {
+            title: "Travelers' Choice 2025",
+            description:
+              "Top 10% de atracciones a nivel mundial, otorgado por TripAdvisor por reseñas consistentes de 5 estrellas de viajeros reales.",
+          },
+          google: {
+            title: "5.0 ★ en Google",
+            description:
+              "190+ reseñas verificadas de viajeros que realmente viajaron con nosotros. Leelas todas — respondemos cada una.",
+          },
+          founded: {
+            title: "Fundada en 2021",
+            description:
+              "Empresa familiar, operada independientemente desde La Fortuna, Costa Rica. Trabajamos directamente con vos — sin intermediarios ni call centers.",
+          },
+          local: {
+            title: "Expertos Locales",
+            description:
+              "Cada chofer es costarricense, bilingüe (inglés/español) y entrenado personalmente. Conocen las rutas, los atajos y los mejores miradores para foto.",
+          },
         },
       },
       cta: {

@@ -9,6 +9,13 @@ import {
   MessageCircle,
   Calendar,
   MapPin,
+  ShieldCheck,
+  Award,
+  Star,
+  BadgeCheck,
+  Sparkles,
+  Languages,
+  User,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -157,6 +164,140 @@ export default function AboutPage() {
                 {t.about.story.chapter4.body}
               </p>
             </article>
+          </div>
+        </div>
+      </section>
+
+      {/* MEET THE TEAM — SEO signal: clear authorship + E-E-A-T */}
+      <section className="relative px-4 py-16 md:py-24" aria-labelledby="team-heading">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12 text-center">
+            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+              {t.about.team.badge}
+            </span>
+            <h2
+              id="team-heading"
+              className="mt-3 text-3xl md:text-5xl font-bold"
+            >
+              {t.about.team.title}
+            </h2>
+            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+              {t.about.team.subtitle}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Diego */}
+            <article
+              itemScope
+              itemType="https://schema.org/Person"
+              className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all"
+            >
+              <div className="flex items-center gap-4 mb-5">
+                <div
+                  style={{ width: "64px", height: "64px" }}
+                  className="rounded-full bg-gradient-to-br from-amber-500/30 to-amber-700/10 border border-amber-500/40 flex items-center justify-center shrink-0"
+                >
+                  <User className="w-7 h-7 text-amber-400" />
+                </div>
+                <div>
+                  <h3 itemProp="name" className="text-xl font-bold">
+                    {t.about.team.founder.name}
+                  </h3>
+                  <p itemProp="jobTitle" className="text-sm text-amber-400">
+                    {t.about.team.founder.role}
+                  </p>
+                </div>
+              </div>
+              <p
+                itemProp="description"
+                className="text-white/70 leading-relaxed text-sm md:text-base"
+              >
+                {t.about.team.founder.bio}
+              </p>
+            </article>
+
+            {/* Anthony */}
+            <article
+              itemScope
+              itemType="https://schema.org/Person"
+              className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all"
+            >
+              <div className="flex items-center gap-4 mb-5">
+                <div
+                  style={{ width: "64px", height: "64px" }}
+                  className="rounded-full bg-gradient-to-br from-amber-500/30 to-amber-700/10 border border-amber-500/40 flex items-center justify-center shrink-0"
+                >
+                  <User className="w-7 h-7 text-amber-400" />
+                </div>
+                <div>
+                  <h3 itemProp="name" className="text-xl font-bold">
+                    {t.about.team.coFounder.name}
+                  </h3>
+                  <p itemProp="jobTitle" className="text-sm text-amber-400">
+                    {t.about.team.coFounder.role}
+                  </p>
+                </div>
+              </div>
+              <p
+                itemProp="description"
+                className="text-white/70 leading-relaxed text-sm md:text-base"
+              >
+                {t.about.team.coFounder.bio}
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* CREDENTIALS — visible trust signals + SEO E-E-A-T */}
+      <section
+        className="relative px-4 py-16 md:py-24 bg-gradient-to-b from-amber-500/[0.02] via-transparent to-amber-500/[0.02]"
+        aria-labelledby="credentials-heading"
+      >
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12 text-center">
+            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+              {t.about.credentials.badge}
+            </span>
+            <h2
+              id="credentials-heading"
+              className="mt-3 text-3xl md:text-5xl font-bold"
+            >
+              {t.about.credentials.title}
+            </h2>
+            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+              {t.about.credentials.subtitle}
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {[
+              { icon: BadgeCheck, key: "ict" as const },
+              { icon: ShieldCheck, key: "ins" as const },
+              { icon: Award, key: "tripadvisor" as const },
+              { icon: Star, key: "google" as const },
+              { icon: Sparkles, key: "founded" as const },
+              { icon: Languages, key: "local" as const },
+            ].map(({ icon: Icon, key }) => (
+              <div
+                key={key}
+                className="group p-5 rounded-xl border border-amber-500/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all"
+              >
+                <div
+                  style={{ width: "40px", height: "40px" }}
+                  className="mb-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors"
+                >
+                  <Icon className="w-5 h-5 text-amber-400" />
+                </div>
+                <h3 className="font-bold mb-1.5 text-base">
+                  {t.about.credentials.items[key].title}
+                </h3>
+                <p className="text-xs text-white/60 leading-relaxed">
+                  {t.about.credentials.items[key].description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
