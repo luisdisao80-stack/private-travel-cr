@@ -67,7 +67,7 @@ export default function Hero({ locations, hotels = [] }: Props) {
   return (
     <section className="relative z-20 min-h-[85vh] md:min-h-screen w-full flex items-center justify-center isolate">
       <img
-        src="https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=60&w=2000"
+        src="https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=85&w=2000"
         alt="Costa Rica private shuttle"
         width={2000}
         height={1125}
@@ -78,7 +78,7 @@ export default function Hero({ locations, hotels = [] }: Props) {
         className="absolute inset-0 w-full h-full object-cover object-center"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90 z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/75 z-[1]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.25),transparent_50%)] z-[2]" />
 
       <div className="relative z-10 container mx-auto px-4 py-20 md:py-24">
