@@ -7,6 +7,7 @@ import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import PopularRoutes from "@/components/PopularRoutes";
 import ServiceComparison from "@/components/ServiceComparison";
+import WhyUsComparison from "@/components/WhyUsComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import FAQSchema from "@/components/FAQSchema";
 import ReviewSchema from "@/components/ReviewSchema";
@@ -34,6 +35,9 @@ export default async function Home() {
 
       {/* BENEFICIOS CON ICONOS */}
       <BenefitsSection />
+
+      {/* SHUTTLE VS RENTAL CAR / UBER / BUS */}
+      <WhyUsComparison />
 
       {/* STANDARD VS VIP */}
       <ServiceComparison />
