@@ -39,15 +39,20 @@ export async function getHotelBySlug(slug: string): Promise<Hotel | null> {
 // All hotels mapped to a given area_origen (matches routes.origen exactly).
 // Used by route detail pages to cross-link to hotels at the destination —
 // e.g., /routes/sjo-to-la-fortuna shows "Top hotels in La Fortuna (Arenal)".
+//
+// Ordered by priority DESC (manually curated top tier first) then name —
+// without that, alphabetical sort would push "Arenal Paraíso" above the
+// actually-flagship "Tabacón" / "Nayara" simply because of the A prefix.
 export async function getHotelsByArea(
   area: string,
-  limit = 6
+  limit = 8
 ): Promise<Hotel[]> {
   const { data, error } = await supabase
     .from("hotels")
     .select("*")
     .eq("area_origen", area)
     .eq("is_indexable", true)
+    .order("priority", { ascending: false, nullsFirst: false })
     .order("name", { ascending: true })
     .limit(limit);
   if (error) {

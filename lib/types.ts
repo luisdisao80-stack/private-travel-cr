@@ -22,6 +22,9 @@ export type Hotel = {
   image_url: string | null;
   amenities: string[] | null;
   is_indexable: boolean;
+  /** Higher = surfaces first in "Top hotels in <area>" lists. Default 0.
+   *  Reserved values: 100 = flagship/luxury, 50 = popular mid-tier. */
+  priority: number;
   created_at: string;
 };
 

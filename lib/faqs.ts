@@ -65,7 +65,7 @@ export const FAQS_EN: FAQ[] = [
   {
     question: "Are tolls and fees included in the price?",
     answer:
-      "Yes. The price you see is final — it includes the driver, vehicle, fuel, tolls, taxes, water, WiFi, and child seats. No hidden fees. Tips for your driver are always appreciated but never expected.",
+      "Yes. The price you see is final — it includes the driver, vehicle, fuel, tolls, taxes, water, WiFi, and child seats. No hidden fees. Tips for your driver are always appreciated.",
   },
 ];
 
@@ -128,6 +128,6 @@ export const FAQS_ES: FAQ[] = [
   {
     question: "¿Están incluidos los peajes y cargos en el precio?",
     answer:
-      "Sí. El precio que ves es final — incluye chofer, vehículo, combustible, peajes, impuestos, agua, WiFi y sillas para niños. Sin cargos ocultos. Las propinas al chofer siempre se agradecen, pero nunca son esperadas.",
+      "Sí. El precio que ves es final — incluye chofer, vehículo, combustible, peajes, impuestos, agua, WiFi y sillas para niños. Sin cargos ocultos. Las propinas al chofer siempre se agradecen.",
   },
 ];
