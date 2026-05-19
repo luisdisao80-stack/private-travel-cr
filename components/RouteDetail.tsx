@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle } from "lucide-react";
-import type { Route, RouteFAQ } from "@/lib/types";
+import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle, Building2 } from "lucide-react";
+import type { Route, RouteFAQ, Hotel } from "@/lib/types";
 import { isPopularRoute } from "@/lib/popular-routes";
 import RouteSchema from "@/components/RouteSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -56,11 +56,20 @@ function routeHref(route: Route): string {
 type Props = {
   route: Route;
   related: Route[];
+  /** Hotels at the destination — for cross-cluster internal linking
+   *  ("Top hotels in <destino>"). Optional so the component still works
+   *  when the caller doesn't supply them. */
+  destinationHotels?: Hotel[];
   /** Where `basePath` controls breadcrumb + Other-routes-from links. */
   basePath: "/routes" | "/private-shuttle";
 };
 
-export default function RouteDetail({ route, related, basePath }: Props) {
+export default function RouteDetail({
+  route,
+  related,
+  destinationHotels = [],
+  basePath,
+}: Props) {
   const points = parsePOI(route.points_of_interest);
   const whatsappUrl =
     "https://wa.me/50686334133?text=" +
@@ -292,6 +301,46 @@ export default function RouteDetail({ route, related, basePath }: Props) {
             ))}
           </div>
         </section>
+
+        {/* Hotels at destination — cross-cluster internal linking from
+            the route topical cluster into the hotel topical cluster.
+            Helps Google understand the topical relationship + gives the
+            booker a logical next click (where to stay). */}
+        {destinationHotels.length > 0 ? (
+          <section className="mb-12" aria-labelledby="dest-hotels-heading">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+                <Building2 size={20} className="text-amber-400" />
+              </div>
+              <h2 id="dest-hotels-heading" className="text-2xl font-bold text-white">
+                Top hotels in {route.destino}
+              </h2>
+            </div>
+            <p className="text-gray-400 text-sm mb-6">
+              We pick up at any of these properties. Click for shuttle pricing from {route.destino} to anywhere in Costa Rica.
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              {destinationHotels.map((h) => (
+                <Link
+                  key={h.id}
+                  href={`/hotels/${h.slug}`}
+                  className="group flex items-center justify-between bg-gray-900/50 border border-amber-500/10 hover:border-amber-500/40 rounded-xl p-5 transition"
+                >
+                  <div className="min-w-0 pr-4 flex-1">
+                    <div className="text-white font-semibold mb-1 truncate">
+                      {h.name}
+                    </div>
+                    <div className="text-xs text-gray-500">{h.city}</div>
+                  </div>
+                  <ArrowRight
+                    size={16}
+                    className="text-amber-400 shrink-0 group-hover:translate-x-1 transition-transform"
+                  />
+                </Link>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         {related.length > 0 ? (
           <section className="mb-12">

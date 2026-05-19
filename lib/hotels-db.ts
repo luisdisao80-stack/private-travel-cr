@@ -36,6 +36,27 @@ export async function getHotelBySlug(slug: string): Promise<Hotel | null> {
   return data;
 }
 
+// All hotels mapped to a given area_origen (matches routes.origen exactly).
+// Used by route detail pages to cross-link to hotels at the destination —
+// e.g., /routes/sjo-to-la-fortuna shows "Top hotels in La Fortuna (Arenal)".
+export async function getHotelsByArea(
+  area: string,
+  limit = 6
+): Promise<Hotel[]> {
+  const { data, error } = await supabase
+    .from("hotels")
+    .select("*")
+    .eq("area_origen", area)
+    .eq("is_indexable", true)
+    .order("name", { ascending: true })
+    .limit(limit);
+  if (error) {
+    console.error(`Error fetching hotels for area ${area}:`, error);
+    return [];
+  }
+  return data || [];
+}
+
 // Hotels in the same city, excluding the current one — for "Other hotels
 // in <city>" cross-linking at the bottom of a hotel page.
 export async function getRelatedHotels(

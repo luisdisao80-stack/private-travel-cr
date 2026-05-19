@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getRouteBySlug, getRelatedRoutes, getIndexableRoutes } from "@/lib/routes-db";
+import { getHotelsByArea } from "@/lib/hotels-db";
 import { isPopularRoute } from "@/lib/popular-routes";
 import { siteConfig } from "@/lib/site-config";
 import RouteDetail from "@/components/RouteDetail";
@@ -87,6 +88,16 @@ export default async function RoutePage({ params }: Props) {
     permanentRedirect("/private-shuttle/" + slug);
   }
 
-  const related = await getRelatedRoutes(route.origen, slug, 4);
-  return <RouteDetail route={route} related={related} basePath="/routes" />;
+  const [related, destinationHotels] = await Promise.all([
+    getRelatedRoutes(route.origen, slug, 4),
+    getHotelsByArea(route.destino, 6),
+  ]);
+  return (
+    <RouteDetail
+      route={route}
+      related={related}
+      destinationHotels={destinationHotels}
+      basePath="/routes"
+    />
+  );
 }
