@@ -5,8 +5,8 @@ date: "2026-05-21"
 author: "Diego Salas Oviedo"
 category: "Travel Guides"
 readTime: 14
-image: "/blog/la-fortuna-arenal.jpg"
-imageAlt: "Mist drifting through the Monteverde cloud forest canopy with hanging epiphytes"
+image: "/blog/monteverde-cloud-forest.jpg"
+imageAlt: "Aerial view of the misty Monteverde cloud forest canopy in Costa Rica"
 ---
 
 Monteverde is the only place in Costa Rica where you can walk through a *cloud forest* — a rare high-altitude ecosystem perpetually wrapped in mist, where the trees are draped in epiphytes and the wildlife is unlike anywhere else in the country. Resplendent quetzals, three-wattled bellbirds, sloths, and over 100 mammal species call this slice of mountain home.
