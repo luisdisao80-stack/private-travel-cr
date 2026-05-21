@@ -461,6 +461,29 @@ export const translations = {
 
     // CONTACT FORM
     contact: {
+      // Hero + side panels for the new /contact layout
+      pageBadge: "WE'RE HERE TO HELP",
+      pageTitle: "Get in Touch",
+      pageSubtitle:
+        "Questions about your shuttle? Need help planning your trip across Costa Rica? Our team replies fast — pick the channel that suits you.",
+      cardWhatsappLabel: "WhatsApp",
+      cardWhatsappTagline: "Fastest response",
+      cardEmailLabel: "Email",
+      cardEmailTagline: "Reply within 2 hours",
+      cardPhoneLabel: "Phone",
+      cardPhoneTagline: "Call us 24/7",
+      sidebarLocationTitle: "Location",
+      sidebarLocationSubtitle: "Based in La Fortuna, Costa Rica",
+      sidebarLocationDescription:
+        "While our main base is in La Fortuna, we operate throughout Costa Rica with pickups from both San José (SJO) and Liberia (LIR) airports — and door-to-door service to every major destination.",
+      sidebarServingBanner:
+        "Serving La Fortuna, Manuel Antonio, Monteverde, Tamarindo, Papagayo, Puerto Viejo, and 40+ more destinations.",
+      sidebarFaqTitle: "Have a quick question?",
+      sidebarFaqDescription:
+        "Check our FAQ section for instant answers to common questions about bookings, cancellations, payments, vehicles, and more.",
+      sidebarFaqButton: "View FAQ",
+      formSectionTitle: "Send Us a Message",
+      // — legacy form keys below —
       badge: "✦ CONTACT US",
       titlePart1: "Tell us about",
       titlePart2: "your next trip",
@@ -1078,6 +1101,29 @@ export const translations = {
     },
 
     contact: {
+      // Hero + side panels for the new /contact layout
+      pageBadge: "ESTAMOS AQUÍ PARA AYUDAR",
+      pageTitle: "Contactanos",
+      pageSubtitle:
+        "¿Preguntas sobre tu shuttle? ¿Necesitás ayuda planeando tu viaje por Costa Rica? Nuestro equipo responde rápido — elegí el canal que más te conviene.",
+      cardWhatsappLabel: "WhatsApp",
+      cardWhatsappTagline: "Respuesta más rápida",
+      cardEmailLabel: "Email",
+      cardEmailTagline: "Respuesta en 2 horas",
+      cardPhoneLabel: "Teléfono",
+      cardPhoneTagline: "Llamanos 24/7",
+      sidebarLocationTitle: "Ubicación",
+      sidebarLocationSubtitle: "Basados en La Fortuna, Costa Rica",
+      sidebarLocationDescription:
+        "Aunque nuestra base principal está en La Fortuna, operamos en toda Costa Rica con pickups desde los aeropuertos de San José (SJO) y Liberia (LIR) — y servicio puerta a puerta a todos los destinos principales.",
+      sidebarServingBanner:
+        "Servimos La Fortuna, Manuel Antonio, Monteverde, Tamarindo, Papagayo, Puerto Viejo, y 40+ destinos más.",
+      sidebarFaqTitle: "¿Tenés una pregunta rápida?",
+      sidebarFaqDescription:
+        "Mirá nuestras FAQs para respuestas instantáneas sobre reservas, cancelaciones, pagos, vehículos y más.",
+      sidebarFaqButton: "Ver FAQ",
+      formSectionTitle: "Mandanos un Mensaje",
+      // — legacy form keys below —
       badge: "✦ CONTÁCTANOS",
       titlePart1: "Cuéntanos sobre",
       titlePart2: "tu próximo viaje",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ContactForm from "@/components/ContactForm";
+import ContactPageContent from "@/components/ContactPageContent";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { siteConfig } from "@/lib/site-config";
 
@@ -48,9 +48,7 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen bg-black">
       <Navbar />
-      <div className="pt-24">
-        <ContactForm />
-      </div>
+      <ContactPageContent />
       <Footer />
       <WhatsAppFloat />
     </main>

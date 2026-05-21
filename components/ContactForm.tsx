@@ -10,7 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DatePicker } from "@/components/ui/date-picker";
 import { useLanguage } from "@/lib/LanguageContext";
 
-export default function ContactForm() {
+type ContactFormProps = {
+  /** When true, render only the form fields — no wrapping <section>, no
+   *  header. Use when the form is being embedded inside a larger layout
+   *  that has its own hero/title (e.g. the new /contact page). */
+  embedded?: boolean;
+};
+
+export default function ContactForm({ embedded = false }: ContactFormProps) {
   const { t, lang } = useLanguage();
 
   // Opciones de ruta segun idioma
@@ -115,36 +122,45 @@ export default function ContactForm() {
     <section
       id="contacto"
       key={lang}
-      className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
+      className={
+        embedded
+          ? ""
+          : "relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
+      }
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.08),transparent_70%)]" />
+      {!embedded && (
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.08),transparent_70%)]" />
+      )}
 
-      <div className="relative z-10 max-w-4xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-            <span className="text-amber-400 text-sm font-medium tracking-wider">
-              {t.contact.badge}
-            </span>
-          </div>
+      <div className={embedded ? "" : "relative z-10 max-w-4xl mx-auto"}>
+        {!embedded && (
+          /* Header — only in standalone mode. The embedded parent has its
+             own hero with the same intent. */
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
+              <span className="text-amber-400 text-sm font-medium tracking-wider">
+                {t.contact.badge}
+              </span>
+            </div>
 
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-            {t.contact.titlePart1}
-            <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-              {t.contact.titlePart2}
-            </span>
-          </h2>
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+              {t.contact.titlePart1}
+              <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                {t.contact.titlePart2}
+              </span>
+            </h2>
 
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            {t.contact.subtitle}
-          </p>
-        </motion.div>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+              {t.contact.subtitle}
+            </p>
+          </motion.div>
+        )}
 
         {/* Formulario */}
         <motion.div
@@ -154,7 +170,13 @@ export default function ContactForm() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="relative"
         >
-          <div className="relative bg-gradient-to-br from-gray-900/80 to-black border-2 border-amber-500/20 rounded-3xl p-8 backdrop-blur-sm shadow-2xl">
+          <div
+            className={
+              embedded
+                ? "relative"
+                : "relative bg-gradient-to-br from-gray-900/80 to-black border-2 border-amber-500/20 rounded-3xl p-8 backdrop-blur-sm shadow-2xl"
+            }
+          >
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Fila 1: Nombre y Email */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -336,7 +358,10 @@ export default function ContactForm() {
             </form>
           </div>
 
-          {/* Alternativas de contacto */}
+          {/* Alternativas de contacto — only shown in standalone mode. In
+              embedded mode, the parent page surfaces these as the 3 hero
+              cards at the top, so showing them again would be redundant. */}
+          {!embedded && (
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -364,6 +389,7 @@ export default function ContactForm() {
               </a>
             </div>
           </motion.div>
+          )}
         </motion.div>
       </div>
     </section>
