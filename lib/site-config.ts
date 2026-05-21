@@ -2,8 +2,9 @@
 // Cuando migres el dominio, solo cambias siteUrl aqui
 
 export const siteConfig = {
-  // URL del sitio - cambiar a "https://privatetravelcr.com" cuando migres
-  siteUrl: "https://private-travel-cr.vercel.app",
+  // URL del sitio - el dominio canonico en Vercel es www.privatetravelcr.com
+  // (el apex privatetravelcr.com redirige al www con 307)
+  siteUrl: "https://www.privatetravelcr.com",
 
   // Nombre del negocio
   name: "Private Travel CR",
