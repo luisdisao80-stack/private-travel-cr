@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Private Travel Costa Rica",
+  title: "Privacy Policy",
   description:
     "How Private Travel Costa Rica collects, uses, and protects your personal information.",
   keywords: [

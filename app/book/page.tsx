@@ -7,7 +7,7 @@ import BookWizardClient from "@/components/book/BookWizardClient";
 import { getAllLocations, getRouteByLocations } from "@/lib/routes-db";
 
 export const metadata = {
-  title: "Book Your Private Shuttle | Private Travel Costa Rica",
+  title: "Book Your Private Shuttle",
   description:
     "Get an instant quote and book your private shuttle in Costa Rica. Live pricing, child seats, and door-to-door service from SJO and LIR airports.",
 };

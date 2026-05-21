@@ -6,7 +6,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Private Travel Costa Rica",
+  title: "Contact Us",
   description:
     "Get a quote for your private shuttle in Costa Rica. Contact us via WhatsApp or email — bilingual drivers, door-to-door, available 24/7.",
   keywords: [

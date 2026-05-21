@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
 import { readPostMarkdown, extractHowToSteps } from "@/lib/blog-howto";
@@ -147,13 +148,19 @@ export default async function BlogPostPage({
             </p>
           </div>
 
-          {/* Featured image */}
+          {/* Featured image — Next/Image auto-serves WebP/AVIF + responsive
+              sizes for big bandwidth wins on mobile. fill+sizes lets us
+              keep the existing aspect-ratio container without hardcoding
+              pixel dimensions. */}
           {post.image && (
-            <div className="w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br from-amber-900 to-amber-600">
-              <img
+            <div className="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br from-amber-900 to-amber-600">
+              <Image
                 src={post.image}
                 alt={post.imageAlt || post.title}
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 768px"
+                priority
+                className="object-cover"
               />
             </div>
           )}
