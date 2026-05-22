@@ -119,7 +119,7 @@ export default function FleetPage() {
                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-500">{lang === "en" ? "Year:" : "Año:"}</span>
-                      <span className="text-gray-300">2023+</span>
+                      <span className="text-gray-300">2025</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">{lang === "en" ? "Type:" : "Tipo:"}</span>
@@ -211,7 +211,7 @@ export default function FleetPage() {
                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-500">{lang === "en" ? "Year:" : "Año:"}</span>
-                      <span className="text-gray-300">2022+</span>
+                      <span className="text-gray-300">2026</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">{lang === "en" ? "Type:" : "Tipo:"}</span>
@@ -327,7 +327,7 @@ export default function FleetPage() {
                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-500">{lang === "en" ? "Year:" : "Año:"}</span>
-                      <span className="text-gray-300">2023+</span>
+                      <span className="text-gray-300">2025</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">{lang === "en" ? "Type:" : "Tipo:"}</span>

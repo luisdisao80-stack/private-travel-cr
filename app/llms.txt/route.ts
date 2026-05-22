@@ -72,7 +72,7 @@ ${lirLinks}
 - Private vehicle (no shared rides)
 - Door-to-door pickup and drop-off (hotels, Airbnbs, exact addresses)
 - Professional bilingual (English / Spanish) driver
-- Modern, fully-insured vehicle (2023 or newer)
+- Modern, fully-insured vehicle (2024 or newer; Toyota HiAce 2026, Hyundai Staria & Maxus V90 2025)
 - Free WiFi on board, bottled water
 - Free child seats (infant, convertible, booster) on request
 - Flight tracking on airport pickups

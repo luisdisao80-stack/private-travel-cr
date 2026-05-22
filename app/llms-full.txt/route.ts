@@ -106,7 +106,7 @@ including La Fortuna / Arenal, Manuel Antonio, Monteverde, Tamarindo, Jaco,
 Santa Teresa, Nosara, Puerto Viejo and the Papagayo Peninsula.
 
 Every trip is **private** — the price is per vehicle, not per person — and
-includes a professional bilingual driver, modern vehicle (2023 or newer),
+includes a professional bilingual driver, modern vehicle (2024 or newer — Toyota HiAce 2026, Hyundai Staria & Maxus V90 2025),
 on-board WiFi, bottled water, free child seats on request, flight tracking
 on airport pickups, tolls and taxes, with no hidden fees.
 
@@ -129,7 +129,7 @@ reviews and is a TripAdvisor Travelers' Choice 2025 award winner.
 - Private vehicle, no shared rides
 - Door-to-door pickup and drop-off (hotel, Airbnb, exact address)
 - Professional bilingual (EN/ES) driver
-- Modern, fully-insured vehicle (2023 or newer)
+- Modern, fully-insured vehicle (2024 or newer; Toyota HiAce 2026, Hyundai Staria & Maxus V90 2025)
 - Free WiFi on board, bottled water
 - Free child seats (infant, convertible, booster) on request
 - Flight tracking on airport pickups — driver adjusts automatically if your flight is late
