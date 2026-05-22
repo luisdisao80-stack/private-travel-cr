@@ -93,7 +93,8 @@ export default function RoutePricePreview({ from, to }: Props) {
           ${state.basePrice}
           <span className="text-xs text-gray-400 font-normal ml-1">USD</span>
         </div>
-        <div className="text-[10px] text-gray-400 mt-1">Standard · up to 6 pax</div>
+        <div className="text-[10px] text-green-400 mt-1">Taxes included</div>
+        <div className="text-[10px] text-gray-400">Standard · up to 6 pax</div>
       </div>
       <div className="text-right">
         <div className="inline-flex items-center gap-1 text-xs text-gray-300">
