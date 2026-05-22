@@ -487,6 +487,7 @@ export default function QuoteCalculatorV2({ locations }: Props) {
             <div>
               <div className="text-xs text-gray-500 uppercase tracking-wider">Total Price</div>
               <div className="text-4xl font-bold text-amber-400">${totalPrice}<span className="text-base text-gray-400 font-normal"> USD</span></div>
+              <div className="text-[11px] text-gray-500 mt-1">Taxes included</div>
             </div>
             {(serviceType === "vip" || extraStops > 0) ? (
               <div className="text-right">

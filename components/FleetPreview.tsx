@@ -119,6 +119,9 @@ export default function FleetPreview() {
                           ${vehicle.priceFrom}
                           <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
                         </div>
+                        <div className="text-[10px] text-gray-500 mt-0.5">
+                          {lang === "en" ? "Taxes included" : "Impuestos incluidos"}
+                        </div>
                       </div>
 
                       <span className="text-amber-400 text-sm flex items-center gap-1 group-hover:gap-2 transition-all">

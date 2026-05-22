@@ -284,6 +284,9 @@ export default function BookingForm({ onBack }: BookingFormProps) {
         )}
       </Button>
 
+      <p className="text-[11px] text-center text-green-400">
+        Taxes included · Final price
+      </p>
       <p className="text-[10px] text-center text-gray-500">
         Secure payment processed by Tilopay. Your card details never touch our servers.
       </p>

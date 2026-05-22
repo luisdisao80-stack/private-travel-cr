@@ -54,6 +54,7 @@ export default function StickyBookCTA({
               ${priceFrom}
               <span className="text-[10px] text-gray-400 font-normal ml-1">USD</span>
             </div>
+            <div className="text-[9px] text-gray-500 leading-tight">taxes incl.</div>
           </div>
           <Link
             href={`/book?from=${encodeURIComponent(origen)}&to=${encodeURIComponent(destino)}&direct=1`}

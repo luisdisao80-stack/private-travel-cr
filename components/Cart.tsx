@@ -297,10 +297,13 @@ export default function Cart() {
               <div className="border-t border-amber-500/20 p-5 space-y-4 bg-gradient-to-t from-amber-500/5 to-transparent">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400 text-sm">{t.cart.total}</span>
-                  <span className="text-3xl font-bold text-white">
-                    ${totalPrice}
-                    <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
-                  </span>
+                  <div className="text-right">
+                    <span className="text-3xl font-bold text-white">
+                      ${totalPrice}
+                      <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
+                    </span>
+                    <div className="text-[11px] text-gray-500 mt-0.5">{t.quote.taxesIncluded}</div>
+                  </div>
                 </div>
                 <Button
                   onClick={handleContinue}

@@ -184,6 +184,9 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
                         <div className="text-xl font-bold text-amber-400 leading-tight">
                           ${route.precio1a6}
                         </div>
+                        <div className="text-[9px] text-gray-500 leading-tight mt-0.5">
+                          taxes incl.
+                        </div>
                       </div>
                       <ArrowRight
                         size={16}
