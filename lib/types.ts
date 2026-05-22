@@ -56,3 +56,60 @@ export type Route = {
   is_indexable: boolean;
   faqs: RouteFAQ[] | null;
 };
+
+// Tours we resell from third-party operators (initially Canoa Aventura in
+// La Fortuna). RACK prices are what the customer pays here; operator_net_*
+// is our wholesale cost. Pricing is per-person with separate adult/child
+// rates and a per-tour kid age policy. Bookings reuse the bookings table
+// with kind='tour'.
+export type TourScheduleSlot = {
+  departure: string; // "07:50"
+  return: string;    // "12:30"
+};
+
+export type Tour = {
+  id: number;
+  slug: string;
+  name: string;
+  name_es: string | null;
+  category: "combo" | "caminata" | "rio" | "wildlife" | "kayak" | "nocturno";
+  region: string; // "la-fortuna"
+  short_description: string | null;
+  description: string | null;
+  description_es: string | null;
+  // pricing — USD, includes 13% IVA
+  adult_price: number;
+  child_price: number | null;
+  child_age_min: number | null;
+  child_age_max: number | null;
+  child_discount_pct: number | null;
+  min_age: number | null;
+  child_policy_note: string | null;
+  // logistics
+  duration_label: string;
+  duration_hours: number | null;
+  schedule_times: TourScheduleSlot[];
+  min_pax: number;
+  max_pax: number | null;
+  pickup_zone: string | null;
+  // what's included / what to bring
+  includes: string[];
+  what_to_bring: string[];
+  highlights: string[];
+  // media
+  hero_image: string | null;
+  gallery: string[];
+  // seo
+  meta_title: string | null;
+  meta_description: string | null;
+  // operator (internal — not for public display)
+  operator_id: number | null;
+  operator_tour_name: string | null;
+  operator_net_adult: number | null;
+  operator_net_child: number | null;
+  // flags
+  is_active: boolean;
+  is_indexable: boolean;
+  is_featured: boolean;
+  priority: number;
+};
