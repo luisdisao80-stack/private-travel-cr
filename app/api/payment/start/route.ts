@@ -21,8 +21,19 @@ type StartPaymentBody = {
   totalUsd: number;
 };
 
-function generateOrderNumber(): string {
-  // PTCR-<base36 timestamp>-<5 chars random>. Short, unique, human-readable.
+async function generateOrderNumber(): Promise<string> {
+  // Sequential numbering via Postgres sequence — atomic, no race conditions.
+  // Returns "PTCR-1450", "PTCR-1451", etc. Starting value defined by the
+  // booking_number_seq sequence in Supabase.
+  const { data, error } = await supabaseAdmin.rpc("next_booking_number");
+  if (!error && typeof data === "string" && data.startsWith("PTCR-")) {
+    return data;
+  }
+  // Fallback: if the RPC ever fails (network blip, function dropped, etc.)
+  // we still want a unique order number so the booking can proceed. The old
+  // base36-timestamp format is collision-resistant and obviously different
+  // from the sequential format, so the admin can tell them apart.
+  console.error("[order-number] sequence RPC failed, falling back:", error);
   const ts = Date.now().toString(36).toUpperCase();
   const rand = randomBytes(3).toString("hex").toUpperCase().slice(0, 5);
   return `PTCR-${ts}-${rand}`;
@@ -64,7 +75,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Total must be > 0" }, { status: 400 });
   }
 
-  const orderNumber = generateOrderNumber();
+  const orderNumber = await generateOrderNumber();
 
   // Persist the pending booking first. If Tilopay later confirms via redirect,
   // we update this row by orderNumber.
