@@ -10,10 +10,17 @@ type Props = {
 /**
  * JSON-LD schema for a single shuttle route landing page.
  *
- * Emits a TaxiService with nested Offer + AggregateRating. We use TaxiService
- * (vs generic Service) because Google has explicit support for it under
- * Local Business / Transportation. The AggregateRating mirrors the
- * site-wide Google rating so route pages inherit the trust signals.
+ * Emits a TaxiService with nested Offer. We use TaxiService (vs generic
+ * Service) because Google has explicit support for it under Local Business
+ * / Transportation.
+ *
+ * NOTE: we do NOT embed AggregateRating here. Google's "Review snippets"
+ * rich result only accepts AggregateRating under a fixed list of parents
+ * (Book, Course, Event, HowTo, LocalBusiness, MediaObject, Movie, Product,
+ * Recipe, SoftwareApplication). TaxiService is NOT on that list and
+ * Search Console reports it as "Invalid object type for field
+ * <parent_node>". The site-wide LocalBusiness in SchemaOrg already carries
+ * the rating on every page, so the trust signal is preserved.
  */
 export default function RouteSchema({ route, basePath }: Props) {
   const pageUrl = `${siteConfig.siteUrl}${basePath}/${route.slug}`;
@@ -63,13 +70,6 @@ export default function RouteSchema({ route, basePath }: Props) {
           duration: `PT${Math.floor(durationMin / 60)}H${durationMin % 60}M`,
         }
       : {}),
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: siteConfig.business.rating.googleStars,
-      reviewCount: siteConfig.business.rating.googleReviews,
-      bestRating: 5,
-      worstRating: 1,
-    },
   };
 
   return (
