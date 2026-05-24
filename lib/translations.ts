@@ -141,7 +141,7 @@ export const translations = {
     // HERO
     hero: {
       badge: "PREMIUM PRIVATE TRANSPORTATION",
-      titlePart1: "Costa Rica Service",
+      titlePart1: "Costa Rica Shuttle",
       titlePart2: "& La Fortuna Tours",
       subtitle: "Private door-to-door service + small-group La Fortuna tours.",
       features: "Instant quotes · Bilingual drivers · Door-to-door",
@@ -793,7 +793,7 @@ export const translations = {
 
     hero: {
       badge: "PREMIUM PRIVATE TRANSPORTATION",
-      titlePart1: "Servicio en Costa Rica",
+      titlePart1: "Shuttle en Costa Rica",
       titlePart2: "y Tours en La Fortuna",
       subtitle: "Servicio privado puerta a puerta + tours grupales en La Fortuna.",
       features: "Cotización instantánea · Chofer bilingüe · Puerta a puerta",
