@@ -73,6 +73,19 @@ export default async function ToursPage() {
               the legendary Río Celeste — all bookable online in 2 minutes. From
               $77/adult. Free hotel pickup, bilingual guides, taxes included.
             </p>
+            <p className="mt-4 text-sm text-gray-500 max-w-2xl mx-auto">
+              Listed prices are for shared small-group departures. Want it
+              private for your group?{" "}
+              <a
+                href="https://wa.me/50688271225"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-400 hover:text-amber-300 underline underline-offset-2"
+              >
+                Message us on WhatsApp
+              </a>{" "}
+              for a custom quote.
+            </p>
           </div>
         </section>
 

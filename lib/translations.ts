@@ -141,9 +141,9 @@ export const translations = {
     // HERO
     hero: {
       badge: "PREMIUM PRIVATE TRANSPORTATION",
-      titlePart1: "Costa Rica Private",
-      titlePart2: "Shuttles & Tours",
-      subtitle: "Door-to-door rides + La Fortuna tours. 4.9★ on Google · Booked online in 2 minutes · Taxes included.",
+      titlePart1: "Costa Rica Shuttles",
+      titlePart2: "& La Fortuna Tours",
+      subtitle: "Private door-to-door shuttles + small-group La Fortuna tours. 4.9★ on Google · Book online in 2 minutes · Taxes included.",
       features: "Instant quotes · Bilingual drivers · Door-to-door",
       ctaQuote: "Get Quote Now",
       ctaWhatsapp: "Direct WhatsApp",
@@ -793,9 +793,9 @@ export const translations = {
 
     hero: {
       badge: "PREMIUM PRIVATE TRANSPORTATION",
-      titlePart1: "Shuttles Privados",
-      titlePart2: "y Tours en Costa Rica",
-      subtitle: "Viajes puerta a puerta + tours en La Fortuna. 4.9★ en Google · Reservás en 2 minutos · IVA incluido.",
+      titlePart1: "Shuttles en Costa Rica",
+      titlePart2: "y Tours en La Fortuna",
+      subtitle: "Shuttles privados puerta a puerta + tours grupales en La Fortuna. 4.9★ en Google · Reservá en 2 minutos · IVA incluido.",
       features: "Cotización instantánea · Chofer bilingüe · Puerta a puerta",
       ctaQuote: "Cotizar Ahora",
       ctaWhatsapp: "WhatsApp Directo",
