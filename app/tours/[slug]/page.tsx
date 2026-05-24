@@ -116,8 +116,10 @@ export default async function TourDetailPage({ params }: Props) {
       />
       <Navbar />
       <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950">
-        {/* Hero image */}
-        <section className="relative h-[50vh] min-h-[400px] max-h-[600px] w-full overflow-hidden">
+        {/* Hero image — kept compact so the booking panel and tour body
+            land above the fold on desktop and within one short scroll on
+            mobile. Was 50vh / 400-600px which dominated the viewport. */}
+        <section className="relative h-[35vh] min-h-[280px] max-h-[420px] w-full overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-600">
             {tour.hero_image ? (
               <Image
@@ -131,7 +133,7 @@ export default async function TourDetailPage({ params }: Props) {
             ) : null}
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
-          <div className="absolute inset-x-0 bottom-0 px-4 pb-10 pt-24">
+          <div className="absolute inset-x-0 bottom-0 px-4 pb-6 pt-16">
             <div className="max-w-6xl mx-auto">
               <Link
                 href="/tours"
