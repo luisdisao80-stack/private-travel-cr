@@ -1,11 +1,11 @@
 import { siteConfig } from "@/lib/site-config";
 import { reviews } from "@/lib/reviews-data";
 
-// The Elfsight widget renders Google reviews client-side, so AI crawlers and
-// non-JS bots never see the actual review text. SchemaOrg.tsx already emits
-// the LocalBusiness + aggregateRating; here we add a Graph of individual
-// Review entities pointing back at the same business @id so the review
-// bodies become indexable text.
+// SchemaOrg.tsx already emits the LocalBusiness + aggregateRating; here we
+// add a Graph of individual Review entities pointing back at the same
+// business @id so the review bodies are exposed as structured data for
+// search engines and AI crawlers (independent of the visible ReviewCards
+// component that also renders them as HTML).
 export default function ReviewSchema() {
   const businessId = `${siteConfig.siteUrl}/#business`;
 

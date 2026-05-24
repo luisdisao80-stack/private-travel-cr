@@ -3,7 +3,7 @@
 import { Star, ExternalLink, Award } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
-import GoogleReviewsWidget from "@/components/GoogleReviewsWidget";
+import ReviewCards from "@/components/ReviewCards";
 
 export default function Reviews() {
   const { t } = useLanguage();
@@ -116,10 +116,10 @@ export default function Reviews() {
           </div>
         </div>
 
-        {/* Live Google reviews — Elfsight widget. Auto-syncs with the same
-            Google Business Profile as the legacy site, so new reviews
-            appear here without us touching the code. */}
-        <GoogleReviewsWidget />
+        {/* Curated 5★ reviews, server-rendered for indexability + speed.
+            Replaces the old Elfsight widget (637 KB of JS that crawlers
+            never executed). To add/edit, see lib/reviews-data.ts. */}
+        <ReviewCards />
 
         {/* CTAs finales */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
