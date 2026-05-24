@@ -1,18 +1,28 @@
-import BenefitsSection from "@/components/BenefitsSection";
-import FleetPreview from "@/components/FleetPreview";
+import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
-import Reviews from "@/components/Reviews";
-import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
-import PopularRoutes from "@/components/PopularRoutes";
-import ServiceComparison from "@/components/ServiceComparison";
-import WhyUsComparison from "@/components/WhyUsComparison";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import FAQSchema from "@/components/FAQSchema";
 import ReviewSchema from "@/components/ReviewSchema";
 import { getAllLocations } from "@/lib/routes-db";
 import { getAllHotels } from "@/lib/hotels-db";
+
+/*
+ * LCP perf: dynamic-import every below-the-fold client section. With the
+ * Next.js default (`ssr: true`) the HTML is still server-rendered — so
+ * Google/Perplexity see the full marketing copy — but the framer-motion
+ * JS chunk for each section ships in a separate bundle that the browser
+ * downloads AFTER the above-the-fold paint completes. Cuts initial JS
+ * by roughly half and frees the main thread during the LCP window.
+ */
+const Reviews = dynamic(() => import("@/components/Reviews"));
+const BenefitsSection = dynamic(() => import("@/components/BenefitsSection"));
+const WhyUsComparison = dynamic(() => import("@/components/WhyUsComparison"));
+const ServiceComparison = dynamic(() => import("@/components/ServiceComparison"));
+const FleetPreview = dynamic(() => import("@/components/FleetPreview"));
+const PopularRoutes = dynamic(() => import("@/components/PopularRoutes"));
+const FAQSection = dynamic(() => import("@/components/FAQSection"));
 
 export const revalidate = 3600;
 

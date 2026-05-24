@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { ArrowRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
@@ -78,8 +77,8 @@ export default function Hero({ locations, hotels = [] }: Props) {
         alt="Costa Rica private shuttle on a coastal road"
         fill
         priority
-        sizes="100vw"
-        quality={75}
+        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
+        quality={60}
         className="object-cover object-center -z-[1]"
       />
 
@@ -88,34 +87,31 @@ export default function Hero({ locations, hotels = [] }: Props) {
 
       <div className="relative z-10 container mx-auto px-4 py-20 md:py-24">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          {/*
+            LCP perf: drop the framer-motion fade-up on the above-the-fold
+            text. The H1 is the LCP candidate; delaying it 0.2-1.0s by
+            animating from opacity 0 was holding mobile LCP at ~5.9s.
+            Static markup now → H1 paints as soon as the HTML is parsed.
+          */}
+          <h1
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 md:mb-8 tracking-tight leading-[1.1]"
           >
             {t.hero.titlePart1}{" "}
             <span className="block bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent mt-2 md:mt-3">
               {t.hero.titlePart2}
             </span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+          <p
             className="text-base md:text-2xl text-gray-200 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed px-2"
           >
             {t.hero.subtitle}
-          </motion.p>
+          </p>
 
-          <motion.a
+          <a
             href={reviewStats.google.url}
             target="_blank"
             rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
             className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-10 md:mb-12 shadow-2xl shadow-black/40"
           >
             <GoogleGLogo size={32} className="shrink-0" />
@@ -133,12 +129,9 @@ export default function Hero({ locations, hotels = [] }: Props) {
               </span>
             </div>
             <ExternalLink size={14} className="text-white/40" />
-          </motion.a>
+          </a>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+          <div
             className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl shadow-black/50 text-left"
           >
             <h2 className="text-xl md:text-2xl font-bold text-white mb-5 text-center">
@@ -198,7 +191,7 @@ export default function Hero({ locations, hotels = [] }: Props) {
                 {lang === "en" ? "No hidden fees" : "Sin cargos ocultos"}
               </span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
