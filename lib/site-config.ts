@@ -44,12 +44,11 @@ export const siteConfig = {
     awards: ["TripAdvisor Travelers' Choice 2025"],
   },
 
-  // Imagen para preview (WhatsApp/Facebook/Twitter)
-  // TODO: cuando tengas foto OG personalizada, cambiar a "/og-image.jpg"
-  ogImage: "https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=75&w=1200&h=630&fit=crop",
+  // Imagen para preview (WhatsApp/Facebook/Twitter) — 1200x630, self-hosted
+  ogImage: "https://www.privatetravelcr.com/og-image.jpg",
 
-  // Logo
-  logo: "https://privatecr2.imgix.net/logos/logo-ptcr.svg",
+  // Logo — self-hosted SVG
+  logo: "https://www.privatetravelcr.com/logo-ptcr.svg",
 
   // Redes sociales (opcional, agregar cuando tengas)
   social: {

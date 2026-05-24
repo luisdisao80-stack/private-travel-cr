@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import NextImage from "next/image";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -82,10 +83,15 @@ export default function RoutesPageClient({ routes }: Props) {
     <main className="min-h-screen bg-black">
       {/* HERO + SEARCH */}
       <section className="relative w-full overflow-hidden">
-        <img
-          src="https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=60&w=2000"
-          alt="Costa Rica private shuttle"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+        {/* eslint-disable-next-line jsx-a11y/alt-text */}
+        <NextImage
+          src="/principal.jpg"
+          alt="Costa Rica private shuttle on a coastal road"
+          fill
+          priority
+          sizes="100vw"
+          quality={65}
+          className="object-cover object-center -z-[1]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />
@@ -98,9 +104,9 @@ export default function RoutesPageClient({ routes }: Props) {
               transition={{ duration: 0.6 }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4"
             >
-              {lang === "en" ? "Private Shuttle Routes" : "Rutas de Shuttle Privado"}
+              {lang === "en" ? "1,200+ Private Shuttle Routes" : "1,200+ Rutas de Shuttle Privado"}
               <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent mt-1">
-                {lang === "en" ? "in Costa Rica" : "en Costa Rica"}
+                {lang === "en" ? "across Costa Rica" : "en Costa Rica"}
               </span>
             </motion.h1>
 

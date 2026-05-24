@@ -70,7 +70,7 @@ export default async function HotelsIndexPage() {
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Door-to-door shuttles for Costa Rica&apos;s top hotels
+              Private Shuttles to 140+ Costa Rica Hotels
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Pickup at the hotel entrance, bilingual drivers, fixed all-inclusive

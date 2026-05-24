@@ -11,9 +11,9 @@ import { Clock, Users, MapPin } from "lucide-react";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "La Fortuna Tours — Volcano, Waterfalls, Hot Springs & Wildlife",
+  title: "The 10 Best Tours in La Fortuna, Costa Rica (2026) | Private Travel CR",
   description:
-    "Book the best tours in La Fortuna, Costa Rica — Arenal Volcano hike, La Fortuna Waterfall, Mistico Hanging Bridges, Río Celeste, Caño Negro wildlife & more. From $77/adult. Free hotel pickup. Taxes included.",
+    "The 10 best tours in La Fortuna for 2026 — Arenal Volcano hike, La Fortuna Waterfall, Mistico Hanging Bridges, Río Celeste, Caño Negro wildlife, and Sarapiquí rafting. From $77/adult. Free hotel pickup. Bilingual guides. Taxes included.",
   alternates: { canonical: "/tours" },
   openGraph: {
     title: "La Fortuna Tours | Private Travel CR",
@@ -66,12 +66,12 @@ export default async function ToursPage() {
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
-              The best tours in <span className="text-amber-400">La Fortuna</span>
+              The 10 best tours in <span className="text-amber-400">La Fortuna</span>, Costa Rica (2026)
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
               Volcano hikes, hanging bridges, waterfall swims, wildlife floats, and
-              the legendary Río Celeste — booked from one trusted local operator.
-              Free hotel pickup, bilingual guides, taxes included.
+              the legendary Río Celeste — all bookable online in 2 minutes. From
+              $77/adult. Free hotel pickup, bilingual guides, taxes included.
             </p>
           </div>
         </section>

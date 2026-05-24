@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -66,16 +67,20 @@ export default function Hero({ locations, hotels = [] }: Props) {
 
   return (
     <section className="relative z-20 min-h-[85vh] md:min-h-screen w-full flex items-center justify-center isolate">
-      <img
-        src="https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=85&w=2000"
-        alt="Costa Rica private shuttle"
-        width={2000}
-        height={1125}
-        // eslint-disable-next-line @next/next/no-img-element
-        fetchPriority="high"
-        loading="eager"
-        decoding="async"
-        className="absolute inset-0 w-full h-full object-cover object-center"
+      {/*
+        LCP-critical image. Self-hosted in /public so Next/Image can serve
+        responsive AVIF/WebP variants (~50-80 KB on mobile vs the old
+        ~800 KB JPG from imgix). `priority` instructs Next to preload it
+        and skip lazy-loading.
+      */}
+      <Image
+        src="/principal.jpg"
+        alt="Costa Rica private shuttle on a coastal road"
+        fill
+        priority
+        sizes="100vw"
+        quality={75}
+        className="object-cover object-center -z-[1]"
       />
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/75 z-[1]" />

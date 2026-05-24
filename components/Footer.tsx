@@ -56,10 +56,12 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://privatecr2.imgix.net/logos/logo-ptcr.svg"
+              src="/logo-ptcr.svg"
               alt="Private Travel CR"
               className="h-16 w-auto mb-4"
+              loading="lazy"
             />
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
               {t.footer.brandDescription}

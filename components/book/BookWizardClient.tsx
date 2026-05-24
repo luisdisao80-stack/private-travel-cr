@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import NextImage from "next/image";
 import { ArrowRight, CheckCircle2, Shield, Zap } from "lucide-react";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
@@ -104,15 +105,14 @@ export default function BookWizardClient({ locations }: Props) {
     <>
       {/* Hero */}
       <section className="relative w-full overflow-hidden">
-        <img
-          src="https://privatecr2.imgix.net/principal.jpeg?auto=format,compress&cs=srgb&q=60&w=2000"
-          alt="Costa Rica private shuttle"
-          width={2000}
-          height={1125}
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+        <NextImage
+          src="/principal.jpg"
+          alt="Costa Rica private shuttle on a coastal road"
+          fill
+          priority
+          sizes="100vw"
+          quality={65}
+          className="object-cover object-center -z-[1]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />

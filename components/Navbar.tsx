@@ -46,8 +46,9 @@ export default function Navbar() {
             href="/"
             className="flex items-center gap-3 group"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://privatecr2.imgix.net/logos/logo-ptcr.svg"
+              src="/logo-ptcr.svg"
               alt="Private Travel Costa Rica"
               className="h-14 w-auto group-hover:scale-105 transition-transform"
             />

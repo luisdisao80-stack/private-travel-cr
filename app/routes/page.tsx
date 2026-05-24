@@ -7,9 +7,9 @@ import RoutesPageClient from "@/components/RoutesPageClient";
 import { getAllRoutes } from "@/lib/routes-db";
 
 export const metadata: Metadata = {
-  title: "Private Shuttle Routes in Costa Rica",
+  title: "1,200+ Private Shuttle Routes in Costa Rica (2026 Prices)",
   description:
-    "Browse our 1,200+ private shuttle routes across Costa Rica. From La Fortuna to Tamarindo, Manuel Antonio to Monteverde — door-to-door service with bilingual drivers.",
+    "Browse our 1,200+ private shuttle routes across Costa Rica. From La Fortuna to Tamarindo, Manuel Antonio to Monteverde — door-to-door service with bilingual drivers. Fixed 2026 prices, taxes included.",
   keywords: [
     "Costa Rica shuttle routes",
     "private transportation Costa Rica",
