@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { LanguageProvider } from "@/lib/LanguageContext";
@@ -11,21 +11,13 @@ import CookieBanner from "@/components/CookieBanner";
 import { siteConfig } from "@/lib/site-config";
 import SchemaOrg from "@/components/SchemaOrg";
 
+// LCP perf: ship only one webfont (Inter). Geist Sans was unused; Geist
+// Mono was only referenced by `font-mono` on the booking success/error
+// pages — those fall back to the system mono stack (Menlo, Consolas,
+// monospace) defined in globals.css, which is fine for an order number.
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
   display: "swap",
 });
 
@@ -102,8 +94,6 @@ export default function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
-        geistSans.variable,
-        geistMono.variable,
         "font-sans",
         inter.variable
       )}
