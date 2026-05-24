@@ -116,10 +116,10 @@ export default async function TourDetailPage({ params }: Props) {
       />
       <Navbar />
       <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950">
-        {/* Hero image — kept compact so the booking panel and tour body
-            land above the fold on desktop and within one short scroll on
-            mobile. Was 50vh / 400-600px which dominated the viewport. */}
-        <section className="relative h-[35vh] min-h-[280px] max-h-[420px] w-full overflow-hidden">
+        {/* Hero image — tight crop. Earlier iterations (50vh/600px,
+            then 35vh/420px) still dominated the viewport, so we now
+            target 200-320px and shrink the title two steps to match. */}
+        <section className="relative h-[25vh] min-h-[200px] max-h-[320px] w-full overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-600">
             {tour.hero_image ? (
               <Image
@@ -133,22 +133,22 @@ export default async function TourDetailPage({ params }: Props) {
             ) : null}
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
-          <div className="absolute inset-x-0 bottom-0 px-4 pb-6 pt-16">
+          <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-10">
             <div className="max-w-6xl mx-auto">
               <Link
                 href="/tours"
-                className="inline-flex items-center gap-1.5 text-amber-400 text-sm hover:text-amber-300 mb-4 transition-colors"
+                className="inline-flex items-center gap-1.5 text-amber-400 text-xs hover:text-amber-300 mb-2 transition-colors"
               >
-                <ArrowLeft size={14} />
+                <ArrowLeft size={12} />
                 Back to tours
               </Link>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-500/40 mb-4">
-                <MapPin size={12} className="text-amber-400" />
-                <span className="text-[11px] font-semibold text-amber-300 uppercase tracking-wider">
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-500/40 mb-2">
+                <MapPin size={10} className="text-amber-400" />
+                <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">
                   La Fortuna · Arenal
                 </span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-3 max-w-3xl tracking-tight leading-tight">
+              <h1 className="text-xl md:text-3xl font-bold text-white mb-2 max-w-3xl tracking-tight leading-tight">
                 {tour.name}
               </h1>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-300">
