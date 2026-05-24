@@ -50,6 +50,8 @@ export default function Navbar() {
             <img
               src="/logo-ptcr.svg"
               alt="Private Travel Costa Rica"
+              width={128}
+              height={56}
               className="h-14 w-auto group-hover:scale-105 transition-transform"
             />
           </Link>

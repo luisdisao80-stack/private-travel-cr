@@ -60,6 +60,8 @@ export default function Footer() {
             <img
               src="/logo-ptcr.svg"
               alt="Private Travel CR"
+              width={146}
+              height={64}
               className="h-16 w-auto mb-4"
               loading="lazy"
             />
