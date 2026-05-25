@@ -5,7 +5,6 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import FAQSchema from "@/components/FAQSchema";
 import ReviewSchema from "@/components/ReviewSchema";
-import ToursPreview from "@/components/ToursPreview";
 import { getAllLocations } from "@/lib/routes-db";
 import { getAllHotels } from "@/lib/hotels-db";
 import { getGoogleReviews } from "@/lib/google-reviews";
@@ -62,11 +61,6 @@ export default async function Home() {
       <FleetPreview />
 
       <PopularRoutes />
-
-      {/* La Fortuna tours catalog preview — surfaces the 4 featured
-          tours and CTAs to the full /tours page. Server-rendered so the
-          card images, names and prices are in the initial HTML for SEO. */}
-      <ToursPreview />
 
       <FAQSection />
 
