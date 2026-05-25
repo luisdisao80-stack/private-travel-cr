@@ -32,6 +32,12 @@ export function DatePicker({
   const locale = lang === "es" ? es : enUS;
   const today = minDate ?? new Date(new Date().setHours(0, 0, 0, 0));
 
+  // Bookable range: from today up to 2 years out. Most tourism
+  // bookings happen 1-6 months ahead; capping at 2 years keeps the
+  // year-dropdown short and the picker fast.
+  const startMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const endMonth = new Date(today.getFullYear() + 2, 11, 31);
+
   const display = selected
     ? format(selected, "PPP", { locale })
     : placeholder ?? (lang === "es" ? "Selecciona una fecha" : "Pick a date");
@@ -64,10 +70,15 @@ export function DatePicker({
           disabled={{ before: today }}
           locale={locale}
           showOutsideDays
+          // Month + year dropdowns so customers booking far ahead (e.g.
+          // Christmas trip in Dec 2026 from May 2026) can jump straight
+          // to the target month without ~7 next-arrow clicks.
+          captionLayout="dropdown"
+          startMonth={startMonth}
+          endMonth={endMonth}
           // Explicit chevron icons for the prev/next month nav. Without
           // this, react-day-picker v9 renders un-styled default arrows
-          // that disappear against the dark popover background — Diego
-          // reported customers couldn't advance past the current month.
+          // that disappear against the dark popover background.
           components={{
             Chevron: ({ orientation }) =>
               orientation === "left" ? (
@@ -81,6 +92,12 @@ export function DatePicker({
             month: "space-y-3",
             month_caption: "flex justify-center items-center h-9 relative",
             caption_label: "text-sm font-semibold text-amber-400",
+            dropdowns: "flex items-center justify-center gap-2",
+            dropdown_root: "relative",
+            dropdown:
+              "h-8 px-2 pr-7 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-semibold appearance-none cursor-pointer hover:bg-amber-500/20 focus:outline-none focus:border-amber-500",
+            months_dropdown: "",
+            years_dropdown: "",
             nav: "absolute inset-x-0 top-0 flex items-center justify-between px-1 h-9",
             button_previous:
               "h-8 w-8 inline-flex items-center justify-center rounded-md bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors cursor-pointer",
