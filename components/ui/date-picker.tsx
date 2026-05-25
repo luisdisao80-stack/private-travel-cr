@@ -90,19 +90,22 @@ export function DatePicker({
           classNames={{
             months: "flex flex-col gap-4",
             month: "space-y-3",
-            month_caption: "flex justify-center items-center h-9 relative",
-            caption_label: "text-sm font-semibold text-amber-400",
+            month_caption: "flex justify-center items-center h-9",
+            // Dropdowns are now the only navigation. The text label and
+            // the chevron buttons become redundant and overlap visually
+            // (the v9 default renders both). Hide the text label and the
+            // nav. caption_label stays as sr-only so screen readers
+            // still announce 'July 2027' even though it's not visible.
+            caption_label: "sr-only",
             dropdowns: "flex items-center justify-center gap-2",
             dropdown_root: "relative",
             dropdown:
               "h-8 px-2 pr-7 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-semibold appearance-none cursor-pointer hover:bg-amber-500/20 focus:outline-none focus:border-amber-500",
             months_dropdown: "",
             years_dropdown: "",
-            nav: "absolute inset-x-0 top-0 flex items-center justify-between px-1 h-9",
-            button_previous:
-              "h-8 w-8 inline-flex items-center justify-center rounded-md bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors cursor-pointer",
-            button_next:
-              "h-8 w-8 inline-flex items-center justify-center rounded-md bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors cursor-pointer",
+            nav: "hidden",
+            button_previous: "hidden",
+            button_next: "hidden",
             month_grid: "w-full border-collapse",
             weekdays: "flex",
             weekday:
