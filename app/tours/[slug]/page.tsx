@@ -147,6 +147,7 @@ export default async function TourDetailPage({ params }: Props) {
                   sizes="(max-width: 1024px) 100vw, 1024px"
                   priority
                   className="object-cover"
+                  style={{ objectPosition: "center 35%" }}
                 />
               ) : null}
             </div>
