@@ -4,7 +4,7 @@ import * as React from "react";
 import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
 import { enUS, es } from "date-fns/locale";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -64,6 +64,18 @@ export function DatePicker({
           disabled={{ before: today }}
           locale={locale}
           showOutsideDays
+          // Explicit chevron icons for the prev/next month nav. Without
+          // this, react-day-picker v9 renders un-styled default arrows
+          // that disappear against the dark popover background — Diego
+          // reported customers couldn't advance past the current month.
+          components={{
+            Chevron: ({ orientation }) =>
+              orientation === "left" ? (
+                <ChevronLeft size={18} aria-hidden="true" />
+              ) : (
+                <ChevronRight size={18} aria-hidden="true" />
+              ),
+          }}
           classNames={{
             months: "flex flex-col gap-4",
             month: "space-y-3",
@@ -71,9 +83,9 @@ export function DatePicker({
             caption_label: "text-sm font-semibold text-amber-400",
             nav: "absolute inset-x-0 top-0 flex items-center justify-between px-1 h-9",
             button_previous:
-              "h-7 w-7 inline-flex items-center justify-center rounded-md text-gray-400 hover:bg-amber-500/10 hover:text-amber-400 transition-colors",
+              "h-8 w-8 inline-flex items-center justify-center rounded-md bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors cursor-pointer",
             button_next:
-              "h-7 w-7 inline-flex items-center justify-center rounded-md text-gray-400 hover:bg-amber-500/10 hover:text-amber-400 transition-colors",
+              "h-8 w-8 inline-flex items-center justify-center rounded-md bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors cursor-pointer",
             month_grid: "w-full border-collapse",
             weekdays: "flex",
             weekday:
