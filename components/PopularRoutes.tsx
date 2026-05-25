@@ -19,15 +19,20 @@ type Route = {
 };
 
 // Slugs verificados contra data/migration/new-route-slugs.txt
+// Display prices for the home-page Popular Routes strip. These mirror the
+// DB precio1a6 column for the 8 most-booked pairs. The 3 SJO/LIR ↔ La
+// Fortuna + SJO ↔ Manuel Antonio routes are the "excluded" ones from the
+// 2026-05 +$10 catalog bump (operator-mandated), so their prices stayed
+// the same. The other 5 routes added $10.
 const popularRoutes: Route[] = [
   { from: "San Jose Airport", to: "La Fortuna", slug: "sjo-to-la-fortuna", hub: "private-shuttle", priceFrom: 220, duration: "3h", popular: true },
   { from: "Liberia Airport", to: "La Fortuna", slug: "lir-to-la-fortuna", hub: "private-shuttle", priceFrom: 225, duration: "3h", popular: true },
-  { from: "La Fortuna", to: "Monteverde", slug: "la-fortuna-to-monteverde", hub: "private-shuttle", priceFrom: 245, duration: "4h", popular: true },
-  { from: "La Fortuna", to: "Tamarindo", slug: "la-fortuna-to-tamarindo", hub: "private-shuttle", priceFrom: 305, duration: "4h 30min" },
-  { from: "La Fortuna", to: "Manuel Antonio", slug: "la-fortuna-to-manuel-antonio", hub: "private-shuttle", priceFrom: 320, duration: "5h 30min" },
+  { from: "La Fortuna", to: "Monteverde", slug: "la-fortuna-to-monteverde", hub: "private-shuttle", priceFrom: 255, duration: "4h", popular: true },
+  { from: "La Fortuna", to: "Tamarindo", slug: "la-fortuna-to-tamarindo", hub: "private-shuttle", priceFrom: 315, duration: "4h 30min" },
+  { from: "La Fortuna", to: "Manuel Antonio", slug: "la-fortuna-to-manuel-antonio", hub: "private-shuttle", priceFrom: 330, duration: "5h 30min" },
   { from: "San Jose Airport", to: "Manuel Antonio", slug: "sjo-to-manuel-antonio", hub: "private-shuttle", priceFrom: 220, duration: "3h" },
-  { from: "San Jose Airport", to: "Puerto Viejo", slug: "sjo-to-puerto-viejo", hub: "private-shuttle", priceFrom: 310, duration: "4h 30min" },
-  { from: "San Jose Airport", to: "Tamarindo", slug: "sjo-to-tamarindo", hub: "private-shuttle", priceFrom: 335, duration: "5h" },
+  { from: "San Jose Airport", to: "Puerto Viejo", slug: "sjo-to-puerto-viejo", hub: "private-shuttle", priceFrom: 320, duration: "4h 30min" },
+  { from: "San Jose Airport", to: "Tamarindo", slug: "sjo-to-tamarindo", hub: "private-shuttle", priceFrom: 345, duration: "5h" },
 ];
 
 export default function PopularRoutes() {
