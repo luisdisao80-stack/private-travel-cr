@@ -13,6 +13,7 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
+import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
 
 type TourSnapshot = {
   id: number;
@@ -48,7 +49,8 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState<Country>(DEFAULT_COUNTRY);
+  const [phoneLocal, setPhoneLocal] = useState("");
   const [hotel, setHotel] = useState("");
   const [notes, setNotes] = useState("");
   const [accepts, setAccepts] = useState(true);
@@ -64,12 +66,13 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
       })
     : "—";
 
+  const phoneDigits = phoneLocal.replace(/\D/g, "");
   const canSubmit =
     !submitting &&
     accepts &&
     name.trim().length >= 2 &&
     /\S+@\S+\.\S+/.test(email) &&
-    phone.replace(/\D/g, "").length >= 7 &&
+    phoneDigits.length >= 7 &&
     booking.date &&
     booking.time &&
     booking.total > 0;
@@ -80,6 +83,10 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
     setError(null);
 
     try {
+      // Combine country dial code with the local number so the backend
+      // and Tilopay get a full international-format string (e.g. "+1 555
+      // 123 4567"). Matches the shuttle booking flow.
+      const fullPhone = `${country.dial} ${phoneLocal.trim()}`;
       const res = await fetch("/api/payment/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,7 +95,7 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
           customer: {
             name: name.trim(),
             email: email.trim(),
-            phone: phone.trim(),
+            phone: fullPhone,
             hotel: hotel.trim() || undefined,
             notes: notes.trim() || undefined,
           },
@@ -177,14 +184,42 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
               </Field>
 
               <Field label="Phone / WhatsApp *">
-                <input
-                  type="tel"
-                  autoComplete="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+1 555 555 5555"
-                  className="form-input"
-                />
+                <div className="flex gap-2">
+                  <select
+                    value={country.iso2}
+                    onChange={(e) => {
+                      const next = COUNTRY_CODES.find(
+                        (c) => c.iso2 === e.target.value
+                      );
+                      if (next) setCountry(next);
+                    }}
+                    aria-label="Country code"
+                    className="form-input"
+                    style={{ width: 120, flex: "0 0 auto" }}
+                  >
+                    {COUNTRY_CODES.map((c) => (
+                      <option key={c.iso2} value={c.iso2} className="bg-gray-900">
+                        {c.flag} {c.dial}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel-national"
+                    value={phoneLocal}
+                    onChange={(e) => setPhoneLocal(e.target.value)}
+                    placeholder="555 123 4567"
+                    className="form-input"
+                    style={{ flex: 1 }}
+                  />
+                </div>
+                <p className="text-[10px] text-gray-500 mt-1.5">
+                  Selected:{" "}
+                  <span className="text-amber-400">
+                    {country.flag} {country.name} ({country.dial})
+                  </span>
+                </p>
               </Field>
 
               <Field label="Hotel in La Fortuna (optional)">
