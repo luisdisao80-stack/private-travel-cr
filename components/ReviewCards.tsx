@@ -1,6 +1,7 @@
 import { Star } from "lucide-react";
 import { reviews as curatedReviews } from "@/lib/reviews-data";
 import type { GoogleReview } from "@/lib/google-reviews";
+import ExpandableReviewBody from "@/components/ExpandableReviewBody";
 
 /**
  * Server-rendered grid of customer reviews — both live Google reviews
@@ -117,10 +118,8 @@ export default function ReviewCards({ googleReviews = [] }: Props) {
             </h3>
           ) : null}
 
-          {/* Body */}
-          <p className="text-sm text-gray-300 leading-relaxed mb-4 line-clamp-6 flex-1">
-            {r.body}
-          </p>
+          {/* Body with inline Read more / Show less toggle */}
+          <ExpandableReviewBody text={r.body} />
 
           {/* Author */}
           <div className="pt-3 border-t border-white/5 flex items-center gap-3">
