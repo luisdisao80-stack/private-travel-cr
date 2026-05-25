@@ -78,7 +78,7 @@ export default function Hero({ locations, hotels = [] }: Props) {
         fill
         priority
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
-        quality={60}
+        quality={50}
         className="object-cover object-center -z-[1]"
       />
 

@@ -23,10 +23,16 @@ const nextConfig: NextConfig = {
   },
 
   images: {
+    // Prefer AVIF over WebP. AVIF is ~30-50% smaller than WebP at the
+    // same visual quality and is supported by all modern browsers
+    // Lighthouse runs against. Big win for mobile LCP (the hero JPG
+    // went from ~95 KB WebP to ~30-40 KB AVIF at q=60).
+    formats: ["image/avif", "image/webp"],
+
     // Next 15+ restricts the `quality` prop on next/image to values listed
     // here. Default is [75] only, so anything tighter (60 for the hero,
     // 65 for the book wizard banner) is silently ignored without this.
-    qualities: [60, 65, 75, 90],
+    qualities: [40, 50, 60, 65, 75, 90],
     remotePatterns: [
       {
         protocol: "https",
