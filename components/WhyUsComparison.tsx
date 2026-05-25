@@ -10,6 +10,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { reviewStats } from "@/lib/reviews-data";
 
 // Visible head-to-head against the alternatives a traveler is weighing.
 // Helps fence-sitters convert by surfacing the hidden costs of rental car
@@ -271,6 +272,56 @@ export default function WhyUsComparison() {
             ? "All-inclusive pricing means no surprises: insurance, fuel, tolls, water, WiFi and child seats are always included."
             : "Precio todo-incluido: seguro, combustible, peajes, agua, WiFi y sillas para niños siempre van incluidas."}
         </motion.p>
+
+        {/* Trust indicators (relocated from the removed BenefitsSection
+            so the social-proof row survives the section merge). */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-12"
+        >
+          <div className="flex items-center gap-2 text-gray-400">
+            <span className="text-2xl">⭐</span>
+            <span className="text-sm">
+              <strong className="text-white">{reviewStats.google.rating.toFixed(1)}</strong>{" "}
+              {lang === "en" ? "on Google Reviews" : "en Google Reviews"}
+            </span>
+          </div>
+
+          <div className="w-px h-8 bg-white/10 hidden md:block" />
+
+          <div className="flex items-center gap-2 text-gray-400">
+            <span className="text-2xl">🚐</span>
+            <span className="text-sm">
+              <strong className="text-white">{reviewStats.google.count}+</strong>{" "}
+              {lang === "en" ? "happy travelers" : "viajeros felices"}
+            </span>
+          </div>
+
+          <div className="w-px h-8 bg-white/10 hidden md:block" />
+
+          <div className="flex items-center gap-2 text-gray-400">
+            <span className="text-2xl">🛡️</span>
+            <span className="text-sm">
+              <strong className="text-white">
+                {lang === "en" ? "Insurance" : "Seguro"}
+              </strong>{" "}
+              {lang === "en" ? "included" : "incluido"}
+            </span>
+          </div>
+
+          <div className="w-px h-8 bg-white/10 hidden md:block" />
+
+          <div className="flex items-center gap-2 text-gray-400">
+            <span className="text-2xl">🇨🇷</span>
+            <span className="text-sm">
+              <strong className="text-white">100%</strong>{" "}
+              {lang === "en" ? "Costa Rican" : "Costarricense"}
+            </span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -18,7 +18,6 @@ import { getGoogleReviews } from "@/lib/google-reviews";
  * by roughly half and frees the main thread during the LCP window.
  */
 const Reviews = dynamic(() => import("@/components/Reviews"));
-const BenefitsSection = dynamic(() => import("@/components/BenefitsSection"));
 const WhyUsComparison = dynamic(() => import("@/components/WhyUsComparison"));
 const ServiceComparison = dynamic(() => import("@/components/ServiceComparison"));
 const FleetPreview = dynamic(() => import("@/components/FleetPreview"));
@@ -49,10 +48,10 @@ export default async function Home() {
         liveGoogleRating={google.rating}
       />
 
-      {/* BENEFICIOS CON ICONOS */}
-      <BenefitsSection />
-
-      {/* SHUTTLE VS RENTAL CAR / UBER / BUS */}
+      {/* Shuttle vs rental car / Uber / bus — now also carries the
+          trust-indicators row that used to live in BenefitsSection.
+          BenefitsSection was redundant with the comparison table and
+          got removed; its file stays in the repo for easy re-add. */}
       <WhyUsComparison />
 
       {/* STANDARD VS VIP */}
