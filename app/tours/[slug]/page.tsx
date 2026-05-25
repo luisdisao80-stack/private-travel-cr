@@ -116,10 +116,10 @@ export default async function TourDetailPage({ params }: Props) {
       />
       <Navbar />
       <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950">
-        {/* Hero image — tight crop. Earlier iterations (50vh/600px,
-            then 35vh/420px) still dominated the viewport, so we now
-            target 200-320px and shrink the title two steps to match. */}
-        <section className="relative h-[25vh] min-h-[200px] max-h-[320px] w-full overflow-hidden">
+        {/* Hero image — slim banner. Several iterations later, kept it
+            under 240px so the booking panel and tour body sit on the
+            first screen instead of one full scroll down. */}
+        <section className="relative h-[20vh] min-h-[160px] max-h-[240px] w-full overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-600">
             {tour.hero_image ? (
               <Image
@@ -133,22 +133,22 @@ export default async function TourDetailPage({ params }: Props) {
             ) : null}
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
-          <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-10">
+          <div className="absolute inset-x-0 bottom-0 px-4 pb-3 pt-8">
             <div className="max-w-6xl mx-auto">
               <Link
                 href="/tours"
-                className="inline-flex items-center gap-1.5 text-amber-400 text-xs hover:text-amber-300 mb-2 transition-colors"
+                className="inline-flex items-center gap-1.5 text-amber-400 text-xs hover:text-amber-300 mb-1.5 transition-colors"
               >
                 <ArrowLeft size={12} />
                 Back to tours
               </Link>
-              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-500/40 mb-2">
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-500/40 mb-1.5">
                 <MapPin size={10} className="text-amber-400" />
                 <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">
                   La Fortuna · Arenal
                 </span>
               </div>
-              <h1 className="text-xl md:text-3xl font-bold text-white mb-2 max-w-3xl tracking-tight leading-tight">
+              <h1 className="text-lg md:text-2xl font-bold text-white mb-1 max-w-3xl tracking-tight leading-tight">
                 {tour.name}
               </h1>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-300">
@@ -167,8 +167,10 @@ export default async function TourDetailPage({ params }: Props) {
           </div>
         </section>
 
-        {/* Body */}
-        <section className="px-4 py-12">
+        {/* Body — tight top padding so the Highlights/booking panel
+            sit right under the slim hero banner instead of after a
+            big dark gap. */}
+        <section className="px-4 pt-6 pb-12">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left: content */}
             <div className="lg:col-span-2 space-y-10">
