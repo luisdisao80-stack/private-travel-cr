@@ -116,64 +116,71 @@ export default async function TourDetailPage({ params }: Props) {
       />
       <Navbar />
       <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950">
-        {/* Hero image — compact but tall enough that the subject of the
-            photo (frog eye, sloth face, etc.) lands in the visible
-            window. object-position: center 30% biases the crop up
-            so the subject sits roughly under the badge rather than
-            getting cut off at the bottom. Gradient is now lighter
-            at the top so the photo reads through. */}
-        <section className="relative h-[26vh] min-h-[220px] max-h-[320px] w-full overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-600">
-            {tour.hero_image ? (
-              <Image
-                src={tour.hero_image}
-                alt={tour.name}
-                fill
-                sizes="100vw"
-                priority
-                className="object-cover"
-                style={{ objectPosition: "center 30%" }}
-              />
-            ) : null}
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 px-4 pb-3 pt-8">
-            <div className="max-w-6xl mx-auto">
-              <Link
-                href="/tours"
-                className="inline-flex items-center gap-1.5 text-amber-400 text-xs hover:text-amber-300 mb-1.5 transition-colors"
-              >
-                <ArrowLeft size={12} />
-                Back to tours
-              </Link>
-              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-500/40 mb-1.5">
-                <MapPin size={10} className="text-amber-400" />
-                <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">
-                  La Fortuna · Arenal
-                </span>
-              </div>
-              <h1 className="text-lg md:text-2xl font-bold text-white mb-1 max-w-3xl tracking-tight leading-tight">
-                {tour.name}
-              </h1>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-300">
-                <span className="inline-flex items-center gap-1.5">
-                  <Clock size={14} className="text-amber-400" />
-                  {tour.duration_label}
-                </span>
-                {tour.min_age ? (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Users size={14} className="text-amber-400" />
-                    Ages {tour.min_age}+
-                  </span>
-                ) : null}
-              </div>
+        {/*
+          Hero layout: photo + title block in two separate horizontal
+          rows. Earlier iterations tried a single hero with the title
+          overlaid on a gradient — that always cropped the subject
+          (frog face, sloth, waterfall) into an unflattering slice.
+          Splitting them lets the photo breathe in its natural ratio
+          while keeping the title cluster tight and readable.
+        */}
+
+        {/* Photo only — no overlay, no text, no gradient. The image
+            gets a constrained max-width and a 16:9-ish aspect ratio
+            via the height clamp so subjects (animals, waterfalls)
+            display recognizably instead of as a thin strip. */}
+        <section className="pt-20 pb-0 px-4">
+          <div className="max-w-5xl mx-auto">
+            <Link
+              href="/tours"
+              className="inline-flex items-center gap-1.5 text-amber-400 text-xs hover:text-amber-300 mb-3 transition-colors"
+            >
+              <ArrowLeft size={12} />
+              Back to tours
+            </Link>
+            <div className="relative w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-900 to-amber-600 aspect-[16/9] max-h-[480px]">
+              {tour.hero_image ? (
+                <Image
+                  src={tour.hero_image}
+                  alt={tour.name}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 1024px"
+                  priority
+                  className="object-cover"
+                />
+              ) : null}
             </div>
           </div>
         </section>
 
-        {/* Body — tight top padding so the Highlights/booking panel
-            sit right under the slim hero banner instead of after a
-            big dark gap. */}
+        {/* Title block — clean, no overlay. Sits right under the photo. */}
+        <section className="px-4 pt-5 pb-2">
+          <div className="max-w-5xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-3">
+              <MapPin size={11} className="text-amber-400" />
+              <span className="text-[10px] font-semibold text-amber-400 uppercase tracking-wider">
+                La Fortuna · Arenal
+              </span>
+            </div>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 tracking-tight leading-tight">
+              {tour.name}
+            </h1>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400">
+              <span className="inline-flex items-center gap-1.5">
+                <Clock size={14} className="text-amber-400" />
+                {tour.duration_label}
+              </span>
+              {tour.min_age ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <Users size={14} className="text-amber-400" />
+                  Ages {tour.min_age}+
+                </span>
+              ) : null}
+            </div>
+          </div>
+        </section>
+
+        {/* Body */}
         <section className="px-4 pt-6 pb-12">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left: content */}
