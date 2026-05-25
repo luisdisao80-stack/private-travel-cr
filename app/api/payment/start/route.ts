@@ -2,24 +2,48 @@ import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { processPayment, isSandboxMode } from "@/lib/tilopay";
+import { getTourBySlug, quoteTour } from "@/lib/tours-db";
 import type { CartItem } from "@/lib/CartContext";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-type StartPaymentBody = {
-  customer: {
-    name: string;
-    email: string;
-    phone: string;
-    hotel?: string;
-    flightNumber?: string;
-    flightTime?: string;
-    notes?: string;
-  };
+type Customer = {
+  name: string;
+  email: string;
+  phone: string;
+  hotel?: string;
+  flightNumber?: string;
+  flightTime?: string;
+  notes?: string;
+};
+
+// Shuttle bookings carry the full cart items array (existing behavior).
+type ShuttleBody = {
+  kind?: "shuttle";
+  customer: Customer;
   items: CartItem[];
   totalUsd: number;
 };
+
+// Tour bookings carry a single tour reference + pax counts; the server
+// re-resolves the price from the DB so the client can't tamper with it.
+type TourBody = {
+  kind: "tour";
+  customer: Customer;
+  tour: {
+    id: number;
+    slug: string;
+    name: string;
+    date: string; // "YYYY-MM-DD"
+    time: string; // "HH:MM"
+    adults: number;
+    children: number;
+  };
+  totalUsd: number;
+};
+
+type StartPaymentBody = ShuttleBody | TourBody;
 
 async function generateOrderNumber(): Promise<string> {
   // Sequential numbering via Postgres sequence — atomic, no race conditions.
@@ -68,11 +92,76 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
-  if (!Array.isArray(body.items) || body.items.length === 0) {
-    return NextResponse.json({ error: "Empty cart" }, { status: 400 });
-  }
   if (!(body.totalUsd > 0)) {
     return NextResponse.json({ error: "Total must be > 0" }, { status: 400 });
+  }
+
+  // Tour vs shuttle branch — both end up in the same bookings table but
+  // populate different columns. For tours we re-quote the price server-side
+  // against the live tour row to defeat any price tampering from the client.
+  const isTour = body.kind === "tour";
+
+  let bookingRow: Record<string, unknown>;
+  let totalUsd = body.totalUsd;
+  let bookingItems: CartItem[] | unknown[];
+
+  if (isTour) {
+    const t = (body as TourBody).tour;
+    if (!t?.slug || !t?.date || !t?.time || !(t.adults > 0)) {
+      return NextResponse.json(
+        { error: "Missing tour slug, date, time, or adults" },
+        { status: 400 }
+      );
+    }
+
+    const tourRow = await getTourBySlug(t.slug);
+    if (!tourRow) {
+      return NextResponse.json({ error: "Tour not found" }, { status: 404 });
+    }
+
+    const quote = quoteTour(tourRow, {
+      adults: t.adults,
+      children: t.children || 0,
+    });
+    // Trust the server-side quote, not the body. If they diverge, log it.
+    if (Math.abs(quote.total - body.totalUsd) > 0.01) {
+      console.warn(
+        `[payment/start] tour price mismatch: client=${body.totalUsd} server=${quote.total} slug=${t.slug}`
+      );
+    }
+    totalUsd = quote.total;
+
+    // Synthetic single-item array so the existing email template (which
+    // iterates over `items[]`) still has something to render. Order-related
+    // tour columns below are the source of truth.
+    bookingItems = [
+      {
+        type: "tour",
+        tourSlug: t.slug,
+        tourName: t.name,
+        date: t.date,
+        pickupTime: t.time,
+        adults: t.adults,
+        children: t.children || 0,
+        totalPrice: quote.total,
+      },
+    ];
+
+    bookingRow = {
+      kind: "tour",
+      tour_id: tourRow.id,
+      tour_date: t.date,
+      tour_time: t.time,
+      adults: t.adults,
+      children: t.children || 0,
+    };
+  } else {
+    const items = (body as ShuttleBody).items;
+    if (!Array.isArray(items) || items.length === 0) {
+      return NextResponse.json({ error: "Empty cart" }, { status: 400 });
+    }
+    bookingItems = items;
+    bookingRow = { kind: "shuttle" };
   }
 
   const orderNumber = await generateOrderNumber();
@@ -88,10 +177,11 @@ export async function POST(req: NextRequest) {
     flight_number: body.customer.flightNumber || null,
     flight_time: body.customer.flightTime || null,
     notes: body.customer.notes || null,
-    items: body.items,
-    total_usd: body.totalUsd,
+    items: bookingItems,
+    total_usd: totalUsd,
     currency: "USD",
     status: "pending",
+    ...bookingRow,
   });
   if (insertErr) {
     console.error("[payment/start] insert booking failed:", insertErr);
@@ -105,12 +195,12 @@ export async function POST(req: NextRequest) {
   const { first, last } = splitName(body.customer.name);
 
   console.log(
-    `[payment/start] order=${orderNumber} mode=${isSandboxMode() ? "sandbox" : "production"} total=${body.totalUsd}`
+    `[payment/start] order=${orderNumber} kind=${isTour ? "tour" : "shuttle"} mode=${isSandboxMode() ? "sandbox" : "production"} total=${totalUsd}`
   );
 
   try {
     const result = await processPayment({
-      amount: body.totalUsd,
+      amount: totalUsd,
       currency: "USD",
       orderNumber,
       redirect: `${origin}/api/payment/callback?orderNumber=${encodeURIComponent(orderNumber)}`,
