@@ -53,6 +53,17 @@ export const reviews: Review[] = [
     source: "tripadvisor",
     travelType: "Family",
   },
+  {
+    id: "orli-b-jun-2024",
+    author: "Orli B",
+    location: "Oakland, California",
+    rating: 5,
+    date: "Jun 2024",
+    title: "Excellent care and drive with Diego",
+    body:
+      "I was so glad I booked our transfer from La Fortuna to Manuel Antonio with Diego. He was communicative and professional from the time of booking, confirming everything and checking on our needs. He was friendly, kind, spoke great English, and made the long drive as pleasant as possible. I'd absolutely book again.",
+    source: "tripadvisor",
+  },
 ];
 
 // Stats agregados para mostrar en el header de la sección
