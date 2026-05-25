@@ -116,10 +116,13 @@ export default async function TourDetailPage({ params }: Props) {
       />
       <Navbar />
       <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950">
-        {/* Hero image — slim banner. Several iterations later, kept it
-            under 240px so the booking panel and tour body sit on the
-            first screen instead of one full scroll down. */}
-        <section className="relative h-[20vh] min-h-[160px] max-h-[240px] w-full overflow-hidden">
+        {/* Hero image — compact but tall enough that the subject of the
+            photo (frog eye, sloth face, etc.) lands in the visible
+            window. object-position: center 30% biases the crop up
+            so the subject sits roughly under the badge rather than
+            getting cut off at the bottom. Gradient is now lighter
+            at the top so the photo reads through. */}
+        <section className="relative h-[26vh] min-h-[220px] max-h-[320px] w-full overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-600">
             {tour.hero_image ? (
               <Image
@@ -129,10 +132,11 @@ export default async function TourDetailPage({ params }: Props) {
                 sizes="100vw"
                 priority
                 className="object-cover"
+                style={{ objectPosition: "center 30%" }}
               />
             ) : null}
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 px-4 pb-3 pt-8">
             <div className="max-w-6xl mx-auto">
               <Link
