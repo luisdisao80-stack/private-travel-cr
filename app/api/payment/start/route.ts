@@ -131,9 +131,10 @@ export async function POST(req: NextRequest) {
     }
     totalUsd = quote.total;
 
-    // Synthetic single-item array so the existing email template (which
-    // iterates over `items[]`) still has something to render. Order-related
-    // tour columns below are the source of truth.
+    // Synthetic single-item array consumed by the email template, which
+    // branches on `type === 'tour'` to render the tour-specific HTML +
+    // ICS event (vs the multi-trip shuttle layout). Order-related tour
+    // columns below are still the source of truth for the bookings row.
     bookingItems = [
       {
         type: "tour",
@@ -143,6 +144,10 @@ export async function POST(req: NextRequest) {
         pickupTime: t.time,
         adults: t.adults,
         children: t.children || 0,
+        durationLabel: tourRow.duration_label,
+        durationHours:
+          tourRow.duration_hours != null ? Number(tourRow.duration_hours) : undefined,
+        pickupHotel: body.customer.hotel || undefined,
         totalPrice: quote.total,
       },
     ];

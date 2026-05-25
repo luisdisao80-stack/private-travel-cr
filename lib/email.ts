@@ -13,6 +13,30 @@
 import { Resend } from "resend";
 import type { CartItem } from "@/lib/CartContext";
 
+// A tour booking ships through the same email pipeline as a shuttle
+// booking, but the shape of the item is different (no fromName/toName/
+// vehicle/etc.). Both shapes live side-by-side in BookingEmailInput.items
+// and the template branches on `type === 'tour'`.
+export type TourEmailItem = {
+  type: "tour";
+  tourSlug: string;
+  tourName: string;
+  date: string;       // "YYYY-MM-DD"
+  pickupTime: string; // "HH:MM" departure
+  adults: number;
+  children: number;
+  durationLabel?: string;
+  durationHours?: number;
+  totalPrice: number;
+  pickupHotel?: string;
+};
+
+type BookingItem = CartItem | TourEmailItem;
+
+function isTourItem(it: BookingItem): it is TourEmailItem {
+  return (it as TourEmailItem).type === "tour";
+}
+
 const DEFAULT_FROM = "Private Travel CR <onboarding@resend.dev>";
 const DEFAULT_BUSINESS = "info@privatetravelcr.com";
 
@@ -32,7 +56,7 @@ export type BookingEmailInput = {
   totalUsd: number;
   authCode?: string | null;
   cardLast4?: string | null;
-  items: CartItem[];
+  items: BookingItem[];
 };
 
 function formatDate(iso: string): string {
@@ -96,6 +120,42 @@ export function buildBookingIcs(data: BookingEmailInput): string {
   );
   const events = data.items
     .map((it, idx) => {
+      // ── Tour event ──────────────────────────────────────────────
+      if (isTourItem(it)) {
+        const durMin = Math.round((it.durationHours ?? 4) * 60);
+        const start = toIcsUtc(it.date, it.pickupTime);
+        const end = toIcsUtc(it.date, it.pickupTime, durMin);
+        if (!start || !end) return "";
+        const pax =
+          it.adults +
+          (it.children > 0 ? ` adult${it.adults !== 1 ? "s" : ""} + ${it.children} child${it.children !== 1 ? "ren" : ""}` : ` adult${it.adults !== 1 ? "s" : ""}`);
+        const desc = [
+          `Private Travel CR · Order ${data.orderNumber}`,
+          `Tour: ${it.tourName}`,
+          `Departure: ${it.pickupTime}`,
+          it.durationLabel ? `Duration: ${it.durationLabel}` : "",
+          `Travelers: ${pax}`,
+          it.pickupHotel ? `Pickup: ${it.pickupHotel}` : "",
+          "",
+          "Questions? WhatsApp +506 8633-4133",
+        ]
+          .filter(Boolean)
+          .join("\\n");
+        return [
+          "BEGIN:VEVENT",
+          `UID:${data.orderNumber}-${idx}@privatetravelcr.com`,
+          `DTSTAMP:${dtstamp}`,
+          `DTSTART:${start}`,
+          `DTEND:${end}`,
+          `SUMMARY:${escapeIcs(it.tourName)}`,
+          `DESCRIPTION:${desc}`,
+          `LOCATION:${escapeIcs(it.pickupHotel || "La Fortuna, Costa Rica")}`,
+          "STATUS:CONFIRMED",
+          "END:VEVENT",
+        ].join("\r\n");
+      }
+
+      // ── Shuttle event (existing) ────────────────────────────────
       // Try to parse the duration like "3h" / "3h 30min" into minutes; default 180.
       let durMin = 180;
       const dur = it.duration?.trim();
@@ -151,43 +211,76 @@ export function buildBookingIcs(data: BookingEmailInput): string {
   ].join("\r\n");
 }
 
-function tripRowsHtml(items: CartItem[]): string {
+function tourRowHtml(it: TourEmailItem, idx: number): string {
+  const pax =
+    it.children > 0
+      ? `${it.adults} adult${it.adults !== 1 ? "s" : ""} + ${it.children} child${it.children !== 1 ? "ren" : ""}`
+      : `${it.adults} adult${it.adults !== 1 ? "s" : ""}`;
+  return `
+    <tr>
+      <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
+        <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+          Tour #${idx + 1}${it.durationLabel ? ` · ${escapeHtml(it.durationLabel)}` : ""}
+        </div>
+        <div style="font-size:14px;color:#ffffff;font-weight:600;line-height:1.35;">
+          ${escapeHtml(it.tourName)}
+        </div>
+        <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
+          ${formatDate(it.date)} · Departure ${format12h(it.pickupTime)} · ${escapeHtml(pax)}
+        </div>
+        ${
+          it.pickupHotel
+            ? `<div style="font-size:12px;color:#9ca3af;margin-top:4px;">Pickup: ${escapeHtml(it.pickupHotel)}</div>`
+            : ""
+        }
+      </td>
+      <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
+        <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div style="font-size:11px;color:#9ca3af;">USD</div>
+      </td>
+    </tr>
+  `;
+}
+
+function shuttleRowHtml(it: CartItem, idx: number): string {
+  const service = it.serviceType === "vip" ? "VIP" : "Standard";
+  const pickup =
+    it.pickupPlace && it.pickupPlace !== it.fromName
+      ? ` <span style="color:#9ca3af">· ${escapeHtml(it.pickupPlace)}</span>`
+      : "";
+  const dropoff =
+    it.dropoffPlace && it.dropoffPlace !== it.toName
+      ? ` <span style="color:#9ca3af">· ${escapeHtml(it.dropoffPlace)}</span>`
+      : "";
+  return `
+    <tr>
+      <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
+        <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+          Trip #${idx + 1} · ${escapeHtml(service)} · ${escapeHtml(it.vehicleName)}
+        </div>
+        <div style="font-size:14px;color:#ffffff;font-weight:600;">
+          ${escapeHtml(it.fromName)}${pickup}
+        </div>
+        <div style="font-size:12px;color:#9ca3af;margin:2px 0 2px 0;">↓</div>
+        <div style="font-size:14px;color:#ffffff;font-weight:600;">
+          ${escapeHtml(it.toName)}${dropoff}
+        </div>
+        <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
+          ${formatDate(it.date)} · ${format12h(it.pickupTime)} · ${it.passengers} pax
+          ${it.flightNumber ? ` · Flight ${escapeHtml(it.flightNumber)}` : ""}
+        </div>
+      </td>
+      <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
+        <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div style="font-size:11px;color:#9ca3af;">USD</div>
+      </td>
+    </tr>
+  `;
+}
+
+function tripRowsHtml(items: BookingItem[]): string {
   return items
-    .map((it, idx) => {
-      const service = it.serviceType === "vip" ? "VIP" : "Standard";
-      const pickup =
-        it.pickupPlace && it.pickupPlace !== it.fromName
-          ? ` <span style="color:#9ca3af">· ${escapeHtml(it.pickupPlace)}</span>`
-          : "";
-      const dropoff =
-        it.dropoffPlace && it.dropoffPlace !== it.toName
-          ? ` <span style="color:#9ca3af">· ${escapeHtml(it.dropoffPlace)}</span>`
-          : "";
-      return `
-        <tr>
-          <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
-            <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
-              Trip #${idx + 1} · ${escapeHtml(service)} · ${escapeHtml(it.vehicleName)}
-            </div>
-            <div style="font-size:14px;color:#ffffff;font-weight:600;">
-              ${escapeHtml(it.fromName)}${pickup}
-            </div>
-            <div style="font-size:12px;color:#9ca3af;margin:2px 0 2px 0;">↓</div>
-            <div style="font-size:14px;color:#ffffff;font-weight:600;">
-              ${escapeHtml(it.toName)}${dropoff}
-            </div>
-            <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
-              ${formatDate(it.date)} · ${format12h(it.pickupTime)} · ${it.passengers} pax
-              ${it.flightNumber ? ` · Flight ${escapeHtml(it.flightNumber)}` : ""}
-            </div>
-          </td>
-          <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
-            <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
-            <div style="font-size:11px;color:#9ca3af;">USD</div>
-          </td>
-        </tr>
-      `;
-    })
+    .map((it, idx) => (isTourItem(it) ? tourRowHtml(it, idx) : shuttleRowHtml(it, idx)))
     .join("");
 }
 
