@@ -9,23 +9,29 @@ export default function Footer() {
   const { t, lang } = useLanguage();
   const currentYear = new Date().getFullYear();
 
-  // Enlaces rapidos segun idioma
+  // Enlaces rapidos segun idioma — includes /routes, /tours and /hotels
+  // so the long-tail SEO landing pages still get an internal link from
+  // every page in the site footer (Hotels was dropped from the navbar
+  // to declutter; Routes and Tours are in the navbar too but a second
+  // link from the footer doesn't hurt).
   const quickLinks = lang === "en"
     ? [
         { label: "Home", href: "/#inicio" },
-        { label: "Benefits", href: "/#beneficios" },
-        { label: "Services", href: "/#servicios" },
+        { label: "Routes", href: "/routes" },
+        { label: "Tours", href: "/tours" },
+        { label: "Hotels", href: "/hotels" },
+        { label: "Fleet", href: "/fleet" },
         { label: "Get Quote", href: "/book" },
-        { label: "Fleet", href: "/#flota" },
         { label: "Reviews", href: "/#reseñas" },
         { label: "FAQ", href: "/#faq" },
       ]
     : [
         { label: "Inicio", href: "/#inicio" },
-        { label: "Beneficios", href: "/#beneficios" },
-        { label: "Servicios", href: "/#servicios" },
+        { label: "Rutas", href: "/routes" },
+        { label: "Tours", href: "/tours" },
+        { label: "Hoteles", href: "/hotels" },
+        { label: "Flota", href: "/fleet" },
         { label: "Cotizador", href: "/book" },
-        { label: "Flota", href: "/#flota" },
         { label: "Reseñas", href: "/#reseñas" },
         { label: "FAQ", href: "/#faq" },
       ];
