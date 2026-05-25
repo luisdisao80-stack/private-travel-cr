@@ -27,7 +27,6 @@ export default function Navbar() {
     { label: t.nav.home, id: "inicio", href: "/#inicio" },
     { label: t.nav.routes, id: "routes", href: "/routes" },
     { label: t.nav.tours, id: "tours", href: "/tours" },
-    { label: t.nav.hotels, id: "hotels", href: "/hotels" },
     { label: t.nav.fleet, id: "fleet", href: "/fleet" },
     { label: t.nav.about, id: "about", href: "/about" },
     { label: t.nav.blog, id: "blog", href: "/blog" },
