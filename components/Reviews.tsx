@@ -4,9 +4,18 @@ import { Star, ExternalLink, Award } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
 import ReviewCards from "@/components/ReviewCards";
+import type { GoogleReview } from "@/lib/google-reviews";
 
-export default function Reviews() {
+type Props = {
+  googleReviews?: GoogleReview[];
+  liveGoogleCount?: number;
+  liveGoogleRating?: number;
+};
+
+export default function Reviews({ googleReviews = [], liveGoogleCount, liveGoogleRating }: Props) {
   const { t } = useLanguage();
+  const googleCount = liveGoogleCount ?? reviewStats.google.count;
+  const googleRating = liveGoogleRating ?? reviewStats.google.rating;
 
   const GoogleLogo = () => (
     <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true">
@@ -73,7 +82,7 @@ export default function Reviews() {
                 strokeWidth={0}
               />
             ))}
-            <span className="ml-2 text-2xl font-bold text-white">5.0</span>
+            <span className="ml-2 text-2xl font-bold text-white">{googleRating.toFixed(1)}</span>
           </div>
 
           {/* Platform stats: Google + TripAdvisor */}
@@ -86,7 +95,7 @@ export default function Reviews() {
             >
               <GoogleLogo />
               <span className="text-sm text-white/80">
-                <span className="font-semibold">{reviewStats.google.count}+</span>{" "}
+                <span className="font-semibold">{googleCount}+</span>{" "}
                 {t.reviews.googleReviews}
               </span>
               <ExternalLink className="w-3 h-3 text-white/40" />
@@ -116,10 +125,10 @@ export default function Reviews() {
           </div>
         </div>
 
-        {/* Curated 5★ reviews, server-rendered for indexability + speed.
-            Replaces the old Elfsight widget (637 KB of JS that crawlers
-            never executed). To add/edit, see lib/reviews-data.ts. */}
-        <ReviewCards />
+        {/* Live Google reviews (refreshed daily via Places API) +
+            curated TripAdvisor reviews from lib/reviews-data.ts, all
+            server-rendered for indexability and zero JS payload. */}
+        <ReviewCards googleReviews={googleReviews} />
 
         {/* CTAs finales */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
