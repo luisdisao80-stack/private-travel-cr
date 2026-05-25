@@ -329,8 +329,19 @@ function shellHtml({
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
           <tr>
             <td style="padding:28px 24px 20px 24px;text-align:center;border-bottom:1px solid #e5e7eb;background:#ffffff;">
-              <div style="font-size:11px;color:#b45309;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;">Private Travel CR</div>
-              <h1 style="margin:8px 0 0 0;font-size:24px;color:#111827;font-weight:800;">${escapeHtml(title)}</h1>
+              <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
+                <img
+                  src="https://www.privatetravelcr.com/logo-ptcr.svg"
+                  alt="Private Travel Costa Rica"
+                  width="180"
+                  height="78"
+                  style="display:block;margin:0 auto 8px auto;width:180px;height:auto;border:0;"
+                />
+                <!-- Outlook strips SVG; this text shows as fallback if the image
+                     doesn't render. -->
+                <span style="display:none;font-size:14px;color:#b45309;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;">Private Travel CR</span>
+              </a>
+              <h1 style="margin:14px 0 0 0;font-size:24px;color:#111827;font-weight:800;">${escapeHtml(title)}</h1>
               <p style="margin:8px 0 0 0;font-size:14px;color:#4b5563;line-height:1.45;">${escapeHtml(intro)}</p>
             </td>
           </tr>
