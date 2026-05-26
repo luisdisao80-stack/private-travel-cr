@@ -218,25 +218,25 @@ function tourRowHtml(it: TourEmailItem, idx: number): string {
       : `${it.adults} adult${it.adults !== 1 ? "s" : ""}`;
   return `
     <tr>
-      <td style="padding:14px 16px;border-top:1px solid #e5e7eb;vertical-align:top;">
-        <div style="font-size:11px;color:#b45309;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+      <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
+        <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
           Tour #${idx + 1}${it.durationLabel ? ` · ${escapeHtml(it.durationLabel)}` : ""}
         </div>
-        <div style="font-size:15px;color:#111827;font-weight:700;line-height:1.35;">
+        <div style="font-size:14px;color:#ffffff;font-weight:600;line-height:1.35;">
           ${escapeHtml(it.tourName)}
         </div>
-        <div style="font-size:13px;color:#4b5563;margin-top:8px;">
+        <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
           ${formatDate(it.date)} · Departure ${format12h(it.pickupTime)} · ${escapeHtml(pax)}
         </div>
         ${
           it.pickupHotel
-            ? `<div style="font-size:13px;color:#4b5563;margin-top:4px;">Pickup: ${escapeHtml(it.pickupHotel)}</div>`
+            ? `<div style="font-size:12px;color:#9ca3af;margin-top:4px;">Pickup: ${escapeHtml(it.pickupHotel)}</div>`
             : ""
         }
       </td>
-      <td style="padding:14px 16px;border-top:1px solid #e5e7eb;text-align:right;vertical-align:top;white-space:nowrap;">
-        <div style="font-size:16px;color:#111827;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
-        <div style="font-size:11px;color:#6b7280;">USD</div>
+      <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
+        <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div style="font-size:11px;color:#9ca3af;">USD</div>
       </td>
     </tr>
   `;
@@ -246,33 +246,33 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
   const service = it.serviceType === "vip" ? "VIP" : "Standard";
   const pickup =
     it.pickupPlace && it.pickupPlace !== it.fromName
-      ? ` <span style="color:#6b7280">· ${escapeHtml(it.pickupPlace)}</span>`
+      ? ` <span style="color:#9ca3af">· ${escapeHtml(it.pickupPlace)}</span>`
       : "";
   const dropoff =
     it.dropoffPlace && it.dropoffPlace !== it.toName
-      ? ` <span style="color:#6b7280">· ${escapeHtml(it.dropoffPlace)}</span>`
+      ? ` <span style="color:#9ca3af">· ${escapeHtml(it.dropoffPlace)}</span>`
       : "";
   return `
     <tr>
-      <td style="padding:14px 16px;border-top:1px solid #e5e7eb;vertical-align:top;">
-        <div style="font-size:11px;color:#b45309;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+      <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
+        <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
           Trip #${idx + 1} · ${escapeHtml(service)} · ${escapeHtml(it.vehicleName)}
         </div>
-        <div style="font-size:15px;color:#111827;font-weight:700;">
+        <div style="font-size:14px;color:#ffffff;font-weight:600;">
           ${escapeHtml(it.fromName)}${pickup}
         </div>
-        <div style="font-size:13px;color:#6b7280;margin:2px 0 2px 0;">↓</div>
-        <div style="font-size:15px;color:#111827;font-weight:700;">
+        <div style="font-size:12px;color:#9ca3af;margin:2px 0 2px 0;">↓</div>
+        <div style="font-size:14px;color:#ffffff;font-weight:600;">
           ${escapeHtml(it.toName)}${dropoff}
         </div>
-        <div style="font-size:13px;color:#4b5563;margin-top:8px;">
+        <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
           ${formatDate(it.date)} · ${format12h(it.pickupTime)} · ${it.passengers} pax
           ${it.flightNumber ? ` · Flight ${escapeHtml(it.flightNumber)}` : ""}
         </div>
       </td>
-      <td style="padding:14px 16px;border-top:1px solid #e5e7eb;text-align:right;vertical-align:top;white-space:nowrap;">
-        <div style="font-size:16px;color:#111827;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
-        <div style="font-size:11px;color:#6b7280;">USD</div>
+      <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
+        <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div style="font-size:11px;color:#9ca3af;">USD</div>
       </td>
     </tr>
   `;
@@ -298,75 +298,62 @@ function shellHtml({
   const customerBlock = showCustomer
     ? `
       <tr>
-        <td style="padding:16px;border-top:1px solid #e5e7eb;">
-          <div style="font-size:11px;color:#b45309;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
-          <div style="font-size:15px;color:#111827;font-weight:600;">${escapeHtml(data.customerName)}</div>
-          <div style="font-size:13px;color:#374151;">${escapeHtml(data.customerEmail)}</div>
-          ${data.customerPhone ? `<div style="font-size:13px;color:#374151;">${escapeHtml(data.customerPhone)}</div>` : ""}
+        <td style="padding:16px;border-top:1px solid #1f2937;">
+          <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
+          <div style="font-size:14px;color:#ffffff;">${escapeHtml(data.customerName)}</div>
+          <div style="font-size:13px;color:#d1d5db;">${escapeHtml(data.customerEmail)}</div>
+          ${data.customerPhone ? `<div style="font-size:13px;color:#d1d5db;">${escapeHtml(data.customerPhone)}</div>` : ""}
         </td>
       </tr>
     `
     : "";
 
-  // Light-mode template. Email clients render light mode reliably across
-  // Gmail / Apple Mail / Outlook (mobile + desktop). Dark templates often
-  // get distorted by per-client dark-mode auto-inversions and end up with
-  // grey-on-grey low-contrast text. White background + dark text + amber
-  // accents matches the industry standard (Stripe, Airbnb, Booking).
+  // Dark-mode template — restored 2026-05-26 after Diego confirmed the
+  // dark look renders correctly in Hotmail and matches the premium-amber
+  // brand. The previous light-mode swap was an over-correction for an
+  // iOS-Gmail edge case; keeping dark for consistency with the rest of
+  // the site UI.
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light only" />
-  <meta name="supported-color-schemes" content="light" />
   <title>${escapeHtml(title)}</title>
 </head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111827;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
+<body style="margin:0;padding:0;background:#000000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:linear-gradient(180deg,#0a0a0a,#000);border:1px solid rgba(245,158,11,0.25);border-radius:20px;overflow:hidden;">
           <tr>
-            <td style="padding:28px 24px 20px 24px;text-align:center;border-bottom:1px solid #e5e7eb;background:#ffffff;">
-              <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
-                <img
-                  src="https://www.privatetravelcr.com/logo-ptcr.svg"
-                  alt="Private Travel Costa Rica"
-                  width="180"
-                  height="78"
-                  style="display:block;margin:0 auto 8px auto;width:180px;height:auto;border:0;"
-                />
-                <!-- Outlook strips SVG; this text shows as fallback if the image
-                     doesn't render. -->
-                <span style="display:none;font-size:14px;color:#b45309;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;">Private Travel CR</span>
-              </a>
-              <h1 style="margin:14px 0 0 0;font-size:24px;color:#111827;font-weight:800;">${escapeHtml(title)}</h1>
-              <p style="margin:8px 0 0 0;font-size:14px;color:#4b5563;line-height:1.45;">${escapeHtml(intro)}</p>
+            <td style="padding:28px 24px 20px 24px;text-align:center;border-bottom:1px solid #1f2937;">
+              <div style="font-size:11px;color:#fbbf24;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;">Private Travel CR</div>
+              <h1 style="margin:8px 0 0 0;font-size:24px;color:#ffffff;font-weight:800;">${escapeHtml(title)}</h1>
+              <p style="margin:8px 0 0 0;font-size:14px;color:#d1d5db;">${escapeHtml(intro)}</p>
             </td>
           </tr>
           <tr>
-            <td style="padding:16px;background:#ffffff;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;">
+            <td style="padding:16px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,0.02);border:1px solid rgba(245,158,11,0.15);border-radius:12px;">
                 <tr>
                   <td style="padding:14px 16px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="font-size:12px;color:#6b7280;">Order number</td>
-                        <td style="font-size:14px;color:#b45309;font-weight:700;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;">${escapeHtml(data.orderNumber)}</td>
+                        <td style="font-size:12px;color:#9ca3af;">Order number</td>
+                        <td style="font-size:13px;color:#fbbf24;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;">${escapeHtml(data.orderNumber)}</td>
                       </tr>
                       <tr>
-                        <td style="font-size:12px;color:#6b7280;padding-top:6px;">Total</td>
-                        <td style="font-size:18px;color:#111827;font-weight:700;text-align:right;padding-top:6px;">$${data.totalUsd.toFixed(2)} USD</td>
+                        <td style="font-size:12px;color:#9ca3af;padding-top:6px;">Total</td>
+                        <td style="font-size:18px;color:#ffffff;font-weight:700;text-align:right;padding-top:6px;">$${data.totalUsd.toFixed(2)} USD</td>
                       </tr>
                       ${
                         data.authCode
-                          ? `<tr><td style="font-size:12px;color:#6b7280;padding-top:6px;">Auth code</td><td style="font-size:12px;color:#374151;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">${escapeHtml(data.authCode)}</td></tr>`
+                          ? `<tr><td style="font-size:12px;color:#9ca3af;padding-top:6px;">Auth code</td><td style="font-size:12px;color:#d1d5db;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">${escapeHtml(data.authCode)}</td></tr>`
                           : ""
                       }
                       ${
                         data.cardLast4
-                          ? `<tr><td style="font-size:12px;color:#6b7280;padding-top:6px;">Card</td><td style="font-size:12px;color:#374151;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">•••• ${escapeHtml(data.cardLast4)}</td></tr>`
+                          ? `<tr><td style="font-size:12px;color:#9ca3af;padding-top:6px;">Card</td><td style="font-size:12px;color:#d1d5db;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">•••• ${escapeHtml(data.cardLast4)}</td></tr>`
                           : ""
                       }
                     </table>
@@ -378,8 +365,8 @@ function shellHtml({
             </td>
           </tr>
           <tr>
-            <td style="padding:8px 24px 28px 24px;text-align:center;background:#ffffff;">
-              <p style="margin:0 0 16px 0;font-size:13px;color:#4b5563;">
+            <td style="padding:8px 24px 28px 24px;text-align:center;">
+              <p style="margin:0 0 16px 0;font-size:13px;color:#9ca3af;">
                 We&rsquo;ll be in touch shortly with the final pickup details.
               </p>
               <table role="presentation" cellpadding="0" cellspacing="0" align="center">
@@ -388,14 +375,14 @@ function shellHtml({
                     <a href="https://wa.me/50686334133" style="display:inline-block;background:#16a34a;color:#ffffff;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;">Chat on WhatsApp</a>
                   </td>
                   <td style="padding:0 6px;">
-                    <a href="mailto:info@privatetravelcr.com" style="display:inline-block;background:#ffffff;color:#b45309;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;border:1px solid #fde68a;">Email us</a>
+                    <a href="mailto:info@privatetravelcr.com" style="display:inline-block;background:transparent;color:#fbbf24;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;border:1px solid rgba(245,158,11,0.4);">Email us</a>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
           <tr>
-            <td style="padding:18px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
+            <td style="padding:18px 24px;background:rgba(255,255,255,0.02);border-top:1px solid #1f2937;text-align:center;">
               <div style="font-size:11px;color:#6b7280;">
                 Private Travel Costa Rica · La Fortuna, Alajuela · +506 8633-4133
               </div>
