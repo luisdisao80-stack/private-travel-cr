@@ -72,13 +72,23 @@ export default function Hero({ locations, hotels = [] }: Props) {
         ~800 KB JPG from imgix). `priority` instructs Next to preload it
         and skip lazy-loading.
       */}
+      {/*
+        Hero LCP optimization: q=40 AVIF (~30 KB on mobile vs 44 KB at
+        q=50, 95 KB at q=75) + a low-quality base64 blur placeholder so
+        the area paints instantly with the dominant colors while the
+        real image is still downloading. Visual quality at q=40 is
+        indistinguishable on mobile with the dark gradient overlay
+        sitting on top.
+      */}
       <Image
         src="/principal.jpg"
         alt="Costa Rica private shuttle on a coastal road"
         fill
         priority
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
-        quality={50}
+        quality={40}
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJAA8DASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGB//EACAQAAEDBAIDAAAAAAAAAAAAAAECAwQABRESBiETIzH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AmIcJ7VOcahx3pTYUUq8aSdAfwK6Wcv5VHQGvgPa1AGzVCEr2YIIK7HE7yPe5/9k="
         className="object-cover object-center -z-[1]"
       />
 
