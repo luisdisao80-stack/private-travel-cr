@@ -84,7 +84,12 @@ export default function Navbar() {
 
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-white hover:bg-amber-500/10 hover:text-amber-400">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={lang === "en" ? "Open menu" : "Abrir menú"}
+                  className="text-white hover:bg-amber-500/10 hover:text-amber-400"
+                >
                   <Menu size={24} />
                 </Button>
               </SheetTrigger>

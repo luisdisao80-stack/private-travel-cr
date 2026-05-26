@@ -71,7 +71,7 @@ export default function CookieBanner() {
               understand which routes you search and where the booking flow needs work. You can
               decline analytics and the rest still works.{" "}
               <Link href="/privacy" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">
-                Read more
+                Read our privacy policy
               </Link>
               .
             </p>
