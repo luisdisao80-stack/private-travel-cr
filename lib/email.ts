@@ -327,8 +327,18 @@ function shellHtml({
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:linear-gradient(180deg,#0a0a0a,#000);border:1px solid rgba(245,158,11,0.25);border-radius:20px;overflow:hidden;">
           <tr>
             <td style="padding:28px 24px 20px 24px;text-align:center;border-bottom:1px solid #1f2937;">
-              <div style="font-size:11px;color:#fbbf24;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;">Private Travel CR</div>
-              <h1 style="margin:8px 0 0 0;font-size:24px;color:#ffffff;font-weight:800;">${escapeHtml(title)}</h1>
+              <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
+                <img
+                  src="https://www.privatetravelcr.com/logo-ptcr.svg"
+                  alt="Private Travel Costa Rica"
+                  width="180"
+                  height="78"
+                  style="display:block;margin:0 auto 4px auto;width:180px;height:auto;border:0;"
+                />
+                <!-- Outlook strips SVG; the eyebrow below works as fallback. -->
+              </a>
+              <div style="font-size:11px;color:#fbbf24;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
+              <h1 style="margin:12px 0 0 0;font-size:24px;color:#ffffff;font-weight:800;">${escapeHtml(title)}</h1>
               <p style="margin:8px 0 0 0;font-size:14px;color:#d1d5db;">${escapeHtml(intro)}</p>
             </td>
           </tr>
