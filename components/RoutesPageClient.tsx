@@ -20,7 +20,7 @@ import {
   Star,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
-import type { Route } from "@/lib/types";
+import type { Route, Hotel } from "@/lib/types";
 import { reviewStats } from "@/lib/reviews-data";
 import { isPopularRoute } from "@/lib/popular-routes";
 import GoogleGLogo from "@/components/GoogleGLogo";
@@ -28,9 +28,12 @@ import LocationInput from "@/components/LocationInput";
 
 interface Props {
   routes: Route[];
+  /** Hotel list — passed through to LocationInput so users can search by
+   *  hotel name and the dropdown maps it to the matching route's origen. */
+  hotels?: Hotel[];
 }
 
-export default function RoutesPageClient({ routes }: Props) {
+export default function RoutesPageClient({ routes, hotels = [] }: Props) {
   const { lang } = useLanguage();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
@@ -147,15 +150,17 @@ export default function RoutesPageClient({ routes }: Props) {
                 <LocationInput
                   value={pickup}
                   onChange={setPickup}
-                  placeholder={lang === "en" ? "Where from?" : "¿De dónde?"}
+                  placeholder={lang === "en" ? "Where from? (location or hotel)" : "¿De dónde? (lugar u hotel)"}
                   locations={origenes}
+                  hotels={hotels}
                 />
                 <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
                 <LocationInput
                   value={dropoff}
                   onChange={setDropoff}
-                  placeholder={lang === "en" ? "Where to?" : "¿A dónde?"}
+                  placeholder={lang === "en" ? "Where to? (location or hotel)" : "¿A dónde? (lugar u hotel)"}
                   locations={destinos}
+                  hotels={hotels}
                 />
               </div>
 

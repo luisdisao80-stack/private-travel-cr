@@ -5,6 +5,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import FAQSection from "@/components/FAQSection";
 import RoutesPageClient from "@/components/RoutesPageClient";
 import { getAllRoutes } from "@/lib/routes-db";
+import { getAllHotels } from "@/lib/hotels-db";
 
 export const metadata: Metadata = {
   title: "1,200+ Private Shuttle Routes in Costa Rica (2026 Prices)",
@@ -31,11 +32,11 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function RoutesPage() {
-  const routes = await getAllRoutes();
+  const [routes, hotels] = await Promise.all([getAllRoutes(), getAllHotels()]);
   return (
     <>
       <Navbar />
-      <RoutesPageClient routes={routes} />
+      <RoutesPageClient routes={routes} hotels={hotels} />
       <FAQSection />
       <Footer />
       <WhatsAppFloat />
