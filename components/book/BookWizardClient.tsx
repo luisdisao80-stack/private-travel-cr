@@ -153,7 +153,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-5 text-center">
                 Where are you headed?
               </h1>
-              <div className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
+              <div className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible">
                 <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-2">
                   <LocationInput
                     value={heroFrom}

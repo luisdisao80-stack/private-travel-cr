@@ -144,7 +144,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl shadow-black/50"
+              className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible"
             >
               <h2 className="text-xl md:text-2xl font-bold text-white mb-5">
                 {lang === "en" ? "Where are you headed?" : "¿A dónde vas?"}
