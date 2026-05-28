@@ -151,6 +151,19 @@ export function buildBookingIcs(data: BookingEmailInput): string {
           `DESCRIPTION:${desc}`,
           `LOCATION:${escapeIcs(it.pickupHotel || "La Fortuna, Costa Rica")}`,
           "STATUS:CONFIRMED",
+          // Two alarms: one the day before so the customer can plan,
+          // and one 2h before pickup as a final heads-up. VALARM overrides
+          // the calendar app's default 10-min alert in most clients.
+          "BEGIN:VALARM",
+          "TRIGGER:-PT24H",
+          "ACTION:DISPLAY",
+          `DESCRIPTION:${escapeIcs(`Reminder: ${it.tourName} tomorrow`)}`,
+          "END:VALARM",
+          "BEGIN:VALARM",
+          "TRIGGER:-PT2H",
+          "ACTION:DISPLAY",
+          `DESCRIPTION:${escapeIcs(`${it.tourName} pickup in 2 hours`)}`,
+          "END:VALARM",
           "END:VEVENT",
         ].join("\r\n");
       }
@@ -197,6 +210,19 @@ export function buildBookingIcs(data: BookingEmailInput): string {
         `DESCRIPTION:${desc}`,
         `LOCATION:${escapeIcs(pickup)}`,
         "STATUS:CONFIRMED",
+        // Two alarms: 24h before so the customer can plan, plus 2h
+        // before for the final heads-up. VALARM overrides the calendar
+        // app's default 10-min alert in most clients.
+        "BEGIN:VALARM",
+        "TRIGGER:-PT24H",
+        "ACTION:DISPLAY",
+        `DESCRIPTION:${escapeIcs(`Reminder: Private shuttle ${it.fromName} → ${it.toName} tomorrow`)}`,
+        "END:VALARM",
+        "BEGIN:VALARM",
+        "TRIGGER:-PT2H",
+        "ACTION:DISPLAY",
+        `DESCRIPTION:${escapeIcs(`Private shuttle ${it.fromName} → ${it.toName} pickup in 2 hours`)}`,
+        "END:VALARM",
         "END:VEVENT",
       ].join("\r\n");
     })
