@@ -248,7 +248,7 @@ export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
             <LocationInput
               value={from}
               onChange={setFrom}
-              placeholder="Type or select pickup (location or hotel)..."
+              placeholder="Type or select pickup..."
               locations={locations}
               hotels={hotels}
               onHotelPick={handlePickupHotel}
@@ -263,7 +263,7 @@ export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
             <LocationInput
               value={to}
               onChange={setTo}
-              placeholder="Type or select destination (location or hotel)..."
+              placeholder="Type or select destination..."
               locations={locations}
               hotels={hotels}
               onHotelPick={handleDropoffHotel}

@@ -158,7 +158,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   <LocationInput
                     value={heroFrom}
                     onChange={handleHeroFrom}
-                    placeholder="Where from? (location or hotel)"
+                    placeholder="Where from?"
                     locations={locations}
                     hotels={hotels}
                     onHotelPick={handlePickupHotel}
@@ -167,7 +167,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   <LocationInput
                     value={heroTo}
                     onChange={handleHeroTo}
-                    placeholder="Where to? (location or hotel)"
+                    placeholder="Where to?"
                     locations={locations}
                     hotels={hotels}
                     onHotelPick={handleDropoffHotel}

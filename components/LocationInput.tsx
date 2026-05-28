@@ -157,7 +157,7 @@ export default function LocationInput({
                   ) : (
                     <MapPin size={14} className="text-amber-400/60 shrink-0" />
                   )}
-                  <span>{displayLocation(s.loc)}</span>
+                  <span className="flex-1 min-w-0 truncate">{displayLocation(s.loc)}</span>
                 </button>
               );
             }

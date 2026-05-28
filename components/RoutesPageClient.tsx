@@ -154,7 +154,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 <LocationInput
                   value={pickup}
                   onChange={setPickup}
-                  placeholder={lang === "en" ? "Where from? (location or hotel)" : "¿De dónde? (lugar u hotel)"}
+                  placeholder={lang === "en" ? "Where from?" : "¿De dónde?"}
                   locations={origenes}
                   hotels={hotels}
                   onHotelPick={setPickupHotel}
@@ -163,7 +163,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 <LocationInput
                   value={dropoff}
                   onChange={setDropoff}
-                  placeholder={lang === "en" ? "Where to? (location or hotel)" : "¿A dónde? (lugar u hotel)"}
+                  placeholder={lang === "en" ? "Where to?" : "¿A dónde?"}
                   locations={destinos}
                   hotels={hotels}
                   onHotelPick={setDropoffHotel}
