@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import BookWizardClient from "@/components/book/BookWizardClient";
 import { getAllLocations, getRouteByLocations } from "@/lib/routes-db";
+import { getAllHotels } from "@/lib/hotels-db";
 
 export const metadata = {
   title: "Book Your Private Shuttle",
@@ -30,12 +31,15 @@ export default async function BookPage({ searchParams }: { searchParams: SearchP
     }
   }
 
-  const locations = await getAllLocations();
+  const [locations, hotels] = await Promise.all([
+    getAllLocations(),
+    getAllHotels(),
+  ]);
   return (
     <main className="min-h-screen bg-black">
       <Navbar />
       <Suspense fallback={null}>
-        <BookWizardClient locations={locations} />
+        <BookWizardClient locations={locations} hotels={hotels} />
       </Suspense>
       <Footer />
       <WhatsAppFloat />

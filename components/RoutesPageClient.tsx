@@ -37,6 +37,10 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
   const { lang } = useLanguage();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
+  // Remember the hotel object the customer picked (if any) so the checkout
+  // page can pre-fill the pickup/dropoff address field with the hotel name.
+  const [pickupHotel, setPickupHotel] = useState<Hotel | null>(null);
+  const [dropoffHotel, setDropoffHotel] = useState<Hotel | null>(null);
 
   const origenes = useMemo(
     () => Array.from(new Set(routes.map((r) => r.origen))).sort(),
@@ -153,6 +157,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                   placeholder={lang === "en" ? "Where from? (location or hotel)" : "¿De dónde? (lugar u hotel)"}
                   locations={origenes}
                   hotels={hotels}
+                  onHotelPick={setPickupHotel}
                 />
                 <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
                 <LocationInput
@@ -161,6 +166,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                   placeholder={lang === "en" ? "Where to? (location or hotel)" : "¿A dónde? (lugar u hotel)"}
                   locations={destinos}
                   hotels={hotels}
+                  onHotelPick={setDropoffHotel}
                 />
               </div>
 
@@ -254,7 +260,24 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                     {/* Actions */}
                     <div className="mt-5 pt-5 border-t border-white/5 flex flex-col sm:flex-row gap-2.5">
                       <Link
-                        href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+                        href={(() => {
+                          const params = new URLSearchParams();
+                          params.set("from", route.origen);
+                          params.set("to", route.destino);
+                          params.set("direct", "1");
+                          // Only attach hotel param when the searched hotel
+                          // actually matches this route's origen/destino.
+                          // Without the guard, every result card would carry
+                          // the same hotel name even when the row is for an
+                          // unrelated origin.
+                          if (pickupHotel && pickupHotel.area_origen === route.origen) {
+                            params.set("pickupHotel", pickupHotel.name);
+                          }
+                          if (dropoffHotel && dropoffHotel.area_origen === route.destino) {
+                            params.set("dropoffHotel", dropoffHotel.name);
+                          }
+                          return `/book?${params.toString()}`;
+                        })()}
                         className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition-colors shadow shadow-amber-500/20"
                       >
                         {lang === "en" ? "Book Now" : "Reservar"}
@@ -338,7 +361,17 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 : "Obtené una cotización al instante y completá tu reserva en minutos."}
             </p>
             <Link
-              href={`/book?from=${encodeURIComponent(pickup)}&to=${encodeURIComponent(dropoff)}`}
+              href={(() => {
+                const params = new URLSearchParams();
+                params.set("from", pickup);
+                params.set("to", dropoff);
+                if (pickupHotel) params.set("pickupHotel", pickupHotel.name);
+                if (dropoffHotel) params.set("dropoffHotel", dropoffHotel.name);
+                // Skip /book → /routes/<slug> redirect when hotel is picked
+                // so the hotel param survives.
+                if (pickupHotel || dropoffHotel) params.set("direct", "1");
+                return `/book?${params.toString()}`;
+              })()}
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
             >
               {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}

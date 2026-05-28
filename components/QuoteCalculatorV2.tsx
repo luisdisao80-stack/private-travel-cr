@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import type { Route } from "@/lib/types";
+import type { Route, Hotel } from "@/lib/types";
 import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
 import { useCart } from "@/lib/CartContext";
 import { DatePicker } from "@/components/ui/date-picker";
+import LocationInput from "@/components/LocationInput";
 import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
 
-type Props = { locations: string[] };
+type Props = { locations: string[]; hotels?: Hotel[] };
 const WHATSAPP_NUMBER = "50686334133";
 const EXTRA_STOP_PRICE = 35;
 
@@ -27,77 +28,40 @@ function generateTimeOptions(): { value: string; label: string }[] {
 }
 const TIME_OPTIONS = generateTimeOptions();
 
-type AutocompleteInputProps = {
-  value: string;
-  onChange: (val: string) => void;
-  placeholder: string;
-  locations: string[];
-  excludeLocation?: string;
-};
-
-function AutocompleteInput({ value, onChange, placeholder, locations, excludeLocation }: AutocompleteInputProps) {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [filtered, setFiltered] = useState<string[]>([]);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!value) { setFiltered(locations.filter(l => l !== excludeLocation)); return; }
-    const lv = value.toLowerCase();
-    setFiltered(locations.filter(l => l !== excludeLocation && l.toLowerCase().includes(lv)).slice(0, 8));
-  }, [value, locations, excludeLocation]);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) { setShowDropdown(false); }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  return (
-    <div ref={wrapperRef} className="relative">
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => { onChange(e.target.value); setShowDropdown(true); }}
-        onFocus={() => setShowDropdown(true)}
-        placeholder={placeholder}
-        className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
-      />
-      {showDropdown && filtered.length > 0 ? (
-        <div className="absolute z-20 w-full mt-1 bg-gray-900 border border-amber-500/30 rounded-lg shadow-xl max-h-64 overflow-y-auto">
-          {filtered.map((loc) => (
-            <button
-              key={loc}
-              type="button"
-              onClick={() => { onChange(loc); setShowDropdown(false); }}
-              className="w-full text-left px-4 py-2 text-white hover:bg-amber-500/20 transition-colors text-sm"
-            >
-              {loc}
-            </button>
-          ))}
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
-export default function QuoteCalculatorV2({ locations }: Props) {
+export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
   const { addItem: cartAddItem } = useCart();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [pickupAddress, setPickupAddress] = useState("");
   const [dropoffAddress, setDropoffAddress] = useState("");
 
+  // When the visitor picks a hotel from the LocationInput dropdown, capture
+  // its name into the address field so they don't have to re-type it later
+  // in the checkout step.
+  const handlePickupHotel = (hotel: Hotel | null) => {
+    if (hotel) setPickupAddress(hotel.name);
+  };
+  const handleDropoffHotel = (hotel: Hotel | null) => {
+    if (hotel) setDropoffAddress(hotel.name);
+  };
+
   useEffect(() => {
     function syncFromUrl() {
       const params = new URLSearchParams(window.location.search);
       const fromParam = params.get("from");
       const toParam = params.get("to");
+      // Hotel pre-fill: when the customer picked a hotel suggestion in the
+      // search box (Hero / RoutesPageClient), we carry the hotel name in
+      // ?pickupHotel= / ?dropoffHotel= so the pickup/dropoff address field
+      // here pre-fills with the hotel name — saving them from re-typing it.
+      const pickupHotelParam = params.get("pickupHotel");
+      const dropoffHotelParam = params.get("dropoffHotel");
       // Si hay params, setearlos. Si NO hay params, limpiar TODO el formulario.
       if (fromParam || toParam) {
         if (fromParam) setFrom(fromParam);
         if (toParam) setTo(toParam);
+        if (pickupHotelParam) setPickupAddress(pickupHotelParam);
+        if (dropoffHotelParam) setDropoffAddress(dropoffHotelParam);
       } else {
         // Reset completo (Add Another Trip)
         setFrom("");
@@ -281,7 +245,14 @@ export default function QuoteCalculatorV2({ locations }: Props) {
               <MapPin size={16} />
               <span>Pickup Location</span>
             </label>
-            <AutocompleteInput value={from} onChange={setFrom} placeholder="Type or select pickup..." locations={locations} excludeLocation={to} />
+            <LocationInput
+              value={from}
+              onChange={setFrom}
+              placeholder="Type or select pickup (location or hotel)..."
+              locations={locations}
+              hotels={hotels}
+              onHotelPick={handlePickupHotel}
+            />
           </div>
 
           <div className="mb-5">
@@ -289,7 +260,14 @@ export default function QuoteCalculatorV2({ locations }: Props) {
               <MapPin size={16} />
               <span>Drop-off Location</span>
             </label>
-            <AutocompleteInput value={to} onChange={setTo} placeholder="Type or select destination..." locations={locations} excludeLocation={from} />
+            <LocationInput
+              value={to}
+              onChange={setTo}
+              placeholder="Type or select destination (location or hotel)..."
+              locations={locations}
+              hotels={hotels}
+              onHotelPick={handleDropoffHotel}
+            />
           </div>
         </>
       )}

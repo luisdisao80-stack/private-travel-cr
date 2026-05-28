@@ -36,6 +36,11 @@ export default function Hero({ locations, hotels = [] }: Props) {
   const router = useRouter();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
+  // When the customer picks a hotel suggestion (not just a location), we
+  // remember it so the checkout step can pre-fill the pickup/dropoff
+  // address field with the hotel name. Saves them from re-typing it.
+  const [pickupHotel, setPickupHotel] = useState<import("@/lib/types").Hotel | null>(null);
+  const [dropoffHotel, setDropoffHotel] = useState<import("@/lib/types").Hotel | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const canContinue = pickup.trim().length > 0 && dropoff.trim().length > 0;
@@ -52,10 +57,29 @@ export default function Hero({ locations, hotels = [] }: Props) {
     // Fast path: popular pair we know exists in the DB → direct to the SEO
     // landing page, skipping the /book → server-redirect round-trip
     // (~200–500ms saved on ~80% of bookings).
-    const directUrl = popularDirectUrl(resolvedPickup, resolvedDropoff);
-    const target =
-      directUrl ??
-      `/book?from=${encodeURIComponent(resolvedPickup)}&to=${encodeURIComponent(resolvedDropoff)}`;
+    //
+    // Skip this fast path when a hotel was picked: the landing page is a
+    // server component and can't relay the hotel param down to /book, so
+    // the pre-fill context would be lost. Go straight to /book instead.
+    const directUrl =
+      pickupHotel || dropoffHotel
+        ? null
+        : popularDirectUrl(resolvedPickup, resolvedDropoff);
+
+    // Build URL with hotel names if user picked hotel suggestions. The
+    // /book wizard reads these to pre-fill the pickup/dropoff address
+    // fields in the checkout step.
+    const params = new URLSearchParams();
+    params.set("from", resolvedPickup);
+    params.set("to", resolvedDropoff);
+    if (pickupHotel) params.set("pickupHotel", pickupHotel.name);
+    if (dropoffHotel) params.set("dropoffHotel", dropoffHotel.name);
+    // Skip the /book → /routes/<slug> server-redirect when we have a hotel
+    // param, otherwise the redirect strips the query string and the hotel
+    // context is lost before QuoteCalculator can read it.
+    if (pickupHotel || dropoffHotel) params.set("direct", "1");
+
+    const target = directUrl ?? `/book?${params.toString()}`;
 
     // useTransition keeps isPending=true until the destination route's data
     // is ready, so the button can show a spinner during the navigation.
@@ -155,6 +179,7 @@ export default function Hero({ locations, hotels = [] }: Props) {
                 placeholder={lang === "en" ? "Where from? (location or hotel)" : "¿De dónde? (lugar u hotel)"}
                 locations={locations}
                 hotels={hotels}
+                onHotelPick={setPickupHotel}
               />
               <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
               <LocationInput
@@ -163,6 +188,7 @@ export default function Hero({ locations, hotels = [] }: Props) {
                 placeholder={lang === "en" ? "Where to? (location or hotel)" : "¿A dónde? (lugar u hotel)"}
                 locations={locations}
                 hotels={hotels}
+                onHotelPick={setDropoffHotel}
               />
             </div>
 

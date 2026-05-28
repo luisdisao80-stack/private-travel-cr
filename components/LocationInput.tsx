@@ -19,6 +19,10 @@ type LocationInputProps = {
   // hotel's area_origen so booking / pricing logic stays uniform. Hotels
   // appear interleaved with locations in the dropdown.
   hotels?: Hotel[];
+  /** Fires whenever the user picks (or clears) a hotel suggestion. The
+   *  parent can use this to remember the exact hotel name and pre-fill
+   *  the pickup/dropoff address field on the checkout step. */
+  onHotelPick?: (hotel: Hotel | null) => void;
 };
 
 // Suggestion entry — either a location string or a hotel pointer.
@@ -54,6 +58,7 @@ export default function LocationInput({
   placeholder,
   locations,
   hotels = [],
+  onHotelPick,
 }: LocationInputProps) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -142,6 +147,7 @@ export default function LocationInput({
                   onMouseDown={(e) => {
                     e.preventDefault();
                     onChange(s.loc);
+                    onHotelPick?.(null);
                     setOpen(false);
                   }}
                   className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-amber-500/15 transition-colors text-sm border-b border-white/5 last:border-b-0"
@@ -157,7 +163,9 @@ export default function LocationInput({
             }
 
             // Hotel suggestion: clicking sets value to the hotel's
-            // area_origen so the existing routing/pricing logic just works.
+            // area_origen so the existing routing/pricing logic just works,
+            // and also emits the hotel via onHotelPick so the parent can
+            // remember it (used to pre-fill the pickup address in checkout).
             return (
               <button
                 key={`hotel-${s.hotel.id}`}
@@ -165,6 +173,7 @@ export default function LocationInput({
                 onMouseDown={(e) => {
                   e.preventDefault();
                   onChange(s.hotel.area_origen);
+                  onHotelPick?.(s.hotel);
                   setOpen(false);
                 }}
                 className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-amber-500/15 transition-colors text-sm border-b border-white/5 last:border-b-0"

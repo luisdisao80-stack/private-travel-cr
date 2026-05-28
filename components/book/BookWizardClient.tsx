@@ -11,11 +11,12 @@ import OrderSummarySidebar from "@/components/book/OrderSummarySidebar";
 import LocationInput from "@/components/LocationInput";
 import RoutePricePreview from "@/components/RoutePricePreview";
 import { useCart } from "@/lib/CartContext";
+import type { Hotel } from "@/lib/types";
 
-type Props = { locations: string[] };
+type Props = { locations: string[]; hotels?: Hotel[] };
 type View = "configuring" | "checkout";
 
-export default function BookWizardClient({ locations }: Props) {
+export default function BookWizardClient({ locations, hotels = [] }: Props) {
   const { items, isCartOpen, setCartOpen, hydrated, totalPrice } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,12 +39,25 @@ export default function BookWizardClient({ locations }: Props) {
   // below pre-fills via its existing syncFromUrl listener.
   const [heroFrom, setHeroFrom] = useState<string>(searchParams.get("from") ?? "");
   const [heroTo, setHeroTo] = useState<string>(searchParams.get("to") ?? "");
+  // Track hotel picks here too so the URL keeps `pickupHotel` / `dropoffHotel`
+  // alive when the visitor edits the route from inside /book. Otherwise
+  // pushRouteParams would strip them, and the calculator below would re-read
+  // the URL via popstate and lose the hotel pre-fill.
+  const [heroPickupHotel, setHeroPickupHotel] = useState<Hotel | null>(null);
+  const [heroDropoffHotel, setHeroDropoffHotel] = useState<Hotel | null>(null);
 
-  const pushRouteParams = (from: string, to: string) => {
+  const pushRouteParams = (
+    from: string,
+    to: string,
+    pickupHotel: Hotel | null,
+    dropoffHotel: Hotel | null,
+  ) => {
     if (typeof window === "undefined") return;
     const next = new URLSearchParams();
     if (from) next.set("from", from);
     if (to) next.set("to", to);
+    if (pickupHotel) next.set("pickupHotel", pickupHotel.name);
+    if (dropoffHotel) next.set("dropoffHotel", dropoffHotel.name);
     const qs = next.toString();
     window.history.replaceState({}, "", qs ? `/book?${qs}` : "/book");
     window.dispatchEvent(new PopStateEvent("popstate"));
@@ -51,11 +65,19 @@ export default function BookWizardClient({ locations }: Props) {
 
   const handleHeroFrom = (val: string) => {
     setHeroFrom(val);
-    pushRouteParams(val, heroTo);
+    pushRouteParams(val, heroTo, heroPickupHotel, heroDropoffHotel);
   };
   const handleHeroTo = (val: string) => {
     setHeroTo(val);
-    pushRouteParams(heroFrom, val);
+    pushRouteParams(heroFrom, val, heroPickupHotel, heroDropoffHotel);
+  };
+  const handlePickupHotel = (hotel: Hotel | null) => {
+    setHeroPickupHotel(hotel);
+    pushRouteParams(heroFrom, heroTo, hotel, heroDropoffHotel);
+  };
+  const handleDropoffHotel = (hotel: Hotel | null) => {
+    setHeroDropoffHotel(hotel);
+    pushRouteParams(heroFrom, heroTo, heroPickupHotel, hotel);
   };
 
   useEffect(() => {
@@ -136,15 +158,19 @@ export default function BookWizardClient({ locations }: Props) {
                   <LocationInput
                     value={heroFrom}
                     onChange={handleHeroFrom}
-                    placeholder="Where from?"
+                    placeholder="Where from? (location or hotel)"
                     locations={locations}
+                    hotels={hotels}
+                    onHotelPick={handlePickupHotel}
                   />
                   <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
                   <LocationInput
                     value={heroTo}
                     onChange={handleHeroTo}
-                    placeholder="Where to?"
+                    placeholder="Where to? (location or hotel)"
                     locations={locations}
+                    hotels={hotels}
+                    onHotelPick={handleDropoffHotel}
                   />
                 </div>
                 <RoutePricePreview from={heroFrom} to={heroTo} />
@@ -180,7 +206,7 @@ export default function BookWizardClient({ locations }: Props) {
           </div>
         ) : (
           <div className="max-w-2xl mx-auto">
-            <QuoteCalculatorV2 locations={locations} />
+            <QuoteCalculatorV2 locations={locations} hotels={hotels} />
           </div>
         )}
       </section>
