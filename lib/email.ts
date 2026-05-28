@@ -179,6 +179,9 @@ export function buildBookingIcs(data: BookingEmailInput): string {
         `Service: ${it.serviceType === "vip" ? "VIP" : "Standard"}`,
         `Vehicle: ${it.vehicleName}`,
         it.flightNumber ? `Flight: ${it.flightNumber}` : "",
+        it.extraStopHours && it.extraStopHours > 0
+          ? `Extra wait: ${it.extraStopHours}h paid`
+          : "",
         "",
         "Questions? WhatsApp +506 8633-4133",
       ]
@@ -252,6 +255,13 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
     it.dropoffPlace && it.dropoffPlace !== it.toName
       ? ` <span style="color:#9ca3af">· ${escapeHtml(it.dropoffPlace)}</span>`
       : "";
+  // Highlight extra wait/stop hours on its own line so Diego (internal
+  // email) and the customer don't miss it — it changes how the driver
+  // schedules the day. Hidden when 0.
+  const extraStops =
+    it.extraStopHours && it.extraStopHours > 0
+      ? `<div style="font-size:12px;color:#fbbf24;font-weight:600;margin-top:6px;">⏱ Extra wait: ${it.extraStopHours}h paid</div>`
+      : "";
   return `
     <tr>
       <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
@@ -269,6 +279,7 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
           ${formatDate(it.date)} · ${format12h(it.pickupTime)} · ${it.passengers} pax
           ${it.flightNumber ? ` · Flight ${escapeHtml(it.flightNumber)}` : ""}
         </div>
+        ${extraStops}
       </td>
       <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
         <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
