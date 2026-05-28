@@ -126,7 +126,9 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   return (
     <>
       {/* Hero */}
-      <section className="relative w-full overflow-hidden">
+      {/* overflow-visible (not -hidden) so the LocationInput dropdown can
+          extend past the section bottom without getting clipped. */}
+      <section className="relative w-full">
         <NextImage
           src="/principal.jpg"
           alt="Costa Rica private shuttle on a coastal road"

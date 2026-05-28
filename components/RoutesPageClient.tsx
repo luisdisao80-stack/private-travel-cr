@@ -89,7 +89,12 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
   return (
     <main className="min-h-screen bg-black">
       {/* HERO + SEARCH */}
-      <section className="relative w-full overflow-hidden">
+      {/* overflow-visible (not -hidden) is intentional: the LocationInput
+          dropdown opens absolutely below the search card and extends past
+          the section's bottom edge. overflow-hidden was clipping the third
+          suggestion in half. NextImage `fill` + object-cover keeps the bg
+          contained without needing overflow-hidden on the section. */}
+      <section className="relative w-full">
         {/* eslint-disable-next-line jsx-a11y/alt-text */}
         <NextImage
           src="/principal.jpg"
