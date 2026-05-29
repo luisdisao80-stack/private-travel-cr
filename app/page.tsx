@@ -8,6 +8,7 @@ import ReviewSchema from "@/components/ReviewSchema";
 import { getAllLocations } from "@/lib/routes-db";
 import { getAllHotels } from "@/lib/hotels-db";
 import { getGoogleReviews } from "@/lib/google-reviews";
+import { getAllPosts } from "@/lib/blog";
 
 /*
  * LCP perf: dynamic-import every below-the-fold client section. With the
@@ -22,6 +23,7 @@ const WhyUsComparison = dynamic(() => import("@/components/WhyUsComparison"));
 const ServiceComparison = dynamic(() => import("@/components/ServiceComparison"));
 const FleetPreview = dynamic(() => import("@/components/FleetPreview"));
 const PopularRoutes = dynamic(() => import("@/components/PopularRoutes"));
+const BlogHighlights = dynamic(() => import("@/components/BlogHighlights"));
 const FAQSection = dynamic(() => import("@/components/FAQSection"));
 
 export const revalidate = 3600;
@@ -32,6 +34,9 @@ export default async function Home() {
     getAllHotels(),
     getGoogleReviews(),
   ]);
+  // Blog posts are read off-disk synchronously — no Promise.all slot needed.
+  // Newest-first; BlogHighlights renders the top 3.
+  const posts = getAllPosts();
   return (
     <main className="min-h-screen bg-black">
       <FAQSchema />
@@ -60,6 +65,13 @@ export default async function Home() {
       <FleetPreview />
 
       <PopularRoutes />
+
+      {/* Travel Tips — promotes the blog from the home page so visitors
+          discover the long-form guides without having to dig into the
+          nav. Sits between PopularRoutes (transactional) and FAQ
+          (objection handling) so it reads as a natural "still researching?
+          here's some help" beat. */}
+      <BlogHighlights posts={posts} />
 
       <FAQSection />
 
