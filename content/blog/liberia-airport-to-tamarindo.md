@@ -13,11 +13,11 @@ Tamarindo is roughly **75 km** (47 miles) from Liberia (LIR) airport — closer 
 
 Here are your four real options.
 
-## 1. Private shuttle (~$95 USD per vehicle)
+## 1. Private shuttle (~$130 USD per vehicle)
 
 **Door-to-door from LIR to your hotel, villa, or Airbnb in Tamarindo.** Driver meets you outside arrivals with your name on a sign, loads luggage, drives you straight there. Free child seats on request, bottled water, WiFi, and we track your flight in case it's delayed.
 
-- **Cost:** $95 USD for 1–6 passengers, $135 for 7–9, $185 for 10–12.
+- **Cost:** $130 USD for 1–6 passengers. Larger vehicles available for groups of 7+ — see the route page for tier pricing.
 - **Time:** 1h15min direct.
 - **Pros:** Fastest, door-to-door, no waiting around with luggage in the Guanacaste heat (it's hot — 30°C+ in dry season). Easiest with kids.
 - **Cons:** Pricier per person if you're solo or a couple.

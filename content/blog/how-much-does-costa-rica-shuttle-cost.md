@@ -15,7 +15,7 @@ This guide is current as of 2026 — these are the prices we charge, and a reaso
 
 ## How private shuttle pricing works
 
-Private shuttles are sold **per vehicle, not per person**. So a $230 USD shuttle from SJO to La Fortuna costs the same whether you're 1 person or 6 people in the vehicle. Pricing tiers usually break at:
+Private shuttles are sold **per vehicle, not per person**. So a $220 USD shuttle from SJO to La Fortuna costs the same whether you're 1 person or 6 people in the vehicle. Pricing tiers usually break at:
 
 - **1–6 passengers:** Standard van (Hyundai Staria, Toyota Hiace, etc.)
 - **7–9 passengers:** Larger van
@@ -38,38 +38,43 @@ What's NOT usually included: tips ($10–20 per family is customary for longer t
 
 ## Current prices for popular routes (2026)
 
+All prices below are for **1–6 passengers in a standard van** and include all taxes. Larger vehicles are available for groups of 7+ — see the individual route page for tier pricing.
+
 ### From SJO Airport (San José)
 
-| Destination | 1–6 pax | 7–9 pax | 10–12 pax | Duration |
-|---|---|---|---|---|
-| La Fortuna | $230 | $260 | $310 | 3h |
-| Monteverde | $245 | $285 | $345 | 4h |
-| Manuel Antonio | $280 | $310 | $370 | 3h |
-| Tamarindo | $345 | $395 | $475 | 5h |
-| Jacó | $185 | $215 | $260 | 1h30min |
-| Puerto Viejo | $355 | $405 | $485 | 4h30min |
-| Tortuguero | $265 | $305 | $370 | 3h to dock + boat |
+| Destination | 1–6 pax | Duration |
+|---|---|---|
+| La Fortuna | $220 | 3h |
+| Monteverde | $220 | 4h |
+| Manuel Antonio | $220 | 3h |
+| Tamarindo | $345 | 5h |
+| Jacó | $175 | 1h30min |
+| Puerto Viejo | $320 | 4h30min |
+| Santa Teresa | $375 | 5h |
 
 ### From LIR Airport (Liberia)
 
-| Destination | 1–6 pax | 7–9 pax | 10–12 pax | Duration |
-|---|---|---|---|---|
-| Tamarindo | $95 | $135 | $185 | 1h15min |
-| Playas del Coco | $80 | $120 | $165 | 45min |
-| Nosara | $215 | $255 | $315 | 2h30min |
-| La Fortuna | $250 | $295 | $355 | 3h |
-| Monteverde | $235 | $280 | $340 | 3h30min |
-| Santa Teresa | $295 | $345 | $415 | 4h30min |
+| Destination | 1–6 pax | Duration |
+|---|---|---|
+| Tamarindo | $130 | 1h15min |
+| Nosara | $240 | 2h30min |
+| La Fortuna | $225 | 3h |
+| Monteverde | $230 | 3h30min |
+| Jacó | $300 | 4h |
+| Santa Teresa | $350 | 4h30min |
 
 ### Between popular destinations
 
 | From → To | 1–6 pax | Duration |
 |---|---|---|
-| La Fortuna ↔ Monteverde | $185 | 3h |
-| La Fortuna ↔ Manuel Antonio | $295 | 4h30min |
+| La Fortuna ↔ Monteverde | $255 | 3h |
+| La Fortuna ↔ Manuel Antonio | $330 | 4h30min |
 | La Fortuna ↔ Tamarindo | $315 | 4h30min |
-| Monteverde ↔ Manuel Antonio | $245 | 4h |
-| Manuel Antonio ↔ Tamarindo | $355 | 5h |
+| La Fortuna ↔ Jacó | $260 | 3h30min |
+| La Fortuna ↔ Puerto Viejo | $390 | 5h |
+| Monteverde ↔ Manuel Antonio | $310 | 4h |
+| Monteverde ↔ Tamarindo | $270 | 3h30min |
+| Manuel Antonio ↔ Tamarindo | $410 | 5h |
 
 (Prices include taxes. VIP service is +$45 per trip.)
 
@@ -84,7 +89,7 @@ Most operators (us included) offer two service tiers:
 ## When a private shuttle beats the alternatives
 
 **Private shuttle vs shared shuttle:**
-A shared shuttle for SJO to La Fortuna costs ~$55 per person. For a family of 4, that's $220 — essentially the same as a private shuttle but you sit in a 12-passenger van for 4–5 hours instead of 3. The private shuttle wins for any group of 3+.
+A shared shuttle for SJO to La Fortuna costs ~$55 per person. For a family of 4, that's $220 — essentially the same as a private shuttle ($220 total for 1–6 pax) but you sit in a 12-passenger van for 4–5 hours instead of 3. The private shuttle wins for any group of 3+.
 
 **Private shuttle vs rental car:**
 A rental car for a week in Costa Rica is **$450–700** all-in (base rate + mandatory insurance + gas + airport return fee). If your itinerary involves 3 destination shuttles, the shuttles cost roughly the same — and you skip the parking, navigation, and stress.
@@ -107,7 +112,7 @@ You'll see prices for the same SJO–La Fortuna route ranging from $180 to $400 
 - Drivers don't speak English
 - Cancel last-minute when they overbook
 
-The expensive ones usually offer the same thing as mid-priced operators but with more aggressive marketing. The sweet spot is **the established mid-priced operators** ($220–250 for SJO to La Fortuna, similar markup for other routes).
+The expensive ones usually offer the same thing as mid-priced operators but with more aggressive marketing. The sweet spot is **the established mid-priced operators** ($200–250 for SJO to La Fortuna, similar markup for other routes).
 
 ## Tipping a private shuttle driver
 

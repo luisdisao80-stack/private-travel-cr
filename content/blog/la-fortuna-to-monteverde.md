@@ -23,11 +23,11 @@ The "scenic" option. A van picks you up in La Fortuna, drives 30 minutes to a do
 - **Cons:** Fixed schedule (usually 8 AM and 2 PM departures), shared with other travelers, you need to handle your luggage on/off the boat, the second van leg is on a bumpy unpaved road.
 - **Best for:** Solo or couple travelers without too much luggage, anyone who likes a bit of adventure.
 
-## 2. Private shuttle around the lake (~$185 USD per vehicle)
+## 2. Private shuttle around the lake (~$255 USD per vehicle)
 
 **Door-to-door from your La Fortuna hotel to your Monteverde hotel.** We drive around the lake on Route 142, a paved road most of the way with a section of well-graded gravel near the end. Stops on request — many travelers ask to stop at the Tronadora viewpoint over the lake.
 
-- **Cost:** $185 USD for 1–6 passengers, $225 for 7–9, $275 for 10–12.
+- **Cost:** $255 USD for 1–6 passengers. Larger vehicles available for groups of 7+ — see the route page for tier pricing.
 - **Time:** 3h to 3h30min direct.
 - **Pros:** Door-to-door, no schedule, no luggage juggling, can stop wherever you want, private vehicle, child seats free.
 - **Cons:** Most expensive option for solo travelers.

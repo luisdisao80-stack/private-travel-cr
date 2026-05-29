@@ -100,7 +100,7 @@ You arrive at SJO and leave from SJO. The route forms a loop down the country an
 
 | Category | Cost |
 |---|---|
-| Private shuttles (4 transfers) | $850–1,100 |
+| Private shuttles (4 transfers) | $1,000–1,100 |
 | Hotels (6 nights, mid-range to luxury) | $1,800–4,500 |
 | Activities and tours | $400–700 |
 | Food and drinks | $400–600 |
