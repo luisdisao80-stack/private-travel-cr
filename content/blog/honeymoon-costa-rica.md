@@ -5,8 +5,8 @@ date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Guide"
 readTime: 9
-image: "/blog/arenal-volcano.jpg"
-imageAlt: "Arenal Volcano view perfect for a Costa Rica honeymoon"
+image: "/blog/couple-sunset-beach.jpg"
+imageAlt: "Couple silhouette at sunset on a beach — Costa Rica honeymoon vibe"
 ---
 
 We drive a lot of honeymooners. After hundreds of these trips, here's what works and what doesn't — written for couples planning their first trip and trying to balance "memorable" with "not exhausting."

@@ -5,8 +5,8 @@ date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 5
-image: "/blog/tamarindo-beach-aerial.jpg"
-imageAlt: "Aerial view of Tamarindo beach in Guanacaste, Costa Rica"
+image: "/blog/guanacaste-landscape.jpg"
+imageAlt: "Iconic Guanacaste tree and dry-tropical landscape near Liberia, Costa Rica"
 ---
 
 Tamarindo is roughly **75 km** (47 miles) from Liberia (LIR) airport — closer than most travelers think. The drive takes **1 hour 15 minutes to 1 hour 45 minutes** depending on traffic in Filadelfia and Belén on the way down. It's all paved highway, no mountain roads, so it's one of the easiest transfers in Costa Rica.

@@ -5,8 +5,8 @@ date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Family Travel"
 readTime: 8
-image: "/blog/la-fortuna-arenal.jpg"
-imageAlt: "Arenal Volcano landscape in La Fortuna, ideal for family travel"
+image: "/blog/costa-rica-sloth.jpg"
+imageAlt: "Sloth hanging in a tree in Costa Rica — a wildlife highlight for kids"
 ---
 
 Costa Rica is hands-down one of the best family destinations in Latin America. Safe, English widely spoken in tourist zones, no malaria, short flight from the US and Canada, and the kind of nature that makes kids put their phones down. We move families with kids every week, and after a few hundred of these trips we've learned what works and what doesn't.

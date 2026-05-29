@@ -5,8 +5,8 @@ date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 7
-image: "/blog/costa-rica-jungle-road.jpg"
-imageAlt: "Costa Rica rural road through tropical landscape"
+image: "/blog/mountain-road-aerial.jpg"
+imageAlt: "Aerial view of a Costa Rica road winding between forested mountains"
 ---
 
 This is one of the most-asked questions in Costa Rica travel forums. Short answer: **it depends on where you're going and how far**. The three options serve very different needs and there's almost no overlap.

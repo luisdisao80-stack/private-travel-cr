@@ -5,8 +5,8 @@ date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 6
-image: "/blog/monteverde-cloud-forest.jpg"
-imageAlt: "Cloud forest canopy in Monteverde, Costa Rica"
+image: "/blog/lake-arenal-boat.jpg"
+imageAlt: "Boat crossing Lake Arenal between La Fortuna and Monteverde, Costa Rica"
 ---
 
 This is one of the most popular transfers in Costa Rica — and one of the most confusing for first-time visitors. La Fortuna and Monteverde are only **40 km apart as the crow flies**, but Lake Arenal sits between them. Driving around the lake takes **3 to 3.5 hours**. There's also a famous taxi-boat-taxi route that crosses the lake and takes about the same time but feels shorter because you break up the drive.

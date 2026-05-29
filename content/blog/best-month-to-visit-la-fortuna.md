@@ -5,8 +5,8 @@ date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 6
-image: "/blog/arenal-volcano.jpg"
-imageAlt: "Arenal Volcano in La Fortuna under clear skies"
+image: "/blog/la-fortuna-waterfall.jpg"
+imageAlt: "La Fortuna waterfall surrounded by lush rainy-season greenery"
 ---
 
 I live in La Fortuna. I drive guests in and out every week, all year long. The short answer to "when should I visit": **mid-December through April** if you want guaranteed sunny weather, or **May/June** or **September/October** if you want to save 30–40% on hotels and don't mind afternoon rain.

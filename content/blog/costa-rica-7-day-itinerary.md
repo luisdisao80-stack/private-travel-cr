@@ -5,8 +5,8 @@ date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Guide"
 readTime: 8
-image: "/blog/costa-rica-jungle-road.jpg"
-imageAlt: "Costa Rica scenic road through tropical jungle"
+image: "/blog/pacific-coast-aerial.jpg"
+imageAlt: "Aerial view of Costa Rica's Pacific coast with jungle meeting the ocean"
 ---
 
 Seven days isn't a lot of time for Costa Rica, but it's enough to see the country's three "must-do" experiences if you plan it right: **volcano, cloud forest, and beach**. We do this trip with travelers every week. Here's the version we'd pick.

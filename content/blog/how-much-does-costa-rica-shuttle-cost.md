@@ -5,8 +5,8 @@ date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 6
-image: "/blog/sjo-san-jose-aerial.jpg"
-imageAlt: "Aerial view of San José, Costa Rica's capital"
+image: "/blog/shuttle-van-road.jpg"
+imageAlt: "White passenger shuttle van on a road — Costa Rica private transfer"
 ---
 
 Most articles you'll find online about Costa Rica shuttle prices are years out of date. Prices went up in 2024 and again in early 2026, and the published rates from competitors don't always match what they actually charge once you book.
