@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle, Building2 } from "lucide-react";
 import type { Route, RouteFAQ, Hotel } from "@/lib/types";
+import type { BlogPostMeta } from "@/lib/blog";
 import { isPopularRoute } from "@/lib/popular-routes";
 import RouteSchema from "@/components/RouteSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
 import StickyBookCTA from "@/components/StickyBookCTA";
+import RelatedArticles from "@/components/RelatedArticles";
 
 // Generic auto-FAQs that work for every route. Manual route.faqs land
 // above these (they're more route-specific = higher SEO value).
@@ -60,6 +62,11 @@ type Props = {
    *  ("Top hotels in <destino>"). Optional so the component still works
    *  when the caller doesn't supply them. */
   destinationHotels?: Hotel[];
+  /** Blog posts to surface as "Plan your trip" cards. Picked by
+   *  lib/related-articles.getRelatedArticles in the parent page so the
+   *  pairing logic stays out of the view layer. Optional — the section
+   *  is hidden if empty. */
+  relatedArticles?: BlogPostMeta[];
   /** Where `basePath` controls breadcrumb + Other-routes-from links. */
   basePath: "/routes" | "/private-shuttle";
 };
@@ -68,6 +75,7 @@ export default function RouteDetail({
   route,
   related,
   destinationHotels = [],
+  relatedArticles = [],
   basePath,
 }: Props) {
   const points = parsePOI(route.points_of_interest);
@@ -365,6 +373,13 @@ export default function RouteDetail({
             </div>
           </section>
         ) : null}
+
+        {/* Internal blog linking: surfaces 2-3 articles relevant to this
+            route (exact pair match wins, falls back to destination/origin
+            keywords and finally to general guides). Sends researchers
+            deeper into the site, lifts time-on-page, and gives Google
+            more topical context for ranking the route page. */}
+        <RelatedArticles posts={relatedArticles} heading="Plan your trip" />
 
         <section className="bg-gradient-to-br from-amber-500/20 to-amber-500/10 border border-amber-500/40 rounded-2xl p-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Ready to book?</h2>

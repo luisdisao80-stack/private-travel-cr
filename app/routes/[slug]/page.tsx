@@ -4,6 +4,8 @@ import { getRouteBySlug, getRelatedRoutes, getIndexableRoutes } from "@/lib/rout
 import { getHotelsByArea } from "@/lib/hotels-db";
 import { isPopularRoute } from "@/lib/popular-routes";
 import { siteConfig } from "@/lib/site-config";
+import { getAllPosts } from "@/lib/blog";
+import { getRelatedArticles } from "@/lib/related-articles";
 import RouteDetail from "@/components/RouteDetail";
 
 interface Props {
@@ -92,11 +94,17 @@ export default async function RoutePage({ params }: Props) {
     getRelatedRoutes(route.origen, slug, 4),
     getHotelsByArea(route.destino, 6),
   ]);
+  const relatedArticles = getRelatedArticles(
+    { origen: route.origen, destino: route.destino },
+    getAllPosts(),
+    3,
+  );
   return (
     <RouteDetail
       route={route}
       related={related}
       destinationHotels={destinationHotels}
+      relatedArticles={relatedArticles}
       basePath="/routes"
     />
   );
