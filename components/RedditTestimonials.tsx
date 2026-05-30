@@ -51,6 +51,7 @@ const TESTIMONIALS: Testimonial[] = [
     bodyEs:
       "Acabamos de regresar de un viaje de 10 días a Costa Rica, y queríamos compartir el increíble servicio de traslado privado que usamos, Private Travel CR. No queríamos manejarnos por las carreteras de Costa Rica nosotros mismos, y la verdad estamos súper agradecidos de haber encontrado esta empresa. Tuvimos conductores Diego (dueño de la empresa) y Carlos, y los dos fueron increíbles. Nos dieron un montón de paradas para cosas como descansos para ir al baño, almuerzo y planes turísticos (como un lugar que se llama Crocodile Bridge), y además fueron súper puntuales y buena onda. No los podemos recomendar lo suficiente si estás buscando un servicio de conducción privado: las vans eran espaciosas, estaban limpias y bien mantenidas. Nos llevaron de San José a Manuel Antonio, de Manuel Antonio a La Fortuna, y de La Fortuna de regreso a San José. ¡Van a cualquier lado! ¡Pura vida!",
     source: "r/CostaRicaTravel",
+    url: "https://www.reddit.com/r/CostaRicaTravel/comments/1pshla9/private_transfer_recommendation/",
   },
 ];
 
