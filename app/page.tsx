@@ -23,6 +23,7 @@ const WhyUsComparison = dynamic(() => import("@/components/WhyUsComparison"));
 const ServiceComparison = dynamic(() => import("@/components/ServiceComparison"));
 const FleetPreview = dynamic(() => import("@/components/FleetPreview"));
 const PopularRoutes = dynamic(() => import("@/components/PopularRoutes"));
+const RedditTestimonials = dynamic(() => import("@/components/RedditTestimonials"));
 const BlogHighlights = dynamic(() => import("@/components/BlogHighlights"));
 const FAQSection = dynamic(() => import("@/components/FAQSection"));
 
@@ -65,6 +66,13 @@ export default async function Home() {
       <FleetPreview />
 
       <PopularRoutes />
+
+      {/* Reddit social proof — unsolicited recommendations from real
+          travelers on r/CostaRicaTravel. Sits high in the conversion
+          stack because trust from peer reviews tends to be the
+          decisive moment for someone choosing between competitors.
+          Also doubles as citation-ready content for AI engines. */}
+      <RedditTestimonials />
 
       {/* Travel Tips — promotes the blog from the home page so visitors
           discover the long-form guides without having to dig into the
