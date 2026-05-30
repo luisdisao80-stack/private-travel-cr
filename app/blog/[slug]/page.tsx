@@ -26,14 +26,14 @@ const LA_FORTUNA_RESTAURANTS = [
   { name: "Lava Lounge", priceRange: "$$", cuisine: "International" },
   { name: "El Chante Verde", priceRange: "$$", cuisine: "Farm-to-Table Vegetarian" },
   { name: "Tiquicia", priceRange: "$$", cuisine: "Traditional Costa Rican" },
-  { name: "Selva Rústica", priceRange: "$$$", cuisine: "Grill" },
+  { name: "Selva Verde", priceRange: "$$$", cuisine: "Grill" },
   { name: "Benedictus Steakhouse", priceRange: "$$$$", cuisine: "Steakhouse" },
   { name: "Café Mediterráneo", priceRange: "$$", cuisine: "Italian" },
   { name: "Organico", priceRange: "$$", cuisine: "Vegan / Health Food" },
   { name: "Restaurante Nene", priceRange: "$", cuisine: "Costa Rican" },
-  { name: "Rancho La Cascada", priceRange: "$$", cuisine: "Costa Rican" },
+  { name: "Pollo Fortuneño", priceRange: "$", cuisine: "Costa Rican / Roast Chicken" },
   { name: "Que Rico Arenal", priceRange: "$$", cuisine: "Italian" },
-  { name: "La Choza de Laurel", priceRange: "$$", cuisine: "Traditional Costa Rican" },
+  { name: "La Fonda", priceRange: "$$", cuisine: "Traditional Costa Rican" },
   { name: "Restaurante Las Brasitas", priceRange: "$$", cuisine: "Mexican" },
 ];
 
@@ -56,7 +56,7 @@ const LA_FORTUNA_RESTAURANTS_FAQ = [
   {
     question: "Are reservations needed at La Fortuna restaurants?",
     answer:
-      "Reservations are recommended only at Don Rufino, Benedictus Steakhouse, Selva Rústica, and Que Rico Arenal during high season (mid-December through mid-April, and July). Everywhere else, walk-ins work fine. WhatsApp is the easiest way to reserve.",
+      "Reservations are recommended only at Don Rufino, Benedictus Steakhouse, Selva Verde, and Que Rico Arenal during high season (mid-December through mid-April, and July). Everywhere else, walk-ins work fine. WhatsApp is the easiest way to reserve.",
   },
   {
     question: "What is a casado and where can I find one in La Fortuna?",

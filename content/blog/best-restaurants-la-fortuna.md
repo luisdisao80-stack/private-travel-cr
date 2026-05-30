@@ -73,7 +73,7 @@ A classic *comida típica* spot on the south side of the park — what locals ca
 - **Dietary:** Vegetarian casado on request; not the spot for strict vegan or gluten-free.
 - **Why we send guests here:** Travelers who want one really solid plate of authentic Costa Rican food without the soda's plastic-chair vibe.
 
-## 7. Selva Rústica — Jungle Setting, Wood-Grilled Meats
+## 7. Selva Verde — Jungle Setting, Wood-Grilled Meats
 
 A bit outside the town center (3 km on the road toward Tabacón), set among the trees with an open-air dining room and the sound of the forest in the background. Wood-grilled meats, fresh tilapia, big sharing plates. Great for sunset.
 
@@ -123,15 +123,15 @@ A working-class lunch institution two blocks north of the park, family-run for o
 - **Dietary:** Vegetarian rice plates on request; mostly cash, colones preferred.
 - **Why we send guests here:** Anyone who asked "where do the locals actually eat?" and meant it.
 
-## 12. Rancho La Cascada — Open-Air Right on the Park
+## 12. Pollo Fortuneño — Roast Chicken, Tico Style
 
-The big thatched-roof place on the corner of the central park — you can't miss it. Tourist-traffic heavy, but the food is more consistent than its reputation suggests, and the open-air seating is a great spot to watch La Fortuna walk by while you eat. They do live music a few nights a week.
+The local roast-chicken institution. A few blocks off the central park, this is where Fortuneños go when they don't feel like cooking on a Sunday. *Pollo asado* (slow-roasted whole chicken) is the headline — crisp skin, juicy inside, served with rice, beans, and tortillas. Big portions, sharable, and one of the best value-for-money plates in town.
 
-- **Price:** $14–24 per person
-- **Order:** The mixed *bocas* platter (small plates — patacones, ceviche, yuca) to share, or the seafood casado
-- **When:** Lunch or early dinner; rainy-season afternoons are perfect from under the thatched roof.
-- **Dietary:** Vegetarian casado available; gluten-free items on request.
-- **Why we send guests here:** First-day arrivals who want to people-watch with a cold *Imperial* in hand.
+- **Price:** $8–14 per person
+- **Order:** A quarter or half *pollo asado* with the works (rice, beans, fried plantain, tortilla)
+- **When:** Lunch or early dinner. Get there before 8pm — they often run out of fresh chicken late in the night.
+- **Dietary:** Mostly chicken-focused; vegetarian sides on request. Cash and cards accepted.
+- **Why we send guests here:** Families and groups who want a hearty, no-fuss dinner that won't break the bank. Also the easiest sell to picky kids — it's just really good roast chicken.
 
 ## 13. Que Rico Arenal — Wood-Fired Pizza With a Volcano View
 
@@ -143,15 +143,15 @@ About 8 km out of town toward El Castillo, perched on a hill with a clear view o
 - **Dietary:** Several vegetarian pizzas and pastas; gluten-free pizza dough on request.
 - **Why we send guests here:** Couples who want the volcano view without the steakhouse price tag.
 
-## 14. La Choza de Laurel — Costa Rican Buffet Experience
+## 14. La Fonda — Comida Típica, No Surprises
 
-A larger touristy-but-good spot on the main strip with both á-la-carte and a casado-style buffet (you walk past the open kitchen and point). Live marimba most evenings, decent prices for portion size, and a fun introduction for first-time visitors to Costa Rican food.
+A solid *comida típica* spot near downtown La Fortuna with a wide menu of classics — casados, *olla de carne* (beef stew), grilled fish, arroz con pollo, fresh juices. Honest portions, fair prices, and the kind of consistency that has made it a regular stop for both locals and our drivers picking up lunch between transfers.
 
-- **Price:** $14–22 per person
-- **Order:** The buffet casado (pick your protein, three sides, plantain) or the *olla de carne*
-- **When:** Lunch or dinner. Kids love it because they can see what they're ordering.
-- **Dietary:** Easy for vegetarians (pick the non-meat sides); the buffet line is friendly for picky eaters.
-- **Why we send guests here:** Multigenerational families or first-timers who want a "this is Costa Rica" sampler night.
+- **Price:** $10–18 per person
+- **Order:** The casado con pescado (fresh tilapia or sea bass), or the *olla de carne* on a rainy day
+- **When:** Lunch or dinner. Walk-ins always work.
+- **Dietary:** Vegetarian casado on request; ample sides. Cards accepted.
+- **Why we send guests here:** Travelers who want a reliable, affordable Costa Rican meal without hunting for the perfect spot.
 
 ## 15. Restaurante Las Brasitas — Mexican With a Tico Twist
 
@@ -172,7 +172,7 @@ A quick cheat-sheet if you only have a few meals in La Fortuna:
 - **Best dinner (casual):** **Anch'io** or **Lava Lounge**. Both reliable, both walk-in friendly.
 - **Best dinner (special):** **Don Rufino** in town, **Benedictus Steakhouse** for the volcano view.
 - **Best for romance:** **Benedictus** at sunset, or a quiet table at **Café Mediterráneo**.
-- **Best for groups:** **Lava Lounge** (big tables, broad menu) or **La Choza de Laurel** (buffet works for indecisive crews).
+- **Best for groups:** **Lava Lounge** (big tables, broad menu) or **Pollo Fortuneño** (sharable roast chicken, easy for indecisive crews).
 - **Best soda (local, cheap, real):** **Soda La Hormiga**. **Restaurante Nene** is the close runner-up.
 - **Best volcano view:** **Benedictus Steakhouse** for fine dining, **Que Rico Arenal** for casual wood-fired pizza with the same view.
 
@@ -182,7 +182,7 @@ La Fortuna has gotten noticeably easier for non-meat-eaters over the last five y
 
 - **Vegan / vegetarian:** **Organico** and **El Chante Verde** are the easy answers — both have menus where most dishes are plant-based by default. **Lava Lounge** flags vegan items clearly. Almost every traditional spot will swap the meat in a casado for extra plantain, cheese, and avocado if you ask. The phrase you want is *"casado sin carne, por favor"*.
 - **Gluten-free:** Rice and beans are the staple — most traditional Costa Rican food is naturally gluten-free. **Café Mediterráneo** and **Que Rico Arenal** offer gluten-free pizza dough. **Don Rufino** can adapt most dishes. Avoid the fried *empanadas* and the breaded *milanesa* dishes.
-- **Kid-friendly:** **Lava Lounge** has a kids' menu and high chairs. **La Choza de Laurel** lets kids see and pick their food, which works wonders with picky eaters. **Anch'io** is comfortable with families and the pizza-pasta menu rarely needs negotiating.
+- **Kid-friendly:** **Lava Lounge** has a kids' menu and high chairs. **Pollo Fortuneño** is the easy sell for picky eaters — roast chicken with rice and beans always works. **Anch'io** is comfortable with families and the pizza-pasta menu rarely needs negotiating.
 - **Dairy-free:** Easy at any soda — just stick to gallo pinto, casado, rice and beans, plantains, and grilled protein. The pizza places obviously not so much.
 
 ## Practical Tips
@@ -194,17 +194,17 @@ A few small things that will save you confusion at the bill:
 - **Tap water:** Tap water in La Fortuna is safe to drink. Restaurants will pour it from the tap on request and don't charge for it. Bottled is also fine if you prefer.
 - **Payment:** Most mid-range and tourist-facing restaurants accept **USD, Costa Rican colones, and Visa/Mastercard**. American Express is hit-or-miss. **Sodas are cash only** — bring colones or small USD bills (anything over $20 they often can't break).
 - **Closing time:** Most restaurants close their kitchen by **9:30–10pm**. La Fortuna is an early-to-bed town — there is no late-night dining scene. If you arrive in town after 9pm, your options narrow fast.
-- **Reservations:** Only needed at **Don Rufino**, **Benedictus**, **Selva Rústica**, and **Que Rico Arenal** during high season (mid-December to mid-April, and July). Everywhere else, walk-ins work.
+- **Reservations:** Only needed at **Don Rufino**, **Benedictus**, **Selva Verde**, and **Que Rico Arenal** during high season (mid-December to mid-April, and July). Everywhere else, walk-ins work.
 - **Dress code:** There is none. T-shirt and shorts will get you in everywhere, including Don Rufino. Closed-toe shoes only if you're coming straight from a muddy hike.
 
 ## Restaurants Near Major Hotels
 
 If you're staying outside the town center, here's what's within easy reach:
 
-- **Tabacón Thermal Resort / The Springs Resort:** You're on the road between the hotels and downtown. **Selva Rústica** and **Que Rico Arenal** are the closest sit-down options on the way back into town. Your hotel concierge can also book the Tabacón onsite restaurants if you want to stay put. For the volcano view, **Benedictus Steakhouse** is a 12-minute drive.
+- **Tabacón Thermal Resort / The Springs Resort:** You're on the road between the hotels and downtown. **Selva Verde** and **Que Rico Arenal** are the closest sit-down options on the way back into town. Your hotel concierge can also book the Tabacón onsite restaurants if you want to stay put. For the volcano view, **Benedictus Steakhouse** is a 12-minute drive.
 - **Nayara Gardens / Nayara Springs:** Closest standalone is **Benedictus Steakhouse** (8 minutes) and **Que Rico Arenal** (10 minutes). The Nayara properties have excellent in-house dining, so most guests only venture out for one special-night meal — that's the spot.
-- **Arenal Observatory Lodge:** You're far from town. The drive into La Fortuna is 35–40 minutes; if you don't want to commit, the Observatory's own restaurant is reliable and the view from the deck is unmatched. For a night out, plan an early dinner at **Selva Rústica** or **Que Rico Arenal** on the way back.
-- **Mountain Paradise / Volcano Lodge / Lomas del Volcán:** All on the road between town and Tabacón. **Don Rufino**, **Anch'io**, **La Choza de Laurel**, and **Lava Lounge** are 8–12 minutes by car. Easy walk back if you take a taxi one way.
+- **Arenal Observatory Lodge:** You're far from town. The drive into La Fortuna is 35–40 minutes; if you don't want to commit, the Observatory's own restaurant is reliable and the view from the deck is unmatched. For a night out, plan an early dinner at **Selva Verde** or **Que Rico Arenal** on the way back.
+- **Mountain Paradise / Volcano Lodge / Lomas del Volcán:** All on the road between town and Tabacón. **Don Rufino**, **Anch'io**, **La Fonda**, and **Lava Lounge** are 8–12 minutes by car. Easy walk back if you take a taxi one way.
 - **Arenal Manoa / Hotel Arenal Springs:** Closer to town — under 10 minutes to any of the downtown restaurants. Walking is doable in the day, taxi at night.
 - **Hotel Magic Mountain / El Castillo properties:** You're on the far side of the lake. **Benedictus Steakhouse** and **Que Rico Arenal** are your closest neighbors — about 10–15 minutes — and both are worth the drive on their own merits.
 
@@ -212,9 +212,9 @@ If you booked your transfer with us and want to slot in dinner on your shuttle d
 
 ## Getting There From Your Hotel
 
-Most of these spots are within a 5-minute walk of La Fortuna's central park. Don Rufino, Soda La Hormiga, Lava Lounge, Anch'io, El Chante Verde, Tiquicia, Restaurante Nene, Rancho La Cascada, La Choza de Laurel, Restaurante Las Brasitas, and Organico are all walkable from downtown hotels.
+Most of these spots are within a 5-minute walk of La Fortuna's central park. Don Rufino, Soda La Hormiga, Lava Lounge, Anch'io, El Chante Verde, Tiquicia, Restaurante Nene, Pollo Fortuneño, La Fonda, Restaurante Las Brasitas, and Organico are all walkable from downtown hotels.
 
-Benedictus Steakhouse, Selva Rústica, Café Mediterráneo, and Que Rico Arenal are a 5–15 minute drive out of town. If you're at a hotel like Tabacón, Nayara, or The Springs, your hotel can call a local taxi (typically $8–15 each way), or just ask your shuttle driver to add it as a quick stop on your transfer day.
+Benedictus Steakhouse, Selva Verde, Café Mediterráneo, and Que Rico Arenal are a 5–15 minute drive out of town. If you're at a hotel like Tabacón, Nayara, or The Springs, your hotel can call a local taxi (typically $8–15 each way), or just ask your shuttle driver to add it as a quick stop on your transfer day.
 
 If you're arriving from **SJO airport** or **LIR airport** and want us to recommend a dinner stop on the way in, let your driver know — most of these places are an easy detour, and it's a great way to break a long transfer day.
 
@@ -230,7 +230,7 @@ Yes — almost every mid-range and tourist-facing restaurant accepts USD, Costa 
 Most close their kitchen by **9:30 or 10pm**. La Fortuna is a small mountain town that gets up early, so there is no real late-night dining scene. If you're arriving on a late shuttle, eat on the road or plan a hotel-restaurant night.
 
 **Are reservations needed?**
-Only for **Don Rufino**, **Benedictus Steakhouse**, **Selva Rústica**, and **Que Rico Arenal**, and mostly in high season (mid-December through mid-April, and July). Everywhere else, walk-ins work. WhatsApp is the easiest way to reserve — every place has a number on Google Maps.
+Only for **Don Rufino**, **Benedictus Steakhouse**, **Selva Verde**, and **Que Rico Arenal**, and mostly in high season (mid-December through mid-April, and July). Everywhere else, walk-ins work. WhatsApp is the easiest way to reserve — every place has a number on Google Maps.
 
 **What is a "casado" and where can I find one?**
 A *casado* is the classic Costa Rican lunch plate: rice, black beans, a protein (chicken, beef, fish, or pork), fried plantains, and a small salad — sometimes with a tortilla or fresh cheese. It's the cheapest filling meal in the country, usually $7–12. The best version in La Fortuna is at **Soda La Hormiga** or **Restaurante Nene**. The fancier version is at **Don Rufino**.
