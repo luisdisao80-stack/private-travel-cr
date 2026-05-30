@@ -39,6 +39,7 @@ const DESTINATION_KEYWORD_TO_SLUGS: Array<{ keyword: string; slugs: string[] }> 
       "top-10-things-la-fortuna",
       "best-month-to-visit-la-fortuna",
       "best-restaurants-la-fortuna",
+      "where-to-see-sloths-in-costa-rica",
     ],
   },
   {
@@ -47,7 +48,11 @@ const DESTINATION_KEYWORD_TO_SLUGS: Array<{ keyword: string; slugs: string[] }> 
   },
   {
     keyword: "Manuel Antonio",
-    slugs: ["manuel-antonio-travel-guide", "manuel-antonio-vs-tamarindo"],
+    slugs: [
+      "manuel-antonio-travel-guide",
+      "manuel-antonio-vs-tamarindo",
+      "where-to-see-sloths-in-costa-rica",
+    ],
   },
   {
     keyword: "Tamarindo",
@@ -73,6 +78,7 @@ const GENERAL_FALLBACK_SLUGS = [
   "honeymoon-costa-rica",
   "best-time-to-visit-costa-rica",
   "costa-rica-without-rental-car",
+  "where-to-see-sloths-in-costa-rica",
 ];
 
 /** Returns up to `limit` blog posts most relevant to the given route.
