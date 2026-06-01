@@ -102,7 +102,12 @@ export default function Footer() {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <a
+                  {/* Next.js Link instead of raw <a> so internal route
+                      changes are client-side (no full reload) and anchor
+                      jumps respect Next's scroll-restoration logic. The
+                      Spanish-accented #reseñas anchor was breaking
+                      mid-navigation when wrapped in a plain <a>. */}
+                  <Link
                     href={link.href}
                     className="text-gray-400 hover:text-amber-400 transition-colors text-sm flex items-center gap-1.5 group"
                   >
@@ -110,7 +115,7 @@ export default function Footer() {
                       →
                     </span>
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
               {/* Link a Terms */}
