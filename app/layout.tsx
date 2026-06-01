@@ -117,6 +117,7 @@ export default function RootLayout({
         <ConsentGatedAnalytics
           gaId={process.env.NEXT_PUBLIC_GA_ID}
           gtmId={process.env.NEXT_PUBLIC_GTM_ID}
+          clarityId={process.env.NEXT_PUBLIC_CLARITY_ID}
         />
       </body>
     </html>
