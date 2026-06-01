@@ -22,7 +22,7 @@ export default function Footer() {
         { label: "Hotels", href: "/hotels" },
         { label: "Fleet", href: "/fleet" },
         { label: "Get Quote", href: "/book" },
-        { label: "Reviews", href: "/#reseñas" },
+        { label: "Reviews", href: "/reviews" },
         { label: "FAQ", href: "/#faq" },
       ]
     : [
@@ -32,7 +32,7 @@ export default function Footer() {
         { label: "Hoteles", href: "/hotels" },
         { label: "Flota", href: "/fleet" },
         { label: "Cotizador", href: "/book" },
-        { label: "Reseñas", href: "/#reseñas" },
+        { label: "Reseñas", href: "/reviews" },
         { label: "FAQ", href: "/#faq" },
       ];
 
