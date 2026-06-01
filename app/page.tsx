@@ -18,6 +18,7 @@ import { getAllPosts } from "@/lib/blog";
  * downloads AFTER the above-the-fold paint completes. Cuts initial JS
  * by roughly half and frees the main thread during the LCP window.
  */
+const TrustStrip = dynamic(() => import("@/components/TrustStrip"));
 const Reviews = dynamic(() => import("@/components/Reviews"));
 const WhyUsComparison = dynamic(() => import("@/components/WhyUsComparison"));
 const ServiceComparison = dynamic(() => import("@/components/ServiceComparison"));
@@ -47,6 +48,12 @@ export default async function Home() {
       <section id="inicio">
         <Hero locations={locations} hotels={hotels} />
       </section>
+
+      {/* Trust strip — closes the credibility gap against legacy
+          competitors (ILT, Interbus) who lead with "Since 2015 /
+          24/7 / Licensed". Four explicit answers to common pre-book
+          objections, between the Hero and the Reviews block. */}
+      <TrustStrip />
 
       <Reviews
         googleReviews={google.reviews}
