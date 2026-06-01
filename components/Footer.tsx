@@ -322,6 +322,17 @@ export default function Footer() {
                 © {currentYear} Private Travel CR · {rightsText}
               </p>
               <span className="hidden md:inline text-gray-700">·</span>
+              {/* ICT (Instituto Costarricense de Turismo) license number —
+                  required compliance marker for tourist-transport businesses
+                  in Costa Rica. Also a strong trust signal for international
+                  visitors verifying the operator is legitimate. */}
+              <span
+                className="text-gray-500 text-xs md:text-sm font-mono tracking-tight"
+                title="Instituto Costarricense de Turismo (Costa Rica Tourism Board) operator license"
+              >
+                ICT #3205-2022
+              </span>
+              <span className="hidden md:inline text-gray-700">·</span>
               <Link
                 href="/terms"
                 className="hover:text-amber-400 transition-colors underline-offset-4 hover:underline"

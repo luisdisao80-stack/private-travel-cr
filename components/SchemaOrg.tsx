@@ -14,6 +14,15 @@ export default function SchemaOrg() {
     image: siteConfig.ogImage,
     logo: siteConfig.logo,
     priceRange: "$$",
+    // ICT (Instituto Costarricense de Turismo) operator license number.
+    // Schema.org uses `identifier` to record official IDs; tagging it
+    // with a propertyID makes the issuer explicit so search engines can
+    // recognize it as a government-issued tourism license, not random text.
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "ICT (Costa Rica Tourism Board) License",
+      value: "3205-2022",
+    },
     foundingDate: `${siteConfig.business.foundedYear}-01-01`,
     founder: {
       "@type": "Person",

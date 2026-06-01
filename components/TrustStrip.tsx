@@ -46,8 +46,8 @@ const BADGES: Badge[] = [
     Icon: ShieldCheck,
     titleEn: "Licensed & Insured",
     titleEs: "Licenciados y asegurados",
-    subEn: "Costa Rica MOPT-certified tourist transport",
-    subEs: "Transporte turístico certificado por MOPT",
+    subEn: "ICT #3205-2022 · Government-certified tourist transport",
+    subEs: "ICT #3205-2022 · Transporte turístico certificado",
   },
   {
     Icon: Heart,
