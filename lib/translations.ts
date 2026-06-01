@@ -46,7 +46,7 @@ export const translations = {
         chapter3: {
           title: "The day everything changed",
           body:
-            "In 2021 my second son was born. Holding him in my arms, I knew I had to build something of my own — something I could one day show my family with pride. I called Anthony, my cousin, who shared the same vision. We took the leap together. Private Travel CR was born from that moment, from the desire to do things our way, with care, with purpose, with heart.",
+            "In 2022 my second son was born. Holding him in my arms, I knew I had to build something of my own — something I could one day show my family with pride. I called Anthony, my cousin, who believed in the idea enough to help with the initial investment to get Private Travel CR off the ground. From day one I've run operations and personally answered every WhatsApp message; Anthony keeps building his restaurant and helps me on the administrative side. Two different paths, one family business.",
         },
         chapter4: {
           eyebrow: "Almost 4 years later",
@@ -59,7 +59,7 @@ export const translations = {
         badge: "✦ WHAT WE STAND FOR",
         title: "Three things we never compromise",
         subtitle:
-          "These aren't marketing words. They're the daily decisions Anthony and I make for every single ride.",
+          "These aren't marketing words. They're the daily decisions I make for every single ride — with Anthony backing the business on the administrative side.",
         family: {
           title: "Family-Run",
           description:
@@ -83,13 +83,13 @@ export const translations = {
           "Two cousins, 15+ years driving travelers across Costa Rica, and a personally trained team of bilingual drivers who treat every guest like family.",
         founder: {
           name: "Diego Salas Oviedo",
-          role: "Founder & Lead Driver",
-          bio: "Driving travelers across Costa Rica since 2006. After almost 15 years at two of the country's largest transportation companies, Diego founded Private Travel CR in 2021 to bring the personal care that big operators couldn't. He personally trains every driver on the team and still drives several routes per week from La Fortuna.",
+          role: "Founder, Operator & Lead Driver",
+          bio: "Driving travelers across Costa Rica since 2006. After almost 15 years at two of the country's largest transportation companies, Diego founded Private Travel CR in 2022. He personally answers every WhatsApp, takes every booking, trains every driver, and still drives several routes per week from La Fortuna. If you message us, you're talking directly to Diego.",
         },
         coFounder: {
           name: "Anthony",
-          role: "Co-Founder & Operations",
-          bio: "Diego's cousin and the operational backbone of Private Travel CR. Anthony coordinates every booking, matches each guest with the right vehicle and driver, and handles all incoming WhatsApp questions before, during, and after each trip. If you message us, Anthony is usually who replies first.",
+          role: "Co-Founder & Administration",
+          bio: "Diego's cousin and the partner who made Private Travel CR possible — Anthony believed in the idea early and helped with the initial investment to launch the company. He spends most of his time running his own restaurant in La Fortuna, but supports Diego on the administrative side of the business as it grows.",
         },
       },
       credentials: {
@@ -119,7 +119,7 @@ export const translations = {
               "190+ verified reviews from travelers who actually rode with us. Read every one — we respond to all.",
           },
           founded: {
-            title: "Founded 2021",
+            title: "Founded 2022",
             description:
               "Family-owned and independently operated from La Fortuna, Costa Rica. We work directly with you — no middlemen, no call centers.",
           },
@@ -700,7 +700,7 @@ export const translations = {
         chapter3: {
           title: "El día que todo cambió",
           body:
-            "En el 2021 nació mi segundo hijo. Teniéndolo en brazos, supe que tenía que construir algo propio, algo que algún día le pudiera mostrar a mi familia con orgullo. Llamé a Anthony, mi primo, que compartía la misma visión. Dimos el salto juntos. Private Travel CR nació de ese momento, del deseo de hacer las cosas a nuestra manera, con cuidado, con propósito, con corazón.",
+            "En el 2022 nació mi segundo hijo. Teniéndolo en brazos, supe que tenía que construir algo propio, algo que algún día le pudiera mostrar a mi familia con orgullo. Llamé a Anthony, mi primo, que creyó en la idea lo suficiente para ayudarme con la inversión inicial para arrancar Private Travel CR. Desde el primer día yo manejo la operación y contesto cada WhatsApp; Anthony sigue construyendo su restaurante y me apoya en la parte administrativa. Dos caminos distintos, un mismo negocio familiar.",
         },
         chapter4: {
           eyebrow: "Casi 4 años después",
@@ -713,7 +713,7 @@ export const translations = {
         badge: "✦ LO QUE NOS DEFINE",
         title: "Tres cosas en las que nunca cedemos",
         subtitle:
-          "No son frases de marketing. Son las decisiones diarias que Anthony y yo tomamos en cada viaje.",
+          "No son frases de marketing. Son las decisiones diarias que yo tomo en cada viaje — con Anthony respaldando el negocio en la parte administrativa.",
         family: {
           title: "Negocio Familiar",
           description:
@@ -737,13 +737,13 @@ export const translations = {
           "Dos primos, más de 15 años manejando viajeros por Costa Rica, y un equipo de choferes bilingües entrenados personalmente que tratan a cada huésped como familia.",
         founder: {
           name: "Diego Salas Oviedo",
-          role: "Fundador y Chofer Principal",
-          bio: "Manejando viajeros por Costa Rica desde 2006. Después de casi 15 años en dos de las empresas de transporte más grandes del país, Diego fundó Private Travel CR en 2021 para traer el cuidado personal que las grandes operadoras no podían dar. Entrena personalmente a cada chofer del equipo y todavía maneja varias rutas por semana desde La Fortuna.",
+          role: "Fundador, Operador y Chofer Principal",
+          bio: "Manejando viajeros por Costa Rica desde 2006. Después de casi 15 años en dos de las empresas de transporte más grandes del país, Diego fundó Private Travel CR en 2022. Él contesta personalmente cada WhatsApp, toma cada reserva, entrena a cada chofer del equipo y todavía maneja varias rutas por semana desde La Fortuna. Si nos escribís, hablás directamente con Diego.",
         },
         coFounder: {
           name: "Anthony",
-          role: "Co-Fundador y Operaciones",
-          bio: "El primo de Diego y la columna vertebral operativa de Private Travel CR. Anthony coordina cada reserva, asigna el vehículo y chofer correctos a cada huésped, y maneja todas las consultas por WhatsApp antes, durante y después de cada viaje. Si nos escribís, Anthony es quien responde primero.",
+          role: "Co-Fundador y Administración",
+          bio: "El primo de Diego y el socio que hizo posible Private Travel CR — Anthony creyó en la idea desde el principio y ayudó con la inversión inicial para arrancar la empresa. Pasa la mayor parte del tiempo a cargo de su propio restaurante en La Fortuna, pero apoya a Diego en la parte administrativa del negocio a medida que crece.",
         },
       },
       credentials: {
@@ -773,7 +773,7 @@ export const translations = {
               "190+ reseñas verificadas de viajeros que realmente viajaron con nosotros. Leelas todas — respondemos cada una.",
           },
           founded: {
-            title: "Fundada en 2021",
+            title: "Fundada en 2022",
             description:
               "Empresa familiar, operada independientemente desde La Fortuna, Costa Rica. Trabajamos directamente con vos — sin intermediarios ni call centers.",
           },

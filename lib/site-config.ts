@@ -33,7 +33,7 @@ export const siteConfig = {
       latitude: 10.4670,
       longitude: -84.6433,
     },
-    foundedYear: 2021,
+    foundedYear: 2022,
     founder: "Diego Salas Oviedo",
     rating: {
       googleStars: 5.0,

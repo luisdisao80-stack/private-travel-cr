@@ -131,13 +131,13 @@ export default function AboutPage() {
               </p>
             </article>
 
-            {/* Chapter 3: 2021 */}
+            {/* Chapter 3: 2022 */}
             <article className="relative pl-8 md:pl-12 border-l-2 border-amber-500/30">
               <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-amber-400 ring-4 ring-amber-400/20" />
               <div className="flex items-center gap-2 mb-3">
                 <Heart className="w-4 h-4 text-amber-400" />
                 <span className="text-sm font-bold text-amber-400 tracking-widest uppercase">
-                  2021
+                  2022
                 </span>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold mb-4">

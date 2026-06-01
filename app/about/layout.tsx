@@ -4,7 +4,7 @@ import { siteConfig } from "@/lib/site-config";
 export const metadata: Metadata = {
   title: "About Us | Costa Rica's Trusted Private Shuttle",
   description:
-    "Learn the story behind Private Travel CR. Founded in 2021 by Diego Salas Oviedo and Anthony in La Fortuna, Costa Rica. Family-run premium shuttle service with 5.0 ratings and TripAdvisor Travelers' Choice 2025.",
+    "Learn the story behind Private Travel CR. Founded in 2022 by Diego Salas Oviedo and Anthony in La Fortuna, Costa Rica. Family-run premium shuttle service with 5.0 ratings and TripAdvisor Travelers' Choice 2025.",
   keywords: [
     "about Private Travel CR",
     "Diego Salas Oviedo",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About Private Travel CR | Costa Rica's Trusted Shuttle",
     description:
-      "The story behind Private Travel CR. Family-run premium shuttle service in La Fortuna, Costa Rica since 2021. ⭐ 5.0 · TripAdvisor Travelers' Choice 2025.",
+      "The story behind Private Travel CR. Family-run premium shuttle service in La Fortuna, Costa Rica since 2022. ⭐ 5.0 · TripAdvisor Travelers' Choice 2025.",
     url: `${siteConfig.siteUrl}/about`,
     siteName: siteConfig.name,
     locale: "en_US",
