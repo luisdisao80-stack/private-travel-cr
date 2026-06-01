@@ -78,6 +78,17 @@ const ALIASES: Record<string, string[]> = {
   "San Gerardo de Dota (Cloud Forest)": ["san gerardo", "dota", "san gerardo de dota"],
   "San Jose Downtown": ["san jose", "san josé", "downtown", "capital"],
   "Alajuela City": ["alajuela"],
+  // Diego confirmed Puntarenas and Caldera are the same pickup area for
+  // shuttle purposes (Caldera is the cruise-ship port just south of
+  // downtown Puntarenas). Cover both terms + common variants so
+  // travelers off cruises or staying in Puntarenas hotels find it.
+  "Puntarenas (Caldera)": [
+    "puntarenas",
+    "caldera",
+    "puerto caldera",
+    "puerto de caldera",
+    "puntarenas centro",
+  ],
 };
 
 // Locations que aparecen primero en el dropdown cuando no hay query. Travelers
