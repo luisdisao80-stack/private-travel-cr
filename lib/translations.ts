@@ -89,7 +89,7 @@ export const translations = {
         coFounder: {
           name: "Anthony",
           role: "Co-Founder & Administration",
-          bio: "Diego's cousin and the partner who made Private Travel CR possible — Anthony believed in the idea early and helped with the initial investment to launch the company. He spends most of his time running his own restaurant in La Fortuna, but supports Diego on the administrative side of the business as it grows.",
+          bio: "Diego's cousin and the partner who made Private Travel CR possible — Anthony believed in the idea early and helped with the initial investment to launch the company. He spends most of his time running his own restaurant in Florencia, San Carlos, but supports Diego on the administrative side of the business as it grows.",
         },
       },
       credentials: {
@@ -743,7 +743,7 @@ export const translations = {
         coFounder: {
           name: "Anthony",
           role: "Co-Fundador y Administración",
-          bio: "El primo de Diego y el socio que hizo posible Private Travel CR — Anthony creyó en la idea desde el principio y ayudó con la inversión inicial para arrancar la empresa. Pasa la mayor parte del tiempo a cargo de su propio restaurante en La Fortuna, pero apoya a Diego en la parte administrativa del negocio a medida que crece.",
+          bio: "El primo de Diego y el socio que hizo posible Private Travel CR — Anthony creyó en la idea desde el principio y ayudó con la inversión inicial para arrancar la empresa. Pasa la mayor parte del tiempo a cargo de su propio restaurante en Florencia, San Carlos, pero apoya a Diego en la parte administrativa del negocio a medida que crece.",
         },
       },
       credentials: {
