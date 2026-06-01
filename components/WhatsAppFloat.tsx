@@ -21,7 +21,10 @@ export default function WhatsAppFloat() {
   return (
     <AnimatePresence>
       {visible && (
-        <div className="fixed right-6 bottom-24 lg:bottom-6 z-50">
+        // Hidden on mobile — the MobileBookingBar already carries a
+        // WhatsApp button there, no point cluttering with two. Desktop
+        // still gets the round float.
+        <div className="hidden md:block fixed right-6 bottom-6 z-50">
           <motion.button
             initial={{ opacity: 0, scale: 0, rotate: -180 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
