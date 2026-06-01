@@ -39,6 +39,7 @@ const DESTINATION_KEYWORD_TO_SLUGS: Array<{ keyword: string; slugs: string[] }> 
       "top-10-things-la-fortuna",
       "best-month-to-visit-la-fortuna",
       "best-restaurants-la-fortuna",
+      "best-beaches-near-la-fortuna",
       "where-to-see-sloths-in-costa-rica",
     ],
   },
@@ -79,6 +80,10 @@ const GENERAL_FALLBACK_SLUGS = [
   "best-time-to-visit-costa-rica",
   "costa-rica-without-rental-car",
   "where-to-see-sloths-in-costa-rica",
+  "best-beaches-costa-rica",
+  "costa-rica-packing-list",
+  "costa-rica-vs-mexico-vacation",
+  "do-i-need-spanish-costa-rica",
 ];
 
 /** Returns up to `limit` blog posts most relevant to the given route.
