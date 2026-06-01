@@ -14,6 +14,7 @@ import { displayLocation } from "@/lib/locations";
 import { siteConfig } from "@/lib/site-config";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
+import Price from "@/components/Price";
 
 type Props = {
   hotel: Hotel;
@@ -182,7 +183,7 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
                           FROM
                         </div>
                         <div className="text-xl font-bold text-amber-400 leading-tight">
-                          ${route.precio1a6}
+                          <Price usd={route.precio1a6 ?? 0} />
                         </div>
                         <div className="text-[9px] text-gray-500 leading-tight mt-0.5">
                           taxes incl.

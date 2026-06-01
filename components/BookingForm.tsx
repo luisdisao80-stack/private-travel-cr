@@ -21,6 +21,9 @@ import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
 import { isAirport, VIP_EXTRA_USD } from "@/lib/quote-helpers";
 import { events } from "@/lib/analytics";
+import { useCurrency } from "@/lib/CurrencyContext";
+import { formatPrice } from "@/lib/currency";
+import Price from "@/components/Price";
 
 const EXTRA_STOP_PRICE = 35;
 
@@ -46,8 +49,16 @@ type FlightStateMap = Record<string, { number: string; time: string }>;
 
 export default function BookingForm({ onBack }: BookingFormProps) {
   const { items, updateItem, removeItem, totalPrice } = useCart();
+  const { currency, hydrated } = useCurrency();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Tilopay charges USD — that's the only number the bank sees. Show
+  // the converted approximation parenthetically when the visitor is
+  // browsing in a different currency, so they understand the rate
+  // without ever doubting what hits their card.
+  const showCurrencyHint = hydrated && currency !== "USD";
+  const convertedTotal = formatPrice(totalPrice, currency);
 
   const [country, setCountry] = useState<Country>(DEFAULT_COUNTRY);
   const [form, setForm] = useState({
@@ -284,11 +295,17 @@ export default function BookingForm({ onBack }: BookingFormProps) {
         )}
       </Button>
 
+      {showCurrencyHint ? (
+        <p className="text-[11px] text-center text-amber-300">
+          ≈ {convertedTotal} {currency} at today&apos;s rate
+        </p>
+      ) : null}
       <p className="text-[11px] text-center text-green-400">
         Taxes included · Final price
       </p>
       <p className="text-[10px] text-center text-gray-500">
-        Secure payment processed by Tilopay. Your card details never touch our servers.
+        Charges in USD via Tilopay. Your card issuer applies the live
+        conversion rate. Card details never touch our servers.
       </p>
     </motion.div>
   );
@@ -376,7 +393,7 @@ function TripConfigCard({
             label="Standard"
             tagline="Fast & efficient"
             description="Private direct ride — no stops, no waiting"
-            price={standardPrice}
+            priceUsd={standardPrice}
             selected={item.serviceType === "standard"}
             onClick={() => setService("standard")}
             features={[
@@ -393,7 +410,7 @@ function TripConfigCard({
             label="VIP"
             tagline="Premium experience"
             description="Tourist stops, welcome kit, driver who guides you"
-            price={vipPrice}
+            priceUsd={vipPrice}
             priceNote={`+$${VIP_EXTRA_USD} over Standard`}
             selected={item.serviceType === "vip"}
             onClick={() => setService("vip")}
@@ -481,7 +498,7 @@ function TripConfigCard({
 
       <div className="flex items-center justify-between pt-2 border-t border-white/5">
         <span className="text-xs text-gray-400">Trip total</span>
-        <span className="text-lg font-bold text-white">${item.totalPrice.toFixed(2)}</span>
+        <span className="text-lg font-bold text-white"><Price usd={item.totalPrice} /></span>
       </div>
     </div>
   );
@@ -491,7 +508,7 @@ function ServiceCard({
   label,
   tagline,
   description,
-  price,
+  priceUsd,
   priceNote,
   selected,
   onClick,
@@ -503,7 +520,8 @@ function ServiceCard({
   label: string;
   tagline?: string;
   description: string;
-  price: number;
+  /** USD source-of-truth price; Price component handles the conversion. */
+  priceUsd: number;
   priceNote?: string;
   selected: boolean;
   onClick: () => void;
@@ -552,8 +570,7 @@ function ServiceCard({
 
       <div className="mb-2">
         <div className="text-xl font-bold text-white leading-none">
-          ${price.toFixed(0)}
-          <span className="text-[10px] text-gray-400 font-normal ml-1">USD</span>
+          <Price usd={priceUsd} />
         </div>
         {priceNote ? (
           <div className="text-[10px] text-amber-400/90 mt-0.5">{priceNote}</div>

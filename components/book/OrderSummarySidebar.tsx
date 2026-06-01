@@ -17,6 +17,9 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import type { CartItem } from "@/lib/CartContext";
+import Price from "@/components/Price";
+import { useCurrency } from "@/lib/CurrencyContext";
+import { formatPrice } from "@/lib/currency";
 
 type Props = {
   items: CartItem[];
@@ -58,6 +61,9 @@ const INCLUDED = [
 
 export default function OrderSummarySidebar({ items, totalPrice }: Props) {
   const [openIncluded, setOpenIncluded] = useState(false);
+  const { currency, hydrated } = useCurrency();
+  const showCurrencyHint = hydrated && currency !== "USD";
+  const convertedTotal = formatPrice(totalPrice, currency);
 
   return (
     <aside className="hidden lg:block lg:sticky lg:top-24">
@@ -87,7 +93,7 @@ export default function OrderSummarySidebar({ items, totalPrice }: Props) {
                         {it.serviceType === "vip" ? "VIP" : "Standard"} · {it.vehicleName}
                       </span>
                     </span>
-                    <span className="text-base font-bold text-white">${it.totalPrice.toFixed(0)}</span>
+                    <span className="text-base font-bold text-white"><Price usd={it.totalPrice} /></span>
                   </div>
 
                   <div className="flex gap-3">
@@ -133,8 +139,14 @@ export default function OrderSummarySidebar({ items, totalPrice }: Props) {
             <div className="flex items-end justify-between">
               <span className="text-gray-400 text-base">Total</span>
               <div className="text-right">
-                <div className="text-4xl font-bold text-white leading-none">${totalPrice.toFixed(2)}</div>
+                <div className="text-4xl font-bold text-white leading-none">${totalPrice.toFixed(2)} <span className="text-base font-normal text-gray-400">USD</span></div>
+                {showCurrencyHint ? (
+                  <div className="text-xs text-amber-300 mt-1">
+                    ≈ {convertedTotal} {currency}
+                  </div>
+                ) : null}
                 <div className="text-xs text-green-400 mt-1.5">Final price · All taxes included</div>
+                <div className="text-[10px] text-gray-500 mt-0.5">Charges in USD via Tilopay</div>
               </div>
             </div>
           </div>

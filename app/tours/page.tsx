@@ -7,6 +7,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { getAllTours } from "@/lib/tours-db";
 import { siteConfig } from "@/lib/site-config";
 import { Clock, Users, MapPin } from "lucide-react";
+import Price from "@/components/Price";
 
 export const revalidate = 3600;
 
@@ -185,8 +186,7 @@ function TourCard({ tour }: { tour: Awaited<ReturnType<typeof getAllTours>>[numb
               From
             </div>
             <div className="text-2xl font-bold text-amber-400 leading-tight">
-              ${Math.floor(Number(tour.adult_price))}
-              <span className="text-xs text-gray-400 font-normal ml-1">USD</span>
+              <Price usd={Math.floor(Number(tour.adult_price))} />
             </div>
             <div className="text-[10px] text-green-400 mt-0.5">Taxes included</div>
           </div>

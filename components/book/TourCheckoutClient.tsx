@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,9 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
+import Price from "@/components/Price";
+import { useCurrency } from "@/lib/CurrencyContext";
+import { formatPrice } from "@/lib/currency";
 
 type TourSnapshot = {
   id: number;
@@ -47,6 +50,9 @@ type Props = {
  */
 export default function TourCheckoutClient({ tour, booking }: Props) {
   const router = useRouter();
+  const { currency, hydrated } = useCurrency();
+  const showCurrencyHint = hydrated && currency !== "USD";
+  const convertedTotal = formatPrice(booking.total, currency);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState<Country>(DEFAULT_COUNTRY);
@@ -289,8 +295,13 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
               )}
             </button>
 
+            {showCurrencyHint ? (
+              <p className="text-[11px] text-center text-amber-300">
+                ≈ {convertedTotal} {currency} at today&apos;s rate
+              </p>
+            ) : null}
             <p className="text-[11px] text-center text-gray-500">
-              Secure payment by Tilopay · Visa, Mastercard, AmEx accepted ·
+              Charges in USD via Tilopay · Visa, Mastercard, AmEx accepted ·
               Receipt by email
             </p>
           </section>
@@ -337,12 +348,12 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
 
                 <div className="border-t border-white/5 pt-4 space-y-1.5 text-sm">
                   <Row
-                    label={`${booking.adults} × adult @ $${tour.adult_price}`}
+                    label={<>{booking.adults} × adult @ <Price usd={tour.adult_price} /></>}
                     value={booking.adultSubtotal}
                   />
                   {booking.children > 0 && tour.child_price != null ? (
                     <Row
-                      label={`${booking.children} × child @ $${tour.child_price}`}
+                      label={<>{booking.children} × child @ <Price usd={tour.child_price} /></>}
                       value={booking.childSubtotal}
                     />
                   ) : null}
@@ -357,6 +368,11 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
                         USD
                       </span>
                     </div>
+                    {showCurrencyHint ? (
+                      <div className="text-[11px] text-amber-300">
+                        ≈ {convertedTotal} {currency}
+                      </div>
+                    ) : null}
                     <div className="text-[11px] text-green-400">
                       ✓ Taxes included
                     </div>
@@ -398,11 +414,19 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function Row({ label, value }: { label: string; value: number }) {
+function Row({
+  label,
+  value,
+}: {
+  label: ReactNode;
+  value: number;
+}) {
   return (
     <div className="flex justify-between text-gray-400">
       <span>{label}</span>
-      <span className="text-gray-200">${value.toFixed(0)}</span>
+      <span className="text-gray-200">
+        <Price usd={value} />
+      </span>
     </div>
   );
 }

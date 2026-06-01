@@ -25,6 +25,7 @@ import { reviewStats } from "@/lib/reviews-data";
 import { isPopularRoute } from "@/lib/popular-routes";
 import GoogleGLogo from "@/components/GoogleGLogo";
 import LocationInput from "@/components/LocationInput";
+import Price from "@/components/Price";
 
 interface Props {
   routes: Route[];
@@ -253,8 +254,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                           {lang === "en" ? "From" : "Desde"}
                         </div>
                         <div className="text-2xl md:text-3xl font-bold text-white leading-none">
-                          ${route.precio1a6}
-                          <span className="text-xs text-gray-400 font-normal ml-1">USD</span>
+                          <Price usd={route.precio1a6 ?? 0} />
                         </div>
                         <div className="text-[10px] text-amber-400 mt-0.5">
                           {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}

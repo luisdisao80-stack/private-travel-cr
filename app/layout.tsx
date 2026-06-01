@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { LanguageProvider } from "@/lib/LanguageContext";
+import { CurrencyProvider } from "@/lib/CurrencyContext";
 import { CartProvider } from "@/lib/CartContext";
 import Cart from "@/components/Cart";
 import { Analytics } from "@vercel/analytics/react";
@@ -102,15 +103,17 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <SchemaOrg />
         <LanguageProvider>
-          <CartProvider>
-            {children}
-            <Cart />
-            {/* Mobile-only sticky "Book Now" + WhatsApp bar. Auto-hides
-                on /book/* (user is already booking). Slides in after
-                300px of scroll so it doesn't obscure the hero on first
-                paint. */}
-            <MobileBookingBar />
-          </CartProvider>
+          <CurrencyProvider>
+            <CartProvider>
+              {children}
+              <Cart />
+              {/* Mobile-only sticky "Book Now" + WhatsApp bar. Auto-hides
+                  on /book/* (user is already booking). Slides in after
+                  300px of scroll so it doesn't obscure the hero on first
+                  paint. */}
+              <MobileBookingBar />
+            </CartProvider>
+          </CurrencyProvider>
         </LanguageProvider>
         <Analytics />
         <CookieBanner />

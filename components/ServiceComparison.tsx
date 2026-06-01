@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Check, Crown, ArrowRight, Sparkles, Clock, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
+import Price from "@/components/Price";
 
 export default function ServiceComparison() {
   const { t } = useLanguage();
@@ -76,8 +77,7 @@ export default function ServiceComparison() {
                   {t.services.standard.priceLabel}
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-bold text-white">$90</span>
-                  <span className="text-gray-400">USD</span>
+                  <span className="text-5xl font-bold text-white"><Price usd={90} /></span>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
                   {t.services.standard.priceNote}
@@ -156,9 +156,8 @@ export default function ServiceComparison() {
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-                    $160
+                    <Price usd={160} />
                   </span>
-                  <span className="text-gray-400">USD</span>
                 </div>
                 <p className="text-xs text-amber-400/80 mt-1">
                   {t.services.vip.priceNote}

@@ -8,6 +8,7 @@ import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
 import StickyBookCTA from "@/components/StickyBookCTA";
 import RelatedArticles from "@/components/RelatedArticles";
+import Price from "@/components/Price";
 
 // Generic auto-FAQs that work for every route. Manual route.faqs land
 // above these (they're more route-specific = higher SEO value).
@@ -151,7 +152,7 @@ export default function RouteDetail({
                 <img src="/staria.webp" alt="Hyundai Staria" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
               </div>
               <div className="text-xs text-gray-400 mb-1">1-6 PAX · Hyundai Staria</div>
-              <div className="text-2xl font-bold text-amber-400">${route.precio1a6}</div>
+              <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio1a6 ?? 0} /></div>
             </div>
             {route.precio7a9 ? (
               <div className="bg-gray-900/50 rounded-xl p-4 text-center">
@@ -159,7 +160,7 @@ export default function RouteDetail({
                   <img src="/hiace.png" alt="Toyota Hiace" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
                 <div className="text-xs text-gray-400 mb-1">7-9 PAX · Toyota Hiace</div>
-                <div className="text-2xl font-bold text-amber-400">${route.precio7a9}</div>
+                <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio7a9 ?? 0} /></div>
               </div>
             ) : null}
             {route.precio10a12 ? (
@@ -168,13 +169,13 @@ export default function RouteDetail({
                   <img src="/maxus-v90.webp" alt="Maxus V90" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
                 <div className="text-xs text-gray-400 mb-1">10-12 PAX · Maxus V90</div>
-                <div className="text-2xl font-bold text-amber-400">${route.precio10a12}</div>
+                <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio10a12 ?? 0} /></div>
               </div>
             ) : null}
             {route.precio13a18 ? (
               <div className="bg-gray-900/50 rounded-xl p-4 text-center sm:col-span-2 md:col-span-3">
                 <div className="text-xs text-gray-400 mb-1">13-18 PAX</div>
-                <div className="text-2xl font-bold text-amber-400">${route.precio13a18}</div>
+                <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio13a18 ?? 0} /></div>
               </div>
             ) : null}
           </div>
@@ -365,7 +366,7 @@ export default function RouteDetail({
                     <div className="text-white font-medium">{r.destino}</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-amber-400 font-bold">${r.precio1a6}</div>
+                    <div className="text-amber-400 font-bold"><Price usd={r.precio1a6 ?? 0} /></div>
                     <ArrowRight size={16} className="text-gray-500 ml-auto mt-1 group-hover:text-amber-400 transition" />
                   </div>
                 </Link>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Clock, Sparkles } from "lucide-react";
 import { getFeaturedTours } from "@/lib/tours-db";
+import Price from "@/components/Price";
 
 /**
  * Home-page featured-tours strip. Mirrors the role of PopularRoutes
@@ -83,7 +84,7 @@ export default async function ToursPreview() {
                         From
                       </p>
                       <p className="text-xl font-bold text-amber-400">
-                        ${adult}
+                        <Price usd={adult} />
                         <span className="text-xs text-gray-500 font-normal ml-1">
                           /adult
                         </span>

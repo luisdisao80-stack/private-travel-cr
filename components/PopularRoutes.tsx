@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Clock, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
+import Price from "@/components/Price";
 
 type Route = {
   from: string;
@@ -134,7 +135,7 @@ export default function PopularRoutes() {
                       {t.routes.from}
                     </div>
                     <div className="text-xl font-bold text-amber-400 leading-tight">
-                      ${route.priceFrom}
+                      <Price usd={route.priceFrom} />
                     </div>
                   </div>
                   <span className="inline-flex items-center gap-1 text-[11px] text-amber-400 font-semibold group-hover:translate-x-1 transition-transform">

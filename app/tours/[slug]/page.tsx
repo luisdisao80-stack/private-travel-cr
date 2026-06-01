@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import TourBookingPanel from "@/components/tours/TourBookingPanel";
+import Price from "@/components/Price";
 import { getTourBySlug, getIndexableTourSlugs, getAllTours } from "@/lib/tours-db";
 import { siteConfig } from "@/lib/site-config";
 import {
@@ -371,7 +372,7 @@ export default async function TourDetailPage({ params }: Props) {
                           {t.duration_label}
                         </span>
                         <span className="text-amber-400 font-bold text-base">
-                          ${Math.floor(Number(t.adult_price))}
+                          <Price usd={Math.floor(Number(t.adult_price))} />
                         </span>
                       </div>
                     </div>

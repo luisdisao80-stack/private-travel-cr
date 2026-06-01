@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Users, Wifi, Droplet, Snowflake, Package, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
+import Price from "@/components/Price";
 
 export default function FleetSection() {
   const { t, lang } = useLanguage();
@@ -147,8 +148,7 @@ export default function FleetSection() {
                         {t.fleet.from}
                       </div>
                       <div className="text-3xl font-bold text-white">
-                        ${vehicle.priceFrom}
-                        <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
+                        <Price usd={vehicle.priceFrom} />
                       </div>
                       <div className="text-[10px] text-gray-500 mt-0.5">
                         {lang === "en" ? "Taxes included" : "Impuestos incluidos"}

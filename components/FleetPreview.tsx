@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Users, ArrowRight, MessageCircle, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
+import Price from "@/components/Price";
 
 export default function FleetPreview() {
   const { t, lang } = useLanguage();
@@ -116,8 +117,7 @@ export default function FleetPreview() {
                           {t.fleet.from}
                         </div>
                         <div className="text-2xl font-bold text-white">
-                          ${vehicle.priceFrom}
-                          <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
+                          <Price usd={vehicle.priceFrom} />
                         </div>
                         <div className="text-[10px] text-gray-500 mt-0.5">
                           {lang === "en" ? "Taxes included" : "Impuestos incluidos"}

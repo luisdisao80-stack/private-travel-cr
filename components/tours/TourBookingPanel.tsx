@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Calendar, Minus, Plus, Loader2, ArrowRight } from "lucide-react";
 import type { TourScheduleSlot } from "@/lib/types";
+import Price from "@/components/Price";
 
 type Props = {
   tour: {
@@ -73,13 +74,13 @@ export default function TourBookingPanel({ tour }: Props) {
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-4xl font-bold text-amber-400">
-            ${tour.adultPrice}
+            <Price usd={tour.adultPrice} />
           </span>
           <span className="text-sm text-gray-400">per adult</span>
         </div>
         {tour.childPrice != null ? (
           <div className="text-xs text-gray-400 mt-1">
-            Kids from ${tour.childPrice}
+            Kids from <Price usd={tour.childPrice} />
             {tour.childAgeMin != null && tour.childAgeMax != null
               ? ` (${tour.childAgeMin}–${tour.childAgeMax} yrs)`
               : ""}
@@ -135,7 +136,7 @@ export default function TourBookingPanel({ tour }: Props) {
         <div>
           <div className="text-sm font-semibold text-white">Adults</div>
           <div className="text-xs text-gray-500">
-            ${tour.adultPrice} per adult
+            <Price usd={tour.adultPrice} /> per adult
           </div>
         </div>
         <PaxStepper
@@ -159,7 +160,7 @@ export default function TourBookingPanel({ tour }: Props) {
                 ) : null}
             </div>
             <div className="text-xs text-gray-500">
-              ${tour.childPrice} per child
+              <Price usd={tour.childPrice ?? 0} /> per child
             </div>
           </div>
           <PaxStepper
@@ -179,11 +180,10 @@ export default function TourBookingPanel({ tour }: Props) {
         <span className="text-sm text-gray-400">Total</span>
         <div className="text-right">
           <div className="text-3xl font-bold text-white">
-            ${total.toFixed(0)}
-            <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
+            <Price usd={total} showUsdHint />
           </div>
           <div className="text-[11px] text-green-400">
-            Final price · Taxes included
+            Final price · Taxes included · Charged in USD via Tilopay
           </div>
         </div>
       </div>

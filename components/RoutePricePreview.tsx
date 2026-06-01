@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Clock, Loader2 } from "lucide-react";
+import Price from "@/components/Price";
 
 type Props = {
   from: string;
@@ -90,8 +91,7 @@ export default function RoutePricePreview({ from, to }: Props) {
           From
         </div>
         <div className="text-2xl font-bold text-white leading-none">
-          ${state.basePrice}
-          <span className="text-xs text-gray-400 font-normal ml-1">USD</span>
+          <Price usd={state.basePrice} />
         </div>
         <div className="text-[10px] text-green-400 mt-1">Taxes included</div>
         <div className="text-[10px] text-gray-400">Standard · up to 6 pax</div>

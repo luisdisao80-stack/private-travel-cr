@@ -8,6 +8,7 @@ import { Menu, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import CurrencySelector from "@/components/CurrencySelector";
 import CartIcon from "@/components/CartIcon";
 
 export default function Navbar() {
@@ -70,6 +71,7 @@ export default function Navbar() {
 
           <div className="hidden lg:flex items-center gap-3">
             <CartIcon />
+            <CurrencySelector />
             <LanguageSwitcher />
 
             <a href="tel:+50686334133" className="flex items-center gap-2 text-gray-300 hover:text-amber-400 transition-colors text-sm font-medium">
@@ -80,6 +82,7 @@ export default function Navbar() {
 
           <div className="lg:hidden flex items-center gap-2">
             <CartIcon />
+            <CurrencySelector />
             <LanguageSwitcher />
 
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>

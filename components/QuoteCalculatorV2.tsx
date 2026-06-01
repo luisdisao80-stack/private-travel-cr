@@ -7,6 +7,7 @@ import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, 
 import { useCart } from "@/lib/CartContext";
 import { DatePicker } from "@/components/ui/date-picker";
 import LocationInput from "@/components/LocationInput";
+import Price from "@/components/Price";
 import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
 
 type Props = { locations: string[]; hotels?: Hotel[] };
@@ -439,7 +440,7 @@ export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
               <Crown size={14} />
               <span>VIP</span>
             </div>
-            <div className="text-xs mt-1">+$80 USD</div>
+            <div className="text-xs mt-1">+<Price usd={VIP_EXTRA_USD} /></div>
           </button>
         </div>
       </div>
@@ -464,14 +465,14 @@ export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
           <div className="flex items-baseline justify-between mb-4">
             <div>
               <div className="text-xs text-gray-500 uppercase tracking-wider">Total Price</div>
-              <div className="text-4xl font-bold text-amber-400">${totalPrice}<span className="text-base text-gray-400 font-normal"> USD</span></div>
-              <div className="text-[11px] text-gray-500 mt-1">Taxes included</div>
+              <div className="text-4xl font-bold text-amber-400"><Price usd={totalPrice} /></div>
+              <div className="text-[11px] text-gray-500 mt-1">Taxes included · Charged in USD via Tilopay</div>
             </div>
             {(serviceType === "vip" || extraStops > 0) ? (
               <div className="text-right">
-                <div className="text-xs text-gray-500">Base: ${basePrice}</div>
-                {serviceType === "vip" ? (<div className="text-xs text-amber-400">+ VIP: ${VIP_EXTRA_USD}</div>) : null}
-                {extraStops > 0 ? (<div className="text-xs text-amber-400">+ Stops: ${stopsExtra}</div>) : null}
+                <div className="text-xs text-gray-500">Base: <Price usd={basePrice} /></div>
+                {serviceType === "vip" ? (<div className="text-xs text-amber-400">+ VIP: <Price usd={VIP_EXTRA_USD} /></div>) : null}
+                {extraStops > 0 ? (<div className="text-xs text-amber-400">+ Stops: <Price usd={stopsExtra} /></div>) : null}
               </div>
             ) : null}
           </div>

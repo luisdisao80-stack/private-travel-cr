@@ -18,13 +18,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useCurrency } from "@/lib/CurrencyContext";
+import { formatPrice } from "@/lib/currency";
 import BookingForm from "@/components/BookingForm";
+import Price from "@/components/Price";
 
 export default function Cart() {
   const { items, removeItem, clearCart, totalPrice, isCartOpen, setCartOpen } = useCart();
   const { t, lang } = useLanguage();
+  const { currency, hydrated } = useCurrency();
   const router = useRouter();
   const [showBookingForm, setShowBookingForm] = useState(false);
+
+  // Charges settle in USD via Tilopay regardless of display currency.
+  // Surface the converted approximation under the USD total so EUR/GBP
+  // browsers see roughly what they'll be billed in their currency.
+  const showCurrencyHint = hydrated && currency !== "USD";
+  const convertedTotal = formatPrice(totalPrice, currency);
 
   // Lock body scroll while the drawer is open so the underlying page can't
   // scroll behind the overlay (also kills mobile rubber-banding).
@@ -272,7 +282,7 @@ export default function Cart() {
                               </>
                             )}
                           </div>
-                          <div className="text-amber-400 font-bold">${item.totalPrice}</div>
+                          <div className="text-amber-400 font-bold"><Price usd={item.totalPrice} /></div>
                         </div>
                       </motion.div>
                     ))}
@@ -302,7 +312,12 @@ export default function Cart() {
                       ${totalPrice}
                       <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
                     </span>
-                    <div className="text-[11px] text-gray-500 mt-0.5">{t.quote.taxesIncluded}</div>
+                    {showCurrencyHint ? (
+                      <div className="text-[11px] text-amber-300 mt-0.5">
+                        ≈ {convertedTotal} {currency}
+                      </div>
+                    ) : null}
+                    <div className="text-[11px] text-gray-500 mt-0.5">{t.quote.taxesIncluded} · {lang === "en" ? "Charges in USD via Tilopay" : "Cobros en USD vía Tilopay"}</div>
                   </div>
                 </div>
                 <Button

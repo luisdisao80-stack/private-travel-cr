@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Price from "@/components/Price";
 
 type Props = {
   origen: string;
@@ -51,8 +52,7 @@ export default function StickyBookCTA({
               From
             </div>
             <div className="text-lg font-bold text-amber-400 leading-tight">
-              ${priceFrom}
-              <span className="text-[10px] text-gray-400 font-normal ml-1">USD</span>
+              <Price usd={priceFrom} />
             </div>
             <div className="text-[9px] text-gray-500 leading-tight">taxes incl.</div>
           </div>
