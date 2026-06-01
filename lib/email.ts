@@ -488,6 +488,12 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
       subject: `🚐 New booking · ${data.orderNumber} · $${data.totalUsd.toFixed(2)} USD`,
       html: internalHtml,
       replyTo: data.customerEmail,
+      // Same .ics goes to the internal inbox too — Diego asked for the
+      // 'Add to Calendar' chip in his Gmail. Before this it was customer-
+      // only, so the operator had to manually copy trip dates into the
+      // driver's schedule. Now one click puts every confirmed booking
+      // on the dispatch calendar.
+      attachments: [icsAttachment],
     }),
   ]);
 
