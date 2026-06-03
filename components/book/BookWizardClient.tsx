@@ -80,6 +80,22 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
     pushRouteParams(heroFrom, heroTo, heroPickupHotel, hotel);
   };
 
+  // URL → view sync. The `view` state was initialised from the URL on
+  // first mount only; if the visitor is already on /book (?from=&to=,
+  // view='configuring') and then opens the cart drawer + clicks
+  // 'Continue to checkout', Next.js updates the URL to /book?checkout=1
+  // WITHOUT remounting the component, so useState never re-runs and
+  // the visitor stays stuck in Trip Details. Mirroring URL → view
+  // every time wantsCheckout flips fixes both directions (cart→checkout
+  // and add-another-trip→configuring).
+  useEffect(() => {
+    if (wantsCheckout) {
+      setView("checkout");
+    } else if (hasUrlRoute) {
+      setView("configuring");
+    }
+  }, [wantsCheckout, hasUrlRoute]);
+
   useEffect(() => {
     if (!hydrated) return;
     if (!settledFromHydration.current) {
