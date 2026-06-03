@@ -419,6 +419,7 @@ function TripConfigCard({
             features={[
               "1–2h flexible tourist stop",
               "Welcome Kit: local beers, sodas, snacks",
+              "San Pellegrino sparkling water",
               "Concierge driver — personalized tips",
               "USB chargers & onboard WiFi",
               "Recommended for honeymoons",

@@ -443,6 +443,42 @@ export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
             <div className="text-xs mt-1">+<Price usd={VIP_EXTRA_USD} /></div>
           </button>
         </div>
+
+        {/* "What's included" panel — shown for whichever tier is selected
+            so the visitor sees what they're paying for before adding to
+            cart. Especially important on VIP so the +$80 feels justified. */}
+        <div className="mt-3 bg-black/40 border border-amber-500/20 rounded-lg p-4">
+          {serviceType === "vip" ? (
+            <>
+              <div className="text-xs text-amber-400 font-bold tracking-wider uppercase mb-2 flex items-center gap-1.5">
+                <Crown size={12} />
+                VIP includes everything above, plus:
+              </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-gray-300">
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>1–2h flexible tourist stop</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Welcome Kit: local beers, sodas, snacks</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>San Pellegrino sparkling water</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Concierge driver with personalized tips</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>USB chargers &amp; onboard WiFi</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Ideal for honeymoons &amp; special trips</li>
+              </ul>
+            </>
+          ) : (
+            <>
+              <div className="text-xs text-amber-400 font-bold tracking-wider uppercase mb-2">
+                Standard includes:
+              </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-gray-300">
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Direct route, door-to-door</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Bilingual professional driver</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Onboard WiFi &amp; bottled water</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Free child seats on request</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Flight tracking &amp; full insurance</li>
+                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>No detours, no surprises</li>
+              </ul>
+            </>
+          )}
+        </div>
       </div>
 
       {loading ? (
