@@ -83,7 +83,7 @@ Most of these are solvable without renting a car. A few aren't. We'll get to whi
 The rental rate you see on Expedia is *not* what you'll pay. The Costa Rica car-rental playbook in 2026:
 
 1. **Quoted base rate:** $20–35 a day for an economy car.
-2. **Mandatory insurance (TPL):** $14–22 a day, charged at the counter. Not optional, not waivable. Your credit card insurance doesn't cover it.
+2. **Mandatory insurance (TPL — Third Party Liability):** $14–22 a day, charged at the counter. TPL is the government-required liability insurance that covers injuries to other people and damage to other vehicles — it's not optional, not waivable, and **your credit card's rental coverage does NOT include it**. Even if you decline the full collision/theft coverage (the rental agent will push hard), you still have to pay TPL. This is the single biggest reason the headline rental rate doesn't match the final bill.
 3. **Recommended extras (collision, theft):** another $20–35 a day if you don't want to be on the hook for the full vehicle value if anything happens.
 4. **Fuel:** ~$1.30 per litre in 2026, and you'll burn a lot of it on hilly roads.
 5. **GPS or data:** $8–10 a day (or a SIM card + an unlocked phone).

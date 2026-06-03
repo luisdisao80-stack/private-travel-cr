@@ -289,14 +289,36 @@ export default async function TourDetailPage({ params }: Props) {
                     ))}
                   </div>
                   {tour.pickup_zone ? (
-                    <p className="text-sm text-gray-500 mt-4">
-                      <span className="text-amber-400">Pickup area:</span>{" "}
-                      {tour.pickup_zone}.{" "}
-                      <span className="text-gray-600">
-                        Hotels outside this zone may have a small extra transport fee
-                        — we&apos;ll quote it before you book.
+                    // Clarity recordings (2026-06-03) showed visitors
+                    // clicking repeatedly on the 'Pickup area: La Fortuna'
+                    // line expecting a dropdown to pick their hotel. It
+                    // was static info styled like a clickable element.
+                    // Dropped the amber 'link-ish' colouring, added an
+                    // explicit info icon + 'asked at checkout' line so
+                    // visitors know the dropdown is one step away.
+                    <div className="mt-4 flex items-start gap-2 text-sm text-gray-400 bg-white/5 border border-white/10 rounded-lg p-3">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="w-4 h-4 text-gray-400 mt-0.5 shrink-0"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                      </svg>
+                      <span>
+                        <span className="text-gray-200">Pickup area:</span>{" "}
+                        {tour.pickup_zone}.{" "}
+                        <span className="text-gray-500">
+                          Tell us your exact hotel during checkout — hotels outside
+                          this zone may have a small extra transport fee we&apos;ll
+                          quote before you confirm.
+                        </span>
                       </span>
-                    </p>
+                    </div>
                   ) : null}
                 </div>
               ) : null}
