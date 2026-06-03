@@ -146,37 +146,55 @@ export default function RouteDetail({
           <h2 className="text-2xl font-bold text-white mb-6">
             How much does a private shuttle from {route.origen} to {route.destino} cost?
           </h2>
+          {/* Vehicle/PAX tier cards. Clarity recordings (2026-06-03) showed
+              25% of visitors clicking these cards expecting them to be
+              interactive — they'd click 'Hyundai Staria', see nothing
+              happen, then bounce. Wrapping each tier in a Link to the
+              booking flow turns every one of those misclicks into a
+              real conversion path. */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-gray-900/50 rounded-xl p-4 text-center">
+            <Link
+              href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+              className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
+            >
               <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
                 <img src="/staria.webp" alt="Hyundai Staria" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
               </div>
               <div className="text-xs text-gray-400 mb-1">1-6 PAX · Hyundai Staria</div>
               <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio1a6 ?? 0} /></div>
-            </div>
+            </Link>
             {route.precio7a9 ? (
-              <div className="bg-gray-900/50 rounded-xl p-4 text-center">
+              <Link
+                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+                className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
+              >
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
                   <img src="/hiace.png" alt="Toyota Hiace" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
                 <div className="text-xs text-gray-400 mb-1">7-9 PAX · Toyota Hiace</div>
                 <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio7a9 ?? 0} /></div>
-              </div>
+              </Link>
             ) : null}
             {route.precio10a12 ? (
-              <div className="bg-gray-900/50 rounded-xl p-4 text-center">
+              <Link
+                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+                className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
+              >
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
                   <img src="/maxus-v90.webp" alt="Maxus V90" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
                 <div className="text-xs text-gray-400 mb-1">10-12 PAX · Maxus V90</div>
                 <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio10a12 ?? 0} /></div>
-              </div>
+              </Link>
             ) : null}
             {route.precio13a18 ? (
-              <div className="bg-gray-900/50 rounded-xl p-4 text-center sm:col-span-2 md:col-span-3">
+              <Link
+                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+                className="bg-gray-900/50 rounded-xl p-4 text-center sm:col-span-2 md:col-span-3 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
+              >
                 <div className="text-xs text-gray-400 mb-1">13-18 PAX</div>
                 <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio13a18 ?? 0} /></div>
-              </div>
+              </Link>
             ) : null}
           </div>
           <p className="text-xs text-gray-400 mb-6">Prices in USD per vehicle. All-inclusive: A/C, WiFi, water, child seats, door-to-door.</p>
