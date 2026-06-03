@@ -10,8 +10,12 @@ import Price from "@/components/Price";
 export default function ServiceComparison() {
   const { t } = useLanguage();
 
-  // Iconos especiales para los primeros 3 features del VIP
-  const vipIcons = [Clock, MapPin, Sparkles, Check, Check, Check];
+  // Iconos especiales para los primeros 3 features del VIP. Length
+  // must match (or exceed) t.services.vip.features.length — adding a
+  // feature without bumping this array makes vipIcons[idx] undefined
+  // and the IconComp render explodes the build. Padding with Check
+  // catches any future additions safely.
+  const vipIcons = [Clock, MapPin, Sparkles, Check, Check, Check, Check, Check];
 
   return (
     <section
@@ -167,7 +171,10 @@ export default function ServiceComparison() {
               {/* Features */}
               <div className="space-y-4 mb-8 flex-grow">
                 {t.services.vip.features.map((feature, idx) => {
-                  const IconComp = vipIcons[idx];
+                  // Fall back to Check if the icon array hasn't been
+                  // updated for a newly-added feature — better a generic
+                  // check than a crashed page.
+                  const IconComp = vipIcons[idx] ?? Check;
                   const isHighlighted = idx < 3;
                   return (
                     <div key={idx} className="flex items-start gap-3">
