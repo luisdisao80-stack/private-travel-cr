@@ -26,6 +26,7 @@ import { isPopularRoute } from "@/lib/popular-routes";
 import GoogleGLogo from "@/components/GoogleGLogo";
 import LocationInput from "@/components/LocationInput";
 import Price from "@/components/Price";
+import { useCart } from "@/lib/CartContext";
 
 interface Props {
   routes: Route[];
@@ -36,6 +37,7 @@ interface Props {
 
 export default function RoutesPageClient({ routes, hotels = [] }: Props) {
   const { lang } = useLanguage();
+  const { items: cartItems } = useCart();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   // Remember the hotel object the customer picked (if any) so the checkout
@@ -367,6 +369,13 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
             </p>
             <Link
               href={(() => {
+                // If the visitor already has trips in their cart, this
+                // CTA means "I'm done, take me to checkout" — bouncing
+                // them back to /book with from/to URL params would
+                // re-open Trip Details for a NEW trip instead. The
+                // ?checkout=1 query tells BookWizardClient to render
+                // the checkout view directly.
+                if (cartItems.length > 0) return "/book?checkout=1";
                 const params = new URLSearchParams();
                 params.set("from", pickup);
                 params.set("to", dropoff);
