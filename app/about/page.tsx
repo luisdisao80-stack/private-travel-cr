@@ -191,7 +191,7 @@ export default function AboutPage() {
             <article
               itemScope
               itemType="https://schema.org/Person"
-              className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all"
+              className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50"
             >
               <div className="flex items-center gap-4 mb-5">
                 <div
@@ -221,7 +221,7 @@ export default function AboutPage() {
             <article
               itemScope
               itemType="https://schema.org/Person"
-              className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all"
+              className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50"
             >
               <div className="flex items-center gap-4 mb-5">
                 <div
@@ -282,11 +282,11 @@ export default function AboutPage() {
             ].map(({ icon: Icon, key }) => (
               <div
                 key={key}
-                className="group p-5 rounded-xl border border-amber-500/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all"
+                className="p-5 rounded-xl border border-amber-500/10 bg-zinc-950/50"
               >
                 <div
                   style={{ width: "40px", height: "40px" }}
-                  className="mb-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors"
+                  className="mb-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center"
                 >
                   <Icon className="w-5 h-5 text-amber-400" />
                 </div>
@@ -318,8 +318,8 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="group relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all duration-300">
-              <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
+            <div className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50">
+              <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
                 <Heart className="w-6 h-6 text-amber-400" />
               </div>
               <h3 className="text-xl font-bold mb-3">{t.about.values.family.title}</h3>
@@ -328,8 +328,8 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="group relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all duration-300">
-              <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
+            <div className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50">
+              <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
                 <Compass className="w-6 h-6 text-amber-400" />
               </div>
               <h3 className="text-xl font-bold mb-3">{t.about.values.purpose.title}</h3>
@@ -338,8 +338,8 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="group relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50 hover:border-amber-500/40 transition-all duration-300">
-              <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
+            <div className="relative p-8 rounded-2xl border border-white/10 bg-zinc-950/50">
+              <div className="w-12 h-12 mb-6 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
                 <MapPin className="w-6 h-6 text-amber-400" />
               </div>
               <h3 className="text-xl font-bold mb-3">

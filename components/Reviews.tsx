@@ -116,13 +116,21 @@ export default function Reviews({ googleReviews = [], liveGoogleCount, liveGoogl
             </a>
           </div>
 
-          {/* Travelers' Choice badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/10 border border-amber-400/40">
+          {/* Travelers' Choice badge — links to TripAdvisor since the
+              visual amber border + award icon strongly hints at being
+              clickable; Clarity recordings showed visitors tapping it. */}
+          <a
+            href={reviewStats.tripadvisor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/10 border border-amber-400/40 hover:from-amber-500/30 hover:to-amber-600/20 transition-colors"
+          >
             <Award className="w-4 h-4 text-amber-400" />
             <span className="text-sm font-semibold text-amber-300">
               {t.reviews.travelersChoice} {reviewStats.tripadvisor.travelersChoiceYear}
             </span>
-          </div>
+            <ExternalLink className="w-3 h-3 text-amber-300/60" />
+          </a>
         </div>
 
         {/* Live Google reviews (refreshed daily via Places API) +

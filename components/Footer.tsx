@@ -75,8 +75,15 @@ export default function Footer() {
               {t.footer.brandDescription}
             </p>
 
-            {/* Badge de rating */}
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
+            {/* Badge de rating — links to the Google business listing so
+                the conspicuous amber-bordered "5.0 ★" block resolves to a
+                real destination instead of being a dead-click. */}
+            <a
+              href="https://g.co/kgs/cWkFwFM"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors"
+            >
               <div className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
@@ -86,7 +93,7 @@ export default function Footer() {
                 <div className="text-white font-bold">5.0 ★</div>
                 <div className="text-gray-400">{t.footer.reviewsCount}</div>
               </div>
-            </div>
+            </a>
           </motion.div>
 
           {/* COLUMNA 2: ENLACES RÁPIDOS */}
@@ -209,18 +216,28 @@ export default function Footer() {
                   </div>
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-gray-400">
-                <div
-                  style={{ width: "32px", height: "32px" }}
-                  className="rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0"
+              <li>
+                {/* Address links to Google Maps — the icon + amber-bordered
+                    affordance mirrors the WhatsApp/Phone/Email rows above
+                    and visitors reasonably expect a tap to open Maps. */}
+                <a
+                  href="https://www.google.com/maps/place/?q=place_id:ChIJl0aOiIQNoI8R6KcwnmmDEw8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 text-gray-400 hover:text-amber-400 transition-colors group"
                 >
-                  <MapPin size={14} className="text-amber-400" />
-                </div>
-                <div className="pt-1">
-                  <div className="text-xs text-gray-500">{t.footer.location}</div>
-                  <div className="text-sm">La Fortuna, San Carlos</div>
-                  <div className="text-sm">Costa Rica 🇨🇷</div>
-                </div>
+                  <div
+                    style={{ width: "32px", height: "32px" }}
+                    className="rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-500/20 transition-colors"
+                  >
+                    <MapPin size={14} className="text-amber-400" />
+                  </div>
+                  <div className="pt-1">
+                    <div className="text-xs text-gray-500">{t.footer.location}</div>
+                    <div className="text-sm">La Fortuna, San Carlos</div>
+                    <div className="text-sm">Costa Rica 🇨🇷</div>
+                  </div>
+                </a>
               </li>
             </ul>
           </motion.div>
@@ -306,8 +323,14 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* Badge TripAdvisor */}
-            <div className="mt-4 p-3 rounded-xl bg-gradient-to-br from-emerald-500/10 to-green-500/5 border border-emerald-500/30">
+            {/* Badge TripAdvisor — links to the TripAdvisor listing so
+                the conspicuous award badge stops being a dead-click. */}
+            <a
+              href="https://www.tripadvisor.es/Attraction_Review-g309226-d25394648-Reviews-Private_Travel_Costa_Rica-La_Fortuna_de_San_Carlos_Arenal_Volcano_National_Park_.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 block p-3 rounded-xl bg-gradient-to-br from-emerald-500/10 to-green-500/5 border border-emerald-500/30 hover:from-emerald-500/20 hover:to-green-500/10 transition-colors"
+            >
               <div className="flex items-center gap-2">
                 <span className="text-xl">🏆</span>
                 <div className="text-xs">
@@ -315,7 +338,7 @@ export default function Footer() {
                   <div className="text-gray-400">TripAdvisor 2025</div>
                 </div>
               </div>
-            </div>
+            </a>
           </motion.div>
         </div>
 

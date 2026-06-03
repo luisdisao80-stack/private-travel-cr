@@ -159,7 +159,7 @@ export default function PopularRoutes() {
         >
           <p className="text-gray-400 mb-5">
             {t.routes.noDestination}{" "}
-            <span className="text-amber-400 font-semibold">{t.routes.routesAvailable}</span>{" "}
+            <span className="text-white font-semibold">{t.routes.routesAvailable}</span>{" "}
             {t.routes.inCostaRica}
           </p>
           <Link href="/routes">

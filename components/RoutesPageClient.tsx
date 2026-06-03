@@ -332,7 +332,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="flex items-center gap-3 p-4 rounded-2xl bg-gray-900/40 border border-white/5 hover:border-amber-500/30 transition-colors"
+                className="flex items-center gap-3 p-4 rounded-2xl bg-gray-900/40 border border-white/5"
               >
                 <div
                   style={{ width: "44px", height: "44px" }}

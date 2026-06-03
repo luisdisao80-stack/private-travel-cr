@@ -88,9 +88,13 @@ export default function ReviewCards({ googleReviews = [] }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-2">
       {all.map((r) => (
+        // No hover-border: the card carries an interactive child
+        // (ExpandableReviewBody's "Read more" button), and a wrapping
+        // <a> would swallow the button click. The whole-card hover
+        // was misleading anyway — read the body, click the button.
         <article
           key={r.id}
-          className="flex flex-col rounded-2xl bg-gradient-to-br from-gray-900/70 to-black/70 border border-white/10 hover:border-amber-500/30 transition-colors p-6 backdrop-blur-sm"
+          className="flex flex-col rounded-2xl bg-gradient-to-br from-gray-900/70 to-black/70 border border-white/10 p-6 backdrop-blur-sm"
         >
           {/* Source + date */}
           <div className="flex items-center justify-between mb-3">

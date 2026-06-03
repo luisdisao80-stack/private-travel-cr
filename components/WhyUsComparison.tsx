@@ -282,23 +282,37 @@ export default function WhyUsComparison() {
           transition={{ delay: 0.4 }}
           className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-12"
         >
-          <div className="flex items-center gap-2 text-gray-400">
+          {/* The two Google-sourced stats link out to the Google reviews
+              page — both 5.0 ⭐ and the 190+ count are exactly what a
+              skeptical visitor wants to verify, and they read clickable
+              already. */}
+          <a
+            href={reviewStats.google.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-gray-400 hover:text-amber-400 transition-colors"
+          >
             <span className="text-2xl">⭐</span>
             <span className="text-sm">
               <strong className="text-white">{reviewStats.google.rating.toFixed(1)}</strong>{" "}
               {lang === "en" ? "on Google Reviews" : "en Google Reviews"}
             </span>
-          </div>
+          </a>
 
           <div className="w-px h-8 bg-white/10 hidden md:block" />
 
-          <div className="flex items-center gap-2 text-gray-400">
+          <a
+            href={reviewStats.google.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-gray-400 hover:text-amber-400 transition-colors"
+          >
             <span className="text-2xl">🚐</span>
             <span className="text-sm">
               <strong className="text-white">{reviewStats.google.count}+</strong>{" "}
               {lang === "en" ? "happy travelers" : "viajeros felices"}
             </span>
-          </div>
+          </a>
 
           <div className="w-px h-8 bg-white/10 hidden md:block" />
 

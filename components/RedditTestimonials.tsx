@@ -114,16 +114,20 @@ export default function RedditTestimonials() {
           </motion.p>
         </div>
 
-        {/* Quote cards */}
+        {/* Quote cards. The card has an amber hover-border that hints at
+            clickability; wrap the whole article in the Reddit thread
+            link so a click anywhere on the card resolves to the source
+            (avoids dead-clicks on the body, only "Read on Reddit" was
+            actionable before). */}
         <div className="grid md:grid-cols-2 gap-5 md:gap-6">
-          {TESTIMONIALS.map((t, i) => (
+          {TESTIMONIALS.map((t, i) => {
+            const card = (
             <motion.article
-              key={i}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
-              className="relative bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 md:p-8 hover:border-amber-500/40 transition-colors"
+              className="relative h-full bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 md:p-8 hover:border-amber-500/40 transition-colors"
             >
               {/* Decorative quote glyph */}
               <Quote
@@ -157,20 +161,29 @@ export default function RedditTestimonials() {
                     </span>
                   </div>
                   {t.url ? (
-                    <a
-                      href={t.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
-                    >
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 transition-colors">
                       {readOnReddit}
                       <ExternalLink size={11} />
-                    </a>
+                    </span>
                   ) : null}
                 </div>
               </div>
             </motion.article>
-          ))}
+            );
+            return t.url ? (
+              <a
+                key={i}
+                href={t.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                {card}
+              </a>
+            ) : (
+              <div key={i}>{card}</div>
+            );
+          })}
         </div>
       </div>
     </section>
