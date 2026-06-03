@@ -100,6 +100,26 @@ const ALIASES: Record<string, string[]> = {
     "bahía drake",
     "drake",
   ],
+  // Playa Panama sits in the same Culebra-Bay cluster as Hermosa, Coco
+  // and Papagayo. Travelers usually search it by the beach name; locals
+  // sometimes spell it with the accent.
+  "Playa Panama (Guanacaste)": [
+    "playa panama",
+    "playa panamá",
+    "panama beach",
+    "bahia panama",
+  ],
+  // Rio Perdido Thermal Resort — eco-luxury hot-springs property in the
+  // Miravalles geothermal area near Bagaces. International visitors
+  // search by hotel name or by 'Miravalles' (the volcano region).
+  "Rio Perdido Thermal Resort (Bagaces)": [
+    "rio perdido",
+    "río perdido",
+    "rio perdido thermal",
+    "rio perdido resort",
+    "miravalles",
+    "bagaces",
+  ],
 };
 
 // Locations que aparecen primero en el dropdown cuando no hay query. Travelers
