@@ -89,6 +89,17 @@ const ALIASES: Record<string, string[]> = {
     "puerto de caldera",
     "puntarenas centro",
   ],
+  // Sierpe is the gateway town to Bahía Drake / Corcovado boats — most
+  // tourists looking for it know it by the Drake-Bay name first. Aliases
+  // surface the route under all three search terms.
+  "Sierpe (Osa)": [
+    "sierpe",
+    "sierpe de osa",
+    "drake bay",
+    "bahia drake",
+    "bahía drake",
+    "drake",
+  ],
 };
 
 // Locations que aparecen primero en el dropdown cuando no hay query. Travelers
