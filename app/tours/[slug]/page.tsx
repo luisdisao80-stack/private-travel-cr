@@ -36,7 +36,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!tour) return { title: "Tour not found" };
 
   return {
-    title: tour.meta_title || `${tour.name} | Private Travel CR`,
+    // Layout already wraps page titles with the '%s | Private Travel CR'
+    // template, so appending it here was producing
+    // 'Tour Name | Private Travel CR | Private Travel CR' in the SERP.
+    // Return just the tour name; let the template add the brand once.
+    title: tour.meta_title || tour.name,
     description:
       tour.meta_description ||
       tour.short_description ||
