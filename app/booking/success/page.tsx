@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle2, Mail, MessageCircle } from "lucide-react";
+import { CheckCircle2, Mail, MessageCircle, Download } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WizardProgress from "@/components/book/WizardProgress";
@@ -96,8 +96,28 @@ export default async function BookingSuccessPage({
               </div>
             ) : null}
 
+            {/* The .pdf download is the fallback for customers whose inbox
+                routes our Resend email to spam (common on Hotmail / Bell-
+                south). They walk away with a printable confirmation
+                regardless of deliverability. */}
+            {booking ? (
+              <a
+                href={`/api/booking/${encodeURIComponent(booking.order_number)}/pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold transition mb-3"
+              >
+                <Download size={18} />
+                Download Booking Confirmation (PDF)
+              </a>
+            ) : null}
+
             <p className="text-gray-400 mb-6 text-sm">
-              We&apos;ll be in touch shortly by email and WhatsApp with the final pickup details.
+              We&apos;ll be in touch shortly by email and WhatsApp with the final pickup details.{" "}
+              <span className="text-gray-500 text-xs">
+                If you don&apos;t see our email within 5 minutes, please check your spam folder
+                and mark <span className="font-mono">bookings@privatetravelcr.com</span> as &ldquo;Not spam&rdquo;.
+              </span>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
