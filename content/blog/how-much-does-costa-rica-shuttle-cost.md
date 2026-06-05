@@ -1,6 +1,6 @@
 ---
-title: "How Much Does a Private Shuttle in Costa Rica Actually Cost? (2026 Prices)"
-description: "Real 2026 prices for private shuttles in Costa Rica — every popular route, what's included, what to watch for, and when shared shuttles or rental cars beat private."
+title: "Costa Rica Private Shuttle Cost in 2026 (Real Prices from SJO & LIR)"
+description: "Real 2026 prices for private shuttles in Costa Rica — exact rates from SJO and LIR airports to La Fortuna, Manuel Antonio, Monteverde, Tamarindo. Plus what's included, hidden fees to avoid, and when shared shuttles beat private."
 date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"

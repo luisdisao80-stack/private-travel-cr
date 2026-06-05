@@ -19,6 +19,63 @@ const nextConfig: NextConfig = {
       { source: "/shuttles", destination: "/routes", permanent: true },
       { source: "/shuttle-service", destination: "/routes", permanent: true },
       { source: "/our-fleet", destination: "/fleet", permanent: true },
+
+      // ---- Legacy blog URLs (the old site used /blog/post/<slug>) ----
+      // Search Console (2026-06-05) showed several of these still
+      // indexed with hundreds of impressions. Without these specific
+      // redirects, Next's default behaviour sent them all to /blog
+      // (the listing), which is a poor UX and tanks the SEO equity
+      // we'd otherwise inherit from the old URLs. Map each one to
+      // its modern counterpart so the link juice transfers.
+      {
+        source: "/blog/post/best-restaurants-in-la-fortuna",
+        destination: "/blog/best-restaurants-la-fortuna",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/la-fortuna-travel-guide",
+        destination: "/blog/la-fortuna-travel-guide",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/monteverde-travel-guide",
+        destination: "/blog/monteverde-travel-guide",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/top-10-things-la-fortuna",
+        destination: "/blog/top-10-things-la-fortuna",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/best-time-to-visit-costa-rica",
+        destination: "/blog/best-time-to-visit-costa-rica",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/manuel-antonio-travel-guide",
+        destination: "/blog/manuel-antonio-travel-guide",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/tamarindo-travel-guide",
+        destination: "/blog/tamarindo-travel-guide",
+        permanent: true,
+      },
+      {
+        source:
+          "/blog/post/5-best-activities-in-costa-rica-with-private-transportation-services",
+        destination: "/blog/costa-rica-7-day-itinerary",
+        permanent: true,
+      },
+      // Catch-all for any other unknown /blog/post/<x> URLs Google
+      // might still have. Falls back to the listing rather than 404
+      // so crawlers don't see error spikes while we discover them.
+      {
+        source: "/blog/post/:slug*",
+        destination: "/blog",
+        permanent: true,
+      },
     ];
   },
 
