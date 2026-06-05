@@ -112,12 +112,15 @@ export default async function BookingSuccessPage({
               </a>
             ) : null}
 
-            <p className="text-gray-400 mb-6 text-sm">
-              We&apos;ll be in touch shortly by email and WhatsApp with the final pickup details.{" "}
-              <span className="text-gray-500 text-xs">
-                If you don&apos;t see our email within 5 minutes, please check your spam folder
-                and mark <span className="font-mono">bookings@privatetravelcr.com</span> as &ldquo;Not spam&rdquo;.
-              </span>
+            <p className="text-gray-400 mb-3 text-sm">
+              We&apos;ll be in touch shortly by email and WhatsApp with the final pickup details.
+            </p>
+            {/* Red-tinted spam advisory — Diego asked for it to stand out
+                so customers actually notice it before they assume the
+                booking failed and message support. */}
+            <p className="text-red-400 mb-6 text-sm font-semibold">
+              ⚠️ If you don&apos;t see our email within 5 minutes, please check your spam folder
+              and mark <span className="font-mono">bookings@privatetravelcr.com</span> as &ldquo;Not spam&rdquo;.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
