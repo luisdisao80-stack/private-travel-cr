@@ -120,7 +120,9 @@ export default async function BookingSuccessPage({
                 booking failed and message support. */}
             <p className="text-red-400 mb-6 text-sm font-semibold">
               ⚠️ If you don&apos;t see our email within 5 minutes, please check your spam folder
-              and mark <span className="font-mono">bookings@privatetravelcr.com</span> as &ldquo;Not spam&rdquo;.
+              and mark{" "}
+              <span className="font-mono">bookings@privatetravelcr.com</span>
+              {" "}as &ldquo;Not spam&rdquo;.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
