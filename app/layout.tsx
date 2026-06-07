@@ -9,7 +9,6 @@ import Cart from "@/components/Cart";
 import { Analytics } from "@vercel/analytics/react";
 import ConsentGatedAnalytics from "@/components/ConsentGatedAnalytics";
 import CookieBanner from "@/components/CookieBanner";
-import MobileBookingBar from "@/components/MobileBookingBar";
 import { siteConfig } from "@/lib/site-config";
 import SchemaOrg from "@/components/SchemaOrg";
 
@@ -107,11 +106,6 @@ export default function RootLayout({
             <CartProvider>
               {children}
               <Cart />
-              {/* Mobile-only sticky "Book Now" + WhatsApp bar. Auto-hides
-                  on /book/* (user is already booking). Slides in after
-                  300px of scroll so it doesn't obscure the hero on first
-                  paint. */}
-              <MobileBookingBar />
             </CartProvider>
           </CurrencyProvider>
         </LanguageProvider>
