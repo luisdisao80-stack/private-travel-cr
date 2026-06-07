@@ -6,7 +6,6 @@ import { isPopularRoute } from "@/lib/popular-routes";
 import RouteSchema from "@/components/RouteSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
-import StickyBookCTA from "@/components/StickyBookCTA";
 import RelatedArticles from "@/components/RelatedArticles";
 import Price from "@/components/Price";
 
@@ -411,11 +410,6 @@ export default function RouteDetail({
           </Link>
         </section>
       </div>
-      <StickyBookCTA
-        origen={route.origen}
-        destino={route.destino}
-        priceFrom={route.precio1a6 ?? 0}
-      />
     </main>
   );
 }
