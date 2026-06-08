@@ -19,6 +19,7 @@ import { getAllPosts } from "@/lib/blog";
  * by roughly half and frees the main thread during the LCP window.
  */
 const TrustStrip = dynamic(() => import("@/components/TrustStrip"));
+const MeetDiego = dynamic(() => import("@/components/MeetDiego"));
 const Reviews = dynamic(() => import("@/components/Reviews"));
 const WhyUsComparison = dynamic(() => import("@/components/WhyUsComparison"));
 const ServiceComparison = dynamic(() => import("@/components/ServiceComparison"));
@@ -54,6 +55,12 @@ export default async function Home() {
           24/7 / Licensed". Four explicit answers to common pre-book
           objections, between the Hero and the Reviews block. */}
       <TrustStrip />
+
+      {/* Meet Diego — personal-story moment that differentiates a
+          family-run operator from faceless booking platforms. Sits
+          right after the trust strip so within 2 scrolls the visitor
+          knows "this is a real person with 20+ years of experience". */}
+      <MeetDiego />
 
       <Reviews
         googleReviews={google.reviews}
