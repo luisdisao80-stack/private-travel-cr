@@ -114,7 +114,7 @@ export default function AboutPage() {
               </p>
             </article>
 
-            {/* Chapter 2: 15 años */}
+            {/* Chapter 2: 16 años en empresas grandes */}
             <article className="relative pl-8 md:pl-12 border-l-2 border-amber-500/30">
               <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-amber-400 ring-4 ring-amber-400/20" />
               <div className="flex items-center gap-2 mb-3">

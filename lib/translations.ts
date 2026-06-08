@@ -38,10 +38,10 @@ export const translations = {
             "I entered the tourism industry in 2006, when I was still figuring out what I wanted to do with my life. What I learned in those early years stayed with me forever: transportation in Costa Rica is not about moving people from point A to point B. It's the very first impression a traveler gets of our country, and the very last memory they take home. That responsibility shaped me.",
         },
         chapter2: {
-          eyebrow: "15 Years of Learning",
+          eyebrow: "16 Years of Learning",
           title: "Two companies, one obsession",
           body:
-            "For nearly 15 years I worked at two of the most important transportation companies in Costa Rica. I learned operations, logistics, customer service, fleet management, every detail. But over time I noticed something was missing: the human touch. The personal care. The kind of attention a traveler who chose Costa Rica for their honeymoon, family vacation, or once-in-a-lifetime trip truly deserves.",
+            "For more than 15 years I worked at two of the most important transportation companies in Costa Rica. I learned operations, logistics, customer service, fleet management, every detail. But over time I noticed something was missing: the human touch. The personal care. The kind of attention a traveler who chose Costa Rica for their honeymoon, family vacation, or once-in-a-lifetime trip truly deserves.",
         },
         chapter3: {
           title: "The day everything changed",
@@ -80,11 +80,11 @@ export const translations = {
         badge: "✦ MEET THE TEAM",
         title: "The people behind every ride",
         subtitle:
-          "Two cousins, 15+ years driving travelers across Costa Rica, and a personally trained team of bilingual drivers who treat every guest like family.",
+          "Two cousins, 20+ years driving travelers across Costa Rica, and a personally trained team of bilingual drivers who treat every guest like family.",
         founder: {
           name: "Diego Salas Oviedo",
           role: "Founder, Operator & Lead Driver",
-          bio: "Driving travelers across Costa Rica since 2006. After almost 15 years at two of the country's largest transportation companies, Diego founded Private Travel CR in 2022. He personally answers every WhatsApp, takes every booking, trains every driver, and still drives several routes per week from La Fortuna. If you message us, you're talking directly to Diego.",
+          bio: "Driving travelers across Costa Rica since 2006 — more than 20 years on the road. After 16 years at two of the country's largest transportation companies, Diego founded Private Travel CR in 2022. He personally answers every WhatsApp, takes every booking, trains every driver, and still drives several routes per week from La Fortuna. If you message us, you're talking directly to Diego.",
         },
         coFounder: {
           name: "Anthony",
@@ -693,10 +693,10 @@ export const translations = {
             "Entré al turismo en el 2006, cuando todavía estaba descubriendo qué quería hacer con mi vida. Lo que aprendí en esos primeros años se me quedó para siempre: el transporte en Costa Rica no se trata de mover personas de un punto A a un punto B. Es la primera impresión que un viajero tiene de nuestro país, y el último recuerdo que se lleva a casa. Esa responsabilidad me marcó.",
         },
         chapter2: {
-          eyebrow: "15 Años de Aprendizaje",
+          eyebrow: "16 Años de Aprendizaje",
           title: "Dos empresas, una misma obsesión",
           body:
-            "Durante casi 15 años trabajé en dos de las empresas de transporte más importantes de Costa Rica. Aprendí operaciones, logística, servicio al cliente, manejo de flota, cada detalle. Pero con el tiempo noté que algo faltaba: el toque humano. La atención personal. El tipo de cuidado que un viajero que escogió Costa Rica para su luna de miel, sus vacaciones familiares o el viaje de su vida realmente merece.",
+            "Durante más de 15 años trabajé en dos de las empresas de transporte más importantes de Costa Rica. Aprendí operaciones, logística, servicio al cliente, manejo de flota, cada detalle. Pero con el tiempo noté que algo faltaba: el toque humano. La atención personal. El tipo de cuidado que un viajero que escogió Costa Rica para su luna de miel, sus vacaciones familiares o el viaje de su vida realmente merece.",
         },
         chapter3: {
           title: "El día que todo cambió",
@@ -735,11 +735,11 @@ export const translations = {
         badge: "✦ CONOCÉ AL EQUIPO",
         title: "Las personas detrás de cada viaje",
         subtitle:
-          "Dos primos, más de 15 años manejando viajeros por Costa Rica, y un equipo de choferes bilingües entrenados personalmente que tratan a cada huésped como familia.",
+          "Dos primos, más de 20 años manejando viajeros por Costa Rica, y un equipo de choferes bilingües entrenados personalmente que tratan a cada huésped como familia.",
         founder: {
           name: "Diego Salas Oviedo",
           role: "Fundador, Operador y Chofer Principal",
-          bio: "Manejando viajeros por Costa Rica desde 2006. Después de casi 15 años en dos de las empresas de transporte más grandes del país, Diego fundó Private Travel CR en 2022. Él contesta personalmente cada WhatsApp, toma cada reserva, entrena a cada chofer del equipo y todavía maneja varias rutas por semana desde La Fortuna. Si nos escribís, hablás directamente con Diego.",
+          bio: "Manejando viajeros por Costa Rica desde 2006 — más de 20 años en la ruta. Después de 16 años en dos de las empresas de transporte más grandes del país, Diego fundó Private Travel CR en 2022. Él contesta personalmente cada WhatsApp, toma cada reserva, entrena a cada chofer del equipo y todavía maneja varias rutas por semana desde La Fortuna. Si nos escribís, hablás directamente con Diego.",
         },
         coFounder: {
           name: "Anthony",
