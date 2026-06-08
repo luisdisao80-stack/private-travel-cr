@@ -135,7 +135,7 @@ export default function MeetDiego() {
             <div className="mt-8 flex items-end gap-4 border-t border-white/10 pt-6">
               <div>
                 <div className="text-2xl font-bold text-white" style={{ fontFamily: "cursive" }}>
-                  Diego Salas Oviedo
+                  Diego Salas
                 </div>
                 <div className="text-sm text-white/50 mt-1">
                   {isEn ? "Founder & Lead Driver · La Fortuna" : "Fundador y Chofer Principal · La Fortuna"}
