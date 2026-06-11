@@ -242,12 +242,37 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
         {view === "checkout" ? (
           <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_440px] gap-8 lg:gap-10">
             <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
-              <BookingForm onBack={() => setView("configuring")} />
+              <BookingForm
+                onBack={() => {
+                  // Same reset as the desktop "Add another trip" CTA —
+                  // both surfaces are the user saying "I want a fresh
+                  // calculator", not "edit the trip already in my cart".
+                  setHeroFrom("");
+                  setHeroTo("");
+                  setHeroPickupHotel(null);
+                  setHeroDropoffHotel(null);
+                  pushRouteParams("", "", null, null);
+                  setView("configuring");
+                }}
+              />
             </div>
             <OrderSummarySidebar
               items={items}
               totalPrice={totalPrice}
-              onAddAnotherTrip={() => setView("configuring")}
+              onAddAnotherTrip={() => {
+                // Reset the hero search + URL params so the visitor lands
+                // on a clean calculator instead of the previous trip's
+                // route pre-filled at the top. Without this, the hero
+                // would still show "SJO -> La Fortuna" from their first
+                // leg, which is confusing when they're trying to configure
+                // a completely different second trip.
+                setHeroFrom("");
+                setHeroTo("");
+                setHeroPickupHotel(null);
+                setHeroDropoffHotel(null);
+                pushRouteParams("", "", null, null);
+                setView("configuring");
+              }}
             />
           </div>
         ) : (
