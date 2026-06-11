@@ -26,6 +26,7 @@ import { formatPrice } from "@/lib/currency";
 type Props = {
   items: CartItem[];
   totalPrice: number;
+  onAddAnotherTrip?: () => void;
 };
 
 function vehicleImage(id?: CartItem["vehicleId"]): string | null {
@@ -61,7 +62,7 @@ const INCLUDED = [
   { icon: CheckCircle2, label: "No hidden fees" },
 ];
 
-export default function OrderSummarySidebar({ items, totalPrice }: Props) {
+export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTrip }: Props) {
   const [openIncluded, setOpenIncluded] = useState(false);
   const { currency, hydrated } = useCurrency();
   const showCurrencyHint = hydrated && currency !== "USD";
@@ -143,17 +144,29 @@ export default function OrderSummarySidebar({ items, totalPrice }: Props) {
               to the calculator was the small "Back" link at the top of
               BookingForm — easy to miss. Routes to /book (without
               ?checkout=1) which renders the calculator. */}
-          {/* ?add=1 tells BookWizardClient "force the configuring view
-              even though the cart has items" — without it, the hydration
-              effect's "cart not empty → bounce to checkout" rule sends
-              the visitor right back to where they came from. */}
-          <Link
-            href="/book?add=1"
-            className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
-          >
-            <Plus size={16} />
-            <span>Add another trip</span>
-          </Link>
+          {/* When BookWizardClient passes onAddAnotherTrip we call it
+              directly — bypasses URL navigation entirely so the various
+              "cart has items → bounce to checkout" rules in the parent's
+              hydration effect can't fight us. Falls back to a Link with
+              ?add=1 for any consumer that doesn't wire the callback. */}
+          {onAddAnotherTrip ? (
+            <button
+              type="button"
+              onClick={onAddAnotherTrip}
+              className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
+            >
+              <Plus size={16} />
+              <span>Add another trip</span>
+            </button>
+          ) : (
+            <Link
+              href="/book?add=1"
+              className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
+            >
+              <Plus size={16} />
+              <span>Add another trip</span>
+            </Link>
+          )}
 
           <div className="pt-5 border-t border-amber-500/10">
             <div className="flex items-end justify-between">

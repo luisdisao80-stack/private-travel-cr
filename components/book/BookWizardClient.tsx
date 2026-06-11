@@ -244,7 +244,11 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
             <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
               <BookingForm onBack={() => setView("configuring")} />
             </div>
-            <OrderSummarySidebar items={items} totalPrice={totalPrice} />
+            <OrderSummarySidebar
+              items={items}
+              totalPrice={totalPrice}
+              onAddAnotherTrip={() => setView("configuring")}
+            />
           </div>
         ) : (
           <div className="max-w-2xl mx-auto">
