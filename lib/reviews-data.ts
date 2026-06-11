@@ -71,7 +71,13 @@ export const reviewStats = {
   google: {
     rating: 5.0,
     count: 190,
-    url: "https://g.co/kgs/cWkFwFM",
+    // Was "https://g.co/kgs/cWkFwFM" — Google's KG short URL silently
+    // failed on iOS Safari and various in-app browsers (Instagram, FB),
+    // doing nothing on tap. Switched to the canonical search URL keyed
+    // on our Place ID (same one in lib/google-reviews.ts), which opens
+    // directly to the reviews list everywhere. Same Place ID is used
+    // in the footer link, so we know it resolves reliably.
+    url: "https://search.google.com/local/reviews?placeid=ChIJl0aOiIQNoI8R6KcwnmmDEw8",
   },
   tripadvisor: {
     rating: 5.0,

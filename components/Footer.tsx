@@ -79,7 +79,7 @@ export default function Footer() {
                 the conspicuous amber-bordered "5.0 ★" block resolves to a
                 real destination instead of being a dead-click. */}
             <a
-              href="https://g.co/kgs/cWkFwFM"
+              href="https://search.google.com/local/reviews?placeid=ChIJl0aOiIQNoI8R6KcwnmmDEw8"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors"
