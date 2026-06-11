@@ -1,12 +1,15 @@
--- +$5 on the 1-6 passenger tier only for every route between LIR
--- (Liberia airport) and the Guanacaste beach zone Diego works most:
+-- +$5 on BOTH the 1-5 (precio1a6 column) and 6-9 (precio7a9 column)
+-- passenger tiers for every route between LIR (Liberia airport) and the
+-- Guanacaste beach zone Diego works most:
 --   Tamarindo, Flamingo, Avellanas, Conchal, Brasilito,
 --   Las Catalinas, Potrero, Playa Grande.
 --
 -- Applies in BOTH directions (LIR -> beach AND beach -> LIR).
 --
--- Larger pax tiers (7-9, 10-12, 13-18) intentionally untouched — Diego
--- only wanted the entry-level family-of-six rate bumped.
+-- Diego's reasoning: the beach corridor costs more to run (fuel, road
+-- wear, peak-demand zone), so every passenger tier up to 9 absorbs the
+-- $5 bump. Larger tiers (10-12, 13-18) intentionally untouched — those
+-- groups are coach-van logistics, different cost structure.
 --
 -- Safe to re-run? No. Each run adds +$5. Run ONCE. If you accidentally
 -- run twice, undo with the same WHERE clause and -5.
@@ -17,7 +20,9 @@
 -- otherwise visitors will keep seeing the old prices.
 
 UPDATE routes
-SET precio1a6 = precio1a6 + 5
+SET
+  precio1a6 = precio1a6 + 5,
+  precio7a9 = precio7a9 + 5
 WHERE
   (
     (origen ILIKE '%liberia%' OR origen ILIKE '%LIR%')
