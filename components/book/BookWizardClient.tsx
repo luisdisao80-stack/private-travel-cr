@@ -111,10 +111,21 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       }
       return;
     }
-    // After Add to Cart: bounce the visitor to /routes so they can pick
-    // the next route. From there, "Continue to booking" leads to checkout.
+    // After Add to Cart: the visitor's next move depends on whether the
+    // cart was empty before. This was a major friction point — the
+    // previous behavior bounced EVERYONE to /routes (a 90+ route listing)
+    // after their first add, which confused first-time bookers who just
+    // wanted to pay for one shuttle. New behavior:
+    //   prev=0  → /book?checkout=1   (vast majority — they want to pay now)
+    //   prev>0  → /routes            (they're building a multi-leg trip,
+    //                                 the listing is a useful browsing
+    //                                 surface to find their next leg)
     if (items.length > prevItemsCount.current) {
-      router.push("/routes");
+      if (prevItemsCount.current === 0) {
+        router.push("/book?checkout=1");
+      } else {
+        router.push("/routes");
+      }
       return;
     }
     // Cart just emptied (cleared or last trip removed) — send them back to

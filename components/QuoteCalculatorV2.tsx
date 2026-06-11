@@ -30,7 +30,7 @@ function generateTimeOptions(): { value: string; label: string }[] {
 const TIME_OPTIONS = generateTimeOptions();
 
 export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
-  const { addItem: cartAddItem } = useCart();
+  const { addItem: cartAddItem, itemCount: cartItemCount } = useCart();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [pickupAddress, setPickupAddress] = useState("");
@@ -544,7 +544,13 @@ export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
             }}
             className="block w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-4 rounded-lg text-center transition-colors"
           >
-            <span>Add to Cart</span>
+            {/* CTA wording is the most-clicked moment of the funnel —
+                "Add to Cart" felt like ecommerce and confused first-time
+                bookers who just wanted to pay. We rename it based on
+                cart state:
+                  empty cart  → "Continue" (90% of bookings — one shuttle)
+                  has items   → "Add another trip" (multi-leg planners) */}
+            <span>{cartItemCount === 0 ? "Continue" : "Add another trip"}</span>
             <ArrowRight size={16} className="inline ml-1" />
           </button>
         </div>
