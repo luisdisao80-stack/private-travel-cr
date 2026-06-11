@@ -81,13 +81,19 @@ export default function MeetDiego() {
 
       <div className="max-w-6xl mx-auto relative">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left column — story */}
+          {/* Left column — story.
+              Mobile order: story FIRST so the visitor reads the headline
+              "20+ years driving Costa Rica" + the founder paragraph before
+              they hit the photo collage. Earlier we put photos first on
+              mobile (eye-candy), but Diego found that the headline lands
+              the message faster — the photos then act as proof, not
+              distraction. */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="order-2 lg:order-1"
+            className="order-1 lg:order-1"
           >
             <div className="text-xs font-bold text-amber-400 tracking-widest uppercase mb-4">
               {isEn ? "✦ MEET DIEGO" : "✦ CONOCÉ A DIEGO"}
@@ -163,13 +169,17 @@ export default function MeetDiego() {
             </div>
           </motion.div>
 
-          {/* Right column — Polaroid photo collage */}
+          {/* Right column — Polaroid photo collage.
+              Mobile order: photos AFTER the story so they read as proof
+              of the words above ("real customers, real trips") rather
+              than as decoration the visitor has to scroll past to reach
+              the message. */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="order-1 lg:order-2"
+            className="order-2 lg:order-2"
           >
             <div className="grid grid-cols-2 gap-4 md:gap-6">
               {PHOTOS.map((photo, idx) => (
