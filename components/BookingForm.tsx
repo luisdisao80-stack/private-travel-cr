@@ -21,6 +21,7 @@ import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
 import { isAirport, VIP_EXTRA_USD } from "@/lib/quote-helpers";
 import { events } from "@/lib/analytics";
+import { getAttribution } from "@/lib/attribution";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { formatPrice } from "@/lib/currency";
 import Price from "@/components/Price";
@@ -115,6 +116,10 @@ export default function BookingForm({ onBack }: BookingFormProps) {
           },
           items: decoratedItems,
           totalUsd: totalPrice,
+          // First-touch marketing attribution captured on the visitor's
+          // landing page (lib/attribution.ts). The API merges this with
+          // server-side geo data before persisting to bookings.attribution.
+          attribution: getAttribution(),
         }),
       });
 

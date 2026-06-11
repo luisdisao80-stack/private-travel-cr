@@ -18,12 +18,30 @@ type Customer = {
   notes?: string;
 };
 
+// Marketing attribution payload sent by the client (lib/attribution.ts).
+// Every field is optional — we merge with server-side geo data and store
+// whatever we have. Never trust the client UA / referrer for security
+// decisions, this is for analytics only.
+type ClientAttribution = {
+  referrer?: string;
+  referrer_domain?: string;
+  landing_page?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  first_seen_at?: string;
+  user_agent?: string;
+};
+
 // Shuttle bookings carry the full cart items array (existing behavior).
 type ShuttleBody = {
   kind?: "shuttle";
   customer: Customer;
   items: CartItem[];
   totalUsd: number;
+  attribution?: ClientAttribution;
 };
 
 // Tour bookings carry a single tour reference + pax counts; the server
@@ -41,6 +59,7 @@ type TourBody = {
     children: number;
   };
   totalUsd: number;
+  attribution?: ClientAttribution;
 };
 
 type StartPaymentBody = ShuttleBody | TourBody;
@@ -67,6 +86,51 @@ function splitName(full: string): { first: string; last: string } {
   const parts = full.trim().split(/\s+/);
   if (parts.length === 1) return { first: parts[0], last: parts[0] };
   return { first: parts[0], last: parts.slice(1).join(" ") };
+}
+
+// Merge the client-provided attribution payload with server-side geo
+// data and infer a coarse device class. Returns `null` if there's no
+// useful info to store (keeps the JSONB column tidy).
+//
+// Vercel adds these headers to every request:
+//   x-vercel-ip-country  → "US", "CR", etc. (ISO 3166-1 alpha-2)
+//   x-vercel-ip-city     → e.g. "Dallas"
+//   x-vercel-ip-country-region → e.g. "TX"
+//
+// We trust these implicitly because they come from Vercel's edge, not
+// the client. The user-agent string is best-effort device classification.
+function buildAttribution(
+  req: NextRequest,
+  client?: ClientAttribution,
+): Record<string, unknown> | null {
+  const country = req.headers.get("x-vercel-ip-country") || undefined;
+  const city = req.headers.get("x-vercel-ip-city") || undefined;
+  const region = req.headers.get("x-vercel-ip-country-region") || undefined;
+
+  // Coarse device classification from the UA string. We don't need
+  // perfect accuracy — "mobile vs desktop" is what matters for Diego's
+  // analysis. Tablets get bucketed as tablet via iPad-specific check.
+  const ua = client?.user_agent || req.headers.get("user-agent") || "";
+  let device: "mobile" | "tablet" | "desktop" = "desktop";
+  if (/iPad|Android(?!.*Mobile)|Tablet/i.test(ua)) device = "tablet";
+  else if (/Mobi|iPhone|Android.*Mobile/i.test(ua)) device = "mobile";
+
+  const merged: Record<string, unknown> = {
+    ...(client ?? {}),
+    country,
+    city,
+    region,
+    device,
+  };
+
+  // Strip out keys with no value so we don't clutter the JSONB with
+  // a bunch of `null`/`undefined` entries.
+  for (const k of Object.keys(merged)) {
+    const v = merged[k];
+    if (v === undefined || v === null || v === "") delete merged[k];
+  }
+
+  return Object.keys(merged).length > 0 ? merged : null;
 }
 
 function siteOrigin(req: NextRequest): string {
@@ -173,6 +237,8 @@ export async function POST(req: NextRequest) {
 
   // Persist the pending booking first. If Tilopay later confirms via redirect,
   // we update this row by orderNumber.
+  const attribution = buildAttribution(req, body.attribution);
+
   const { error: insertErr } = await supabaseAdmin.from("bookings").insert({
     order_number: orderNumber,
     customer_name: body.customer.name,
@@ -186,6 +252,7 @@ export async function POST(req: NextRequest) {
     total_usd: totalUsd,
     currency: "USD",
     status: "pending",
+    attribution,
     ...bookingRow,
   });
   if (insertErr) {

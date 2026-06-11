@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText } from "lucide-react";
+import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import type { CartItem } from "@/lib/CartContext";
 import {
@@ -24,7 +24,7 @@ export default async function AdminBookingDetailPage({ params }: Props) {
   const { data, error } = await supabaseAdmin
     .from("bookings")
     .select(
-      "order_number, customer_name, customer_email, customer_phone, customer_hotel, flight_number, flight_time, notes, items, total_usd, currency, status, created_at, reminder_sent_at, tilopay_auth, tilopay_last4"
+      "order_number, customer_name, customer_email, customer_phone, customer_hotel, flight_number, flight_time, notes, items, total_usd, currency, status, created_at, reminder_sent_at, tilopay_auth, tilopay_last4, attribution"
     )
     .eq("order_number", orderNumber)
     .maybeSingle();
@@ -259,6 +259,8 @@ export default async function AdminBookingDetailPage({ params }: Props) {
         )}
       </div>
 
+      <AttributionCard attribution={data.attribution as Record<string, unknown> | null} />
+
       <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5">
         <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">
           Change status
@@ -308,6 +310,175 @@ function Row({
         {label}
       </div>
       <div className="flex-1 min-w-0">{value}</div>
+    </div>
+  );
+}
+
+// "Where did this booking come from?" card. Renders nothing for legacy
+// bookings (placed before the attribution column existed) so the admin
+// stays clean. Bookings going forward will show the full provenance.
+function AttributionCard({
+  attribution,
+}: {
+  attribution: Record<string, unknown> | null;
+}) {
+  if (!attribution || Object.keys(attribution).length === 0) return null;
+
+  const get = (k: string) => {
+    const v = attribution[k];
+    return typeof v === "string" && v ? v : null;
+  };
+
+  const referrerDomain = get("referrer_domain");
+  const landingPage = get("landing_page");
+  const utmSource = get("utm_source");
+  const utmMedium = get("utm_medium");
+  const utmCampaign = get("utm_campaign");
+  const utmContent = get("utm_content");
+  const utmTerm = get("utm_term");
+  const country = get("country");
+  const city = get("city");
+  const region = get("region");
+  const device = get("device");
+  const firstSeenAt = get("first_seen_at");
+  const userAgent = get("user_agent");
+
+  // Country flag emoji from ISO 3166 alpha-2 (e.g. "US" → 🇺🇸). Falls back
+  // to the raw code if anything goes sideways (e.g. unicode glyph hidden).
+  const flag =
+    country && country.length === 2
+      ? String.fromCodePoint(
+          ...country
+            .toUpperCase()
+            .split("")
+            .map((c) => 0x1f1e6 + (c.charCodeAt(0) - 65)),
+        )
+      : "";
+
+  const geo = [city, region, country].filter(Boolean).join(", ");
+  const hasUtm = utmSource || utmMedium || utmCampaign || utmContent || utmTerm;
+
+  return (
+    <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mb-6">
+      <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 inline-flex items-center gap-2">
+        <TrendingUp size={14} className="text-amber-400" />
+        Where this booking came from
+      </h2>
+      <div className="space-y-3 text-sm">
+        {referrerDomain && (
+          <Row
+            label="Source"
+            value={
+              <span className="inline-flex items-center gap-1.5">
+                <Globe size={12} className="text-gray-500" />
+                <span className="font-medium">
+                  {referrerDomain === "direct" ? "Direct / typed URL" : referrerDomain}
+                </span>
+              </span>
+            }
+          />
+        )}
+        {landingPage && (
+          <Row
+            label="Landed on"
+            value={
+              <span className="inline-flex items-center gap-1.5">
+                <MapPinned size={12} className="text-gray-500" />
+                <code className="text-xs bg-black/40 px-1.5 py-0.5 rounded">
+                  {landingPage}
+                </code>
+              </span>
+            }
+          />
+        )}
+        {hasUtm && (
+          <Row
+            label="UTM"
+            value={
+              <div className="flex flex-wrap gap-1.5 text-xs">
+                {utmSource && (
+                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                    source: {utmSource}
+                  </span>
+                )}
+                {utmMedium && (
+                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                    medium: {utmMedium}
+                  </span>
+                )}
+                {utmCampaign && (
+                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                    campaign: {utmCampaign}
+                  </span>
+                )}
+                {utmContent && (
+                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                    content: {utmContent}
+                  </span>
+                )}
+                {utmTerm && (
+                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                    term: {utmTerm}
+                  </span>
+                )}
+              </div>
+            }
+          />
+        )}
+        {geo && (
+          <Row
+            label="Location"
+            value={
+              <span className="inline-flex items-center gap-1.5">
+                {flag && <span className="text-base leading-none">{flag}</span>}
+                <span>{geo}</span>
+              </span>
+            }
+          />
+        )}
+        {device && (
+          <Row
+            label="Device"
+            value={
+              <span className="inline-flex items-center gap-1.5 capitalize">
+                <Smartphone size={12} className="text-gray-500" />
+                {device}
+              </span>
+            }
+          />
+        )}
+        {firstSeenAt && (
+          <Row
+            label="First seen"
+            value={
+              <span className="text-xs text-gray-400">
+                {(() => {
+                  try {
+                    return formatCRDateTime(new Date(firstSeenAt));
+                  } catch {
+                    return firstSeenAt;
+                  }
+                })()}
+              </span>
+            }
+          />
+        )}
+        {userAgent && (
+          <Row
+            label="UA"
+            value={
+              <details className="text-xs text-gray-500">
+                <summary className="cursor-pointer hover:text-gray-300">
+                  Show raw user-agent
+                </summary>
+                <code className="block mt-1 break-all bg-black/40 p-2 rounded">
+                  {userAgent}
+                </code>
+              </details>
+            }
+          />
+        )}
+      </div>
     </div>
   );
 }

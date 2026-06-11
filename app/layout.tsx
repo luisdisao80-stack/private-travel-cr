@@ -11,6 +11,7 @@ import ConsentGatedAnalytics from "@/components/ConsentGatedAnalytics";
 import CookieBanner from "@/components/CookieBanner";
 import { siteConfig } from "@/lib/site-config";
 import SchemaOrg from "@/components/SchemaOrg";
+import AttributionCapture from "@/components/AttributionCapture";
 
 // LCP perf: ship only one webfont (Inter). Geist Sans was unused; Geist
 // Mono was only referenced by `font-mono` on the booking success/error
@@ -101,6 +102,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SchemaOrg />
+        <AttributionCapture />
         <LanguageProvider>
           <CurrencyProvider>
             <CartProvider>
