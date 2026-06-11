@@ -22,6 +22,11 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   const searchParams = useSearchParams();
   const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
   const wantsCheckout = searchParams.get("checkout") === "1";
+  // `?add=1` is set by the "Add another trip" CTA in the cart sidebar.
+  // Without it, the hydration effect below sees the populated cart and
+  // bounces the visitor right back to the checkout view they came from —
+  // the very thing they were trying to leave to add a new leg.
+  const wantsAdd = searchParams.get("add") === "1";
 
   // Two views on /book:
   //   configuring – QuoteCalculator (pick a route, add to cart)
@@ -31,7 +36,9 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   // initial view from `items.length` synchronously. Start in 'configuring'
   // (or 'checkout' if the URL explicitly asked for it) and let the
   // post-hydration effect promote the view if the cart has items.
-  const [view, setView] = useState<View>(wantsCheckout ? "checkout" : "configuring");
+  const [view, setView] = useState<View>(
+    wantsCheckout && !wantsAdd ? "checkout" : "configuring",
+  );
   const prevItemsCount = useRef(0);
   const settledFromHydration = useRef(false);
 
@@ -89,12 +96,16 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   // every time wantsCheckout flips fixes both directions (cart→checkout
   // and add-another-trip→configuring).
   useEffect(() => {
-    if (wantsCheckout) {
+    // `?add=1` overrides everything — visitor explicitly wants to
+    // configure another trip even if the cart is non-empty.
+    if (wantsAdd) {
+      setView("configuring");
+    } else if (wantsCheckout) {
       setView("checkout");
     } else if (hasUrlRoute) {
       setView("configuring");
     }
-  }, [wantsCheckout, hasUrlRoute]);
+  }, [wantsCheckout, wantsAdd, hasUrlRoute]);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -102,11 +113,13 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       settledFromHydration.current = true;
       prevItemsCount.current = items.length;
       // First settle:
+      //   - ?add=1 → configuring (visitor wants to add another trip,
+      //              overrides the cart-has-items → checkout rule below)
       //   - ?from=&to= → configuring (visitor explicitly picked a new route)
       //   - ?checkout=1 → checkout (initial state already set this)
       //   - no params + cart has items → checkout (returning to finalize)
       //   - no params + empty cart → configuring (default)
-      if (!hasUrlRoute && !wantsCheckout && items.length > 0) {
+      if (!wantsAdd && !hasUrlRoute && !wantsCheckout && items.length > 0) {
         setView("checkout");
       }
       return;
@@ -136,7 +149,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       return;
     }
     prevItemsCount.current = items.length;
-  }, [items.length, hydrated, hasUrlRoute, wantsCheckout, router]);
+  }, [items.length, hydrated, hasUrlRoute, wantsCheckout, wantsAdd, router]);
 
   // The cart drawer auto-opens on addItem; on /book the cart is reachable
   // through the navbar icon, so close the drawer to keep the page calm.

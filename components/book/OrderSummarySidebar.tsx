@@ -143,8 +143,12 @@ export default function OrderSummarySidebar({ items, totalPrice }: Props) {
               to the calculator was the small "Back" link at the top of
               BookingForm — easy to miss. Routes to /book (without
               ?checkout=1) which renders the calculator. */}
+          {/* ?add=1 tells BookWizardClient "force the configuring view
+              even though the cart has items" — without it, the hydration
+              effect's "cart not empty → bounce to checkout" rule sends
+              the visitor right back to where they came from. */}
           <Link
-            href="/book"
+            href="/book?add=1"
             className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
           >
             <Plus size={16} />
