@@ -152,13 +152,26 @@ export default function BookingForm({ onBack }: BookingFormProps) {
       animate={{ opacity: 1, y: 0 }}
       className="p-5 md:p-6 space-y-6"
     >
-      <button
-        onClick={onBack}
-        className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-amber-400 transition-colors"
-      >
-        <ArrowLeft size={14} />
-        Back
-      </button>
+      {/* Header row — explicit "+ Add another trip" on mobile (sidebar
+          hidden) so multi-leg planners aren't stuck. The old "Back"
+          label was ambiguous: easy to read as "abandon booking" rather
+          than "add another shuttle to this booking". */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-amber-400 transition-colors"
+        >
+          <ArrowLeft size={14} />
+          Back
+        </button>
+        <button
+          onClick={onBack}
+          className="lg:hidden inline-flex items-center gap-1.5 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-3 py-1.5 text-xs text-amber-300 hover:text-amber-200 transition-colors"
+        >
+          <span className="text-base leading-none">+</span>
+          Add another trip
+        </button>
+      </div>
 
       {/* One card per cart item — addresses, service type, flight all per-trip. */}
       <section className="space-y-4">

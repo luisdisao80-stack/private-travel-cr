@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Calendar,
   Clock,
@@ -15,6 +16,7 @@ import {
   Briefcase,
   Coffee,
   CheckCircle2,
+  Plus,
 } from "lucide-react";
 import type { CartItem } from "@/lib/CartContext";
 import Price from "@/components/Price";
@@ -134,6 +136,20 @@ export default function OrderSummarySidebar({ items, totalPrice }: Props) {
               );
             })}
           </div>
+
+          {/* "Add another trip" — explicit CTA so visitors building a
+              multi-leg booking from the checkout sidebar have an obvious
+              way to add another shuttle. Without it the only path back
+              to the calculator was the small "Back" link at the top of
+              BookingForm — easy to miss. Routes to /book (without
+              ?checkout=1) which renders the calculator. */}
+          <Link
+            href="/book"
+            className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
+          >
+            <Plus size={16} />
+            <span>Add another trip</span>
+          </Link>
 
           <div className="pt-5 border-t border-amber-500/10">
             <div className="flex items-end justify-between">
