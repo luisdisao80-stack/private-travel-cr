@@ -17,14 +17,20 @@ export function isAirport(locationName: string): boolean {
   return AIRPORT_NAMES.includes(locationName);
 }
 
+// Tier boundaries (set 2026-06-11): Staria caps at 5, Hiace covers 6-9.
+// The Supabase column names `precio1a6` and `precio7a9` are now misleading
+// labels (precio1a6 actually holds the 1-5 price, precio7a9 holds the
+// 6-9 price) but we kept them to avoid a destructive rename + redeploy
+// against thousands of route rows. Treat the column names as internal
+// identifiers; user-facing copy below uses 1-5 / 6-9 throughout.
 export function getVehicleForPax(totalPax: number): VehicleType {
-  if (totalPax <= 6) return "staria";
+  if (totalPax <= 5) return "staria";
   if (totalPax <= 9) return "hiace";
   return "maxus";
 }
 
 export function getPriceForGroupSize(route: Route, totalPax: number): number {
-  if (totalPax <= 6) {
+  if (totalPax <= 5) {
     return route.precio1a6 || 0;
   }
   if (totalPax <= 9) {

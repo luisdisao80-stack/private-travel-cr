@@ -52,7 +52,7 @@ ${siteConfig.name} is a Costa Rica-based private shuttle operator running door-t
 
 - [Home](${url}/)
 - [About](${url}/about)
-- [Fleet](${url}/fleet) — Hyundai Staria (1–6 pax), Toyota Hiace (7–9 pax), Maxus V90 (10–18 pax)
+- [Fleet](${url}/fleet) — Hyundai Staria (1–5 pax), Toyota Hiace (6–9 pax), Maxus V90 (10–18 pax)
 - [Routes](${url}/routes) — full searchable list of 1,200+ origin/destination pairs
 - [Blog](${url}/blog)
 - [Contact](${url}/contact)

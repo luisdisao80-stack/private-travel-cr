@@ -27,7 +27,7 @@ The "scenic" option. A van picks you up in La Fortuna, drives 30 minutes to a do
 
 **Door-to-door from your La Fortuna hotel to your Monteverde hotel.** We drive around the lake on Route 142, a paved road most of the way with a section of well-graded gravel near the end. Stops on request — many travelers ask to stop at the Tronadora viewpoint over the lake.
 
-- **Cost:** $255 USD for 1–6 passengers. Larger vehicles available for groups of 7+ — see the route page for tier pricing.
+- **Cost:** $255 USD for 1–5 passengers. Larger vehicles available for groups of 6+ — see the route page for tier pricing.
 - **Time:** 3h to 3h30min direct.
 - **Pros:** Door-to-door, no schedule, no luggage juggling, can stop wherever you want, private vehicle, child seats free.
 - **Cons:** Most expensive option for solo travelers.

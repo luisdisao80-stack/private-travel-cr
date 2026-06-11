@@ -17,7 +17,7 @@ Here are your four real options.
 
 **Door-to-door from LIR to your hotel, villa, or Airbnb in Tamarindo.** Driver meets you outside arrivals with your name on a sign, loads luggage, drives you straight there. Free child seats on request, bottled water, WiFi, and we track your flight in case it's delayed.
 
-- **Cost:** $130 USD for 1–6 passengers. Larger vehicles available for groups of 7+ — see the route page for tier pricing.
+- **Cost:** $135 USD for 1–5 passengers. Larger vehicles available for groups of 6+ — see the route page for tier pricing.
 - **Time:** 1h15min direct.
 - **Pros:** Fastest, door-to-door, no waiting around with luggage in the Guanacaste heat (it's hot — 30°C+ in dry season). Easiest with kids.
 - **Cons:** Pricier per person if you're solo or a couple.

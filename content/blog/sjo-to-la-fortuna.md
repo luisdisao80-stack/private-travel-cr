@@ -17,7 +17,7 @@ Here are your five real options, in order from "we recommend" to "only if you mu
 
 **Door-to-door from the airport to your hotel in La Fortuna.** A driver meets you at arrivals with a sign, loads your luggage, and drives you straight there in a private vehicle (Hyundai Staria, Toyota Hiace, or Maxus V90 depending on group size). Free child seats, WiFi, water, flight tracking.
 
-- **Cost:** $220 USD for 1-6 passengers, $260 for 7-9, $310 for 10-12.
+- **Cost:** $220 USD for 1-5 passengers, $260 for 6-9, $310 for 10-12.
 - **Time:** 3 hours straight through. Add ~1 hour if you want to stop at the Sarchí craft town or a sloth sanctuary on the way.
 - **Pros:** Easiest, fastest door-to-door, no luggage hassle, can stop wherever you want, comfortable for jet-lagged travelers.
 - **Cons:** Cheapest per person if you're 4+ — gets pricey for solo travelers.

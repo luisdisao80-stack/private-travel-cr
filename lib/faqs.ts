@@ -50,7 +50,7 @@ export const FAQS_EN: FAQ[] = [
   {
     question: "Is the price per person or per vehicle?",
     answer:
-      "The price is per VEHICLE, not per person. You travel privately with your group without sharing with strangers. Up to 6 passengers fit in our Hyundai Staria, 7-9 in the Toyota Hiace, and 10-18 in the Maxus V90 — all at the same flat rate per vehicle.",
+      "The price is per VEHICLE, not per person. You travel privately with your group without sharing with strangers. Up to 5 passengers fit in our Hyundai Staria, 6-9 in the Toyota Hiace, and 10-18 in the Maxus V90 — all at the same flat rate per vehicle.",
   },
   {
     question: "What's the difference between Standard and VIP?",
@@ -113,7 +113,7 @@ export const FAQS_ES: FAQ[] = [
   {
     question: "¿El precio es por persona o por vehículo?",
     answer:
-      "El precio es por VEHÍCULO completo, no por persona. Viajas en privado con tu grupo, sin compartir con desconocidos. Hasta 6 pasajeros en Hyundai Staria, 7-9 en Toyota Hiace, y 10-18 en Maxus V90 — todos al mismo precio fijo por vehículo.",
+      "El precio es por VEHÍCULO completo, no por persona. Viajas en privado con tu grupo, sin compartir con desconocidos. Hasta 5 pasajeros en Hyundai Staria, 6-9 en Toyota Hiace, y 10-18 en Maxus V90 — todos al mismo precio fijo por vehículo.",
   },
   {
     question: "¿Cuál es la diferencia entre Standard y VIP?",

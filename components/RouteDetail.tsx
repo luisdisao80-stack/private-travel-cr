@@ -15,7 +15,7 @@ function buildAutoFAQs(route: Route): RouteFAQ[] {
   const baseList: RouteFAQ[] = [
     {
       question: `How much does a private shuttle from ${route.origen} to ${route.destino} cost?`,
-      answer: `Private shuttle from ${route.origen} to ${route.destino} starts at $${route.precio1a6} USD per vehicle (1-6 passengers). The price is per vehicle, not per person — everyone in your group travels together for the same flat rate. Larger vehicles for 7-18 passengers are available at higher tiers.`,
+      answer: `Private shuttle from ${route.origen} to ${route.destino} starts at $${route.precio1a6} USD per vehicle (1-5 passengers). The price is per vehicle, not per person — everyone in your group travels together for the same flat rate. Larger vehicles for 6-18 passengers are available at higher tiers.`,
     },
   ];
   if (route.duracion) {
@@ -159,7 +159,7 @@ export default function RouteDetail({
               <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
                 <img src="/staria.webp" alt="Hyundai Staria" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
               </div>
-              <div className="text-xs text-gray-400 mb-1">1-6 PAX · Hyundai Staria</div>
+              <div className="text-xs text-gray-400 mb-1">1-5 PAX · Hyundai Staria</div>
               <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio1a6 ?? 0} /></div>
             </Link>
             {route.precio7a9 ? (
@@ -170,7 +170,7 @@ export default function RouteDetail({
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
                   <img src="/hiace.png" alt="Toyota Hiace" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
-                <div className="text-xs text-gray-400 mb-1">7-9 PAX · Toyota Hiace</div>
+                <div className="text-xs text-gray-400 mb-1">6-9 PAX · Toyota Hiace</div>
                 <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio7a9 ?? 0} /></div>
               </Link>
             ) : null}

@@ -229,7 +229,7 @@ Our most-booked route this month.
 
 Volcano in the morning, cloud forest in the afternoon. Two completely different ecosystems in one drive.
 
-$255 USD per vehicle (1-6 pax). Door-to-door from your hotel.
+$255 USD per vehicle (1-5 pax). Door-to-door from your hotel.
 
 DM "Monteverde" or book at the link in bio 🚐
 

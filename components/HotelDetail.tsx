@@ -67,7 +67,7 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
     },
     {
       question: `Can my shuttle from ${hotel.name} fit my whole group?`,
-      answer: `Yes. Our fleet covers 1–6 passengers (Hyundai Staria), 7–9 (Toyota Hiace), 10–12 (Maxus V90), and 13–18 (coach van) — all with luggage space. Tell us your group size at booking and we assign the right vehicle.`,
+      answer: `Yes. Our fleet covers 1–5 passengers (Hyundai Staria), 6–9 (Toyota Hiace), 10–12 (Maxus V90), and 13–18 (coach van) — all with luggage space. Tell us your group size at booking and we assign the right vehicle.`,
     },
     {
       question: `Do you coordinate with ${hotel.name} for early/late departures?`,
@@ -147,7 +147,7 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
             </div>
             <p className="text-gray-400 text-sm mb-6">
               Door-to-door private transfers from {hotel.name}. Prices in USD per
-              vehicle (1–6 passengers). Larger vehicles available on request.
+              vehicle (1–5 passengers). Larger vehicles available on request.
             </p>
 
             {sortedRoutes.length === 0 ? (

@@ -15,11 +15,11 @@ This guide is current as of 2026 — these are the prices we charge, and a reaso
 
 ## How private shuttle pricing works
 
-Private shuttles are sold **per vehicle, not per person**. So a $220 USD shuttle from SJO to La Fortuna costs the same whether you're 1 person or 6 people in the vehicle. Pricing tiers usually break at:
+Private shuttles are sold **per vehicle, not per person**. So a $220 USD shuttle from SJO to La Fortuna costs the same whether you're 1 person or 5 people in the vehicle. Pricing tiers usually break at:
 
-- **1–6 passengers:** Standard van (Hyundai Staria, Toyota Hiace, etc.)
-- **7–9 passengers:** Larger van
-- **10–12 passengers:** Extended van or sprinter
+- **1–5 passengers:** Standard van (Hyundai Staria)
+- **6–9 passengers:** Larger van (Toyota Hiace)
+- **10–12 passengers:** Extended van or sprinter (Maxus V90)
 
 Once you go over 12, you typically need two vehicles.
 
@@ -38,11 +38,11 @@ What's NOT usually included: tips ($10–20 per family is customary for longer t
 
 ## Current prices for popular routes (2026)
 
-All prices below are for **1–6 passengers in a standard van** and include all taxes. Larger vehicles are available for groups of 7+ — see the individual route page for tier pricing.
+All prices below are for **1–5 passengers in a standard van** and include all taxes. Larger vehicles are available for groups of 6+ — see the individual route page for tier pricing.
 
 ### From SJO Airport (San José)
 
-| Destination | 1–6 pax | Duration |
+| Destination | 1–5 pax | Duration |
 |---|---|---|
 | La Fortuna | $220 | 3h |
 | Monteverde | $220 | 4h |
@@ -54,7 +54,7 @@ All prices below are for **1–6 passengers in a standard van** and include all 
 
 ### From LIR Airport (Liberia)
 
-| Destination | 1–6 pax | Duration |
+| Destination | 1–5 pax | Duration |
 |---|---|---|
 | Tamarindo | $130 | 1h15min |
 | Nosara | $240 | 2h30min |
@@ -65,7 +65,7 @@ All prices below are for **1–6 passengers in a standard van** and include all 
 
 ### Between popular destinations
 
-| From → To | 1–6 pax | Duration |
+| From → To | 1–5 pax | Duration |
 |---|---|---|
 | La Fortuna ↔ Monteverde | $255 | 3h |
 | La Fortuna ↔ Manuel Antonio | $330 | 4h30min |
