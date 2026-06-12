@@ -77,24 +77,26 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          {/* Photo placeholder */}
-          <div className="mb-12 mx-auto max-w-2xl">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-amber-500/20 via-zinc-900 to-zinc-950">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center px-6">
-                  <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
-                    <Users className="w-10 h-10 text-amber-400" />
-                  </div>
-                  <p className="text-sm text-white/40 italic">
-                    {lang === "es"
-                      ? "Foto de Diego y Anthony — La Fortuna, Costa Rica"
-                      : "Photo of Diego and Anthony — La Fortuna, Costa Rica"}
-                  </p>
-                </div>
-              </div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(251,191,36,0.15),transparent_50%)]" />
+          {/* Diego + Anthony — same photo used in the team section below,
+              reused here in the story intro so the visitor sees their
+              faces while they read the chapters that follow. Was a generic
+              Users-icon placeholder before. */}
+          <figure className="mb-12 mx-auto max-w-2xl">
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/50">
+              <Image
+                src="/about/diego-anthony.jpg"
+                alt={t.about.team.photoAlt}
+                fill
+                sizes="(max-width: 768px) 100vw, 672px"
+                quality={75}
+                className="object-cover object-center"
+                priority={false}
+              />
             </div>
-          </div>
+            <figcaption className="mt-3 text-center text-sm text-white/50 italic">
+              {t.about.team.photoCaption}
+            </figcaption>
+          </figure>
 
           {/* Story chapters */}
           <div className="space-y-12">
