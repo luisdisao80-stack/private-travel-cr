@@ -124,20 +124,24 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       }
       return;
     }
-    // After Add to Cart: the visitor's next move depends on whether the
-    // cart was empty before. This was a major friction point — the
-    // previous behavior bounced EVERYONE to /routes (a 90+ route listing)
-    // after their first add, which confused first-time bookers who just
-    // wanted to pay for one shuttle. New behavior:
-    //   prev=0  → /book?checkout=1   (vast majority — they want to pay now)
-    //   prev>0  → /routes            (they're building a multi-leg trip,
-    //                                 the listing is a useful browsing
-    //                                 surface to find their next leg)
+    // After Add to Cart: ALWAYS go to checkout. Used to branch — first
+    // trip → checkout, subsequent → /routes (a browsing surface for
+    // building multi-leg trips). But Diego reported on production that
+    // the second-trip branch caused a bouncy redirect where the visitor
+    // landed at checkout still seeing only the previous trip (cart
+    // localStorage race when navigating away and back). Simpler win:
+    // every add goes straight to checkout. Multi-leg planners still
+    // get there via the explicit "+ Add another trip" button in the
+    // OrderSummarySidebar — they don't need the /routes detour.
+    //
+    // Order matters: setView before any router.push so the calculator
+    // view doesn't flicker if Next.js skips the navigation (e.g. when
+    // URL is already /book?checkout=1 from a prior session leg).
     if (items.length > prevItemsCount.current) {
-      if (prevItemsCount.current === 0) {
+      setView("checkout");
+      prevItemsCount.current = items.length;
+      if (!wantsCheckout) {
         router.push("/book?checkout=1");
-      } else {
-        router.push("/routes");
       }
       return;
     }
