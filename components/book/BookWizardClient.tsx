@@ -247,11 +247,19 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   // Same reset as the desktop "Add another trip" CTA —
                   // both surfaces are the user saying "I want a fresh
                   // calculator", not "edit the trip already in my cart".
+                  //
+                  // Important: we DO NOT touch the URL here. The earlier
+                  // version called pushRouteParams("", "", null, null) to
+                  // strip ?checkout=1, but on the production build that
+                  // triggered useSearchParams + the URL-sync effect to
+                  // bounce the view back to "checkout" (a different
+                  // batching pattern from dev). View stays "configuring"
+                  // and URL stays /book?checkout=1 — that's fine; reload
+                  // brings them back to checkout, which matches intent.
                   setHeroFrom("");
                   setHeroTo("");
                   setHeroPickupHotel(null);
                   setHeroDropoffHotel(null);
-                  pushRouteParams("", "", null, null);
                   setView("configuring");
                 }}
               />
@@ -260,17 +268,18 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
               items={items}
               totalPrice={totalPrice}
               onAddAnotherTrip={() => {
-                // Reset the hero search + URL params so the visitor lands
-                // on a clean calculator instead of the previous trip's
-                // route pre-filled at the top. Without this, the hero
-                // would still show "SJO -> La Fortuna" from their first
-                // leg, which is confusing when they're trying to configure
-                // a completely different second trip.
+                // Reset the hero search inputs so the visitor lands on a
+                // clean calculator. We deliberately do NOT call
+                // pushRouteParams here — in production builds the URL
+                // change triggered the URL-sync useEffect to bounce
+                // view back to "checkout", making the button feel dead
+                // (Diego saw a brief flash then nothing). Keeping URL
+                // at /book?checkout=1 is fine; a reload returns the
+                // visitor to checkout, which matches intent.
                 setHeroFrom("");
                 setHeroTo("");
                 setHeroPickupHotel(null);
                 setHeroDropoffHotel(null);
-                pushRouteParams("", "", null, null);
                 setView("configuring");
               }}
             />
