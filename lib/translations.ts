@@ -81,6 +81,9 @@ export const translations = {
         title: "The people behind every ride",
         subtitle:
           "Two cousins, 20+ years driving travelers across Costa Rica, and a personally trained team of bilingual drivers who treat every guest like family.",
+        photoAlt:
+          "Diego Salas and Anthony, the cousins behind Private Travel CR, in front of a Toyota Hiace shuttle van",
+        photoCaption: "Diego (left) and Anthony — the cousins behind Private Travel CR",
         founder: {
           name: "Diego Salas Oviedo",
           role: "Founder, Operator & Lead Driver",
@@ -736,6 +739,9 @@ export const translations = {
         title: "Las personas detrás de cada viaje",
         subtitle:
           "Dos primos, más de 20 años manejando viajeros por Costa Rica, y un equipo de choferes bilingües entrenados personalmente que tratan a cada huésped como familia.",
+        photoAlt:
+          "Diego Salas y Anthony, los primos detrás de Private Travel CR, frente a una van Toyota Hiace",
+        photoCaption: "Diego (izquierda) y Anthony — los primos detrás de Private Travel CR",
         founder: {
           name: "Diego Salas Oviedo",
           role: "Fundador, Operador y Chofer Principal",

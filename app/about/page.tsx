@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Heart,
@@ -185,6 +186,28 @@ export default function AboutPage() {
               {t.about.team.subtitle}
             </p>
           </div>
+
+          {/* Team hero photo — Diego + Anthony in front of a Toyota Hiace.
+              Communicates "family business" + "real vehicles" in one frame,
+              which is stronger than two separate avatars. Sized at 720px
+              max-width so the portrait orientation doesn't dominate the
+              section; the bio cards below carry the textual depth. */}
+          <figure className="mx-auto max-w-[720px] mb-10 md:mb-14">
+            <div className="relative aspect-[3/4] sm:aspect-[4/3] md:aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/50">
+              <Image
+                src="/about/diego-anthony.jpg"
+                alt={t.about.team.photoAlt}
+                fill
+                sizes="(max-width: 720px) 100vw, 720px"
+                quality={75}
+                className="object-cover object-center"
+                priority={false}
+              />
+            </div>
+            <figcaption className="mt-3 text-center text-xs md:text-sm text-white/50 italic">
+              {t.about.team.photoCaption}
+            </figcaption>
+          </figure>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Diego */}
