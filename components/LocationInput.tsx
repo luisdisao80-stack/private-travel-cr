@@ -109,7 +109,15 @@ export default function LocationInput({
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative z-40 flex-1 min-w-0">
+    // z-index jumps when the dropdown is open so it stacks above the
+    // next-sibling input (also z-40). Without this bump, two adjacent
+    // LocationInputs render their dropdowns at the same level, and the
+    // browser paints the later one on top — so a Pickup dropdown gets
+    // covered by the Drop-off input below.
+    <div
+      ref={wrapperRef}
+      className={`relative flex-1 min-w-0 ${open ? "z-[60]" : "z-40"}`}
+    >
       <MapPin
         size={18}
         className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 pointer-events-none"

@@ -70,21 +70,25 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
     window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
+  // Hero search inputs are now PURELY local state. Used to also call
+  // pushRouteParams on every keystroke to mirror them into the URL so
+  // the QuoteCalculator below could pick them up — but that broke the
+  // "Add another trip" flow: typing into the hero stripped ?checkout=1,
+  // which then triggered the URL-sync effects and bounced the multi-trip
+  // user back to checkout mid-typing. Multi-trip planners now fill the
+  // calculator below directly; the hero remains as a visual element +
+  // optional shortcut, just doesn't double-write to the URL anymore.
   const handleHeroFrom = (val: string) => {
     setHeroFrom(val);
-    pushRouteParams(val, heroTo, heroPickupHotel, heroDropoffHotel);
   };
   const handleHeroTo = (val: string) => {
     setHeroTo(val);
-    pushRouteParams(heroFrom, val, heroPickupHotel, heroDropoffHotel);
   };
   const handlePickupHotel = (hotel: Hotel | null) => {
     setHeroPickupHotel(hotel);
-    pushRouteParams(heroFrom, heroTo, hotel, heroDropoffHotel);
   };
   const handleDropoffHotel = (hotel: Hotel | null) => {
     setHeroDropoffHotel(hotel);
-    pushRouteParams(heroFrom, heroTo, heroPickupHotel, hotel);
   };
 
   // URL → view sync. The `view` state was initialised from the URL on
