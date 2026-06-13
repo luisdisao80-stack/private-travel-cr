@@ -34,6 +34,17 @@ export default function robots(): MetadataRoute.Robots {
           "Google-Extended",
           "Applebot-Extended",
           "CCBot",
+          // Meta AI family — Meta-ExternalAgent is the crawler that
+          // feeds Meta AI (Llama) and its assistant in WhatsApp,
+          // Instagram, Facebook, and Threads. FacebookBot covers
+          // general Meta-platform indexing. facebookexternalhit is the
+          // link-preview fetcher: required for rich previews when a
+          // visitor pastes the URL into Messenger / WhatsApp / a
+          // Facebook post / an Instagram story link.
+          "Meta-ExternalAgent",
+          "meta-externalagent",
+          "FacebookBot",
+          "facebookexternalhit",
         ],
         allow: "/",
       },
