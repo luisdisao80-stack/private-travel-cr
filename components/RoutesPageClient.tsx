@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
 import { motion } from "framer-motion";
@@ -44,6 +44,23 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
   // page can pre-fill the pickup/dropoff address field with the hotel name.
   const [pickupHotel, setPickupHotel] = useState<Hotel | null>(null);
   const [dropoffHotel, setDropoffHotel] = useState<Hotel | null>(null);
+
+  // After a trip lands in the cart, clear the search inputs so a visitor
+  // returning to /routes for their next leg sees a clean catalog instead
+  // of the previous trip's filter still applied. Without this, the
+  // Next.js client-router cache hands back the same RoutesPageClient
+  // instance with stale state and they have to manually X out the
+  // previous from/to before they can pick the next route.
+  const prevCartCount = useRef(cartItems.length);
+  useEffect(() => {
+    if (cartItems.length > prevCartCount.current) {
+      setPickup("");
+      setDropoff("");
+      setPickupHotel(null);
+      setDropoffHotel(null);
+    }
+    prevCartCount.current = cartItems.length;
+  }, [cartItems.length]);
 
   const origenes = useMemo(
     () => Array.from(new Set(routes.map((r) => r.origen))).sort(),
