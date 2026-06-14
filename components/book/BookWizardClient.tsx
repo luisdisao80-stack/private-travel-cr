@@ -52,6 +52,15 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   const prevItemsCount = useRef(0);
   const settledFromHydration = useRef(false);
 
+  // Counter we bump whenever the visitor clicks "Add another trip" — used
+  // as the `key` on QuoteCalculatorV2 below so React unmounts the old
+  // calculator and mounts a fresh one. Without this, the calculator
+  // retains every field from the trip the visitor just added (route,
+  // date, time, addresses, pax, child seats, service tier) and they
+  // start their next leg with stale data they have to manually clear.
+  const [calcResetKey, setCalcResetKey] = useState(0);
+  const resetCalculator = () => setCalcResetKey((k) => k + 1);
+
   // Hero search card state — kept in sync with ?from=&to= so the calculator
   // below pre-fills via its existing syncFromUrl listener.
   const [heroFrom, setHeroFrom] = useState<string>(searchParams.get("from") ?? "");
@@ -278,6 +287,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   setHeroTo("");
                   setHeroPickupHotel(null);
                   setHeroDropoffHotel(null);
+                  resetCalculator();
                   setView("configuring");
                 }}
               />
@@ -298,6 +308,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                 setHeroTo("");
                 setHeroPickupHotel(null);
                 setHeroDropoffHotel(null);
+                resetCalculator();
                 setView("configuring");
               }}
             />
@@ -310,6 +321,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                 bounce caused the multi-trip flow to break. Direct prop
                 wiring is simpler and avoids that whole problem. */}
             <QuoteCalculatorV2
+              key={calcResetKey}
               locations={locations}
               hotels={hotels}
               heroFrom={heroFrom}
