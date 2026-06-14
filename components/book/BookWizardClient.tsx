@@ -294,7 +294,17 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
           </div>
         ) : (
           <div className="max-w-2xl mx-auto">
-            <QuoteCalculatorV2 locations={locations} hotels={hotels} />
+            {/* heroFrom / heroTo flow down so the calculator stays in
+                sync with the "Where are you headed?" search card above.
+                We used to mirror that through the URL but the URL
+                bounce caused the multi-trip flow to break. Direct prop
+                wiring is simpler and avoids that whole problem. */}
+            <QuoteCalculatorV2
+              locations={locations}
+              hotels={hotels}
+              heroFrom={heroFrom}
+              heroTo={heroTo}
+            />
           </div>
         )}
       </section>

@@ -10,7 +10,17 @@ import LocationInput from "@/components/LocationInput";
 import Price from "@/components/Price";
 import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
 
-type Props = { locations: string[]; hotels?: Hotel[] };
+type Props = {
+  locations: string[];
+  hotels?: Hotel[];
+  // When BookWizardClient passes these (the hero search inputs),
+  // changes propagate down here so the calculator stays in sync with
+  // what the visitor typed up top. Without this, the hero showed
+  // "Monteverde -> Tamarindo" while the calculator below still listed
+  // the previous SJO -> Herradura route — a confusing desync.
+  heroFrom?: string;
+  heroTo?: string;
+};
 const WHATSAPP_NUMBER = "50686334133";
 const EXTRA_STOP_PRICE = 35;
 
@@ -29,7 +39,12 @@ function generateTimeOptions(): { value: string; label: string }[] {
 }
 const TIME_OPTIONS = generateTimeOptions();
 
-export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
+export default function QuoteCalculatorV2({
+  locations,
+  hotels = [],
+  heroFrom,
+  heroTo,
+}: Props) {
   const { addItem: cartAddItem, itemCount: cartItemCount } = useCart();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -87,6 +102,27 @@ export default function QuoteCalculatorV2({ locations, hotels = [] }: Props) {
     window.addEventListener("popstate", syncFromUrl);
     return () => window.removeEventListener("popstate", syncFromUrl);
   }, []);
+
+  // Sync from the hero search inputs in BookWizardClient. Previously the
+  // hero wrote into the URL which triggered the syncFromUrl above, but
+  // that round-trip caused the multi-trip "Add another trip" flow to
+  // bounce visitors back to checkout. Hero values now ride down as
+  // props instead; we mirror them into the calculator state whenever
+  // they change, but only when there's an actual value to apply so an
+  // accidental empty prop doesn't blow away what the visitor already
+  // picked here.
+  useEffect(() => {
+    if (heroFrom !== undefined && heroFrom !== from) {
+      setFrom(heroFrom);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heroFrom]);
+  useEffect(() => {
+    if (heroTo !== undefined && heroTo !== to) {
+      setTo(heroTo);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heroTo]);
   const [adultsStr, setAdultsStr] = useState("2");
   const [childrenStr, setChildrenStr] = useState("0");
   const [serviceType, setServiceType] = useState<"standard" | "vip">("standard");
