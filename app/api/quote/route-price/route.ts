@@ -18,8 +18,17 @@ export async function GET(request: Request) {
     return NextResponse.json({ found: false });
   }
 
-  // Default to a 2-pax quote so the home/book hero can show a "from" price.
-  const basePrice = getPriceForGroupSize(route, 2);
+  // Respect ?adults=N so the hero preview can match the tier the visitor
+  // already picked on a route detail page (clicking the "6-9 PAX · Hiace
+  // $375" card should land them on a $375 preview, not the default $330
+  // Staria one). Falls back to 2 for the generic home/hero preview so
+  // visitors with no intent yet still get a "from" price. Clamp to a
+  // sensible range to defend against malformed URLs.
+  const adultsParam = searchParams.get("adults");
+  const adultsRaw = adultsParam ? parseInt(adultsParam, 10) : 2;
+  const adults =
+    Number.isNaN(adultsRaw) || adultsRaw < 1 || adultsRaw > 18 ? 2 : adultsRaw;
+  const basePrice = getPriceForGroupSize(route, adults);
 
   return NextResponse.json({
     found: true,
@@ -27,5 +36,6 @@ export async function GET(request: Request) {
     duration: formatDuration(route.duracion),
     origen: route.origen,
     destino: route.destino,
+    adults,
   });
 }

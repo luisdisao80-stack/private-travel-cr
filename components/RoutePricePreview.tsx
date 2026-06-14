@@ -7,18 +7,22 @@ import Price from "@/components/Price";
 type Props = {
   from: string;
   to: string;
+  // Group size to quote. When set (e.g. 6 because the visitor clicked
+  // the "6-9 Hiace" tier card), the preview shows that tier's price so
+  // the top of the page matches the calculator below. Defaults to 2.
+  adults?: number;
 };
 
 type ApiResponse =
-  | { found: true; basePrice: number; duration: string }
+  | { found: true; basePrice: number; duration: string; adults?: number }
   | { found: false }
   | { error: string };
 
-export default function RoutePricePreview({ from, to }: Props) {
+export default function RoutePricePreview({ from, to, adults }: Props) {
   const [state, setState] = useState<
     | { status: "idle" }
     | { status: "loading" }
-    | { status: "found"; basePrice: number; duration: string }
+    | { status: "found"; basePrice: number; duration: string; adults: number }
     | { status: "notFound" }
   >({ status: "idle" });
 
@@ -34,9 +38,11 @@ export default function RoutePricePreview({ from, to }: Props) {
     setState({ status: "loading" });
 
     const controller = new AbortController();
-    fetch(`/api/quote/route-price?from=${encodeURIComponent(f)}&to=${encodeURIComponent(t)}`, {
-      signal: controller.signal,
-    })
+    const adultsQs = adults && adults >= 1 ? `&adults=${adults}` : "";
+    fetch(
+      `/api/quote/route-price?from=${encodeURIComponent(f)}&to=${encodeURIComponent(t)}${adultsQs}`,
+      { signal: controller.signal },
+    )
       .then((r) => r.json() as Promise<ApiResponse>)
       .then((data) => {
         if (cancelled) return;
@@ -49,6 +55,7 @@ export default function RoutePricePreview({ from, to }: Props) {
             status: "found",
             basePrice: data.basePrice,
             duration: data.duration,
+            adults: data.adults ?? 2,
           });
         } else {
           setState({ status: "notFound" });
@@ -63,7 +70,7 @@ export default function RoutePricePreview({ from, to }: Props) {
       cancelled = true;
       controller.abort();
     };
-  }, [from, to]);
+  }, [from, to, adults]);
 
   if (state.status === "idle") return null;
 
@@ -94,7 +101,19 @@ export default function RoutePricePreview({ from, to }: Props) {
           <Price usd={state.basePrice} />
         </div>
         <div className="text-[10px] text-green-400 mt-1">Taxes included</div>
-        <div className="text-[10px] text-gray-400">Standard · up to 5 pax</div>
+        <div className="text-[10px] text-gray-400">
+          {/* Label tracks the actual tier we're quoting so the hero matches
+              the calculator below. Boundaries align with quote-helpers.ts:
+                <=5 → Staria, 6-9 → Hiace, 10-12 → Maxus, 13-18 → coach */}
+          Standard ·{" "}
+          {state.adults <= 5
+            ? "up to 5 pax"
+            : state.adults <= 9
+              ? "6-9 pax"
+              : state.adults <= 12
+                ? "10-12 pax"
+                : "13-18 pax"}
+        </div>
       </div>
       <div className="text-right">
         <div className="inline-flex items-center gap-1 text-xs text-gray-300">

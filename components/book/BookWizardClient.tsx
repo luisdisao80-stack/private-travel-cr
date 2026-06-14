@@ -27,6 +27,16 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   // bounces the visitor right back to the checkout view they came from —
   // the very thing they were trying to leave to add a new leg.
   const wantsAdd = searchParams.get("add") === "1";
+  // `?adults=N` arrives when the visitor clicked a specific tier card on
+  // a route detail page. We mirror it into the hero RoutePricePreview so
+  // the top of the page quotes the tier they tapped (matches the
+  // calculator below, which already respects this param).
+  const heroAdultsRaw = searchParams.get("adults");
+  const heroAdultsParsed = heroAdultsRaw ? parseInt(heroAdultsRaw, 10) : undefined;
+  const heroAdults =
+    heroAdultsParsed && heroAdultsParsed >= 1 && heroAdultsParsed <= 18
+      ? heroAdultsParsed
+      : undefined;
 
   // Two views on /book:
   //   configuring – QuoteCalculator (pick a route, add to cart)
@@ -223,7 +233,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     onHotelPick={handleDropoffHotel}
                   />
                 </div>
-                <RoutePricePreview from={heroFrom} to={heroTo} />
+                <RoutePricePreview from={heroFrom} to={heroTo} adults={heroAdults} />
                 <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
                   <span className="flex items-center gap-1.5">
                     <Zap size={12} className="text-amber-400" />
