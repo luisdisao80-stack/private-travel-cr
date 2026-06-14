@@ -225,80 +225,105 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                     transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
                     className="relative bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50"
                   >
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-                      {/* Left: route + duration */}
-                      <div className="flex items-center gap-4 flex-1 min-w-0">
-                        <div
-                          style={{ width: "44px", height: "44px" }}
-                          className="rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0"
-                        >
-                          <MapPin size={18} className="text-amber-400" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-base md:text-lg font-bold text-white leading-tight">
-                            {route.origen} <span className="text-amber-400">→</span>{" "}
-                            <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-                              {route.destino}
-                            </span>
-                          </h3>
-                          {route.duracion && (
-                            <div className="mt-1 inline-flex items-center gap-1 text-xs text-gray-400">
-                              <Clock size={11} />
-                              {route.duracion}
-                            </div>
-                          )}
-                        </div>
+                    {/* Header — route name + duration */}
+                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                      <div
+                        style={{ width: "44px", height: "44px" }}
+                        className="rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0"
+                      >
+                        <MapPin size={18} className="text-amber-400" />
                       </div>
-
-                      {/* Right: price */}
-                      <div className="md:text-right shrink-0">
-                        <div className="text-[10px] text-gray-400 uppercase tracking-[0.18em]">
-                          {lang === "en" ? "From" : "Desde"}
-                        </div>
-                        <div className="text-2xl md:text-3xl font-bold text-white leading-none">
-                          <Price usd={route.precio1a6 ?? 0} />
-                        </div>
-                        <div className="text-[10px] text-amber-400 mt-0.5">
-                          {lang === "en" ? "All taxes included" : "Todos los impuestos incluidos"}
-                        </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base md:text-lg font-bold text-white leading-tight">
+                          {route.origen} <span className="text-amber-400">→</span>{" "}
+                          <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                            {route.destino}
+                          </span>
+                        </h3>
+                        {route.duracion && (
+                          <div className="mt-1 inline-flex items-center gap-1 text-xs text-gray-400">
+                            <Clock size={11} />
+                            {route.duracion}
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    {/* Actions */}
-                    <div className="mt-5 pt-5 border-t border-white/5 flex flex-col sm:flex-row gap-2.5">
-                      <Link
-                        href={(() => {
-                          const params = new URLSearchParams();
-                          params.set("from", route.origen);
-                          params.set("to", route.destino);
-                          params.set("direct", "1");
-                          // Only attach hotel param when the searched hotel
-                          // actually matches this route's origen/destino.
-                          // Without the guard, every result card would carry
-                          // the same hotel name even when the row is for an
-                          // unrelated origin.
-                          if (pickupHotel && pickupHotel.area_origen === route.origen) {
-                            params.set("pickupHotel", pickupHotel.name);
-                          }
-                          if (dropoffHotel && dropoffHotel.area_origen === route.destino) {
-                            params.set("dropoffHotel", dropoffHotel.name);
-                          }
-                          return `/book?${params.toString()}`;
-                        })()}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition-colors shadow shadow-amber-500/20"
-                      >
-                        {lang === "en" ? "Book Now" : "Reservar"}
-                        <ArrowRight size={14} />
-                      </Link>
+                    {/* Vehicle tiers — was "From $X + Book Now" before. Now
+                        we show each van the route offers as a clickable
+                        button with its real price, so the visitor picks
+                        the one that matches their group on the spot.
+                        Each tier passes `adults=N` so the calculator on
+                        /book opens in the right pricing bracket
+                        (matches RouteDetail behavior). */}
+                    {(() => {
+                      const buildHref = (adults: number) => {
+                        const params = new URLSearchParams();
+                        params.set("from", route.origen);
+                        params.set("to", route.destino);
+                        params.set("direct", "1");
+                        params.set("adults", String(adults));
+                        // Only attach hotel param when the searched hotel
+                        // actually matches this route's origen/destino.
+                        // Without the guard, every result card would carry
+                        // the same hotel name even when the row is for an
+                        // unrelated origin.
+                        if (pickupHotel && pickupHotel.area_origen === route.origen) {
+                          params.set("pickupHotel", pickupHotel.name);
+                        }
+                        if (dropoffHotel && dropoffHotel.area_origen === route.destino) {
+                          params.set("dropoffHotel", dropoffHotel.name);
+                        }
+                        return `/book?${params.toString()}`;
+                      };
+                      return (
+                        <div className="mt-5 pt-5 border-t border-white/5 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                          <Link
+                            href={buildHref(2)}
+                            className="rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-3 py-3 text-center transition-colors"
+                          >
+                            <div className="text-[10px] text-gray-400 uppercase tracking-wider">1-5 PAX · Staria</div>
+                            <div className="text-lg font-bold text-amber-400 mt-0.5">
+                              <Price usd={route.precio1a6 ?? 0} />
+                            </div>
+                          </Link>
+                          {route.precio7a9 ? (
+                            <Link
+                              href={buildHref(6)}
+                              className="rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-3 py-3 text-center transition-colors"
+                            >
+                              <div className="text-[10px] text-gray-400 uppercase tracking-wider">6-9 PAX · Hiace</div>
+                              <div className="text-lg font-bold text-amber-400 mt-0.5">
+                                <Price usd={route.precio7a9 ?? 0} />
+                              </div>
+                            </Link>
+                          ) : null}
+                          {route.precio10a12 ? (
+                            <Link
+                              href={buildHref(10)}
+                              className="rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-3 py-3 text-center transition-colors"
+                            >
+                              <div className="text-[10px] text-gray-400 uppercase tracking-wider">10-12 PAX · Maxus</div>
+                              <div className="text-lg font-bold text-amber-400 mt-0.5">
+                                <Price usd={route.precio10a12 ?? 0} />
+                              </div>
+                            </Link>
+                          ) : null}
+                        </div>
+                      );
+                    })()}
+
+                    {/* Secondary action — see the full route detail page */}
+                    <div className="mt-3 flex justify-center">
                       <Link
                         href={
                           isPopularRoute(route.origen, route.destino)
                             ? `/private-shuttle/${route.slug}`
                             : `/routes/${route.slug}`
                         }
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm transition-colors"
+                        className="text-xs text-gray-400 hover:text-amber-400 transition-colors underline underline-offset-2"
                       >
-                        {lang === "en" ? "View route details" : "Ver detalles"}
+                        {lang === "en" ? "View route details →" : "Ver detalles →"}
                       </Link>
                     </div>
                   </motion.div>
