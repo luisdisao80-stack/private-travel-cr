@@ -12,7 +12,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   // Popular routes are statically generated under /private-shuttle/[slug] instead;

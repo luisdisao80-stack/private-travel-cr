@@ -9,7 +9,7 @@ import { siteConfig } from "@/lib/site-config";
 import { Clock, Users, MapPin } from "lucide-react";
 import Price from "@/components/Price";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "The 10 Best Tours in La Fortuna, Costa Rica (2026) | Private Travel CR",

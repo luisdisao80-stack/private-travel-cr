@@ -29,7 +29,7 @@ const RedditTestimonials = dynamic(() => import("@/components/RedditTestimonials
 const BlogHighlights = dynamic(() => import("@/components/BlogHighlights"));
 const FAQSection = dynamic(() => import("@/components/FAQSection"));
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export default async function Home() {
   const [locations, hotels, google] = await Promise.all([

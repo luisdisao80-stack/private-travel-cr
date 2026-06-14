@@ -13,7 +13,7 @@ export const metadata = {
     "Get an instant quote and book your private shuttle in Costa Rica. Live pricing, child seats, and door-to-door service from SJO and LIR airports.",
 };
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 type SearchParams = Promise<{ from?: string; to?: string; direct?: string }>;
 

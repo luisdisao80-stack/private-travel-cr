@@ -40,10 +40,12 @@ export const metadata: Metadata = {
   },
 };
 
-// 60s instead of the usual 3600 so new hotels added via SQL show up within
-// a minute (the page is cheap — single Supabase query — so frequent
-// revalidation has negligible cost).
-export const revalidate = 60;
+// Was 60s on the theory that the query is cheap — but at Vercel scale the
+// constant ISR writes pushed us to 379% of the free-tier ISR Writes
+// quota (the single biggest cost in our 2026-06 audit). Now 24h, same
+// as every other content page; Diego triggers a Redeploy whenever he
+// adds a hotel via SQL and wants it surfaced immediately.
+export const revalidate = 86400;
 
 export default async function HotelsIndexPage() {
   const hotels = await getAllHotels();
