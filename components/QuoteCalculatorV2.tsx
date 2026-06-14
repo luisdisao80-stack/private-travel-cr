@@ -548,47 +548,78 @@ export default function QuoteCalculatorV2({
               </div>
             ) : null}
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              cartAddItem({
-                fromName: from,
-                toName: to,
-                date: travelDate,
-                pickupTime: travelTime,
-                passengers: totalPax,
-                children: parseInt(childrenStr) || 0,
-                flightNumber: flightNumber || undefined,
-                pickupPlace: pickupAddress.trim() || from,
-                dropoffPlace: dropoffAddress.trim() || to,
-                vehicleId: vehicle,
-                vehicleName:
-                  vehicle === "staria"
-                    ? "Hyundai Staria"
-                    : vehicle === "hiace"
-                      ? "Toyota Hiace"
-                      : "Maxus V90",
-                serviceType,
-                extraStopHours: extraStops,
-                basePrice,
-                totalPrice,
-                duration: route ? formatDuration(route.duracion) : "",
-                infantSeats,
-                convertibleSeats,
-                boosterSeats,
-              });
-            }}
-            className="block w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-4 rounded-lg text-center transition-colors"
-          >
-            {/* CTA wording is the most-clicked moment of the funnel —
-                "Add to Cart" felt like ecommerce and confused first-time
-                bookers who just wanted to pay. We rename it based on
-                cart state:
-                  empty cart  → "Continue" (90% of bookings — one shuttle)
-                  has items   → "Add another trip" (multi-leg planners) */}
-            <span>{cartItemCount === 0 ? "Continue" : "Add another trip"}</span>
-            <ArrowRight size={16} className="inline ml-1" />
-          </button>
+          {/* Validation gate: date AND time are required before Add to
+              Cart. Without this, visitors could leave both blank, hit
+              Continue, and Diego received bookings with no travel date
+              — a customer-service back-and-forth he had to chase down
+              every time. Now we both disable the button and surface
+              inline hints when a required field is missing.
+
+              Passengers > 0 is also enforced; the numeric inputs allow
+              empty strings on mobile (iOS doesn't fire blur before tap),
+              so a visitor could accidentally book "0 passengers". */}
+          {(() => {
+            const missingDate = !travelDate;
+            const missingTime = !travelTime;
+            const missingPax = totalPax < 1;
+            const canAdd = !missingDate && !missingTime && !missingPax;
+            return (
+              <>
+                {(missingDate || missingTime || missingPax) && (
+                  <div className="text-xs text-amber-300/80 mb-2 text-center">
+                    {missingDate
+                      ? "Pick a travel date to continue."
+                      : missingTime
+                        ? "Pick a pickup time to continue."
+                        : "Add at least one passenger to continue."}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  disabled={!canAdd}
+                  onClick={() => {
+                    if (!canAdd) return;
+                    cartAddItem({
+                      fromName: from,
+                      toName: to,
+                      date: travelDate,
+                      pickupTime: travelTime,
+                      passengers: totalPax,
+                      children: parseInt(childrenStr) || 0,
+                      flightNumber: flightNumber || undefined,
+                      pickupPlace: pickupAddress.trim() || from,
+                      dropoffPlace: dropoffAddress.trim() || to,
+                      vehicleId: vehicle,
+                      vehicleName:
+                        vehicle === "staria"
+                          ? "Hyundai Staria"
+                          : vehicle === "hiace"
+                            ? "Toyota Hiace"
+                            : "Maxus V90",
+                      serviceType,
+                      extraStopHours: extraStops,
+                      basePrice,
+                      totalPrice,
+                      duration: route ? formatDuration(route.duracion) : "",
+                      infantSeats,
+                      convertibleSeats,
+                      boosterSeats,
+                    });
+                  }}
+                  className="block w-full bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/30 disabled:cursor-not-allowed text-black font-bold py-4 rounded-lg text-center transition-colors"
+                >
+                  {/* CTA wording is the most-clicked moment of the funnel —
+                      "Add to Cart" felt like ecommerce and confused first-time
+                      bookers who just wanted to pay. We rename it based on
+                      cart state:
+                        empty cart  → "Continue" (90% of bookings — one shuttle)
+                        has items   → "Add another trip" (multi-leg planners) */}
+                  <span>{cartItemCount === 0 ? "Continue" : "Add another trip"}</span>
+                  <ArrowRight size={16} className="inline ml-1" />
+                </button>
+              </>
+            );
+          })()}
         </div>
       ) : null}
     </div>

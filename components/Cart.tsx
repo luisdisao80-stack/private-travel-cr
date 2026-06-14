@@ -309,7 +309,7 @@ export default function Cart() {
                   <span className="text-gray-400 text-sm">{t.cart.total}</span>
                   <div className="text-right">
                     <span className="text-3xl font-bold text-white">
-                      ${totalPrice}
+                      ${totalPrice.toFixed(2)}
                       <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
                     </span>
                     {showCurrencyHint ? (
@@ -330,7 +330,14 @@ export default function Cart() {
                 <button
                   onClick={() => {
                     setCartOpen(false);
-                    router.push("/routes");
+                    // Used to bounce to /routes (listing of 90+ routes),
+                    // which dropped the visitor's context — they'd see a
+                    // catalog and have to find their next leg from
+                    // scratch. Now we go straight to /book?add=1 which
+                    // the BookWizardClient interprets as "render the
+                    // calculator even though cart isn't empty". Same
+                    // surface as the sidebar "Add another trip" CTA.
+                    router.push("/book?add=1");
                   }}
                   className="w-full h-12 border border-amber-500/30 hover:border-amber-500/60 hover:bg-amber-500/5 text-amber-400 font-semibold rounded-md transition-all flex items-center justify-center gap-2"
                 >

@@ -125,12 +125,23 @@ export default function BookingForm({ onBack }: BookingFormProps) {
 
       const data = (await resp.json()) as { checkoutUrl?: string; error?: string };
       if (!resp.ok || !data.checkoutUrl) {
+        // We still log the real server error so admins can debug, but
+        // never surface "Server returned 500" or a stack trace to the
+        // visitor at the moment of payment — that's the highest-stress
+        // point of the funnel and a scary message kills the booking.
         throw new Error(data.error || `Server returned ${resp.status}`);
       }
       window.location.href = data.checkoutUrl;
     } catch (e) {
       console.error("Payment start failed:", e);
-      setError(e instanceof Error ? e.message : "Could not start payment. Please try again.");
+      // Friendly, action-oriented copy. The previous version dumped the
+      // raw error (sometimes "Server returned 500" or a JSON stack
+      // fragment) to the visitor — terrifying mid-checkout. Now we tell
+      // them what to do and offer WhatsApp as a fallback path so a
+      // technical glitch never costs Diego the booking.
+      setError(
+        "We couldn't start your payment. Please try again, or message us on WhatsApp at +506 8633-4133 and we'll book you manually.",
+      );
       setLoading(false);
     }
   };
@@ -351,6 +362,20 @@ function TripConfigCard({
   const standardPrice = item.basePrice + item.extraStopHours * EXTRA_STOP_PRICE;
   const vipPrice = standardPrice + VIP_EXTRA_USD;
 
+  // Controlled inputs. The previous version used defaultValue + onBlur,
+  // which silently dropped data on iOS where tapping the Pay CTA from
+  // inside an input (very common — they tap "Done" on the keyboard, then
+  // Pay) doesn't always fire a blur first. Now every keystroke updates
+  // both local state (so the input remains responsive) AND the cart
+  // item (so submission can never use stale data).
+  const [pickupValue, setPickupValue] = useState(
+    item.pickupPlace && item.pickupPlace !== item.fromName ? item.pickupPlace : "",
+  );
+  const [dropoffValue, setDropoffValue] = useState(
+    item.dropoffPlace && item.dropoffPlace !== item.toName ? item.dropoffPlace : "",
+  );
+  const [flightNumberValue, setFlightNumberValue] = useState(item.flightNumber ?? "");
+
   const setService = (service: "standard" | "vip") => {
     const stopsCost = item.extraStopHours * EXTRA_STOP_PRICE;
     const totalForItem =
@@ -359,12 +384,15 @@ function TripConfigCard({
   };
 
   const setPickup = (value: string) => {
+    setPickupValue(value);
     onUpdateItem({ pickupPlace: value.trim() || item.fromName });
   };
   const setDropoff = (value: string) => {
+    setDropoffValue(value);
     onUpdateItem({ dropoffPlace: value.trim() || item.toName });
   };
   const setFlightNumber = (value: string) => {
+    setFlightNumberValue(value);
     onUpdateItem({ flightNumber: value.trim() || undefined });
     onFlightChange({ ...flight, number: value });
   };
@@ -455,10 +483,8 @@ function TripConfigCard({
             Pickup address
           </Label>
           <Input
-            defaultValue={
-              item.pickupPlace && item.pickupPlace !== item.fromName ? item.pickupPlace : ""
-            }
-            onBlur={(e) => setPickup(e.target.value)}
+            value={pickupValue}
+            onChange={(e) => setPickup(e.target.value)}
             placeholder={`Hotel, Airbnb or address in ${item.fromName}`}
             className="bg-black/50 border-amber-500/30 text-white h-10"
           />
@@ -470,10 +496,8 @@ function TripConfigCard({
             Drop-off address
           </Label>
           <Input
-            defaultValue={
-              item.dropoffPlace && item.dropoffPlace !== item.toName ? item.dropoffPlace : ""
-            }
-            onBlur={(e) => setDropoff(e.target.value)}
+            value={dropoffValue}
+            onChange={(e) => setDropoff(e.target.value)}
             placeholder={`Hotel, Airbnb or address in ${item.toName}`}
             className="bg-black/50 border-amber-500/30 text-white h-10"
           />
@@ -487,8 +511,8 @@ function TripConfigCard({
                 Flight number
               </Label>
               <Input
-                defaultValue={item.flightNumber ?? ""}
-                onBlur={(e) => setFlightNumber(e.target.value.toUpperCase())}
+                value={flightNumberValue}
+                onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
                 placeholder="e.g. UA1234"
                 className="bg-black/50 border-amber-500/30 text-white h-10 uppercase"
               />
