@@ -151,9 +151,18 @@ export default function RouteDetail({
               happen, then bounce. Wrapping each tier in a Link to the
               booking flow turns every one of those misclicks into a
               real conversion path. */}
+          {/* Each tier card now passes `adults=N` to the booking page so
+              the calculator initializes with a passenger count that
+              actually matches the tier's price. Before, clicking the
+              "6-9 PAX · Toyota Hiace $375" card landed the visitor at
+              the calculator with 2 passengers (the default), which
+              showed the $330 Staria price — looked like a bait-and-
+              switch and confused buyers. The values picked here are
+              the lower bound of each tier so the calculator stays in
+              the right pricing bracket. */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <Link
-              href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+              href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&adults=2&direct=1`}
               className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
             >
               <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
@@ -164,7 +173,7 @@ export default function RouteDetail({
             </Link>
             {route.precio7a9 ? (
               <Link
-                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&adults=6&direct=1`}
                 className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
               >
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
@@ -176,7 +185,7 @@ export default function RouteDetail({
             ) : null}
             {route.precio10a12 ? (
               <Link
-                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&adults=10&direct=1`}
                 className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
               >
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
@@ -188,7 +197,7 @@ export default function RouteDetail({
             ) : null}
             {route.precio13a18 ? (
               <Link
-                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
+                href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&adults=13&direct=1`}
                 className="bg-gray-900/50 rounded-xl p-4 text-center sm:col-span-2 md:col-span-3 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
               >
                 <div className="text-xs text-gray-400 mb-1">13-18 PAX</div>

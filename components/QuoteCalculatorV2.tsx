@@ -72,12 +72,24 @@ export default function QuoteCalculatorV2({
       // here pre-fills with the hotel name — saving them from re-typing it.
       const pickupHotelParam = params.get("pickupHotel");
       const dropoffHotelParam = params.get("dropoffHotel");
+      // `?adults=N` arrives when the visitor clicked a specific tier card
+      // on a route detail page ("6-9 PAX · Toyota Hiace $375"). Without
+      // it the calculator defaults to 2 passengers and shows the 1-5
+      // Staria price — looks like a bait-and-switch vs the tier they
+      // just tapped. Clamp to 1..18 to defend against weird URL inputs.
+      const adultsParam = params.get("adults");
       // Si hay params, setearlos. Si NO hay params, limpiar TODO el formulario.
       if (fromParam || toParam) {
         if (fromParam) setFrom(fromParam);
         if (toParam) setTo(toParam);
         if (pickupHotelParam) setPickupAddress(pickupHotelParam);
         if (dropoffHotelParam) setDropoffAddress(dropoffHotelParam);
+        if (adultsParam) {
+          const n = parseInt(adultsParam, 10);
+          if (!Number.isNaN(n) && n >= 1 && n <= 18) {
+            setAdultsStr(String(n));
+          }
+        }
       } else {
         // Reset completo (Add Another Trip)
         setFrom("");
