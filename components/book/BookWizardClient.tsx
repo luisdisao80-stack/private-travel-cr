@@ -168,11 +168,22 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       }
       return;
     }
-    // Cart just emptied (cleared or last trip removed) — send them back to
-    // /routes to start fresh. /book with no items leaves them stranded with
-    // a half-built calculator state inherited from URL params.
+    // Cart just emptied (cleared or last trip removed). Instead of
+    // bouncing the visitor away to /routes (which felt like a crash —
+    // they removed one trip and suddenly the whole page changed), flip
+    // back to the configuring view with a clean calculator so they can
+    // either pick a new route or browse via the navbar.
     if (items.length === 0 && prevItemsCount.current > 0) {
-      router.push("/routes");
+      if (typeof window !== "undefined") {
+        window.history.replaceState({}, "", "/book?add=1");
+      }
+      setHeroFrom("");
+      setHeroTo("");
+      setHeroPickupHotel(null);
+      setHeroDropoffHotel(null);
+      resetCalculator();
+      setView("configuring");
+      prevItemsCount.current = 0;
       return;
     }
     prevItemsCount.current = items.length;

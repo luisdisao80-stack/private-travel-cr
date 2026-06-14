@@ -42,6 +42,12 @@ export default function Hero({ locations, hotels = [] }: Props) {
   const [pickupHotel, setPickupHotel] = useState<import("@/lib/types").Hotel | null>(null);
   const [dropoffHotel, setDropoffHotel] = useState<import("@/lib/types").Hotel | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Inline feedback when the visitor typed a place name that doesn't
+  // match anything in the locations list. Without this, the Continue
+  // button silently returned and the visitor wondered why it "didn't
+  // work" — they'd bounce. Now we tell them: "We don't recognize that
+  // place — pick one from the list".
+  const [resolveError, setResolveError] = useState<"pickup" | "dropoff" | null>(null);
 
   const canContinue = pickup.trim().length > 0 && dropoff.trim().length > 0;
 
@@ -52,7 +58,15 @@ export default function Hero({ locations, hotels = [] }: Props) {
     // never finds the row and the wizard renders empty.
     const resolvedPickup = resolveLocation(pickup, locations);
     const resolvedDropoff = resolveLocation(dropoff, locations);
-    if (!resolvedPickup || !resolvedDropoff) return;
+    if (!resolvedPickup) {
+      setResolveError("pickup");
+      return;
+    }
+    if (!resolvedDropoff) {
+      setResolveError("dropoff");
+      return;
+    }
+    setResolveError(null);
 
     // Fast path: popular pair we know exists in the DB → direct to the SEO
     // landing page, skipping the /book → server-redirect round-trip
@@ -175,7 +189,10 @@ export default function Hero({ locations, hotels = [] }: Props) {
             <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-2">
               <LocationInput
                 value={pickup}
-                onChange={setPickup}
+                onChange={(v) => {
+                  setPickup(v);
+                  if (resolveError === "pickup") setResolveError(null);
+                }}
                 placeholder={lang === "en" ? "Where from?" : "¿De dónde?"}
                 locations={locations}
                 hotels={hotels}
@@ -184,7 +201,10 @@ export default function Hero({ locations, hotels = [] }: Props) {
               <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
               <LocationInput
                 value={dropoff}
-                onChange={setDropoff}
+                onChange={(v) => {
+                  setDropoff(v);
+                  if (resolveError === "dropoff") setResolveError(null);
+                }}
                 placeholder={lang === "en" ? "Where to?" : "¿A dónde?"}
                 locations={locations}
                 hotels={hotels}
@@ -193,6 +213,14 @@ export default function Hero({ locations, hotels = [] }: Props) {
             </div>
 
             <RoutePricePreview from={pickup} to={dropoff} />
+
+            {resolveError && (
+              <div className="mt-3 rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-2.5 text-center text-xs text-amber-200">
+                {lang === "en"
+                  ? `We don't recognize that ${resolveError === "pickup" ? "pickup" : "drop-off"} location. Pick one from the dropdown so we can quote it.`
+                  : `No reconocemos ese ${resolveError === "pickup" ? "punto de recogida" : "destino"}. Escogé uno de la lista para cotizarlo.`}
+              </div>
+            )}
 
             <button
               type="button"

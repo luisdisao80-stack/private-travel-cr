@@ -83,7 +83,12 @@ export default function BookingForm({ onBack }: BookingFormProps) {
   const isValid =
     form.name.trim().length > 1 &&
     /\S+@\S+\.\S+/.test(form.email) &&
-    form.phoneLocal.trim().length >= 5 &&
+    // Was >= 5 — too lax. A 5-digit phone is almost certainly truncated
+    // (no country in the world has a 5-digit reachable number once you
+    // strip the country code), so it would slip through and Diego had
+    // no way to confirm the booking. 7 keeps US/CA local numbers valid
+    // while filtering out obvious truncation.
+    form.phoneLocal.replace(/\D/g, "").length >= 7 &&
     items.length > 0 &&
     acceptedTerms;
 

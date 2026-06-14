@@ -24,6 +24,13 @@ export default function RoutePricePreview({ from, to, adults }: Props) {
     | { status: "loading" }
     | { status: "found"; basePrice: number; duration: string; adults: number }
     | { status: "notFound" }
+    // "error" is reserved for network / server failures so we can show
+    // a different (retry-friendly) message than the "we just don't quote
+    // that pair yet" notFound state. Previously both collapsed into the
+    // same "continue and we'll quote it" copy, which was misleading on
+    // flaky connections — visitors thought they were getting a free
+    // quote when really nothing reached the server.
+    | { status: "error" }
   >({ status: "idle" });
 
   useEffect(() => {
@@ -47,7 +54,7 @@ export default function RoutePricePreview({ from, to, adults }: Props) {
       .then((data) => {
         if (cancelled) return;
         if ("error" in data) {
-          setState({ status: "notFound" });
+          setState({ status: "error" });
           return;
         }
         if (data.found) {
@@ -63,7 +70,9 @@ export default function RoutePricePreview({ from, to, adults }: Props) {
       })
       .catch(() => {
         if (cancelled) return;
-        setState({ status: "notFound" });
+        // Fetch threw — almost always a network failure (offline, blocked
+        // request, etc.). Distinct from a successful 200 with notFound.
+        setState({ status: "error" });
       });
 
     return () => {
@@ -87,6 +96,14 @@ export default function RoutePricePreview({ from, to, adults }: Props) {
     return (
       <div className="mt-4 text-center text-xs text-amber-300/80">
         We don&apos;t have a direct price for that pair yet — continue and we&apos;ll quote it.
+      </div>
+    );
+  }
+
+  if (state.status === "error") {
+    return (
+      <div className="mt-4 text-center text-xs text-red-300">
+        Couldn&apos;t reach the pricing server. Check your connection and try again.
       </div>
     );
   }
