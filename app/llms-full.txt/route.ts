@@ -150,8 +150,8 @@ to be part of the trip — not just transit.
 
 ## Fleet
 
-- **Hyundai Staria** — 1 to 6 passengers · luxury SUV-van · large luggage space
-- **Toyota Hiace** — 7 to 9 passengers · roomy van · ideal for families or small groups
+- **Hyundai Staria** — 1 to 5 passengers · luxury SUV-van · large luggage space
+- **Toyota Hiace** — 6 to 9 passengers · roomy van · ideal for families or small groups
 - **Maxus V90** — 10 to 18 passengers · large group transport · weddings, retreats, corporate
 
 The price is the **same** whether you're 1 passenger or fill the vehicle's

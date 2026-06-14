@@ -33,7 +33,7 @@ const fakeItems: CartItem[] = [
     pickupPlace: "Terminal 1, Curbside",
     dropoffPlace: "Tabacon Thermal Resort",
     vehicleId: "staria",
-    vehicleName: "Hyundai Staria (up to 6 pax)",
+    vehicleName: "Hyundai Staria (up to 5 pax)",
     serviceType: "standard",
     extraStopHours: 0,
     basePrice: 190,

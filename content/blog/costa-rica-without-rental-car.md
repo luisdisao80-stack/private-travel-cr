@@ -100,12 +100,12 @@ We're going to use our own pricing because it's what we know. Other operators ar
 
 For a typical 7-night itinerary — **SJO → La Fortuna → Monteverde → Manuel Antonio → SJO** — here's the shuttle math:
 
-- [SJO → La Fortuna](/routes/sjo-to-la-fortuna): ~$190 (up to 6 passengers, door-to-door, ~3 hours)
-- [La Fortuna → Monteverde](/routes/la-fortuna-to-monteverde): ~$220 (~3.5 hours via Cañas)
-- [Monteverde → Manuel Antonio](/routes/monteverde-to-manuel-antonio): ~$260 (~5 hours)
-- [Manuel Antonio → SJO](/routes/manuel-antonio-quepos-to-san-jose-downtown): ~$190 (~3 hours)
+- [SJO → La Fortuna](/routes/sjo-to-la-fortuna): ~$220 (up to 5 passengers, door-to-door, ~3 hours)
+- [La Fortuna → Monteverde](/routes/la-fortuna-to-monteverde): ~$255 (~3.5 hours via Cañas)
+- [Monteverde → Manuel Antonio](/routes/monteverde-to-manuel-antonio): ~$310 (~5 hours)
+- [Manuel Antonio → SJO](/routes/manuel-antonio-quepos-to-san-jose-downtown): ~$220 (~3 hours)
 
-**Total: about $860 for the whole trip**, regardless of whether you're 2 people or 6.
+**Total: about $1,005 for the whole trip**, regardless of whether you're 2 people or 5.
 
 For two people, that's $430 each. For a family of four, $215 each. For six, $143 each. And the price includes a bilingual driver, free child seats, free Wi-Fi onboard, and zero parking, gas, or insurance to worry about.
 

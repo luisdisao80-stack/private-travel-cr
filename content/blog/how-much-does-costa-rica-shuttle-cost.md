@@ -76,7 +76,7 @@ All prices below are for **1–5 passengers in a standard van** and include all 
 | Monteverde ↔ Tamarindo | $270 | 3h30min |
 | Manuel Antonio ↔ Tamarindo | $410 | 5h |
 
-(Prices include taxes. VIP service is +$45 per trip.)
+(Prices include taxes. VIP service is +$80 per trip.)
 
 ## Standard vs VIP service
 
@@ -84,12 +84,12 @@ Most operators (us included) offer two service tiers:
 
 **Standard:** Direct route, professional driver, all the included items above. Best for airport transfers and travelers who just want to get from A to B.
 
-**VIP (+$45 USD):** Same vehicle, but the driver can stop at one or two tourist spots along the way (1–2 hours flexible), brings a welcome kit (local beers, sodas, snacks, fruit), and acts more like a tour guide than a transport driver. Best for honeymooners and travelers on a longer transfer (SJO to La Fortuna, La Fortuna to Manuel Antonio).
+**VIP (+$80 USD):** Same vehicle, but the driver can stop at one or two tourist spots along the way (1–2 hours flexible), brings a welcome kit (local beers, sodas, snacks, fruit), San Pellegrino sparkling water, USB chargers + onboard WiFi, and acts more like a tour guide than a transport driver. Best for honeymooners and travelers on a longer transfer (SJO to La Fortuna, La Fortuna to Manuel Antonio).
 
 ## When a private shuttle beats the alternatives
 
 **Private shuttle vs shared shuttle:**
-A shared shuttle for SJO to La Fortuna costs ~$55 per person. For a family of 4, that's $220 — essentially the same as a private shuttle ($220 total for 1–6 pax) but you sit in a 12-passenger van for 4–5 hours instead of 3. The private shuttle wins for any group of 3+.
+A shared shuttle for SJO to La Fortuna costs ~$55 per person. For a family of 4, that's $220 — essentially the same as a private shuttle ($220 total for 1–5 pax) but you sit in a 12-passenger van for 4–5 hours instead of 3. The private shuttle wins for any group of 3+.
 
 **Private shuttle vs rental car:**
 A rental car for a week in Costa Rica is **$450–700** all-in (base rate + mandatory insurance + gas + airport return fee). If your itinerary involves 3 destination shuttles, the shuttles cost roughly the same — and you skip the parking, navigation, and stress.
