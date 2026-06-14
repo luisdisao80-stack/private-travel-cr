@@ -280,8 +280,19 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                         <div className="mt-5 pt-5 border-t border-white/5 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                           <Link
                             href={buildHref(2)}
-                            className="rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-3 py-3 text-center transition-colors"
+                            className="rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors"
                           >
+                            <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
+                              <img
+                                src="/staria.webp"
+                                alt="Hyundai Staria"
+                                width={180}
+                                height={108}
+                                loading="lazy"
+                                decoding="async"
+                                className="max-h-full max-w-full object-contain"
+                              />
+                            </div>
                             <div className="text-[10px] text-gray-400 uppercase tracking-wider">1-5 PAX · Staria</div>
                             <div className="text-lg font-bold text-amber-400 mt-0.5">
                               <Price usd={route.precio1a6 ?? 0} />
@@ -290,8 +301,19 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                           {route.precio7a9 ? (
                             <Link
                               href={buildHref(6)}
-                              className="rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-3 py-3 text-center transition-colors"
+                              className="rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors"
                             >
+                              <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
+                                <img
+                                  src="/hiace.png"
+                                  alt="Toyota Hiace"
+                                  width={180}
+                                  height={108}
+                                  loading="lazy"
+                                  decoding="async"
+                                  className="max-h-full max-w-full object-contain"
+                                />
+                              </div>
                               <div className="text-[10px] text-gray-400 uppercase tracking-wider">6-9 PAX · Hiace</div>
                               <div className="text-lg font-bold text-amber-400 mt-0.5">
                                 <Price usd={route.precio7a9 ?? 0} />
@@ -301,8 +323,19 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                           {route.precio10a12 ? (
                             <Link
                               href={buildHref(10)}
-                              className="rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-3 py-3 text-center transition-colors"
+                              className="rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors"
                             >
+                              <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
+                                <img
+                                  src="/maxus-v90.webp"
+                                  alt="Maxus V90"
+                                  width={180}
+                                  height={108}
+                                  loading="lazy"
+                                  decoding="async"
+                                  className="max-h-full max-w-full object-contain"
+                                />
+                              </div>
                               <div className="text-[10px] text-gray-400 uppercase tracking-wider">10-12 PAX · Maxus</div>
                               <div className="text-lg font-bold text-amber-400 mt-0.5">
                                 <Price usd={route.precio10a12 ?? 0} />
