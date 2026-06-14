@@ -271,18 +271,21 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
             <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
               <BookingForm
                 onBack={() => {
-                  // Same reset as the desktop "Add another trip" CTA —
-                  // both surfaces are the user saying "I want a fresh
-                  // calculator", not "edit the trip already in my cart".
+                  // Both "add another trip" surfaces use this same handler
+                  // — the visitor is asking for a clean calculator, not
+                  // an edit of the trip already in cart.
                   //
-                  // Important: we DO NOT touch the URL here. The earlier
-                  // version called pushRouteParams("", "", null, null) to
-                  // strip ?checkout=1, but on the production build that
-                  // triggered useSearchParams + the URL-sync effect to
-                  // bounce the view back to "checkout" (a different
-                  // batching pattern from dev). View stays "configuring"
-                  // and URL stays /book?checkout=1 — that's fine; reload
-                  // brings them back to checkout, which matches intent.
+                  // Strip ?from / ?to from the URL via history.replaceState
+                  // BEFORE we bump the calculator's key — otherwise the
+                  // freshly-mounted QuoteCalculator runs its syncFromUrl
+                  // effect, reads the leftover from/to params, and
+                  // instantly repopulates the very fields we just tried
+                  // to clear. Keep ?add=1 so the URL-sync effect lands on
+                  // its "configuring" branch (preventing the bounce-back
+                  // to checkout we hit when using a plain /book).
+                  if (typeof window !== "undefined") {
+                    window.history.replaceState({}, "", "/book?add=1");
+                  }
                   setHeroFrom("");
                   setHeroTo("");
                   setHeroPickupHotel(null);
@@ -296,14 +299,18 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
               items={items}
               totalPrice={totalPrice}
               onAddAnotherTrip={() => {
-                // Reset the hero search inputs so the visitor lands on a
-                // clean calculator. We deliberately do NOT call
-                // pushRouteParams here — in production builds the URL
-                // change triggered the URL-sync useEffect to bounce
-                // view back to "checkout", making the button feel dead
-                // (Diego saw a brief flash then nothing). Keeping URL
-                // at /book?checkout=1 is fine; a reload returns the
-                // visitor to checkout, which matches intent.
+                // Strip ?from / ?to via history.replaceState BEFORE the
+                // calculator's key bump — otherwise its syncFromUrl reads
+                // the leftover params on the new mount and instantly
+                // repopulates the previous trip's route. Keep ?add=1 so
+                // the URL-sync effect hits its "configuring" branch and
+                // doesn't bounce back to checkout. replaceState (vs
+                // router.replace) skips Next.js's useSearchParams update
+                // — that update is what was triggering the bouncy effect
+                // chain in production before.
+                if (typeof window !== "undefined") {
+                  window.history.replaceState({}, "", "/book?add=1");
+                }
                 setHeroFrom("");
                 setHeroTo("");
                 setHeroPickupHotel(null);
