@@ -36,6 +36,21 @@ export const config = {
 const BLOCKED_BOT_RE =
   /(AhrefsBot|SemrushBot|MJ12bot|DotBot|BLEXBot|DataForSeoBot|PetalBot|AspiegelBot|SeznamBot|coccocbot|magpie-crawler|YandexBot|Bytespider|ZoominfoBot|serpstatbot|barkrowler|MegaIndex|spbot|linkfluence|TurnitinBot|MauiBot|AwarioBot|Linguee)/i;
 
+// Geo block. After the UA-based bot block was deployed (2026-06-14)
+// Singapore traffic *still* sat at ~48% of total visitors per Vercel
+// Analytics. None of Diego's 21 real bookings to date came from
+// Singapore — they're stealth scraper bots running out of AWS / GCP
+// SG datacenters, masquerading as Chrome / Safari user-agents we
+// can't pattern-match.
+//
+// Pragmatic fix: drop them by country at the edge. ISO 3166-1 alpha-2
+// codes are supplied by Vercel in the x-vercel-ip-country header on
+// every prod request. List stays narrow (Singapore only for now —
+// the "Opción A" conservative cut Diego approved) to minimise the
+// risk of dropping the rare legit VPN user. If we see meaningful
+// real-customer traffic from a blocked country later, we delist it.
+const BLOCKED_COUNTRIES = new Set<string>(["SG"]);
+
 const FALLBACK_URL = "/routes";
 
 export function middleware(req: NextRequest) {
@@ -46,6 +61,17 @@ export function middleware(req: NextRequest) {
   // bot stops retrying.
   const ua = req.headers.get("user-agent") || "";
   if (BLOCKED_BOT_RE.test(ua)) {
+    return new NextResponse(null, { status: 403 });
+  }
+
+  // ---- Geo block. x-vercel-ip-country is only set on production
+  // Vercel deployments — dev / preview don't get it and the header is
+  // null, so this branch is a no-op locally. Real users from blocked
+  // countries get a 403 (we don't ship a friendlier page because the
+  // ratio of real-to-bot is ~0:48 for SG; surfacing copy invites them
+  // to abuse other paths).
+  const country = req.headers.get("x-vercel-ip-country");
+  if (country && BLOCKED_COUNTRIES.has(country)) {
     return new NextResponse(null, { status: 403 });
   }
 
