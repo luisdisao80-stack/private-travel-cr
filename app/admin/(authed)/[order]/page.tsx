@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone } from "lucide-react";
+import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import type { CartItem } from "@/lib/CartContext";
 import {
@@ -251,6 +251,28 @@ export default async function AdminBookingDetailPage({ params }: Props) {
                         Flight {it.flightNumber}
                       </div>
                     )}
+                    {/* Child-seat request line — was missing from this
+                        view entirely, so Diego never saw what the
+                        customer asked for and only found out at pickup.
+                        Highlighted in amber so it stands out next to
+                        the other neutral-gray meta rows. */}
+                    {(() => {
+                      const parts: string[] = [];
+                      if (it.infantSeats)
+                        parts.push(`${it.infantSeats} infant`);
+                      if (it.convertibleSeats)
+                        parts.push(`${it.convertibleSeats} convertible`);
+                      if (it.boosterSeats)
+                        parts.push(`${it.boosterSeats} booster`);
+                      if (parts.length === 0) return null;
+                      return (
+                        <div className="inline-flex items-center gap-1.5 sm:col-span-2 text-amber-300 font-medium">
+                          <Baby size={12} className="text-amber-400" />
+                          <span className="text-amber-400/70">Child seats:</span>{" "}
+                          {parts.join(" + ")}
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
               );

@@ -441,6 +441,25 @@ export default function BookingPdfDocument({
                   Extra wait: {it.extraStopHours}h paid
                 </Text>
               ) : null}
+              {/* Child-seat request line. Reuses tripExtra style (amber,
+                  bold) so a parent skimming the PDF on their phone the
+                  morning of pickup can quickly confirm we know about the
+                  seats they asked for. */}
+              {(() => {
+                const parts: string[] = [];
+                if (it.infantSeats)
+                  parts.push(`${it.infantSeats} infant`);
+                if (it.convertibleSeats)
+                  parts.push(`${it.convertibleSeats} convertible`);
+                if (it.boosterSeats)
+                  parts.push(`${it.boosterSeats} booster`);
+                if (parts.length === 0) return null;
+                return (
+                  <Text style={styles.tripExtra}>
+                    Child seats: {parts.join(" + ")}
+                  </Text>
+                );
+              })()}
             </View>
           );
         })}

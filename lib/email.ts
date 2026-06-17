@@ -37,6 +37,37 @@ function isTourItem(it: BookingItem): it is TourEmailItem {
   return (it as TourEmailItem).type === "tour";
 }
 
+// Format child-seat requests into a single human line:
+//   "1 infant car seat"
+//   "2 boosters"
+//   "1 infant + 1 convertible + 2 boosters"
+// Returns empty string if the visitor asked for none, so callers can use
+// it directly as a conditional render guard.
+//
+// This was the missing piece in the email + admin + PDF — the cart and the
+// Supabase row stored the counts, but every downstream surface dropped
+// them on the floor. A customer would click "I need 2 infant seats" and
+// Diego had no way to know, leading to surprises at pickup.
+function childSeatsSummary(it: CartItem): string {
+  const parts: string[] = [];
+  if (it.infantSeats && it.infantSeats > 0) {
+    parts.push(
+      `${it.infantSeats} infant car seat${it.infantSeats === 1 ? "" : "s"}`,
+    );
+  }
+  if (it.convertibleSeats && it.convertibleSeats > 0) {
+    parts.push(
+      `${it.convertibleSeats} convertible${it.convertibleSeats === 1 ? "" : "s"}`,
+    );
+  }
+  if (it.boosterSeats && it.boosterSeats > 0) {
+    parts.push(
+      `${it.boosterSeats} booster${it.boosterSeats === 1 ? "" : "s"}`,
+    );
+  }
+  return parts.join(" + ");
+}
+
 const DEFAULT_FROM = "Private Travel CR <onboarding@resend.dev>";
 const DEFAULT_BUSINESS = "info@privatetravelcr.com";
 
@@ -184,6 +215,7 @@ export function buildBookingIcs(data: BookingEmailInput): string {
         it.pickupPlace && it.pickupPlace !== it.fromName ? it.pickupPlace : it.fromName;
       const dropoff =
         it.dropoffPlace && it.dropoffPlace !== it.toName ? it.dropoffPlace : it.toName;
+      const seats = childSeatsSummary(it);
       const desc = [
         `Private Travel CR · Order ${data.orderNumber}`,
         `From: ${pickup}`,
@@ -191,6 +223,11 @@ export function buildBookingIcs(data: BookingEmailInput): string {
         `Passengers: ${it.passengers}`,
         `Service: ${it.serviceType === "vip" ? "VIP" : "Standard"}`,
         `Vehicle: ${it.vehicleName}`,
+        // Child seats line is the one we routinely missed when only the
+        // ICS event description was visible (in the calendar app). Now
+        // it shows up right under the vehicle line so the driver loading
+        // the van knows what to bring.
+        seats ? `Child seats: ${seats}` : "",
         it.flightNumber ? `Flight: ${it.flightNumber}` : "",
         it.extraStopHours && it.extraStopHours > 0
           ? `Extra wait: ${it.extraStopHours}h paid`
@@ -288,6 +325,13 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
     it.extraStopHours && it.extraStopHours > 0
       ? `<div style="font-size:12px;color:#fbbf24;font-weight:600;margin-top:6px;">⏱ Extra wait: ${it.extraStopHours}h paid</div>`
       : "";
+  // Highlighted child-seat line — same yellow as Extra wait because they
+  // both change what the driver loads in the van and how he plans the trip.
+  // Emoji helps Diego spot it instantly when scanning his order inbox.
+  const seatsLine = childSeatsSummary(it);
+  const childSeats = seatsLine
+    ? `<div style="font-size:12px;color:#fbbf24;font-weight:600;margin-top:6px;">👶 Child seats: ${escapeHtml(seatsLine)}</div>`
+    : "";
   return `
     <tr>
       <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
@@ -306,6 +350,7 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
           ${it.flightNumber ? ` · Flight ${escapeHtml(it.flightNumber)}` : ""}
         </div>
         ${extraStops}
+        ${childSeats}
       </td>
       <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
         <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
