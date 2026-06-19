@@ -9,7 +9,7 @@ import {
   formatCRDateTime,
   pickupAt,
 } from "@/components/admin/booking-helpers";
-import { updateBookingStatusAction } from "../actions";
+import { updateBookingStatusAction, updateTripDateTimeAction } from "../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -274,6 +274,66 @@ export default async function AdminBookingDetailPage({ params }: Props) {
                       );
                     })()}
                   </div>
+
+                  {/* Edit date / time — common request: customer messages
+                      Diego saying "we got the date wrong, can you push it
+                      to the 25th?" Before this form existed every change
+                      needed raw-SQL access. Wrapped in <details> so the
+                      card stays clean until needed; default-collapsed. */}
+                  <details className="mt-3 border-t border-zinc-900 pt-3 group">
+                    <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-gray-500 hover:text-amber-400 transition-colors select-none">
+                      Change date / time
+                    </summary>
+                    <form
+                      action={updateTripDateTimeAction}
+                      className="mt-3 flex flex-wrap items-end gap-2"
+                    >
+                      <input
+                        type="hidden"
+                        name="orderNumber"
+                        value={data.order_number}
+                      />
+                      <input
+                        type="hidden"
+                        name="tripIndex"
+                        value={idx}
+                      />
+                      <label className="flex flex-col gap-1">
+                        <span className="text-[10px] uppercase tracking-wider text-gray-500">
+                          Date
+                        </span>
+                        <input
+                          type="date"
+                          name="date"
+                          defaultValue={it.date}
+                          required
+                          className="bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm text-white"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1">
+                        <span className="text-[10px] uppercase tracking-wider text-gray-500">
+                          Pickup time
+                        </span>
+                        <input
+                          type="time"
+                          name="pickupTime"
+                          defaultValue={it.pickupTime}
+                          required
+                          className="bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm text-white"
+                        />
+                      </label>
+                      <button
+                        type="submit"
+                        className="bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+                      >
+                        Save change
+                      </button>
+                      <span className="text-[10px] text-gray-500 ml-1">
+                        Remember to also message the customer + driver on
+                        WhatsApp — this only updates our records.
+                      </span>
+                    </form>
+                  </details>
                 </div>
               );
             })}
