@@ -15,6 +15,10 @@
 const DISPLAY: Record<string, string> = {
   "SJO - Juan Santamaria Int. Airport": "San Jose Airport",
   "LIR - Liberia Int. Airport": "Liberia Airport",
+  // DB row is "Jaco" (no accent). Users overwhelmingly know it as
+  // "Jacó" — surface the accent in the dropdown so it looks right
+  // even though the underlying name stays plain ASCII.
+  Jaco: "Jacó",
 };
 
 // DB name → palabras alternativas con las que el usuario podría buscarlo.
@@ -43,7 +47,7 @@ const ALIASES: Record<string, string[]> = {
   "Papagayo Peninsula, Guanacaste": ["papagayo", "peninsula papagayo"],
   "Puerto Viejo (Caribbean Coast)": ["puerto viejo", "caribbean", "caribe", "limon"],
   "Santa Teresa (Nicoya Peninsula)": ["santa teresa", "nicoya"],
-  Jaco: ["jaco"],
+  Jaco: ["jaco", "jacó", "playa jaco", "playa jacó"],
   "Playas del Coco (Guanacaste)": ["coco", "playas del coco", "playa del coco", "el coco"],
   "Flamingo (Guanacaste)": ["flamingo", "playa flamingo"],
   "Playa Hermosa (Guanacaste)": ["playa hermosa", "hermosa"],
@@ -137,16 +141,25 @@ export function isAirport(dbName: string): boolean {
   return AIRPORT_SET.has(dbName);
 }
 
+// Strip diacritics so "Jacó" matches "Jaco", "Cataratas Río" matches
+// "rio", "Peñas Blancas" matches "penas", etc. We do this on BOTH the
+// query and the haystacks so the user can type with or without accents
+// and get the same matches either way — keyboard input on phones often
+// drops the accent layer entirely.
+function stripDiacritics(s: string): string {
+  return s.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+}
+
 // Devuelve un score > 0 si la location matchea la query. Más alto = mejor match.
 // 0 significa "no matchea, no mostrar".
 export function matchScore(dbName: string, query: string): number {
-  const q = query.toLowerCase().trim();
+  const q = stripDiacritics(query.toLowerCase().trim());
   if (!q) return 1;
 
   const haystacks = [
-    dbName.toLowerCase(),
-    displayLocation(dbName).toLowerCase(),
-    ...(ALIASES[dbName] ?? []).map((a) => a.toLowerCase()),
+    stripDiacritics(dbName.toLowerCase()),
+    stripDiacritics(displayLocation(dbName).toLowerCase()),
+    ...(ALIASES[dbName] ?? []).map((a) => stripDiacritics(a.toLowerCase())),
   ];
 
   // Exact match on the full string of any haystack — highest priority.
