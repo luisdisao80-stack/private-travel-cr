@@ -553,3 +553,78 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
     console.error("[email] internal send error:", internalRes.value.error);
   }
 }
+
+/**
+ * Re-send the booking confirmation after Diego edits a trip's date or
+ * pickup time from the admin panel. Uses the same shellHtml + ICS
+ * machinery as the initial confirmation so the customer's calendar
+ * event updates correctly when they re-add the attachment.
+ *
+ * Why a separate function vs. a `kind` flag on sendBookingEmails:
+ * the subject line and intro copy need to be different ("Updated"
+ * not "Confirmed") so the customer doesn't think they were charged
+ * twice, and forking here keeps that branching localised. Everything
+ * downstream (HTML body, ICS event, attachments) stays identical
+ * because what we want IS a re-sent confirmation with the new times.
+ */
+export async function sendBookingUpdateEmails(
+  data: BookingEmailInput,
+): Promise<void> {
+  const resend = client();
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY not set — skipping update emails");
+    return;
+  }
+  const from = process.env.EMAIL_FROM || DEFAULT_FROM;
+  const businessTo = process.env.BUSINESS_EMAIL || DEFAULT_BUSINESS;
+
+  const customerHtml = shellHtml({
+    title: "Booking updated",
+    intro: `Hi ${data.customerName.split(" ")[0] || "there"}, we've updated your booking with the new date or pickup time. Latest details below — please replace any earlier confirmation with this one.`,
+    data,
+    showCustomer: false,
+  });
+  const internalHtml = shellHtml({
+    title: "Booking updated by admin",
+    intro: `Order ${data.orderNumber} — trip date / pickup time changed. The customer is being notified at the same time.`,
+    data,
+    showCustomer: true,
+  });
+
+  const ics = buildBookingIcs(data);
+  const icsAttachment = {
+    filename: `private-travel-cr-${data.orderNumber}-updated.ics`,
+    content: Buffer.from(ics, "utf-8").toString("base64"),
+    contentType: "text/calendar; charset=utf-8; method=PUBLISH",
+  };
+
+  const [customerRes, internalRes] = await Promise.allSettled([
+    resend.emails.send({
+      from,
+      to: data.customerEmail,
+      subject: `Booking updated · ${data.orderNumber}`,
+      html: customerHtml,
+      replyTo: businessTo,
+      attachments: [icsAttachment],
+    }),
+    resend.emails.send({
+      from,
+      to: businessTo,
+      subject: `✏️ Booking updated · ${data.orderNumber}`,
+      html: internalHtml,
+      replyTo: data.customerEmail,
+      attachments: [icsAttachment],
+    }),
+  ]);
+
+  if (customerRes.status === "rejected") {
+    console.error("[email] customer update send failed:", customerRes.reason);
+  } else if (customerRes.value.error) {
+    console.error("[email] customer update send error:", customerRes.value.error);
+  }
+  if (internalRes.status === "rejected") {
+    console.error("[email] internal update send failed:", internalRes.reason);
+  } else if (internalRes.value.error) {
+    console.error("[email] internal update send error:", internalRes.value.error);
+  }
+}

@@ -329,8 +329,9 @@ export default async function AdminBookingDetailPage({ params }: Props) {
                         Save change
                       </button>
                       <span className="text-[10px] text-gray-500 ml-1">
-                        Remember to also message the customer + driver on
-                        WhatsApp — this only updates our records.
+                        Saving also re-sends the confirmation email to the
+                        customer with the new date / time + updated .ics.
+                        Still WhatsApp the driver yourself.
                       </span>
                     </form>
                   </details>

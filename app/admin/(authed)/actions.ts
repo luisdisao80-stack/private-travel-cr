@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { clearAdminSession, isAdminAuthed } from "@/lib/admin-auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { sendBookingUpdateEmails } from "@/lib/email";
+import type { CartItem } from "@/lib/CartContext";
 
 export async function logoutAction(): Promise<void> {
   await clearAdminSession();
@@ -83,10 +85,14 @@ export async function updateTripDateTimeAction(
   if (!orderNumber || Number.isNaN(tripIndex) || tripIndex < 0) return;
   if (!isValidDate(date) || !isValidTime(pickupTime)) return;
 
-  // Fetch current items so we can mutate the target trip element.
+  // Fetch the full row so we can both (a) mutate the items array and
+  // (b) hand the email sender everything it needs (customer name /
+  // email / phone / totals) without a second round-trip.
   const { data: row, error: readErr } = await supabaseAdmin
     .from("bookings")
-    .select("items")
+    .select(
+      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4",
+    )
     .eq("order_number", orderNumber)
     .maybeSingle();
 
@@ -126,4 +132,32 @@ export async function updateTripDateTimeAction(
 
   revalidatePath("/admin");
   revalidatePath(`/admin/${orderNumber}`);
+
+  // Re-send confirmation to the customer + internal address with the
+  // new date / time. We swallow errors here (don't throw) — if email
+  // fails the DB write already landed, and the form's help text reminds
+  // Diego to message the customer manually as a backstop. Email is
+  // best-effort, not the source of truth.
+  //
+  // Skip if the customer email is missing (rare — the field is required
+  // at checkout, but a manual admin-created row could be missing it).
+  if (row.customer_email) {
+    try {
+      await sendBookingUpdateEmails({
+        orderNumber,
+        customerName: row.customer_name ?? "",
+        customerEmail: row.customer_email,
+        customerPhone: row.customer_phone ?? null,
+        totalUsd: Number(row.total_usd ?? 0),
+        authCode: row.tilopay_auth ?? null,
+        cardLast4: row.tilopay_last4 ?? null,
+        // The email layer accepts CartItem | TourEmailItem; admin
+        // rows store the same shape we wrote at checkout, but the
+        // JSONB column types as unknown so we cast at the boundary.
+        items: items as unknown as CartItem[],
+      });
+    } catch (e) {
+      console.error("[admin] update email send threw:", e);
+    }
+  }
 }
