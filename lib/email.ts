@@ -143,8 +143,19 @@ function escapeIcs(s: string): string {
   return s.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
 }
 
-/** Build a multi-event .ics file covering every trip in the booking. */
-export function buildBookingIcs(data: BookingEmailInput): string {
+/** Build a multi-event .ics file covering every trip in the booking.
+ *
+ * `sequence` is the iCalendar SEQUENCE field — 0 for the initial
+ * confirmation, a higher integer for each subsequent revision (admin
+ * edits the date / time, etc.). Google Calendar / Apple Calendar /
+ * Outlook recognise the same UID + higher SEQUENCE as "update this
+ * existing event" instead of creating a duplicate. Without it the
+ * customer ends up with two overlapping events when we re-send a
+ * confirmation with a new time. */
+export function buildBookingIcs(
+  data: BookingEmailInput,
+  sequence = 0,
+): string {
   const dtstamp = toIcsUtc(
     new Date().toISOString().slice(0, 10),
     new Date().toISOString().slice(11, 16)
@@ -176,6 +187,7 @@ export function buildBookingIcs(data: BookingEmailInput): string {
           "BEGIN:VEVENT",
           `UID:${data.orderNumber}-${idx}@privatetravelcr.com`,
           `DTSTAMP:${dtstamp}`,
+          `SEQUENCE:${sequence}`,
           `DTSTART:${start}`,
           `DTEND:${end}`,
           `SUMMARY:${escapeIcs(it.tourName)}`,
@@ -241,6 +253,7 @@ export function buildBookingIcs(data: BookingEmailInput): string {
         "BEGIN:VEVENT",
         `UID:${data.orderNumber}-${idx}@privatetravelcr.com`,
         `DTSTAMP:${dtstamp}`,
+        `SEQUENCE:${sequence}`,
         `DTSTART:${start}`,
         `DTEND:${end}`,
         `SUMMARY:${escapeIcs(`Private Shuttle: ${it.fromName} → ${it.toName}`)}`,
@@ -591,7 +604,15 @@ export async function sendBookingUpdateEmails(
     showCustomer: true,
   });
 
-  const ics = buildBookingIcs(data);
+  // SEQUENCE must monotonically increase per the iCalendar spec for the
+  // recipient's calendar to overwrite the existing event with this one.
+  // We use the current Unix timestamp (seconds since epoch) — guaranteed
+  // monotonic across edits even if multiple admins make changes within
+  // the same minute, and never collides with the 0 we send at initial
+  // confirmation. Trimmed to a reasonable size so calendar clients that
+  // store SEQUENCE in a small int don't roll over.
+  const sequence = Math.floor(Date.now() / 1000) % 2147483647;
+  const ics = buildBookingIcs(data, sequence);
   const icsAttachment = {
     filename: `private-travel-cr-${data.orderNumber}-updated.ics`,
     content: Buffer.from(ics, "utf-8").toString("base64"),
