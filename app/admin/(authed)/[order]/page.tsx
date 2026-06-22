@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby } from "lucide-react";
+import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby, Send } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import type { CartItem } from "@/lib/CartContext";
 import {
@@ -9,7 +9,11 @@ import {
   formatCRDateTime,
   pickupAt,
 } from "@/components/admin/booking-helpers";
-import { updateBookingStatusAction, updateTripDateTimeAction } from "../actions";
+import {
+  updateBookingStatusAction,
+  updateTripDateTimeAction,
+  resendConfirmationEmailAction,
+} from "../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -373,6 +377,41 @@ export default async function AdminBookingDetailPage({ params }: Props) {
             className="bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
           >
             Save
+          </button>
+        </form>
+      </div>
+
+      {/* Resend confirmation card — separate from Change status so the
+          two actions don't crowd each other and Diego doesn't fire one
+          when he meant the other. The form uses a server action with
+          one hidden input; clicking the button re-fires the original
+          "Booking Confirmed" email to the customer + an internal copy
+          to BUSINESS_EMAIL. */}
+      <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mt-6">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 inline-flex items-center gap-2">
+          <Send size={14} className="text-amber-400" />
+          Resend confirmation email
+        </h2>
+        <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+          Use when a customer messages saying they didn&apos;t receive the
+          confirmation. Re-sends to <span className="text-amber-400 font-medium">{data.customer_email || "(no email on file)"}</span> and a copy to your internal inbox.
+        </p>
+        <form
+          action={resendConfirmationEmailAction}
+          className="flex items-center gap-3 flex-wrap"
+        >
+          <input
+            type="hidden"
+            name="orderNumber"
+            value={data.order_number}
+          />
+          <button
+            type="submit"
+            disabled={!data.customer_email}
+            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-zinc-800 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+          >
+            <Send size={12} />
+            Resend confirmation
           </button>
         </form>
       </div>

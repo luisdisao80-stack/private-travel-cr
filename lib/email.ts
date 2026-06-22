@@ -395,9 +395,9 @@ function shellHtml({
       <tr>
         <td style="padding:16px;border-top:1px solid #1f2937;">
           <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
-          <div style="font-size:14px;color:#ffffff;">${escapeHtml(data.customerName)}</div>
-          <div style="font-size:13px;color:#d1d5db;">${escapeHtml(data.customerEmail)}</div>
-          ${data.customerPhone ? `<div style="font-size:13px;color:#d1d5db;">${escapeHtml(data.customerPhone)}</div>` : ""}
+          <div style="font-size:14px;color:#ffffff;font-weight:600;">${escapeHtml(data.customerName)}</div>
+          <div style="font-size:13px;color:#ffffff;font-weight:600;margin-top:2px;">${escapeHtml(data.customerEmail)}</div>
+          ${data.customerPhone ? `<div style="font-size:13px;color:#ffffff;font-weight:600;margin-top:2px;">${escapeHtml(data.customerPhone)}</div>` : ""}
         </td>
       </tr>
     `

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { clearAdminSession, isAdminAuthed } from "@/lib/admin-auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { sendBookingUpdateEmails } from "@/lib/email";
+import { sendBookingEmails, sendBookingUpdateEmails } from "@/lib/email";
 import type { CartItem } from "@/lib/CartContext";
 
 export async function logoutAction(): Promise<void> {
@@ -160,4 +160,65 @@ export async function updateTripDateTimeAction(
       console.error("[admin] update email send threw:", e);
     }
   }
+}
+
+/**
+ * Manually re-fire the original "Booking Confirmed" email for a booking
+ * that didn't reach the customer. Most common cause: aggressive spam
+ * filters at MSN / Hotmail / Outlook silently dropped the first send.
+ * Now that EMAIL_FROM points at the verified privatetravelcr.com domain
+ * (2026-06-20), the second send usually lands in the inbox cleanly.
+ *
+ * Diego triggers this from the admin booking detail page when a
+ * customer messages him saying "I never got the confirmation".
+ */
+export async function resendConfirmationEmailAction(
+  formData: FormData,
+): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
+  }
+
+  const orderNumber = String(formData.get("orderNumber") ?? "").trim();
+  if (!orderNumber) return;
+
+  const { data: row, error } = await supabaseAdmin
+    .from("bookings")
+    .select(
+      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4",
+    )
+    .eq("order_number", orderNumber)
+    .maybeSingle();
+
+  if (error || !row) {
+    console.error("[admin] resendConfirmation read failed:", error);
+    return;
+  }
+  if (!row.customer_email) {
+    console.error(
+      `[admin] resendConfirmation: order ${orderNumber} has no customer_email`,
+    );
+    return;
+  }
+
+  const items = Array.isArray(row.items)
+    ? (row.items as unknown as CartItem[])
+    : [];
+
+  try {
+    await sendBookingEmails({
+      orderNumber,
+      customerName: row.customer_name ?? "",
+      customerEmail: row.customer_email,
+      customerPhone: row.customer_phone ?? null,
+      totalUsd: Number(row.total_usd ?? 0),
+      authCode: row.tilopay_auth ?? null,
+      cardLast4: row.tilopay_last4 ?? null,
+      items,
+    });
+  } catch (e) {
+    console.error("[admin] resendConfirmation send threw:", e);
+  }
+
+  revalidatePath(`/admin/${orderNumber}`);
 }
