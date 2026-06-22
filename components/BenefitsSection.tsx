@@ -107,7 +107,7 @@ export default function BenefitsSection() {
           <div className="flex items-center gap-2 text-gray-400">
             <span className="text-2xl">🚐</span>
             <span className="text-sm">
-              <strong className="text-white">190+</strong> {t.benefits.trust.travelers}
+              <strong className="text-white">200+</strong> {t.benefits.trust.travelers}
             </span>
           </div>
 

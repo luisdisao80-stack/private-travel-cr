@@ -29,12 +29,12 @@ import { siteConfig } from "@/lib/site-config";
 export const metadata: Metadata = {
   title: "Reviews · Private Travel CR (5.0 ⭐ Google, TripAdvisor Travellers' Choice 2025)",
   description:
-    "Real customer reviews of Private Travel Costa Rica — 190+ five-star Google reviews, TripAdvisor Travellers' Choice 2025 award, and unsolicited Reddit recommendations from travelers who used our private shuttle service.",
+    "Real customer reviews of Private Travel Costa Rica — 200+ five-star Google reviews, TripAdvisor Travellers' Choice 2025 award, and unsolicited Reddit recommendations from travelers who used our private shuttle service.",
   alternates: { canonical: "/reviews" },
   openGraph: {
     title: "Reviews of Private Travel Costa Rica",
     description:
-      "190+ five-star Google reviews, TripAdvisor Travellers' Choice 2025, and Reddit recommendations — see what travelers say.",
+      "200+ five-star Google reviews, TripAdvisor Travellers' Choice 2025, and Reddit recommendations — see what travelers say.",
     url: `${siteConfig.siteUrl}/reviews`,
     siteName: siteConfig.name,
     type: "website",

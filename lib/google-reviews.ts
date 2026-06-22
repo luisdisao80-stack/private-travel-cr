@@ -38,9 +38,12 @@ export type GoogleReviewsData = {
 
 // Fallback used when the API key isn't set or the network call fails.
 // Counts are conservative — better to under-state than to over-state.
+// Bumped 190 → 200 on 2026-06-22 when Diego flagged the count was
+// stale. If the GOOGLE_PLACES_API_KEY env var is set, the live API
+// result wins anyway; this only kicks in on cold start / API outage.
 const FALLBACK: GoogleReviewsData = {
   rating: 5.0,
-  count: 190,
+  count: 200,
   reviews: [],
 };
 

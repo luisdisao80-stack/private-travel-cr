@@ -80,7 +80,7 @@ Direct from SJO to La Fortuna. Door to door. Bilingual driver. No rental car pap
 Need a pickup from SJO or LIR? Link in bio for an instant quote or DM us "shuttle" 👇
 
 📍 Based in La Fortuna · Serving all of Costa Rica
-⭐ 5.0 on Google · 190+ reviews
+⭐ 5.0 on Google · 200+ reviews
 
 #CostaRica #CostaRicaTravel #LaFortuna #PrivateShuttle #SJOAirport #PuraVida #VisitCostaRica #CostaRicaTrip #ArenalVolcano #FamilyTravel
 ```
@@ -365,7 +365,7 @@ From Sarah (Toronto 🇨🇦):
 
 If you want a driver who actually cares about your trip, message us. WhatsApp +506 8633-4133.
 
-⭐ 5.0 on Google · 190+ reviews · TripAdvisor Travellers' Choice 2025
+⭐ 5.0 on Google · 200+ reviews · TripAdvisor Travellers' Choice 2025
 
 #CostaRicaReviews #FivStar #PrivateShuttle #CostaRicaTravel #VisitCostaRica #LaFortuna #CustomerReview
 ```

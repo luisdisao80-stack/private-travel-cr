@@ -12,9 +12,9 @@ export const siteConfig = {
 
   // Descripcion bilingue
   descriptionEN:
-    "Premium private shuttle service in Costa Rica. Door-to-door transfers from SJO and LIR airports to La Fortuna, Manuel Antonio, Monteverde and more. ⭐ 5.0 Google · 190+ reviews · TripAdvisor Travelers' Choice 2025.",
+    "Premium private shuttle service in Costa Rica. Door-to-door transfers from SJO and LIR airports to La Fortuna, Manuel Antonio, Monteverde and more. ⭐ 5.0 Google · 200+ reviews · TripAdvisor Travelers' Choice 2025.",
   descriptionES:
-    "Servicio de transporte privado premium en Costa Rica. Traslados puerta a puerta desde aeropuertos SJO y LIR a La Fortuna, Manuel Antonio, Monteverde y más. ⭐ 5.0 Google · 190+ reseñas · TripAdvisor Travelers' Choice 2025.",
+    "Servicio de transporte privado premium en Costa Rica. Traslados puerta a puerta desde aeropuertos SJO y LIR a La Fortuna, Manuel Antonio, Monteverde y más. ⭐ 5.0 Google · 200+ reseñas · TripAdvisor Travelers' Choice 2025.",
 
   // Datos del negocio (para Schema.org y contacto)
   business: {
@@ -37,7 +37,7 @@ export const siteConfig = {
     founder: "Diego Salas Oviedo",
     rating: {
       googleStars: 5.0,
-      googleReviews: 190,
+      googleReviews: 200,
       tripAdvisorStars: 5.0,
       tripAdvisorReviews: 27,
     },

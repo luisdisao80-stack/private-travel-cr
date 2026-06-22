@@ -10,7 +10,7 @@ export const FAQS_EN: FAQ[] = [
   {
     question: "Is it safe to travel with Private Travel CR?",
     answer:
-      "Absolutely. Our fleet consists of new vehicles with up-to-date technical inspections and full insurance coverage. All our drivers are professional bilingual drivers with years of experience driving in Costa Rica. We have over 190 5-star reviews on Google that back up our service.",
+      "Absolutely. Our fleet consists of new vehicles with up-to-date technical inspections and full insurance coverage. All our drivers are professional bilingual drivers with years of experience driving in Costa Rica. We have over 200 5-star reviews on Google that back up our service.",
   },
   {
     question: "What payment methods do you accept?",
@@ -73,7 +73,7 @@ export const FAQS_ES: FAQ[] = [
   {
     question: "¿Es seguro viajar con Private Travel CR?",
     answer:
-      "Absolutamente. Nuestra flota está compuesta por vehículos nuevos, con revisión técnica al día y seguros completos. Todos nuestros choferes son profesionales bilingües con años de experiencia manejando en Costa Rica. Contamos con más de 190 reseñas de 5 estrellas en Google que respaldan nuestro servicio.",
+      "Absolutamente. Nuestra flota está compuesta por vehículos nuevos, con revisión técnica al día y seguros completos. Todos nuestros choferes son profesionales bilingües con años de experiencia manejando en Costa Rica. Contamos con más de 200 reseñas de 5 estrellas en Google que respaldan nuestro servicio.",
   },
   {
     question: "¿Qué métodos de pago aceptan?",

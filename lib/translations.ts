@@ -119,7 +119,7 @@ export const translations = {
           google: {
             title: "5.0 ★ on Google",
             description:
-              "190+ verified reviews from travelers who actually rode with us. Read every one — we respond to all.",
+              "200+ verified reviews from travelers who actually rode with us. Read every one — we respond to all.",
           },
           founded: {
             title: "Founded 2022",
@@ -416,7 +416,7 @@ export const translations = {
         {
           question: "Is it safe to travel with Private Travel CR?",
           answer:
-            "Absolutely. Our fleet consists of new vehicles with up-to-date technical inspections and full insurance. All our drivers are professional bilingual with years of experience driving in Costa Rica. We have over 190 5-star reviews on Google that back up our service.",
+            "Absolutely. Our fleet consists of new vehicles with up-to-date technical inspections and full insurance. All our drivers are professional bilingual with years of experience driving in Costa Rica. We have over 200 5-star reviews on Google that back up our service.",
         },
         {
           question: "What payment methods do you accept?",
@@ -568,7 +568,7 @@ export const translations = {
       brandDescription:
         "Premium private transportation in Costa Rica. Instant quotes, bilingual driver, door-to-door service.",
       reviews: "reviews",
-      reviewsCount: "190+ reviews",
+      reviewsCount: "200+ reviews",
       quickLinks: "Quick Links",
       links: {
         home: "Home",
@@ -777,7 +777,7 @@ export const translations = {
           google: {
             title: "5.0 ★ en Google",
             description:
-              "190+ reseñas verificadas de viajeros que realmente viajaron con nosotros. Leelas todas — respondemos cada una.",
+              "200+ reseñas verificadas de viajeros que realmente viajaron con nosotros. Leelas todas — respondemos cada una.",
           },
           founded: {
             title: "Fundada en 2022",
@@ -1064,7 +1064,7 @@ export const translations = {
         {
           question: "¿Es seguro viajar con Private Travel CR?",
           answer:
-            "Absolutamente. Nuestra flota está compuesta por vehículos nuevos, con revisión técnica al día y seguros completos. Todos nuestros choferes son profesionales bilingües con años de experiencia manejando en Costa Rica. Contamos con más de 190 reseñas de 5 estrellas en Google que respaldan nuestro servicio.",
+            "Absolutamente. Nuestra flota está compuesta por vehículos nuevos, con revisión técnica al día y seguros completos. Todos nuestros choferes son profesionales bilingües con años de experiencia manejando en Costa Rica. Contamos con más de 200 reseñas de 5 estrellas en Google que respaldan nuestro servicio.",
         },
         {
           question: "¿Qué métodos de pago aceptan?",
@@ -1214,7 +1214,7 @@ export const translations = {
       brandDescription:
         "Transporte privado premium en Costa Rica. Cotización instantánea, chofer bilingüe y servicio puerta a puerta.",
       reviews: "reseñas",
-      reviewsCount: "190+ reseñas",
+      reviewsCount: "200+ reseñas",
       quickLinks: "Enlaces Rápidos",
       links: {
         home: "Inicio",

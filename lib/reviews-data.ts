@@ -70,7 +70,7 @@ export const reviews: Review[] = [
 export const reviewStats = {
   google: {
     rating: 5.0,
-    count: 190,
+    count: 200,
     // Was "https://g.co/kgs/cWkFwFM" — Google's KG short URL silently
     // failed on iOS Safari and various in-app browsers (Instagram, FB),
     // doing nothing on tap. Switched to the canonical search URL keyed
