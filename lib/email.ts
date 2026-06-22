@@ -390,14 +390,18 @@ function shellHtml({
   data: BookingEmailInput;
   showCustomer: boolean;
 }): string {
+  // Customer block — three lines (name, email, phone) all rendered in
+  // pure-white-on-near-black so they pop in the dark email shell. The
+  // .ptcr-text-white class is targeted by the dark-mode CSS in shellHtml
+  // so iOS Mail and Outlook can't auto-invert the color to gray.
   const customerBlock = showCustomer
     ? `
       <tr>
         <td style="padding:16px;border-top:1px solid #1f2937;">
           <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
-          <div style="font-size:14px;color:#ffffff;font-weight:600;">${escapeHtml(data.customerName)}</div>
-          <div style="font-size:13px;color:#ffffff;font-weight:600;margin-top:2px;">${escapeHtml(data.customerEmail)}</div>
-          ${data.customerPhone ? `<div style="font-size:13px;color:#ffffff;font-weight:600;margin-top:2px;">${escapeHtml(data.customerPhone)}</div>` : ""}
+          <div class="ptcr-text-white" style="font-size:16px;color:#ffffff;font-weight:700;line-height:1.3;">${escapeHtml(data.customerName)}</div>
+          <div class="ptcr-text-white" style="font-size:14px;color:#ffffff;font-weight:600;margin-top:4px;line-height:1.4;">${escapeHtml(data.customerEmail)}</div>
+          ${data.customerPhone ? `<div class="ptcr-text-white" style="font-size:14px;color:#ffffff;font-weight:600;margin-top:2px;line-height:1.4;">${escapeHtml(data.customerPhone)}</div>` : ""}
         </td>
       </tr>
     `
@@ -414,8 +418,28 @@ function shellHtml({
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${escapeHtml(title)}</title>
+  <!-- Tell iOS Mail + Outlook the email is DESIGNED for dark mode so
+       Smart-Invert leaves our pure-white text alone. Without these
+       three meta tags Apple Mail rewrites #ffffff to a medium gray
+       and the whole template renders washed-out on iPhone (Diego
+       screenshot 2026-06-22). meta name="color-scheme" is the formal
+       standard; the supported-color-schemes alias covers older iOS
+       versions that haven't adopted it yet. -->
+  <meta name="color-scheme" content="dark light" />
+  <meta name="supported-color-schemes" content="dark light" />
+  <style>
+    /* Block all auto-dark-mode rewrites on email clients that respect
+       this CSS rule (Apple Mail iOS 13+, Outlook 2021+). The clients
+       that don't honor it fall through to the inline white colors. */
+    :root { color-scheme: dark light; supported-color-schemes: dark light; }
+    /* Override iOS Mail's Smart-Invert specifically. The data-ogsc /
+       data-ogsb attributes are Outlook's dark-mode toggles — we set
+       them so Outlook doesn't try to "help" by inverting either. */
+    [data-ogsc] body, [data-ogsb] body { background:#000000 !important; }
+    [data-ogsc] .ptcr-text-white { color:#ffffff !important; }
+  </style>
 </head>
-<body style="margin:0;padding:0;background:#000000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background:#000000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color-scheme:dark light;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;padding:32px 16px;">
     <tr>
       <td align="center">
