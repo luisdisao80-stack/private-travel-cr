@@ -29,9 +29,21 @@ function resolveLocation(input: string, locations: string[]): string {
 type Props = {
   locations: string[];
   hotels?: import("@/lib/types").Hotel[];
+  // Live Google review count / rating from getGoogleReviews(). Falls
+  // back to the hardcoded reviewStats values when undefined (e.g.
+  // when the Places API is unreachable at build time). Without these
+  // props the hero showed a stale 190 even when the rest of the page
+  // had refreshed to the real count — Diego flagged this 2026-06-22.
+  liveGoogleCount?: number;
+  liveGoogleRating?: number;
 };
 
-export default function Hero({ locations, hotels = [] }: Props) {
+export default function Hero({
+  locations,
+  hotels = [],
+  liveGoogleCount,
+  liveGoogleRating,
+}: Props) {
   const { t, lang } = useLanguage();
   const router = useRouter();
   const [pickup, setPickup] = useState("");
@@ -169,11 +181,14 @@ export default function Hero({ locations, hotels = [] }: Props) {
                   <Star key={i} size={20} className="fill-amber-400 text-amber-400" />
                 ))}
                 <span className="ml-2 text-base md:text-lg font-bold text-white">
-                  {reviewStats.google.rating.toFixed(1)}
+                  {(liveGoogleRating ?? reviewStats.google.rating).toFixed(1)}
                 </span>
               </div>
               <span className="text-xs md:text-sm text-gray-300">
-                <strong className="text-white">{reviewStats.google.count}+</strong> Google Reviews
+                <strong className="text-white">
+                  {liveGoogleCount ?? reviewStats.google.count}+
+                </strong>{" "}
+                Google Reviews
               </span>
             </div>
             <ExternalLink size={14} className="text-white/40" />

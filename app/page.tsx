@@ -47,7 +47,15 @@ export default async function Home() {
       <Navbar />
 
       <section id="inicio">
-        <Hero locations={locations} hotels={hotels} />
+        {/* Live Google count + rating flow into the hero so the
+            "200+ Google Reviews" badge auto-updates as new reviews
+            land — instead of staying frozen at the hardcoded fallback. */}
+        <Hero
+          locations={locations}
+          hotels={hotels}
+          liveGoogleCount={google.count}
+          liveGoogleRating={google.rating}
+        />
       </section>
 
       {/* Trust strip — closes the credibility gap against legacy
