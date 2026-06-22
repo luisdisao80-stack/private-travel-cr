@@ -80,6 +80,19 @@ export default function BookingForm({ onBack }: BookingFormProps) {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
+  // Flight number is required for every trip that picks UP at an
+  // airport — without it Diego can't track the flight for delays and
+  // ends up chasing the customer on WhatsApp for the missing info
+  // hours before pickup. We DON'T require it for trips that DROP OFF
+  // at an airport (the customer isn't flying in, they're flying out
+  // afterwards and don't have an inbound flight to track).
+  const airportTripsMissingFlight = items
+    .map((it, idx) => ({ it, idx }))
+    .filter(
+      ({ it }) =>
+        isAirport(it.fromName) && !(it.flightNumber && it.flightNumber.trim().length > 0),
+    );
+
   const isValid =
     form.name.trim().length > 1 &&
     /\S+@\S+\.\S+/.test(form.email) &&
@@ -90,6 +103,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
     // while filtering out obvious truncation.
     form.phoneLocal.replace(/\D/g, "").length >= 7 &&
     items.length > 0 &&
+    airportTripsMissingFlight.length === 0 &&
     acceptedTerms;
 
   const handleSubmit = async () => {
@@ -314,6 +328,30 @@ export default function BookingForm({ onBack }: BookingFormProps) {
         </span>
       </label>
 
+      {/* Inline summary of missing flight numbers — sits right above
+          the Pay CTA so a visitor who can't see why the button is
+          disabled gets a clear pointer to the offending trip(s) without
+          scrolling back up. Per-card red helper text already exists in
+          the trip card itself; this is the cross-trip aggregate. */}
+      {airportTripsMissingFlight.length > 0 && (
+        <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200">
+          {airportTripsMissingFlight.length === 1 ? (
+            <>
+              Trip #{airportTripsMissingFlight[0].idx + 1} (
+              {airportTripsMissingFlight[0].it.fromName}) is missing a
+              flight number. We need it to track your flight for delays.
+            </>
+          ) : (
+            <>
+              {airportTripsMissingFlight.length} airport trips are missing
+              flight numbers (#
+              {airportTripsMissingFlight.map((t) => t.idx + 1).join(", #")}).
+              We need them to track your flights for delays.
+            </>
+          )}
+        </div>
+      )}
+
       <Button
         onClick={handleSubmit}
         disabled={!isValid || loading}
@@ -513,14 +551,26 @@ function TripConfigCard({
             <div className="space-y-1.5">
               <Label className="text-gray-300 text-xs flex items-center gap-1.5">
                 <Plane size={12} className="text-amber-400" />
-                Flight number
+                Flight number <span className="text-red-400">*</span>
               </Label>
               <Input
                 value={flightNumberValue}
                 onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
                 placeholder="e.g. UA1234"
-                className="bg-black/50 border-amber-500/30 text-white h-10 uppercase"
+                required
+                aria-required="true"
+                className={`bg-black/50 text-white h-10 uppercase ${
+                  flightNumberValue.trim().length === 0
+                    ? "border-red-500/60 focus:border-red-400"
+                    : "border-amber-500/30"
+                }`}
               />
+              {flightNumberValue.trim().length === 0 && (
+                <p className="text-[10px] text-red-400 mt-1">
+                  Required for airport pickups so we can track your flight
+                  for delays.
+                </p>
+              )}
             </div>
             <div className="space-y-1.5">
               <Label className="text-gray-300 text-xs flex items-center gap-1.5">
