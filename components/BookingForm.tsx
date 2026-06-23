@@ -352,6 +352,43 @@ export default function BookingForm({ onBack }: BookingFormProps) {
         </div>
       )}
 
+      {/* International-card decline disclaimer. Diego flagged 2026-06-22:
+          ~45% of attempted transactions are auto-declined on busy days,
+          and the dominant cause is US/Canada/EU banks treating any
+          Costa Rica-origin charge as suspected fraud (geo-bias by the
+          issuing bank, not Tilopay). Surfacing this expectation BEFORE
+          the click — with the call-bank-to-authorize remediation and a
+          WhatsApp escape hatch — converts what would be an abandoned
+          decline into either (a) a successful retry after the customer
+          pre-authorizes, or (b) a manual WA-based recovery by Diego.
+          Yellow callout intentionally sits between the red blocker
+          (missing flight) and the small grey FX disclaimer below — same
+          visual hierarchy the form already uses, so it reads as "heads
+          up" not "error". */}
+      <div className="rounded-lg border border-amber-500/40 bg-amber-500/5 px-4 py-3 text-xs text-amber-100/90 leading-relaxed">
+        <p className="font-semibold text-amber-300 mb-1">
+          💳 Heads up — international cards
+        </p>
+        <p>
+          Some US, Canada and EU banks auto-decline charges from Costa
+          Rica as a fraud check. If your card is declined, call your bank
+          and authorize the charge to{" "}
+          <span className="font-semibold text-amber-200">
+            &ldquo;Private Travel CR&rdquo;
+          </span>{" "}
+          — or{" "}
+          <a
+            href="https://wa.me/50686334133?text=Hi%20Diego%2C%20my%20card%20was%20declined%20on%20your%20site.%20Can%20you%20send%20me%20an%20alternative%20payment%20link%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-green-400 hover:text-green-300 underline underline-offset-2"
+          >
+            WhatsApp us
+          </a>{" "}
+          for an alternative payment link.
+        </p>
+      </div>
+
       <Button
         onClick={handleSubmit}
         disabled={!isValid || loading}
