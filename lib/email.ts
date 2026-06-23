@@ -486,6 +486,20 @@ function shellHtml({
                           : ""
                       }
                     </table>
+                    <!-- Foreign-transaction-fee heads-up. Same reason
+                         as the disclaimer on /book checkout: international
+                         customers sometimes see a ~3% extra on their bank
+                         statement (their bank's fee, not ours) and think
+                         we overcharged. Surfacing it here in the
+                         confirmation email cuts the support tickets and
+                         the chargebacks before they happen. Customer-
+                         visible only — we don't render this block on
+                         the internal copy. -->
+                    ${
+                      showCustomer
+                        ? ""
+                        : `<p style="font-size:11px;color:#9ca3af;font-style:italic;margin:14px 0 0 0;line-height:1.5;">💳 Your bank may add a small foreign transaction fee (~3% on international USD charges). That fee comes from your bank, not from us — travel-friendly cards (Chase Sapphire, Capital One Venture, Amex Platinum, etc.) usually waive it.</p>`
+                    }
                   </td>
                 </tr>
                 ${tripRowsHtml(data.items)}

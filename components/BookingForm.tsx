@@ -379,6 +379,23 @@ export default function BookingForm({ onBack }: BookingFormProps) {
         Charges in USD via Tilopay. Your card issuer applies the live
         conversion rate. Card details never touch our servers.
       </p>
+      {/* Foreign-transaction-fee disclaimer. Diego flagged 2026-06-22:
+          a US customer (Nicole Gitto, PTCR-1515/1516) saw a ~$13 extra
+          charge on her $440 booking — her bank's foreign transaction
+          fee (~3% on international USD charges). She thought it was
+          our charge and abandoned. Surfacing this expectation up front
+          stops future customers from blaming us / disputing the
+          chargeback / abandoning the second attempt. Kept as small
+          italic helper copy so the legitimate paying customer barely
+          notices it, but anyone confused at their bank statement gets
+          the answer here first. */}
+      <p className="text-[10px] text-center text-gray-500 italic mt-2 px-2">
+        💳 Heads-up: some banks (especially in the US / Canada / EU)
+        charge a small foreign transaction fee (~3%) on top when you
+        pay a Costa Rica-based merchant. That fee is NOT ours — it&apos;s
+        your bank&apos;s. Travel-friendly cards (Chase Sapphire, Capital
+        One Venture, Amex Platinum, etc.) usually waive it.
+      </p>
     </motion.div>
   );
 }
