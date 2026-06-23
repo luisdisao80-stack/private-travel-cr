@@ -8,12 +8,18 @@ import { getAllRoutes } from "@/lib/routes-db";
 import { getAllHotels } from "@/lib/hotels-db";
 
 export const metadata: Metadata = {
-  title: "1,200+ Private Shuttle Routes in Costa Rica (2026 Prices)",
+  // GSC June 2026: this page was ranking for "costa rica private transportation",
+  // "private transfers costa rica", "costa rica private transfers" with high
+  // impressions but 1-4% CTR. New copy front-loads price + rating + the exact
+  // SERP query phrasing to lift CTR closer to the 3-5% industry baseline.
+  title: "Costa Rica Private Transfers — 1,200+ Routes from $135",
   description:
-    "Browse our 1,200+ private shuttle routes across Costa Rica. From La Fortuna to Tamarindo, Manuel Antonio to Monteverde — door-to-door service with bilingual drivers. Fixed 2026 prices, taxes included.",
+    "All private transportation routes in Costa Rica. From $135 — SJO/LIR airport transfers to La Fortuna, Tamarindo, Manuel Antonio, Monteverde. Door-to-door, free child seats, ⭐ 5.0 · 200+ Google reviews.",
   keywords: [
+    "Costa Rica private transportation",
+    "Costa Rica private transfers",
+    "private transfers Costa Rica",
     "Costa Rica shuttle routes",
-    "private transportation Costa Rica",
     "La Fortuna shuttle",
     "Tamarindo transportation",
     "Manuel Antonio shuttle",
@@ -22,9 +28,9 @@ export const metadata: Metadata = {
     "LIR airport transfer",
   ],
   openGraph: {
-    title: "Private Shuttle Routes Across Costa Rica",
+    title: "Costa Rica Private Transfers — 1,200+ Routes from $135",
     description:
-      "1,200+ door-to-door private shuttle routes. Browse, get instant quotes, and book your ride.",
+      "Door-to-door private transportation across Costa Rica. Instant quote, fixed 2026 prices, free child seats.",
     type: "website",
   },
 };
