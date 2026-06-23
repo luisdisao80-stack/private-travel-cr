@@ -19,6 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/reviews`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/hotels`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/tours`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    // Exact-match SEO landing pages — added 2026-06-23 to capture
+    // non-branded query clusters identified in GSC. Priority 0.95
+    // (just below homepage) because each one targets a query cluster
+    // worth 200-800 impressions/month.
+    { url: `${baseUrl}/private-transportation-costa-rica`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
+    { url: `${baseUrl}/airport-to-la-fortuna`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
     // /book is the booking wizard — transactional, no canonical content of
     // its own. SEO entries belong on /private-shuttle/[slug] and /routes/[slug].
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
@@ -46,13 +52,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   // Hotel landing pages — long-tail SEO for "shuttle from <hotel name>"
-  // queries that no competitor in CR covers well.
+  // queries that no competitor in CR covers well. Priority bumped from 0.7
+  // → 0.85 (2026-06-23) after /hotels/peace-lodge converted $545 in a single
+  // day. These pages are clearly high-value entry points; the prior 0.7
+  // value was treating them as second-tier when they actually rival the
+  // popular /private-shuttle/ landing pages for conversion.
+  // changeFrequency upgraded weekly → so Google revisits sooner.
   const hotelSlugs = await getIndexableHotelSlugs();
   const hotelPages: MetadataRoute.Sitemap = hotelSlugs.map((slug) => ({
     url: `${baseUrl}/hotels/${slug}`,
     lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.7,
+    changeFrequency: "weekly",
+    priority: 0.85,
   }));
 
   // La Fortuna tour detail pages — the catalog launched 2026-05.

@@ -10,11 +10,14 @@ export const siteConfig = {
   name: "Private Travel CR",
   shortName: "Private Travel CR",
 
-  // Descripcion bilingue
+  // Descripcion bilingue — optimized for CTR (industry avg 3-5%, ours was 1.2%).
+  // Leading with a price anchor + reviews count + free child seats acts as
+  // a fact sheet inside the SERP snippet. Each line answers a known
+  // pre-click objection (price, trust, family-friendly).
   descriptionEN:
-    "Premium private shuttle service in Costa Rica. Door-to-door transfers from SJO and LIR airports to La Fortuna, Manuel Antonio, Monteverde and more. ⭐ 5.0 Google · 200+ reviews · TripAdvisor Travelers' Choice 2025.",
+    "Private transportation in Costa Rica from $135. Door-to-door SJO/LIR airport transfers to La Fortuna, Manuel Antonio, Monteverde. ⭐ 5.0 · 200+ reviews · free child seats · instant booking.",
   descriptionES:
-    "Servicio de transporte privado premium en Costa Rica. Traslados puerta a puerta desde aeropuertos SJO y LIR a La Fortuna, Manuel Antonio, Monteverde y más. ⭐ 5.0 Google · 200+ reseñas · TripAdvisor Travelers' Choice 2025.",
+    "Transporte privado en Costa Rica desde $135. Traslados puerta a puerta desde SJO/LIR a La Fortuna, Manuel Antonio, Monteverde. ⭐ 5.0 · 200+ reseñas · sillas de bebé gratis · reserva al instante.",
 
   // Datos del negocio (para Schema.org y contacto)
   business: {

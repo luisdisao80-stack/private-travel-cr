@@ -8,9 +8,9 @@ import { getAllLocations, getRouteByLocations } from "@/lib/routes-db";
 import { getAllHotels } from "@/lib/hotels-db";
 
 export const metadata = {
-  title: "Book Your Private Shuttle",
+  title: "Book Private Shuttle Costa Rica — Instant Quote from $135",
   description:
-    "Get an instant quote and book your private shuttle in Costa Rica. Live pricing, child seats, and door-to-door service from SJO and LIR airports.",
+    "Book your private shuttle in Costa Rica in under 5 minutes. Door-to-door SJO/LIR transfers from $135, free child seats, instant confirmation. ⭐ 5.0 · 200+ Google reviews.",
 };
 
 export const revalidate = 86400;

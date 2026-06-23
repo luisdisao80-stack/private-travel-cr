@@ -36,6 +36,27 @@ export default function Footer() {
         { label: "FAQ", href: "/#faq" },
       ];
 
+  // Top-tier hotels — link list lives at the bottom of the footer so
+  // every page in the site links to these 10 flagship landing pages.
+  // 2026-06-23 SEO push: gives the hotel landing pages a site-wide
+  // internal link signal (Google weighs cross-linking heavily for
+  // indexation priority). Mix of price tiers + regions so the linkfooter
+  // isn't all Arenal / all luxury. Slugs verified against hotels-setup.sql
+  // and add-8-flagship-hotels-2026-06.sql.
+  const topHotels: Array<{ name: string; slug: string; city: string }> = [
+    { name: "Tabacón Thermal Resort", slug: "tabacon-thermal-resort", city: "La Fortuna" },
+    { name: "Nayara Springs", slug: "nayara-springs", city: "La Fortuna" },
+    { name: "Four Seasons Papagayo", slug: "four-seasons-papagayo", city: "Papagayo" },
+    { name: "Westin Reserva Conchal", slug: "westin-reserva-conchal", city: "Conchal" },
+    { name: "Si Como No Resort", slug: "si-como-no-resort", city: "Manuel Antonio" },
+    { name: "Tulemar Resort", slug: "tulemar-resort", city: "Manuel Antonio" },
+    { name: "Tamarindo Diria", slug: "tamarindo-diria", city: "Tamarindo" },
+    { name: "Hotel Belmar", slug: "hotel-belmar", city: "Monteverde" },
+    { name: "Harmony Hotel Nosara", slug: "harmony-hotel-nosara", city: "Nosara" },
+    { name: "Kasiiya Papagayo", slug: "kasiiya-papagayo", city: "Papagayo" },
+  ];
+  const topHotelsLabel = lang === "en" ? "Popular Hotels" : "Hoteles Populares";
+
   const termsLabel = lang === "en" ? "Terms and Conditions" : "Términos y Condiciones";
   const privacyLabel = lang === "en" ? "Privacy Policy" : "Política de Privacidad";
   const rightsText = lang === "en"
@@ -340,6 +361,37 @@ export default function Footer() {
               </div>
             </a>
           </motion.div>
+        </div>
+
+        {/* Top hotels — site-wide internal links to the 10 highest-priority
+            hotel landing pages. Every page on the site renders this footer,
+            so Google sees these 10 URLs cross-linked from ~1,500 internal
+            pages. That signal compounds the sitemap priority bump and is
+            the single biggest lever for indexation of the hotel directory
+            short of paid SEO. Visually understated (small labels, two-line
+            grid on desktop) so it doesn't dominate the copyright row. */}
+        <div className="border-t border-white/10 pt-8 pb-8">
+          <h3 className="text-white font-bold mb-4 text-xs tracking-wider uppercase text-center md:text-left">
+            {topHotelsLabel}
+          </h3>
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-2">
+            {topHotels.map((h) => (
+              <li key={h.slug}>
+                <Link
+                  href={`/hotels/${h.slug}`}
+                  className="text-gray-400 hover:text-amber-400 transition-colors text-xs leading-snug block"
+                >
+                  <span className="font-medium">{h.name}</span>
+                  <span className="block text-gray-600">{h.city}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-xs text-gray-500 text-center md:text-left">
+            <Link href="/hotels" className="text-amber-400/80 hover:text-amber-400 underline-offset-4 hover:underline">
+              {lang === "en" ? "Browse all hotels →" : "Ver todos los hoteles →"}
+            </Link>
+          </p>
         </div>
 
         {/* Línea divisoria con copyright y link extra a Terms */}
