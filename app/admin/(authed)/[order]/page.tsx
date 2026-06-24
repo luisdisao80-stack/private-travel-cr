@@ -13,17 +13,31 @@ import {
   updateBookingStatusAction,
   updateTripDateTimeAction,
   resendConfirmationEmailAction,
+  sendTripUpdateEmailAction,
 } from "../actions";
 
 export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ order: string }>;
+  searchParams: Promise<{ saved?: string; sent?: string }>;
 };
 
-export default async function AdminBookingDetailPage({ params }: Props) {
+export default async function AdminBookingDetailPage({
+  params,
+  searchParams,
+}: Props) {
   const { order } = await params;
+  const { saved, sent } = await searchParams;
   const orderNumber = decodeURIComponent(order);
+
+  // One-shot status flags set by the server actions via redirect.
+  // ?saved=trip-N → trip N was just edited (DB only, no email sent)
+  // ?sent=update  → the update notification email was just dispatched
+  const justSavedTripIdx = saved?.startsWith("trip-")
+    ? parseInt(saved.slice(5), 10)
+    : null;
+  const justSentUpdate = sent === "update";
 
   const { data, error } = await supabaseAdmin
     .from("bookings")
@@ -332,12 +346,28 @@ export default async function AdminBookingDetailPage({ params }: Props) {
                       >
                         Save change
                       </button>
-                      <span className="text-[10px] text-gray-500 ml-1">
-                        Saving also re-sends the confirmation email to the
-                        customer with the new date / time + updated .ics.
-                        Still WhatsApp the driver yourself.
+                      <span className="text-[10px] text-gray-500 ml-1 leading-relaxed">
+                        Saves the change to the database only — the customer
+                        is <strong className="text-amber-300">NOT</strong>{" "}
+                        emailed automatically. After saving, use the
+                        &ldquo;Notify customer of changes&rdquo; button below
+                        when you&apos;re ready to send the update email.
                       </span>
                     </form>
+
+                    {/* Per-trip "saved" confirmation. Shows once the
+                        updateTripDateTimeAction redirects with
+                        ?saved=trip-<idx> — matches the index of THIS
+                        trip card so multi-trip bookings only flash the
+                        banner on the one Diego just edited. */}
+                    {justSavedTripIdx === idx && (
+                      <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/10 px-3 py-2 text-xs text-green-200 leading-relaxed">
+                        ✅ <strong>Saved.</strong> The new date / time is in
+                        the database. The customer has NOT been notified yet
+                        — scroll down to &ldquo;Notify customer of
+                        changes&rdquo; to send the update email when ready.
+                      </div>
+                    )}
                   </details>
                 </div>
               );
@@ -381,6 +411,59 @@ export default async function AdminBookingDetailPage({ params }: Props) {
         </form>
       </div>
 
+      {/* Notify-customer-of-changes card. Used after Diego edits a
+          trip's date / time — the save action no longer auto-emails
+          (Diego asked for that on 2026-06-24 because iterative edits
+          kept blasting the customer mid-change). When this button
+          fires, it dispatches the "your booking has been updated"
+          template (sendBookingUpdateEmails — not the same as the
+          "confirmation" copy below). Border + background flip green
+          right after an edit so it visually pulls Diego's eye to it. */}
+      <div
+        className={`border rounded-xl p-5 mt-6 transition-colors ${
+          justSavedTripIdx !== null && !justSentUpdate
+            ? "bg-green-500/5 border-green-500/40"
+            : "bg-zinc-950 border-zinc-900"
+        }`}
+      >
+        <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 inline-flex items-center gap-2">
+          <Send size={14} className="text-green-400" />
+          Notify customer of changes
+        </h2>
+        <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+          Sends an &ldquo;Your booking has been updated&rdquo; email with
+          the current trip details + a refreshed .ics calendar invite to{" "}
+          <span className="text-amber-400 font-medium">
+            {data.customer_email || "(no email on file)"}
+          </span>
+          . Use this AFTER you&apos;ve edited a trip&apos;s date / time
+          above and verified the change is correct.
+        </p>
+        {justSentUpdate && (
+          <div className="mb-4 rounded-md border border-green-500/40 bg-green-500/10 px-3 py-2 text-xs text-green-200">
+            ✅ <strong>Update email sent</strong> to {data.customer_email}.
+          </div>
+        )}
+        <form
+          action={sendTripUpdateEmailAction}
+          className="flex items-center gap-3 flex-wrap"
+        >
+          <input
+            type="hidden"
+            name="orderNumber"
+            value={data.order_number}
+          />
+          <button
+            type="submit"
+            disabled={!data.customer_email}
+            className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 disabled:bg-zinc-800 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+          >
+            <Send size={12} />
+            Send update email to customer
+          </button>
+        </form>
+      </div>
+
       {/* Resend confirmation card — separate from Change status so the
           two actions don't crowd each other and Diego doesn't fire one
           when he meant the other. The form uses a server action with
@@ -394,7 +477,12 @@ export default async function AdminBookingDetailPage({ params }: Props) {
         </h2>
         <p className="text-xs text-gray-500 mb-4 leading-relaxed">
           Use when a customer messages saying they didn&apos;t receive the
-          confirmation. Re-sends to <span className="text-amber-400 font-medium">{data.customer_email || "(no email on file)"}</span> and a copy to your internal inbox.
+          ORIGINAL confirmation (e.g. it landed in spam). Re-sends the
+          original &ldquo;Booking Confirmed&rdquo; template to{" "}
+          <span className="text-amber-400 font-medium">{data.customer_email || "(no email on file)"}</span>{" "}
+          and a copy to your internal inbox. For changes to an existing
+          booking, use &ldquo;Notify customer of changes&rdquo; above
+          instead.
         </p>
         <form
           action={resendConfirmationEmailAction}

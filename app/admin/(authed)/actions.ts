@@ -69,6 +69,16 @@ function isValidTime(s: string): boolean {
  * Use case: customer messaged Diego asking to push their pickup back
  * a day or fix the time they entered wrong. Before this action existed
  * Diego had to email me to run raw SQL, which was slow and lossy.
+ *
+ * IMPORTANT — email behavior changed 2026-06-24:
+ * This action ONLY saves the DB change. It does NOT email the customer.
+ * Diego explicitly asked for this split because the auto-email made
+ * iterative edits dangerous — every typo or in-progress change blasted
+ * the customer with a "your booking changed" email. Now the flow is:
+ *   1) Save change  → trip updated in DB, no email
+ *   2) Verify it's right
+ *   3) Click "Notify customer" → sendTripUpdateEmailAction fires the email
+ * If you ever re-add the auto-send, talk to Diego first — he'll be mad.
  */
 export async function updateTripDateTimeAction(
   formData: FormData
@@ -85,14 +95,12 @@ export async function updateTripDateTimeAction(
   if (!orderNumber || Number.isNaN(tripIndex) || tripIndex < 0) return;
   if (!isValidDate(date) || !isValidTime(pickupTime)) return;
 
-  // Fetch the full row so we can both (a) mutate the items array and
-  // (b) hand the email sender everything it needs (customer name /
-  // email / phone / totals) without a second round-trip.
+  // Fetch only the items column — we used to also grab customer fields
+  // for the auto-email, but that send moved out to a separate manual
+  // action (sendTripUpdateEmailAction). Keeps this round-trip lean.
   const { data: row, error: readErr } = await supabaseAdmin
     .from("bookings")
-    .select(
-      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4",
-    )
+    .select("items")
     .eq("order_number", orderNumber)
     .maybeSingle();
 
@@ -133,33 +141,75 @@ export async function updateTripDateTimeAction(
   revalidatePath("/admin");
   revalidatePath(`/admin/${orderNumber}`);
 
-  // Re-send confirmation to the customer + internal address with the
-  // new date / time. We swallow errors here (don't throw) — if email
-  // fails the DB write already landed, and the form's help text reminds
-  // Diego to message the customer manually as a backstop. Email is
-  // best-effort, not the source of truth.
-  //
-  // Skip if the customer email is missing (rare — the field is required
-  // at checkout, but a manual admin-created row could be missing it).
-  if (row.customer_email) {
-    try {
-      await sendBookingUpdateEmails({
-        orderNumber,
-        customerName: row.customer_name ?? "",
-        customerEmail: row.customer_email,
-        customerPhone: row.customer_phone ?? null,
-        totalUsd: Number(row.total_usd ?? 0),
-        authCode: row.tilopay_auth ?? null,
-        cardLast4: row.tilopay_last4 ?? null,
-        // The email layer accepts CartItem | TourEmailItem; admin
-        // rows store the same shape we wrote at checkout, but the
-        // JSONB column types as unknown so we cast at the boundary.
-        items: items as unknown as CartItem[],
-      });
-    } catch (e) {
-      console.error("[admin] update email send threw:", e);
-    }
+  // Redirect back to the detail page with a "saved" flag so the UI can
+  // surface a green confirmation banner + a CTA to send the update
+  // email. Using a query string + redirect is the simplest way to pass
+  // one-shot state from a server action without persisting it anywhere.
+  redirect(`/admin/${orderNumber}?saved=trip-${tripIndex}`);
+}
+
+/**
+ * Manually fire the "your booking has been updated" email after Diego
+ * edits a trip's date / time. Split out from updateTripDateTimeAction
+ * on 2026-06-24 so iterative edits never accidentally email the
+ * customer mid-change. Diego triggers this from a dedicated button
+ * on the booking detail page once he's confirmed the changes are right.
+ *
+ * Sends sendBookingUpdateEmails (not sendBookingEmails) — the template
+ * is worded as "your booking has been UPDATED, here are the new
+ * details" rather than the original "booking confirmed" copy.
+ */
+export async function sendTripUpdateEmailAction(
+  formData: FormData,
+): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
   }
+
+  const orderNumber = String(formData.get("orderNumber") ?? "").trim();
+  if (!orderNumber) return;
+
+  const { data: row, error } = await supabaseAdmin
+    .from("bookings")
+    .select(
+      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4",
+    )
+    .eq("order_number", orderNumber)
+    .maybeSingle();
+
+  if (error || !row) {
+    console.error("[admin] sendTripUpdateEmail read failed:", error);
+    return;
+  }
+  if (!row.customer_email) {
+    console.error(
+      `[admin] sendTripUpdateEmail: order ${orderNumber} has no customer_email`,
+    );
+    return;
+  }
+
+  const items = Array.isArray(row.items)
+    ? (row.items as unknown as CartItem[])
+    : [];
+
+  try {
+    await sendBookingUpdateEmails({
+      orderNumber,
+      customerName: row.customer_name ?? "",
+      customerEmail: row.customer_email,
+      customerPhone: row.customer_phone ?? null,
+      totalUsd: Number(row.total_usd ?? 0),
+      authCode: row.tilopay_auth ?? null,
+      cardLast4: row.tilopay_last4 ?? null,
+      items,
+    });
+  } catch (e) {
+    console.error("[admin] sendTripUpdateEmail send threw:", e);
+  }
+
+  // Redirect back with a "sent" flag so the UI can flip the banner
+  // from "saved, notify customer?" to "✅ customer notified".
+  redirect(`/admin/${orderNumber}?sent=update`);
 }
 
 /**
