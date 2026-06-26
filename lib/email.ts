@@ -327,10 +327,10 @@ function tourRowHtml(it: TourEmailItem, idx: number): string {
   return `
     <tr>
       <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
-        <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+        <div class="ptcr-text-amber" style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
           Tour #${idx + 1}${it.durationLabel ? ` · ${escapeHtml(it.durationLabel)}` : ""}
         </div>
-        <div style="font-size:14px;color:#ffffff;font-weight:600;line-height:1.35;">
+        <div class="ptcr-text-white" style="font-size:14px;color:#ffffff;font-weight:600;line-height:1.35;">
           ${escapeHtml(it.tourName)}
         </div>
         <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
@@ -343,7 +343,7 @@ function tourRowHtml(it: TourEmailItem, idx: number): string {
         }
       </td>
       <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
-        <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div class="ptcr-text-white" style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
         <div style="font-size:11px;color:#9ca3af;">USD</div>
       </td>
     </tr>
@@ -377,14 +377,14 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
   return `
     <tr>
       <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
-        <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+        <div class="ptcr-text-amber" style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
           Trip #${idx + 1} · ${escapeHtml(service)} · ${escapeHtml(it.vehicleName)}
         </div>
-        <div style="font-size:14px;color:#ffffff;font-weight:600;">
+        <div class="ptcr-text-white" style="font-size:14px;color:#ffffff;font-weight:600;">
           ${escapeHtml(it.fromName)}${pickup}
         </div>
         <div style="font-size:12px;color:#9ca3af;margin:2px 0 2px 0;">↓</div>
-        <div style="font-size:14px;color:#ffffff;font-weight:600;">
+        <div class="ptcr-text-white" style="font-size:14px;color:#ffffff;font-weight:600;">
           ${escapeHtml(it.toName)}${dropoff}
         </div>
         <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
@@ -395,7 +395,7 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
         ${childSeats}
       </td>
       <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
-        <div style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div class="ptcr-text-white" style="font-size:16px;color:#ffffff;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
         <div style="font-size:11px;color:#9ca3af;">USD</div>
       </td>
     </tr>
@@ -427,7 +427,7 @@ function shellHtml({
     ? `
       <tr>
         <td style="padding:16px;border-top:1px solid #1f2937;">
-          <div style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
+          <div class="ptcr-text-amber" style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
           <div class="ptcr-text-white" style="font-size:16px;color:#ffffff;font-weight:700;line-height:1.3;">${escapeHtml(data.customerName)}</div>
           <div class="ptcr-text-white" style="font-size:14px;color:#ffffff;font-weight:600;margin-top:4px;line-height:1.4;">${escapeHtml(data.customerEmail)}</div>
           ${data.customerPhone ? `<div class="ptcr-text-white" style="font-size:14px;color:#ffffff;font-weight:600;margin-top:2px;line-height:1.4;">${escapeHtml(data.customerPhone)}</div>` : ""}
@@ -448,24 +448,44 @@ function shellHtml({
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${escapeHtml(title)}</title>
   <!-- Tell iOS Mail + Outlook the email is DESIGNED for dark mode so
-       Smart-Invert leaves our pure-white text alone. Without these
-       three meta tags Apple Mail rewrites #ffffff to a medium gray
-       and the whole template renders washed-out on iPhone (Diego
-       screenshot 2026-06-22). meta name="color-scheme" is the formal
-       standard; the supported-color-schemes alias covers older iOS
-       versions that haven't adopted it yet. -->
-  <meta name="color-scheme" content="dark light" />
-  <meta name="supported-color-schemes" content="dark light" />
+       Smart-Invert leaves our pure-white text alone. 2026-06-26 revisit:
+       Diego screenshot showed Smart-Invert was STILL eating most white
+       text on iPhone Mail even with "dark light" set — only the customer
+       name (which had ptcr-text-white) survived. Two fixes:
+         (a) flip color-scheme to "only dark" so iOS Mail treats this
+             as a native dark email instead of an adaptive one (and
+             stops trying to "balance" the contrast),
+         (b) add a @media (prefers-color-scheme: dark) block below so
+             EVERY .ptcr-text-white element gets pinned to #ffffff in
+             iOS Mail, not just the Outlook-tagged ones. -->
+  <meta name="color-scheme" content="only dark" />
+  <meta name="supported-color-schemes" content="only dark" />
   <style>
     /* Block all auto-dark-mode rewrites on email clients that respect
        this CSS rule (Apple Mail iOS 13+, Outlook 2021+). The clients
        that don't honor it fall through to the inline white colors. */
-    :root { color-scheme: dark light; supported-color-schemes: dark light; }
+    :root { color-scheme: only dark; supported-color-schemes: only dark; }
+    /* iOS Mail dark mode — pin every .ptcr-text-white element to pure
+       white so Smart-Invert can't soften it to grey. This @media block
+       is what catches iPhone Mail on the user-set "Always Dark"
+       appearance, which is the case Diego screenshot showed
+       2026-06-26. */
+    @media (prefers-color-scheme: dark) {
+      .ptcr-text-white,
+      .ptcr-text-white * {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+      }
+      .ptcr-text-amber { color: #fbbf24 !important; }
+      .ptcr-text-muted { color: #d1d5db !important; }
+    }
     /* Override iOS Mail's Smart-Invert specifically. The data-ogsc /
        data-ogsb attributes are Outlook's dark-mode toggles — we set
        them so Outlook doesn't try to "help" by inverting either. */
     [data-ogsc] body, [data-ogsb] body { background:#000000 !important; }
     [data-ogsc] .ptcr-text-white { color:#ffffff !important; }
+    [data-ogsc] .ptcr-text-amber { color:#fbbf24 !important; }
+    [data-ogsc] .ptcr-text-muted { color:#d1d5db !important; }
   </style>
 </head>
 <body style="margin:0;padding:0;background:#000000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color-scheme:dark light;">
@@ -485,9 +505,9 @@ function shellHtml({
                 />
                 <!-- Outlook strips SVG; the eyebrow below works as fallback. -->
               </a>
-              <div style="font-size:11px;color:#fbbf24;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
-              <h1 style="margin:12px 0 0 0;font-size:24px;color:#ffffff;font-weight:800;">${escapeHtml(title)}</h1>
-              <p style="margin:8px 0 0 0;font-size:14px;color:#d1d5db;">${escapeHtml(intro)}</p>
+              <div class="ptcr-text-amber" style="font-size:11px;color:#fbbf24;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
+              <h1 class="ptcr-text-white" style="margin:12px 0 0 0;font-size:24px;color:#ffffff;font-weight:800;">${escapeHtml(title)}</h1>
+              <p class="ptcr-text-muted" style="margin:8px 0 0 0;font-size:14px;color:#d1d5db;">${escapeHtml(intro)}</p>
             </td>
           </tr>
           <tr>
@@ -498,20 +518,20 @@ function shellHtml({
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="font-size:12px;color:#9ca3af;">Order number</td>
-                        <td style="font-size:13px;color:#fbbf24;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;">${escapeHtml(data.orderNumber)}</td>
+                        <td class="ptcr-text-amber" style="font-size:13px;color:#fbbf24;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;">${escapeHtml(data.orderNumber)}</td>
                       </tr>
                       <tr>
                         <td style="font-size:12px;color:#9ca3af;padding-top:6px;">Total</td>
-                        <td style="font-size:18px;color:#ffffff;font-weight:700;text-align:right;padding-top:6px;">$${data.totalUsd.toFixed(2)} USD</td>
+                        <td class="ptcr-text-white" style="font-size:18px;color:#ffffff;font-weight:700;text-align:right;padding-top:6px;">$${data.totalUsd.toFixed(2)} USD</td>
                       </tr>
                       ${
                         data.authCode
-                          ? `<tr><td style="font-size:12px;color:#9ca3af;padding-top:6px;">Auth code</td><td style="font-size:12px;color:#d1d5db;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">${escapeHtml(data.authCode)}</td></tr>`
+                          ? `<tr><td style="font-size:12px;color:#9ca3af;padding-top:6px;">Auth code</td><td class="ptcr-text-muted" style="font-size:12px;color:#d1d5db;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">${escapeHtml(data.authCode)}</td></tr>`
                           : ""
                       }
                       ${
                         data.cardLast4
-                          ? `<tr><td style="font-size:12px;color:#9ca3af;padding-top:6px;">Card</td><td style="font-size:12px;color:#d1d5db;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">•••• ${escapeHtml(data.cardLast4)}</td></tr>`
+                          ? `<tr><td style="font-size:12px;color:#9ca3af;padding-top:6px;">Card</td><td class="ptcr-text-muted" style="font-size:12px;color:#d1d5db;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">•••• ${escapeHtml(data.cardLast4)}</td></tr>`
                           : ""
                       }
                     </table>
