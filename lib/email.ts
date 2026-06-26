@@ -5,7 +5,11 @@
 //   EMAIL_FROM       - optional, defaults to Resend's sandbox sender.
 //                      Switch to "Private Travel CR <bookings@privatetravelcr.com>"
 //                      once the domain is verified in Resend.
-//   BUSINESS_EMAIL   - optional, defaults to info@privatetravelcr.com.
+//   BUSINESS_EMAIL   - optional, comma-separated list of internal recipients.
+//                      Defaults to the addresses in DEFAULT_BUSINESS_LIST
+//                      (info@ + Diego's iCloud — added 2026-06-26 so the
+//                      booking ping always reaches a Mail.app he checks on
+//                      his phone, not just the workspace inbox).
 //
 // Failures are logged and swallowed so a flaky email API never blocks the
 // booking redirect after a successful payment.
@@ -69,7 +73,32 @@ function childSeatsSummary(it: CartItem): string {
 }
 
 const DEFAULT_FROM = "Private Travel CR <onboarding@resend.dev>";
-const DEFAULT_BUSINESS = "info@privatetravelcr.com";
+
+// Default internal recipients for "new booking" / "booking updated" pings.
+// Resend's `to` field accepts up to 50 addresses as an array, so we just
+// pass the whole list. Order matters only for replyTo — the FIRST entry
+// is what customer "Reply" hits, so info@ stays primary and the iCloud
+// backup is purely a "phone notification" target Diego asked for so he
+// doesn't miss bookings when he's away from the workspace inbox.
+const DEFAULT_BUSINESS_LIST = [
+  "info@privatetravelcr.com",
+  "diegosa80@icloud.com",
+] as const;
+const DEFAULT_BUSINESS = DEFAULT_BUSINESS_LIST[0]; // kept for replyTo fallback
+
+// Parse BUSINESS_EMAIL env var into a clean recipient list. Accepts a
+// single address or a comma-separated list (e.g. "a@x.com,b@y.com").
+// Trims whitespace and drops empty entries so a trailing comma in the
+// Vercel env editor doesn't blow up the send.
+function getBusinessRecipients(): string[] {
+  const raw = process.env.BUSINESS_EMAIL;
+  if (!raw) return [...DEFAULT_BUSINESS_LIST];
+  const list = raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return list.length > 0 ? list : [...DEFAULT_BUSINESS_LIST];
+}
 
 let cached: Resend | null = null;
 function client(): Resend | null {
@@ -546,7 +575,12 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
     return;
   }
   const from = process.env.EMAIL_FROM || DEFAULT_FROM;
-  const businessTo = process.env.BUSINESS_EMAIL || DEFAULT_BUSINESS;
+  // businessRecipients[] is what gets the "new booking" ping (one email,
+  // multiple To: addresses). businessReplyTo is what the customer hits
+  // when they reply to their confirmation — always the FIRST entry so
+  // customer conversations land in the primary workspace inbox.
+  const businessRecipients = getBusinessRecipients();
+  const businessReplyTo = businessRecipients[0] || DEFAULT_BUSINESS;
 
   const customerHtml = shellHtml({
     title: "Booking Confirmed",
@@ -575,16 +609,16 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
       to: data.customerEmail,
       subject: `Booking Confirmed · ${data.orderNumber}`,
       html: customerHtml,
-      replyTo: businessTo,
+      replyTo: businessReplyTo,
       attachments: [icsAttachment],
     }),
     resend.emails.send({
       from,
-      to: businessTo,
+      to: businessRecipients,
       subject: `🚐 New booking · ${data.orderNumber} · $${data.totalUsd.toFixed(2)} USD`,
       html: internalHtml,
       replyTo: data.customerEmail,
-      // Same .ics goes to the internal inbox too — Diego asked for the
+      // Same .ics goes to every internal recipient — Diego asked for the
       // 'Add to Calendar' chip in his Gmail. Before this it was customer-
       // only, so the operator had to manually copy trip dates into the
       // driver's schedule. Now one click puts every confirmed booking
@@ -627,7 +661,8 @@ export async function sendBookingUpdateEmails(
     return;
   }
   const from = process.env.EMAIL_FROM || DEFAULT_FROM;
-  const businessTo = process.env.BUSINESS_EMAIL || DEFAULT_BUSINESS;
+  const businessRecipients = getBusinessRecipients();
+  const businessReplyTo = businessRecipients[0] || DEFAULT_BUSINESS;
 
   const customerHtml = shellHtml({
     title: "Booking updated",
@@ -663,12 +698,12 @@ export async function sendBookingUpdateEmails(
       to: data.customerEmail,
       subject: `Booking updated · ${data.orderNumber}`,
       html: customerHtml,
-      replyTo: businessTo,
+      replyTo: businessReplyTo,
       attachments: [icsAttachment],
     }),
     resend.emails.send({
       from,
-      to: businessTo,
+      to: businessRecipients,
       subject: `✏️ Booking updated · ${data.orderNumber}`,
       html: internalHtml,
       replyTo: data.customerEmail,
