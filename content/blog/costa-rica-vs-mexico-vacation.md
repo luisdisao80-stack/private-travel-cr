@@ -1,6 +1,6 @@
 ---
-title: "Costa Rica vs Mexico: An Honest Comparison from a Costa Rican (2026)"
-description: "Costa Rica vs Mexico for your next vacation — safety, cost, food, nature, beaches, ease of travel, and language. Fair comparison from a Costa Rican local."
+title: "Costa Rica vs Mexico Vacation 2026: Which Is Safer, Cheaper & Better?"
+description: "Honest 2026 comparison: Costa Rica vs Mexico for safety, cost, beaches, food & nature. Real prices, local insights, and our verdict on which country wins for your trip."
 date: "2026-06-03"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
