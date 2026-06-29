@@ -1,6 +1,6 @@
 ---
-title: "How to Get from Liberia (LIR) Airport to Tamarindo: 4 Real Options"
-description: "Private shuttle, shared van, taxi, or rental car — what each option to Tamarindo actually costs, how long the drive really takes, and which one we'd pick depending on your group size."
+title: "Liberia Airport to Tamarindo: Private Shuttle from $135 (2026 Guide)"
+description: "LIR Airport to Tamarindo is a 1h15 drive. Private shuttle from $135, shared van from $25, taxi $100. Compare all 4 options + which we recommend for your group size."
 date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
