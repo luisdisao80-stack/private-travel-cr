@@ -61,6 +61,13 @@ export default function LocationInput({
   onHotelPick,
 }: LocationInputProps) {
   const [open, setOpen] = useState(false);
+  // Keyboard-nav index into the visible suggestions[]. Starts at 0 so
+  // the top match is pre-highlighted the moment the visitor types —
+  // Diego asked (2026-06-30) for the flow to be "type 'manu' and just
+  // hit Enter to pick Manuel Antonio", so the first row has to be
+  // visually selected from keystroke 1. Arrow keys move the highlight,
+  // Enter commits, Esc closes.
+  const [highlightIndex, setHighlightIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const locationSet = useMemo(() => new Set(locations), [locations]);
 
@@ -99,6 +106,28 @@ export default function LocationInput({
       .slice(0, 10);
   }, [debouncedValue, locations, locationSet, hotels]);
 
+  // Reset the highlight to the top match every time the visible
+  // suggestion list changes — otherwise pressing Enter after typing
+  // a couple more letters could commit whatever row happened to be
+  // at that index in the previous suggestion list.
+  useEffect(() => {
+    setHighlightIndex(0);
+  }, [suggestions]);
+
+  // Commit whichever suggestion is currently highlighted. Extracted so
+  // both the click handlers and the Enter-key handler go through the
+  // same code path (setting onChange / onHotelPick / closing the menu).
+  function commitSuggestion(s: Suggestion) {
+    if (s.kind === "location") {
+      onChange(s.loc);
+      onHotelPick?.(null);
+    } else {
+      onChange(s.hotel.area_origen);
+      onHotelPick?.(s.hotel);
+    }
+    setOpen(false);
+  }
+
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node))
@@ -130,6 +159,28 @@ export default function LocationInput({
           setOpen(true);
         }}
         onFocus={() => setOpen(true)}
+        // Keyboard navigation. Enter commits the highlighted suggestion
+        // (default: the first one) so "type manu -> Enter" lands the
+        // visitor on Manuel Antonio without touching the mouse. Arrows
+        // move the highlight; Escape closes the dropdown. When the
+        // menu isn't open OR there are no suggestions, all of this is
+        // a no-op and default browser behaviour takes over.
+        onKeyDown={(e) => {
+          if (!open || suggestions.length === 0) return;
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            setHighlightIndex((i) => (i + 1) % suggestions.length);
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            setHighlightIndex((i) => (i - 1 + suggestions.length) % suggestions.length);
+          } else if (e.key === "Enter") {
+            e.preventDefault();
+            const target = suggestions[highlightIndex] ?? suggestions[0];
+            if (target) commitSuggestion(target);
+          } else if (e.key === "Escape") {
+            setOpen(false);
+          }
+        }}
         placeholder={placeholder}
         className="w-full pl-12 pr-9 py-4 bg-black/60 border border-amber-500/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/60 transition"
       />
@@ -145,20 +196,31 @@ export default function LocationInput({
       )}
       {open && suggestions.length > 0 && (
         <div className="static md:absolute z-50 w-full mt-2 bg-gradient-to-br from-gray-900/98 to-black/98 backdrop-blur-xl border border-amber-500/30 rounded-xl shadow-2xl shadow-black/60 max-h-80 overflow-y-auto">
-          {suggestions.map((s) => {
+          {suggestions.map((s, idx) => {
+            // Highlighted row = current keyboard target. Rendered with
+            // an amber background so the visitor can see at a glance
+            // which suggestion Enter is about to commit. Hover still
+            // works — mouseenter updates highlightIndex so the amber
+            // follows the pointer, keeping mouse + keyboard in sync.
+            const isActive = idx === highlightIndex;
+            const rowClass =
+              "w-full flex items-center gap-3 text-left px-4 py-3 transition-colors text-sm border-b border-white/5 last:border-b-0 " +
+              (isActive
+                ? "bg-amber-500/20 text-white"
+                : "text-white hover:bg-amber-500/15");
+
             if (s.kind === "location") {
               const airport = isAirport(s.loc);
               return (
                 <button
                   key={`loc-${s.loc}`}
                   type="button"
+                  onMouseEnter={() => setHighlightIndex(idx)}
                   onMouseDown={(e) => {
                     e.preventDefault();
-                    onChange(s.loc);
-                    onHotelPick?.(null);
-                    setOpen(false);
+                    commitSuggestion(s);
                   }}
-                  className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-amber-500/15 transition-colors text-sm border-b border-white/5 last:border-b-0"
+                  className={rowClass}
                 >
                   {airport ? (
                     <Plane size={14} className="text-amber-400 shrink-0" />
@@ -178,13 +240,12 @@ export default function LocationInput({
               <button
                 key={`hotel-${s.hotel.id}`}
                 type="button"
+                onMouseEnter={() => setHighlightIndex(idx)}
                 onMouseDown={(e) => {
                   e.preventDefault();
-                  onChange(s.hotel.area_origen);
-                  onHotelPick?.(s.hotel);
-                  setOpen(false);
+                  commitSuggestion(s);
                 }}
-                className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-amber-500/15 transition-colors text-sm border-b border-white/5 last:border-b-0"
+                className={rowClass}
               >
                 <Building2
                   size={14}
