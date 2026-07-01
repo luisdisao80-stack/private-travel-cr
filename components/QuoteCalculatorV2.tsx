@@ -279,7 +279,15 @@ export default function QuoteCalculatorV2({
     if (childrenStr === "") setChildrenStr("0");
   }
 
-  const routeLocked = !!from && !!to;
+  // routeLocked drives the compact "Selected route: A → B / [Change]" UI.
+  // Guard against partial text: if the visitor typed "m" and hasn't
+  // picked from the dropdown yet, we must NOT flip into locked mode
+  // (Diego screenshot 2026-06-30 showed "La Fortuna → m" displayed as
+  // a real selected route with a Change button and a Pickup address
+  // field visible below). Both endpoints must be confirmed DB
+  // locations for the locked UI to appear.
+  const routeLocked =
+    !!from && !!to && locationSet.has(from) && locationSet.has(to);
 
   return (
     <div className="bg-gradient-to-br from-gray-900 to-black border border-amber-500/30 rounded-2xl p-6 md:p-8">
