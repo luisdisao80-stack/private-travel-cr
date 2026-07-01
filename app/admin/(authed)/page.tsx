@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Plus } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import type { CartItem } from "@/lib/CartContext";
 import {
@@ -73,6 +73,17 @@ export default async function AdminBookingsPage({
             {count ?? 0} total · page {page} of {totalPages}
           </p>
         </div>
+        {/* Manual quote CTA — for customers who can't fill out the site
+            themselves. Diego enters trip details, the customer gets ONE
+            email with a Pay button, and the standard confirmation
+            pipeline runs on payment. Added 2026-06-30. */}
+        <Link
+          href="/admin/create-quote"
+          className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+        >
+          <Plus size={14} />
+          Create quote for customer
+        </Link>
       </div>
 
       <form

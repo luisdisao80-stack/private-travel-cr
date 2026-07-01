@@ -1,10 +1,16 @@
 "use server";
 
+import { randomBytes } from "node:crypto";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { clearAdminSession, isAdminAuthed } from "@/lib/admin-auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { sendBookingEmails, sendBookingUpdateEmails } from "@/lib/email";
+import {
+  sendBookingEmails,
+  sendBookingUpdateEmails,
+  sendPaymentRequestEmail,
+} from "@/lib/email";
+import { siteConfig } from "@/lib/site-config";
 import type { CartItem } from "@/lib/CartContext";
 
 export async function logoutAction(): Promise<void> {
@@ -271,4 +277,149 @@ export async function resendConfirmationEmailAction(
   }
 
   revalidatePath(`/admin/${orderNumber}`);
+}
+
+// Generate a URL-safe token, 24 chars of base64url. Space is ~144 bits
+// so guessing a valid token is effectively impossible (well beyond the
+// number of ongoing bookings we'd ever have live at once).
+function generatePaymentToken(): string {
+  return randomBytes(18)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+async function nextBookingOrderNumber(): Promise<string> {
+  const { data, error } = await supabaseAdmin.rpc("next_booking_number");
+  if (!error && typeof data === "string" && data.startsWith("PTCR-")) {
+    return data;
+  }
+  console.error("[admin] next_booking_number RPC failed, falling back:", error);
+  const ts = Date.now().toString(36).toUpperCase();
+  return `PTCR-A${ts}`;
+}
+
+/**
+ * Admin-created quote / payment link (2026-06-30 feature). Diego fills
+ * out the customer + trip on /admin/create-quote, submits, and this
+ * action:
+ *   1) Inserts a pending booking row exactly like the public payment/start
+ *      route does, with created_by_admin = true so we can filter later.
+ *   2) Generates a random URL-safe payment_token + a 48h expiry, stored
+ *      on the row so the public /pay/[token] page can look the booking
+ *      up without leaking any customer info in the URL.
+ *   3) Emails the customer a single-CTA "complete your booking" message
+ *      via sendPaymentRequestEmail. No internal ping — Diego just made
+ *      the row himself, no news for him yet. When the customer pays,
+ *      the normal Tilopay callback fires sendBookingEmails as usual and
+ *      Diego gets the "🚐 New booking" ping at that point.
+ *
+ * On success: redirect to /admin/<order> so Diego can see the row + the
+ * "Resend payment link" button (added later on that page).
+ */
+export async function createQuoteAction(formData: FormData): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
+  }
+
+  const customerName = String(formData.get("customerName") ?? "").trim();
+  const customerEmail = String(formData.get("customerEmail") ?? "").trim();
+  const customerPhone = String(formData.get("customerPhone") ?? "").trim();
+  const fromName = String(formData.get("fromName") ?? "").trim();
+  const toName = String(formData.get("toName") ?? "").trim();
+  const date = String(formData.get("date") ?? "").trim();
+  const pickupTime = String(formData.get("pickupTime") ?? "").trim();
+  const passengersRaw = String(formData.get("passengers") ?? "1").trim();
+  const serviceType = (String(formData.get("serviceType") ?? "standard") ===
+  "vip"
+    ? "vip"
+    : "standard") as "vip" | "standard";
+  const vehicleName = String(formData.get("vehicleName") ?? "").trim();
+  const totalUsdRaw = String(formData.get("totalUsd") ?? "").trim();
+  const flightNumber = String(formData.get("flightNumber") ?? "").trim();
+  const pickupPlace = String(formData.get("pickupPlace") ?? "").trim();
+  const dropoffPlace = String(formData.get("dropoffPlace") ?? "").trim();
+  const notes = String(formData.get("notes") ?? "").trim();
+
+  // Basic validation — nothing fancy, this is an admin-only form and
+  // Diego is going to see the result immediately on the /admin page.
+  if (!customerName || !customerEmail || !fromName || !toName) return;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+  if (!/^\d{2}:\d{2}$/.test(pickupTime)) return;
+
+  const passengers = Math.max(1, Math.min(12, parseInt(passengersRaw, 10) || 1));
+  const totalUsd = Number(totalUsdRaw);
+  if (!Number.isFinite(totalUsd) || totalUsd <= 0) return;
+
+  const orderNumber = await nextBookingOrderNumber();
+  const token = generatePaymentToken();
+  const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
+
+  // Shape the item exactly like a real CartItem so downstream consumers
+  // (email template, admin detail page, PDF) render identically to a
+  // customer-created booking. Kept as a single-item array — Diego can
+  // add multi-trip support later if he needs it.
+  const item = {
+    id: orderNumber + "-1",
+    fromName,
+    toName,
+    pickupPlace: pickupPlace || fromName,
+    dropoffPlace: dropoffPlace || toName,
+    date,
+    pickupTime,
+    passengers,
+    children: 0,
+    infantSeats: 0,
+    convertibleSeats: 0,
+    boosterSeats: 0,
+    serviceType,
+    vehicleName: vehicleName || (passengers <= 5 ? "Hyundai Staria" : passengers <= 9 ? "Toyota Hiace" : "Maxus V90"),
+    basePrice: totalUsd,
+    totalPrice: totalUsd,
+    extraStopHours: 0,
+    flightNumber: flightNumber || undefined,
+    duration: null,
+  };
+
+  const { error: insertErr } = await supabaseAdmin.from("bookings").insert({
+    order_number: orderNumber,
+    customer_name: customerName,
+    customer_email: customerEmail,
+    customer_phone: customerPhone || null,
+    flight_number: flightNumber || null,
+    notes: notes || null,
+    items: [item],
+    total_usd: totalUsd,
+    currency: "USD",
+    status: "pending",
+    kind: "shuttle",
+    created_by_admin: true,
+    payment_token: token,
+    token_expires_at: expiresAt.toISOString(),
+  });
+
+  if (insertErr) {
+    console.error("[admin] createQuote insert failed:", insertErr);
+    return;
+  }
+
+  const payUrl = `${siteConfig.siteUrl}/pay/${token}`;
+
+  try {
+    await sendPaymentRequestEmail({
+      orderNumber,
+      customerName,
+      customerEmail,
+      totalUsd,
+      items: [item] as unknown as CartItem[],
+      payUrl,
+      expiresAt,
+    });
+  } catch (e) {
+    console.error("[admin] createQuote email send threw:", e);
+  }
+
+  revalidatePath("/admin");
+  redirect(`/admin/${orderNumber}?sent=quote`);
 }

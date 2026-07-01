@@ -725,3 +725,158 @@ export async function sendBookingUpdateEmails(
     console.error("[email] internal update send error:", internalRes.value.error);
   }
 }
+
+/**
+ * "Diego prepared a booking for you — click to pay" email. Sent when
+ * Diego creates a booking on behalf of a customer via the admin
+ * /admin/create-quote form (2026-06-30 feature). The customer receives
+ * ONE email with a trip summary and a single Pay button that leads to
+ * a token-guarded /pay/[token] page → Tilopay checkout.
+ *
+ * Diego doesn't get an internal ping here — he just created the row,
+ * he knows about it. The normal "🚐 New booking" email fires later,
+ * on payment success, from the callback route, using the existing
+ * sendBookingEmails path.
+ */
+export async function sendPaymentRequestEmail(data: {
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  totalUsd: number;
+  items: BookingItem[];
+  payUrl: string;
+  expiresAt: Date;
+}): Promise<void> {
+  const resend = client();
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY not set — skipping payment-request email");
+    return;
+  }
+  const from = process.env.EMAIL_FROM || DEFAULT_FROM;
+  const businessRecipients = getBusinessRecipients();
+  const businessReplyTo = businessRecipients[0] || DEFAULT_BUSINESS;
+
+  const firstName = data.customerName.split(" ")[0] || "friend";
+  const totalStr = `$${data.totalUsd.toFixed(2)} USD`;
+
+  // Expiry rendered in a warm short form, e.g. "Wed Jul 2, 6:30 PM CST".
+  // We show it inline so the customer sees the urgency without doing
+  // date math themselves.
+  const expiresStr = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "America/Costa_Rica",
+  }).format(data.expiresAt);
+
+  // Reuse the same trip rows + card / customer / header shell as the
+  // regular confirmation email, but swap the title + intro copy and
+  // insert a big Pay Now CTA card above the trip rows.
+  const rowsHtml = data.items
+    .map((it, idx) => (isTourItem(it) ? tourRowHtml(it, idx) : shuttleRowHtml(it, idx)))
+    .join("");
+
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Complete your Costa Rica booking</title>
+  <meta name="color-scheme" content="only light" />
+  <meta name="supported-color-schemes" content="only light" />
+  <style>
+    :root { color-scheme: only light; supported-color-schemes: only light; }
+    @media (prefers-color-scheme: dark) {
+      body, table { background: #f3f4f6 !important; }
+      .ptcr-card { background: #ffffff !important; }
+      .ptcr-heading { color: #111827 !important; }
+      .ptcr-body { color: #374151 !important; }
+      .ptcr-muted { color: #6b7280 !important; }
+      .ptcr-amber { color: #d97706 !important; }
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" class="ptcr-card" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
+          <tr>
+            <td style="padding:32px 24px 24px 24px;text-align:center;background:#fffbeb;border-bottom:1px solid #fde68a;">
+              <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
+                <img src="https://www.privatetravelcr.com/logo-ptcr.svg" alt="Private Travel Costa Rica" width="180" height="78" style="display:block;margin:0 auto 4px auto;width:180px;height:auto;border:0;" />
+              </a>
+              <div class="ptcr-amber" style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
+              <h1 class="ptcr-heading" style="margin:14px 0 0 0;font-size:24px;color:#111827;font-weight:800;">Complete your booking</h1>
+              <p class="ptcr-body" style="margin:10px 0 0 0;font-size:14px;color:#374151;line-height:1.5;">Hi ${escapeHtml(firstName)}, Diego from Private Travel CR prepared this booking for you. One click below to confirm and pay.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 24px 8px 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ecfdf5;border:1px solid #10b981;border-radius:12px;">
+                <tr>
+                  <td style="padding:20px;text-align:center;">
+                    <div style="font-size:12px;color:#047857;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Amount to pay</div>
+                    <div style="font-size:32px;color:#064e3b;font-weight:800;margin:6px 0 14px 0;">${totalStr}</div>
+                    <a href="${escapeHtml(data.payUrl)}" style="display:inline-block;background:#16a34a;color:#ffffff;font-weight:800;font-size:16px;text-decoration:none;padding:16px 32px;border-radius:12px;letter-spacing:0.02em;">Pay now &amp; confirm booking →</a>
+                    <div style="font-size:11px;color:#6b7280;margin-top:12px;">Secure payment via Tilopay · Link expires ${escapeHtml(expiresStr)}</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:16px 24px 0 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;">
+                <tr>
+                  <td style="padding:18px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td class="ptcr-muted" style="font-size:12px;color:#6b7280;">Order number</td>
+                        <td class="ptcr-amber" style="font-size:13px;color:#d97706;font-family:'SFMono-Regular',Menlo,monospace;font-weight:700;text-align:right;">${escapeHtml(data.orderNumber)}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                ${rowsHtml}
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 24px 28px 24px;text-align:center;">
+              <p class="ptcr-muted" style="margin:0 0 12px 0;font-size:13px;color:#6b7280;">Questions before you pay? WhatsApp Diego directly:</p>
+              <a href="https://wa.me/50686334133" style="display:inline-block;background:#ffffff;color:#16a34a;font-weight:700;font-size:14px;text-decoration:none;padding:10px 20px;border-radius:10px;border:1px solid #16a34a;">Chat on WhatsApp</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:18px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
+              <div class="ptcr-muted" style="font-size:11px;color:#6b7280;">
+                Private Travel Costa Rica · La Fortuna, Alajuela · +506 8633-4133
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  try {
+    const res = await resend.emails.send({
+      from,
+      to: data.customerEmail,
+      subject: `Complete your Costa Rica booking · ${data.orderNumber} · ${totalStr}`,
+      html,
+      replyTo: businessReplyTo,
+    });
+    if (res.error) {
+      console.error("[email] payment-request send error:", res.error);
+    }
+  } catch (e) {
+    console.error("[email] payment-request send threw:", e);
+  }
+}
