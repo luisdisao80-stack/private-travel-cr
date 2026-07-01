@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Route, Hotel } from "@/lib/types";
 import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
@@ -154,9 +154,30 @@ export default function QuoteCalculatorV2({
   const children = parseInt(childrenStr) || 0;
   const totalPax = adults + children;
 
+  // Set-lookup for O(1) validity checks. If the visitor is halfway
+  // through typing ("m", "man", "manu"...) `from` isn't a DB location
+  // yet, so we must skip the Supabase query — otherwise we run 3
+  // requests per keystroke and, worse, land on the "Custom route,
+  // get a quote on WhatsApp" fallback that treats the typo as if
+  // it were a real destination. Diego reported this on 2026-06-30:
+  // typing an "m" was enough to trigger the WhatsApp CTA and the
+  // visitor never got the actual price. The fix is to only query
+  // Supabase when both endpoints have been confirmed as real DB
+  // locations (i.e. they came from the dropdown selection, not the
+  // freeform text input).
+  const locationSet = useMemo(() => new Set(locations), [locations]);
+
   useEffect(() => {
     async function findRoute() {
       if (!from || !to || from === to) { setRoute(null); setNotFound(false); return; }
+      // Guard against partial text ("m" / "man" / "manuel"). Only run
+      // the route query when BOTH sides are confirmed DB locations.
+      if (!locationSet.has(from) || !locationSet.has(to)) {
+        setRoute(null);
+        setNotFound(false);
+        setLoading(false);
+        return;
+      }
       setLoading(true); setNotFound(false);
       const r1 = await supabase.from("routes").select("*").eq("origen", from).eq("destino", to).maybeSingle();
       if (r1.data) { setRoute(r1.data as Route); setNotFound(false); setLoading(false); return; }
@@ -166,7 +187,7 @@ export default function QuoteCalculatorV2({
       setLoading(false);
     }
     findRoute();
-  }, [from, to]);
+  }, [from, to, locationSet]);
 
   const basePrice = route ? getPriceForGroupSize(route, totalPax || 1) : 0;
   const vipExtra = serviceType === "vip" ? VIP_EXTRA_USD : 0;
