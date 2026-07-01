@@ -326,25 +326,25 @@ function tourRowHtml(it: TourEmailItem, idx: number): string {
       : `${it.adults} adult${it.adults !== 1 ? "s" : ""}`;
   return `
     <tr>
-      <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
-        <div class="ptcr-text-amber" style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+      <td style="padding:16px 20px;border-top:1px solid #e5e7eb;vertical-align:top;">
+        <div class="ptcr-amber" style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">
           Tour #${idx + 1}${it.durationLabel ? ` · ${escapeHtml(it.durationLabel)}` : ""}
         </div>
-        <div class="ptcr-text-white" style="font-size:14px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:600;line-height:1.35;">
+        <div class="ptcr-heading" style="font-size:14px;color:#111827;font-weight:700;line-height:1.35;">
           ${escapeHtml(it.tourName)}
         </div>
-        <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
+        <div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:8px;">
           ${formatDate(it.date)} · Departure ${format12h(it.pickupTime)} · ${escapeHtml(pax)}
         </div>
         ${
           it.pickupHotel
-            ? `<div style="font-size:12px;color:#9ca3af;margin-top:4px;">Pickup: ${escapeHtml(it.pickupHotel)}</div>`
+            ? `<div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:4px;">Pickup: ${escapeHtml(it.pickupHotel)}</div>`
             : ""
         }
       </td>
-      <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
-        <div class="ptcr-text-white" style="font-size:16px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
-        <div style="font-size:11px;color:#9ca3af;">USD</div>
+      <td style="padding:16px 20px;border-top:1px solid #e5e7eb;text-align:right;vertical-align:top;white-space:nowrap;">
+        <div class="ptcr-heading" style="font-size:16px;color:#111827;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div class="ptcr-muted" style="font-size:11px;color:#6b7280;">USD</div>
       </td>
     </tr>
   `;
@@ -354,49 +354,50 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
   const service = it.serviceType === "vip" ? "VIP" : "Standard";
   const pickup =
     it.pickupPlace && it.pickupPlace !== it.fromName
-      ? ` <span style="color:#9ca3af">· ${escapeHtml(it.pickupPlace)}</span>`
+      ? ` <span style="color:#6b7280;font-weight:500">· ${escapeHtml(it.pickupPlace)}</span>`
       : "";
   const dropoff =
     it.dropoffPlace && it.dropoffPlace !== it.toName
-      ? ` <span style="color:#9ca3af">· ${escapeHtml(it.dropoffPlace)}</span>`
+      ? ` <span style="color:#6b7280;font-weight:500">· ${escapeHtml(it.dropoffPlace)}</span>`
       : "";
   // Highlight extra wait/stop hours on its own line so Diego (internal
   // email) and the customer don't miss it — it changes how the driver
   // schedules the day. Hidden when 0.
   const extraStops =
     it.extraStopHours && it.extraStopHours > 0
-      ? `<div style="font-size:12px;color:#fbbf24;font-weight:600;margin-top:6px;">⏱ Extra wait: ${it.extraStopHours}h paid</div>`
+      ? `<div style="font-size:12px;color:#d97706;font-weight:700;margin-top:8px;background:#fef3c7;padding:6px 10px;border-radius:6px;display:inline-block;">⏱ Extra wait: ${it.extraStopHours}h paid</div>`
       : "";
-  // Highlighted child-seat line — same yellow as Extra wait because they
-  // both change what the driver loads in the van and how he plans the trip.
-  // Emoji helps Diego spot it instantly when scanning his order inbox.
+  // Highlighted child-seat line — same amber pill as Extra wait because
+  // they both change what the driver loads in the van and how he plans
+  // the trip. Emoji helps Diego spot it instantly when scanning his
+  // order inbox.
   const seatsLine = childSeatsSummary(it);
   const childSeats = seatsLine
-    ? `<div style="font-size:12px;color:#fbbf24;font-weight:600;margin-top:6px;">👶 Child seats: ${escapeHtml(seatsLine)}</div>`
+    ? `<div style="font-size:12px;color:#d97706;font-weight:700;margin-top:8px;background:#fef3c7;padding:6px 10px;border-radius:6px;display:inline-block;">👶 Child seats: ${escapeHtml(seatsLine)}</div>`
     : "";
   return `
     <tr>
-      <td style="padding:14px 16px;border-top:1px solid #1f2937;vertical-align:top;">
-        <div class="ptcr-text-amber" style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+      <td style="padding:16px 20px;border-top:1px solid #e5e7eb;vertical-align:top;">
+        <div class="ptcr-amber" style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">
           Trip #${idx + 1} · ${escapeHtml(service)} · ${escapeHtml(it.vehicleName)}
         </div>
-        <div class="ptcr-text-white" style="font-size:14px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:600;">
+        <div class="ptcr-heading" style="font-size:14px;color:#111827;font-weight:700;line-height:1.4;">
           ${escapeHtml(it.fromName)}${pickup}
         </div>
-        <div style="font-size:12px;color:#9ca3af;margin:2px 0 2px 0;">↓</div>
-        <div class="ptcr-text-white" style="font-size:14px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:600;">
+        <div class="ptcr-muted" style="font-size:12px;color:#9ca3af;margin:4px 0 4px 0;">↓</div>
+        <div class="ptcr-heading" style="font-size:14px;color:#111827;font-weight:700;line-height:1.4;">
           ${escapeHtml(it.toName)}${dropoff}
         </div>
-        <div style="font-size:12px;color:#9ca3af;margin-top:8px;">
+        <div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:8px;">
           ${formatDate(it.date)} · ${format12h(it.pickupTime)} · ${it.passengers} pax
           ${it.flightNumber ? ` · Flight ${escapeHtml(it.flightNumber)}` : ""}
         </div>
         ${extraStops}
         ${childSeats}
       </td>
-      <td style="padding:14px 16px;border-top:1px solid #1f2937;text-align:right;vertical-align:top;white-space:nowrap;">
-        <div class="ptcr-text-white" style="font-size:16px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
-        <div style="font-size:11px;color:#9ca3af;">USD</div>
+      <td style="padding:16px 20px;border-top:1px solid #e5e7eb;text-align:right;vertical-align:top;white-space:nowrap;">
+        <div class="ptcr-heading" style="font-size:16px;color:#111827;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div class="ptcr-muted" style="font-size:11px;color:#6b7280;">USD</div>
       </td>
     </tr>
   `;
@@ -419,106 +420,73 @@ function shellHtml({
   data: BookingEmailInput;
   showCustomer: boolean;
 }): string {
-  // Customer block — three lines (name, email, phone) all rendered in
-  // pure-white-on-near-black so they pop in the dark email shell. The
-  // .ptcr-text-white class is targeted by the dark-mode CSS in shellHtml
-  // so iOS Mail and Outlook can't auto-invert the color to gray.
+  // Customer block — light-mode redesign 2026-06-30. After three failed
+  // attempts to defeat iOS Mail Smart-Invert on the dark template
+  // (PR #4 @media, PR #5 #fefefe, PR #7 text-shadow), Diego confirmed
+  // it still washed out on iPhone. Root cause is unavoidable at that
+  // color-scheme level — Apple Mail treats any near-white text on
+  // near-black as "dark-mode-adaptable" and softens contrast for
+  // user comfort, regardless of what CSS declares. Every major
+  // transactional email service (Stripe, Shopify, Airbnb) sidesteps
+  // this by using a light theme; going with the industry standard now.
   const customerBlock = showCustomer
     ? `
       <tr>
-        <td style="padding:16px;border-top:1px solid #1f2937;">
-          <div class="ptcr-text-amber" style="font-size:12px;color:#fbbf24;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
-          <div class="ptcr-text-white" style="font-size:16px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:700;line-height:1.3;">${escapeHtml(data.customerName)}</div>
-          <div class="ptcr-text-white" style="font-size:14px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:600;margin-top:4px;line-height:1.4;">${escapeHtml(data.customerEmail)}</div>
-          ${data.customerPhone ? `<div class="ptcr-text-white" style="font-size:14px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:600;margin-top:2px;line-height:1.4;">${escapeHtml(data.customerPhone)}</div>` : ""}
+        <td style="padding:20px 24px;border-top:1px solid #e5e7eb;">
+          <div style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
+          <div style="font-size:16px;color:#111827;font-weight:700;line-height:1.3;">${escapeHtml(data.customerName)}</div>
+          <div style="font-size:14px;color:#374151;font-weight:500;margin-top:4px;line-height:1.4;">${escapeHtml(data.customerEmail)}</div>
+          ${data.customerPhone ? `<div style="font-size:14px;color:#374151;font-weight:500;margin-top:2px;line-height:1.4;">${escapeHtml(data.customerPhone)}</div>` : ""}
         </td>
       </tr>
     `
     : "";
 
-  // Dark-mode template — restored 2026-05-26 after Diego confirmed the
-  // dark look renders correctly in Hotmail and matches the premium-amber
-  // brand. The previous light-mode swap was an over-correction for an
-  // iOS-Gmail edge case; keeping dark for consistency with the rest of
-  // the site UI.
+  // Light-mode template — 2026-06-30. Three previous attempts to defeat
+  // iOS Mail Smart-Invert on the dark template all fell short (PR #4
+  // @media + color-scheme, PR #5 #fefefe swap, PR #7 text-shadow
+  // trick). Empirically, Apple Mail iOS always softens near-white text
+  // on near-black backgrounds regardless of CSS declarations — it's
+  // the OS treating the email like a screen the user is staring at
+  // in bed, not a document. The only reliable escape is to give it
+  // a light background so Smart-Invert never activates. Every major
+  // transactional email service (Stripe, Shopify, Airbnb, Square)
+  // ships light-mode emails for exactly this reason. Brand identity
+  // still shows through the amber accents on the header, price, and
+  // CTAs — the compass logo pops on white just as well as on black.
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${escapeHtml(title)}</title>
-  <!-- Tell iOS Mail + Outlook the email is DESIGNED for dark mode so
-       Smart-Invert leaves our pure-white text alone. Updated 2026-06-26
-       after a second iteration: even with color-scheme:"only dark" and
-       a !important @media block, iOS Mail STILL washed out every
-       element whose inline style was exactly color:#ffffff (Diego
-       screenshot 4:20 PM). The pattern was specifically that text-node
-       descendants of .ptcr-text-white came out grey while NESTED
-       spans (whose color got overridden by the descendant rule
-       targeting * { color: #fefefe }) came out bright white.
-       Fix: drop pure #ffffff entirely in favour of #fefefe. The
-       single-byte difference (255 vs 254) is visually identical to
-       human eyes but Apple Mail's Smart-Invert only triggers on
-       canonical white. Trick documented across email-dev communities
-       (Litmus, Email Geeks) and confirmed in our manual test. -->
-  <meta name="color-scheme" content="only dark" />
-  <meta name="supported-color-schemes" content="only dark" />
+  <!-- Force light rendering across every client. "only light" locks
+       Apple Mail out of Smart-Invert and stops Outlook 2021+ from
+       auto-darkening the template. -->
+  <meta name="color-scheme" content="only light" />
+  <meta name="supported-color-schemes" content="only light" />
   <style>
-    /* Block all auto-dark-mode rewrites on email clients that respect
-       this CSS rule (Apple Mail iOS 13+, Outlook 2021+). The clients
-       that don't honor it fall through to the inline white colors. */
-    :root { color-scheme: only dark; supported-color-schemes: only dark; }
-    /* iOS Mail dark mode — TEXT-SHADOW TRICK (2026-06-28, third
-       iteration). Previous fixes (#fefefe + @media + !important) STILL
-       didn't survive Smart-Invert on iPhone Mail — the text-node
-       descendants of .ptcr-text-white kept rendering grey while nested
-       <span> children came out bright white.
-       The fix: text-shadow with offset (0,0) and blur 0 "paints over"
-       the inverted color with our target color. Apple Mail's Smart-
-       Invert algorithm ONLY touches the color property, never
-       text-shadow, so the shadow always renders at the exact color
-       we declared, sitting on top of whatever color Smart-Invert
-       decided to assign. Visually identical on desktop / Gmail web
-       (a 0-blur 0-offset shadow is indistinguishable from the
-       underlying text color) but on iOS Mail dark mode it forces
-       white to stay white. This is the canonical email-dev workaround
-       documented across Litmus, Email on Acid, and Stack Overflow
-       threads about iOS Smart-Invert. -webkit-text-fill-color kept
-       as a belt-and-suspenders backup for the small subset of
-       clients that respect that property instead of color. */
+    :root { color-scheme: only light; supported-color-schemes: only light; }
+    /* Belt-and-suspenders block for any client that STILL tries to
+       flip colors in dark mode — pin the surface colors so the light
+       theme stays intact regardless of what the OS thinks. */
     @media (prefers-color-scheme: dark) {
-      .ptcr-text-white,
-      .ptcr-text-white * {
-        color: #fefefe !important;
-        -webkit-text-fill-color: #fefefe !important;
-        text-shadow: 0 0 0 #fefefe !important;
-      }
-      .ptcr-text-amber {
-        color: #fbbf24 !important;
-        -webkit-text-fill-color: #fbbf24 !important;
-        text-shadow: 0 0 0 #fbbf24 !important;
-      }
-      .ptcr-text-muted {
-        color: #d1d5db !important;
-        text-shadow: 0 0 0 #d1d5db !important;
-      }
+      body, table { background: #f3f4f6 !important; }
+      .ptcr-card { background: #ffffff !important; }
+      .ptcr-heading { color: #111827 !important; }
+      .ptcr-body { color: #374151 !important; }
+      .ptcr-muted { color: #6b7280 !important; }
+      .ptcr-amber { color: #d97706 !important; }
     }
-    /* Override iOS Mail's Smart-Invert specifically. The data-ogsc /
-       data-ogsb attributes are Outlook's dark-mode toggles — we set
-       them so Outlook doesn't try to "help" by inverting either. */
-    [data-ogsc] body, [data-ogsb] body { background:#000000 !important; }
-    [data-ogsc] .ptcr-text-white { color:#fefefe !important; }
-    [data-ogsc] .ptcr-text-amber { color:#fbbf24 !important; }
-    [data-ogsc] .ptcr-text-muted { color:#d1d5db !important; }
   </style>
 </head>
-<body style="margin:0;padding:0;background:#000000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color-scheme:dark light;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;padding:32px 16px;">
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:linear-gradient(180deg,#0a0a0a,#000);border:1px solid rgba(245,158,11,0.25);border-radius:20px;overflow:hidden;">
+        <table role="presentation" class="ptcr-card" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
           <tr>
-            <td style="padding:28px 24px 20px 24px;text-align:center;border-bottom:1px solid #1f2937;">
+            <td style="padding:32px 24px 24px 24px;text-align:center;background:#fffbeb;border-bottom:1px solid #fde68a;">
               <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
                 <img
                   src="https://www.privatetravelcr.com/logo-ptcr.svg"
@@ -527,51 +495,42 @@ function shellHtml({
                   height="78"
                   style="display:block;margin:0 auto 4px auto;width:180px;height:auto;border:0;"
                 />
-                <!-- Outlook strips SVG; the eyebrow below works as fallback. -->
               </a>
-              <div class="ptcr-text-amber" style="font-size:11px;color:#fbbf24;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
-              <h1 class="ptcr-text-white" style="margin:12px 0 0 0;font-size:24px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:800;">${escapeHtml(title)}</h1>
-              <p class="ptcr-text-muted" style="margin:8px 0 0 0;font-size:14px;color:#d1d5db;text-shadow:0 0 0 #d1d5db;">${escapeHtml(intro)}</p>
+              <div class="ptcr-amber" style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
+              <h1 class="ptcr-heading" style="margin:14px 0 0 0;font-size:24px;color:#111827;font-weight:800;">${escapeHtml(title)}</h1>
+              <p class="ptcr-body" style="margin:10px 0 0 0;font-size:14px;color:#374151;line-height:1.5;">${escapeHtml(intro)}</p>
             </td>
           </tr>
           <tr>
-            <td style="padding:16px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,0.02);border:1px solid rgba(245,158,11,0.15);border-radius:12px;">
+            <td style="padding:20px 24px 0 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;">
                 <tr>
-                  <td style="padding:14px 16px;">
+                  <td style="padding:18px 20px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="font-size:12px;color:#9ca3af;">Order number</td>
-                        <td class="ptcr-text-amber" style="font-size:13px;color:#fbbf24;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;">${escapeHtml(data.orderNumber)}</td>
+                        <td class="ptcr-muted" style="font-size:12px;color:#6b7280;">Order number</td>
+                        <td class="ptcr-amber" style="font-size:13px;color:#d97706;font-family:'SFMono-Regular',Menlo,monospace;font-weight:700;text-align:right;">${escapeHtml(data.orderNumber)}</td>
                       </tr>
                       <tr>
-                        <td style="font-size:12px;color:#9ca3af;padding-top:6px;">Total</td>
-                        <td class="ptcr-text-white" style="font-size:18px;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:700;text-align:right;padding-top:6px;">$${data.totalUsd.toFixed(2)} USD</td>
+                        <td class="ptcr-muted" style="font-size:12px;color:#6b7280;padding-top:8px;">Total</td>
+                        <td class="ptcr-heading" style="font-size:18px;color:#111827;font-weight:700;text-align:right;padding-top:8px;">$${data.totalUsd.toFixed(2)} USD</td>
                       </tr>
                       ${
                         data.authCode
-                          ? `<tr><td style="font-size:12px;color:#9ca3af;padding-top:6px;">Auth code</td><td class="ptcr-text-muted" style="font-size:12px;color:#d1d5db;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">${escapeHtml(data.authCode)}</td></tr>`
+                          ? `<tr><td class="ptcr-muted" style="font-size:12px;color:#6b7280;padding-top:6px;">Auth code</td><td class="ptcr-body" style="font-size:12px;color:#374151;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">${escapeHtml(data.authCode)}</td></tr>`
                           : ""
                       }
                       ${
                         data.cardLast4
-                          ? `<tr><td style="font-size:12px;color:#9ca3af;padding-top:6px;">Card</td><td class="ptcr-text-muted" style="font-size:12px;color:#d1d5db;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">•••• ${escapeHtml(data.cardLast4)}</td></tr>`
+                          ? `<tr><td class="ptcr-muted" style="font-size:12px;color:#6b7280;padding-top:6px;">Card</td><td class="ptcr-body" style="font-size:12px;color:#374151;font-family:'SFMono-Regular',Menlo,monospace;text-align:right;padding-top:6px;">•••• ${escapeHtml(data.cardLast4)}</td></tr>`
                           : ""
                       }
                     </table>
-                    <!-- Foreign-transaction-fee heads-up. Same reason
-                         as the disclaimer on /book checkout: international
-                         customers sometimes see a ~3% extra on their bank
-                         statement (their bank's fee, not ours) and think
-                         we overcharged. Surfacing it here in the
-                         confirmation email cuts the support tickets and
-                         the chargebacks before they happen. Customer-
-                         visible only — we don't render this block on
-                         the internal copy. -->
+                    <!-- Foreign-transaction-fee heads-up. Customer-only. -->
                     ${
                       showCustomer
                         ? ""
-                        : `<p style="font-size:11px;color:#9ca3af;font-style:italic;margin:14px 0 0 0;line-height:1.5;">💳 Your bank may add a small foreign transaction fee (~3% on international USD charges). That fee comes from your bank, not from us — travel-friendly cards (Chase Sapphire, Capital One Venture, Amex Platinum, etc.) usually waive it.</p>`
+                        : `<p style="font-size:11px;color:#6b7280;font-style:italic;margin:14px 0 0 0;line-height:1.5;">💳 Your bank may add a small foreign transaction fee (~3% on international USD charges). That fee comes from your bank, not from us — travel-friendly cards (Chase Sapphire, Capital One Venture, Amex Platinum, etc.) usually waive it.</p>`
                     }
                   </td>
                 </tr>
@@ -581,25 +540,25 @@ function shellHtml({
             </td>
           </tr>
           <tr>
-            <td style="padding:8px 24px 28px 24px;text-align:center;">
-              <p style="margin:0 0 16px 0;font-size:13px;color:#9ca3af;">
+            <td style="padding:24px 24px 28px 24px;text-align:center;">
+              <p class="ptcr-muted" style="margin:0 0 18px 0;font-size:13px;color:#6b7280;">
                 We&rsquo;ll be in touch shortly with the final pickup details.
               </p>
               <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                 <tr>
                   <td style="padding:0 6px;">
-                    <a href="https://wa.me/50686334133" style="display:inline-block;background:#16a34a;color:#fefefe;text-shadow:0 0 0 #fefefe;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;">Chat on WhatsApp</a>
+                    <a href="https://wa.me/50686334133" style="display:inline-block;background:#16a34a;color:#ffffff;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;">Chat on WhatsApp</a>
                   </td>
                   <td style="padding:0 6px;">
-                    <a href="mailto:info@privatetravelcr.com" style="display:inline-block;background:transparent;color:#fbbf24;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;border:1px solid rgba(245,158,11,0.4);">Email us</a>
+                    <a href="mailto:info@privatetravelcr.com" style="display:inline-block;background:#ffffff;color:#d97706;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;border:1px solid #f59e0b;">Email us</a>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
           <tr>
-            <td style="padding:18px 24px;background:rgba(255,255,255,0.02);border-top:1px solid #1f2937;text-align:center;">
-              <div style="font-size:11px;color:#6b7280;">
+            <td style="padding:18px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
+              <div class="ptcr-muted" style="font-size:11px;color:#6b7280;">
                 Private Travel Costa Rica · La Fortuna, Alajuela · +506 8633-4133
               </div>
             </td>
