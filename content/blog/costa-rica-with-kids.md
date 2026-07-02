@@ -5,8 +5,8 @@ date: "2026-07-01"
 author: "Diego Salas Oviedo"
 category: "Family Travel"
 readTime: 12
-image: "/blog/costa-rica-sloth.jpg"
-imageAlt: "A sloth hanging in a Costa Rican tree — always a hit with kids"
+image: "/blog/la-fortuna-waterfall.jpg"
+imageAlt: "La Fortuna Waterfall — one of Costa Rica's most kid-friendly natural wonders"
 ---
 
 I run a private shuttle company in La Fortuna and I'm a dad. Between those two things, I move somewhere around 800 families a year across Costa Rica and I hear the same wins and the same regrets over and over. This is the post I wish every family had before they landed.
