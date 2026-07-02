@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ArrowRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowLeftRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { reviewStats } from "@/lib/reviews-data";
 import { matchScore } from "@/lib/locations";
@@ -213,7 +213,32 @@ export default function Hero({
                 hotels={hotels}
                 onHotelPick={setPickupHotel}
               />
-              <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
+              {/* Swap button — swaps From ↔ To (plus the paired hotel
+                  picks so pickupHotel/dropoffHotel stay aligned with
+                  their locations). Diego requested 2026-07-01: mimics
+                  the airline-style swap arrow he saw on a competitor
+                  site. Circular amber button, static horizontal arrow
+                  icon on desktop; on mobile it collapses to a compact
+                  vertical dividerbutton with an up-down arrow that
+                  matches the stacked layout. */}
+              <button
+                type="button"
+                onClick={() => {
+                  setPickup(dropoff);
+                  setDropoff(pickup);
+                  const nextPickupHotel = dropoffHotel;
+                  const nextDropoffHotel = pickupHotel;
+                  setPickupHotel(nextPickupHotel);
+                  setDropoffHotel(nextDropoffHotel);
+                  if (resolveError) setResolveError(null);
+                }}
+                aria-label={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
+                title={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
+                className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-amber-500/30 bg-black/60 hover:bg-amber-500/20 hover:border-amber-500/60 text-amber-400 transition-colors"
+              >
+                <ArrowLeftRight size={16} className="hidden md:block" />
+                <ArrowLeftRight size={16} className="rotate-90 md:hidden" />
+              </button>
               <LocationInput
                 value={dropoff}
                 onChange={(v) => {

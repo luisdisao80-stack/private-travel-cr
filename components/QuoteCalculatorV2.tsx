@@ -8,7 +8,7 @@ import { useCart } from "@/lib/CartContext";
 import { DatePicker } from "@/components/ui/date-picker";
 import LocationInput from "@/components/LocationInput";
 import Price from "@/components/Price";
-import { MapPin, Users, Crown, ArrowRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
+import { MapPin, Users, Crown, ArrowRight, ArrowLeftRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
 
 type Props = {
   locations: string[];
@@ -318,7 +318,7 @@ export default function QuoteCalculatorV2({
         </div>
       ) : (
         <>
-          <div className="mb-5">
+          <div className="mb-2">
             <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
               <MapPin size={16} />
               <span>Pickup Location</span>
@@ -333,7 +333,33 @@ export default function QuoteCalculatorV2({
             />
           </div>
 
-          <div className="mb-5">
+          {/* Swap From ↔ To (plus the paired pickup/dropoff addresses
+              so the address fields stay aligned with their locations).
+              Sits BETWEEN the two location inputs — clicking it flips
+              the whole pair in one action. Same button Diego added on
+              the Hero search (2026-07-01). */}
+          <div className="flex justify-center -my-1 relative z-10">
+            <button
+              type="button"
+              onClick={() => {
+                const nextFrom = to;
+                const nextTo = from;
+                const nextPickupAddr = dropoffAddress;
+                const nextDropoffAddr = pickupAddress;
+                setFrom(nextFrom);
+                setTo(nextTo);
+                setPickupAddress(nextPickupAddr);
+                setDropoffAddress(nextDropoffAddr);
+              }}
+              aria-label="Swap pickup and drop-off"
+              title="Swap pickup and drop-off"
+              className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-amber-500/40 bg-black hover:bg-amber-500/20 hover:border-amber-500/70 text-amber-400 transition-colors shadow-lg"
+            >
+              <ArrowLeftRight size={14} className="rotate-90" />
+            </button>
+          </div>
+
+          <div className="mb-5 mt-2">
             <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
               <MapPin size={16} />
               <span>Drop-off Location</span>
