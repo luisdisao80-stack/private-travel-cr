@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import {
   MapPin,
   ArrowRight,
+  ArrowLeftRight,
   Users,
   Clock,
   Shield,
@@ -184,7 +185,27 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                   hotels={hotels}
                   onHotelPick={setPickupHotel}
                 />
-                <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
+                {/* Swap From ↔ To (plus paired hotel picks). Same
+                    behavior + styling as the Hero and QuoteCalculatorV2
+                    swap buttons Diego shipped 2026-07-01 — matches the
+                    airline-style UX he saw on a competitor site. */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPickup(dropoff);
+                    setDropoff(pickup);
+                    const nextPickupHotel = dropoffHotel;
+                    const nextDropoffHotel = pickupHotel;
+                    setPickupHotel(nextPickupHotel);
+                    setDropoffHotel(nextDropoffHotel);
+                  }}
+                  aria-label={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
+                  title={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
+                  className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-amber-500/30 bg-black/60 hover:bg-amber-500/20 hover:border-amber-500/60 text-amber-400 transition-colors"
+                >
+                  <ArrowLeftRight size={16} className="hidden md:block" />
+                  <ArrowLeftRight size={16} className="rotate-90 md:hidden" />
+                </button>
                 <LocationInput
                   value={dropoff}
                   onChange={setDropoff}

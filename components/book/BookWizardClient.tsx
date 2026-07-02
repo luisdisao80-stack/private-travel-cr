@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import NextImage from "next/image";
-import { ArrowRight, CheckCircle2, Shield, Zap } from "lucide-react";
+import { ArrowRight, ArrowLeftRight, CheckCircle2, Shield, Zap } from "lucide-react";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
@@ -243,7 +243,28 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     hotels={hotels}
                     onHotelPick={handlePickupHotel}
                   />
-                  <ArrowRight size={20} className="text-amber-400 self-center hidden md:block shrink-0" />
+                  {/* Swap From ↔ To (plus paired hotel picks). Same
+                      styling + behavior as Hero, RoutesPageClient and
+                      QuoteCalculatorV2 (Diego 2026-07-01). */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextFrom = heroTo;
+                      const nextTo = heroFrom;
+                      const nextPickupHotel = heroDropoffHotel;
+                      const nextDropoffHotel = heroPickupHotel;
+                      setHeroFrom(nextFrom);
+                      setHeroTo(nextTo);
+                      setHeroPickupHotel(nextPickupHotel);
+                      setHeroDropoffHotel(nextDropoffHotel);
+                    }}
+                    aria-label="Swap pickup and drop-off"
+                    title="Swap pickup and drop-off"
+                    className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-amber-500/30 bg-black/60 hover:bg-amber-500/20 hover:border-amber-500/60 text-amber-400 transition-colors"
+                  >
+                    <ArrowLeftRight size={16} className="hidden md:block" />
+                    <ArrowLeftRight size={16} className="rotate-90 md:hidden" />
+                  </button>
                   <LocationInput
                     value={heroTo}
                     onChange={handleHeroTo}
