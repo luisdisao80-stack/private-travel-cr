@@ -324,26 +324,36 @@ function tourRowHtml(it: TourEmailItem, idx: number): string {
     it.children > 0
       ? `${it.adults} adult${it.adults !== 1 ? "s" : ""} + ${it.children} child${it.children !== 1 ? "ren" : ""}`
       : `${it.adults} adult${it.adults !== 1 ? "s" : ""}`;
+  // Same green pickup treatment as shuttle rows — the driver needs
+  // the pickup hotel highlighted on tour bookings too.
+  const pickupBox = it.pickupHotel
+    ? `
+      <div class="ptcr-pickup-box" style="margin:10px 0 0 0;padding:12px 14px;background:#dcfce7;border-left:4px solid #16a34a;border-radius:8px;">
+        <div class="ptcr-pickup-eyebrow" style="font-size:10px;color:#15803d;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
+          📍 Pickup at
+        </div>
+        <div class="ptcr-pickup-text" style="font-size:14px;color:#14532d;font-weight:700;line-height:1.4;">
+          ${escapeHtml(it.pickupHotel)}
+        </div>
+      </div>
+    `
+    : "";
   return `
     <tr>
       <td style="padding:16px 20px;border-top:1px solid #e5e7eb;vertical-align:top;">
-        <div class="ptcr-amber" style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">
+        <div class="ptcr-navy" style="font-size:11px;color:#1e3a8a;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">
           Tour #${idx + 1}${it.durationLabel ? ` · ${escapeHtml(it.durationLabel)}` : ""}
         </div>
-        <div class="ptcr-heading" style="font-size:14px;color:#111827;font-weight:700;line-height:1.35;">
+        <div class="ptcr-heading" style="font-size:15px;color:#111827;font-weight:700;line-height:1.35;">
           ${escapeHtml(it.tourName)}
         </div>
         <div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:8px;">
           ${formatDate(it.date)} · Departure ${format12h(it.pickupTime)} · ${escapeHtml(pax)}
         </div>
-        ${
-          it.pickupHotel
-            ? `<div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:4px;">Pickup: ${escapeHtml(it.pickupHotel)}</div>`
-            : ""
-        }
+        ${pickupBox}
       </td>
       <td style="padding:16px 20px;border-top:1px solid #e5e7eb;text-align:right;vertical-align:top;white-space:nowrap;">
-        <div class="ptcr-heading" style="font-size:16px;color:#111827;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div class="ptcr-orange" style="font-size:18px;color:#ea580c;font-weight:800;">$${it.totalPrice.toFixed(2)}</div>
         <div class="ptcr-muted" style="font-size:11px;color:#6b7280;">USD</div>
       </td>
     </tr>
@@ -352,43 +362,70 @@ function tourRowHtml(it: TourEmailItem, idx: number): string {
 
 function shuttleRowHtml(it: CartItem, idx: number): string {
   const service = it.serviceType === "vip" ? "VIP" : "Standard";
-  const pickup =
+  // Dedicated PICKUP address block — new for 2026-07-02 (Diego).
+  // Bright green pill with a border-left accent so the driver spots
+  // the pickup address at a single glance when he opens the email on
+  // his phone in the morning. Only rendered when pickupPlace is
+  // actually different from the origin city string; otherwise the
+  // city name IS the pickup and the block would be redundant.
+  const pickupBox =
     it.pickupPlace && it.pickupPlace !== it.fromName
-      ? ` <span style="color:#6b7280;font-weight:500">· ${escapeHtml(it.pickupPlace)}</span>`
+      ? `
+        <div class="ptcr-pickup-box" style="margin:10px 0 4px 0;padding:12px 14px;background:#dcfce7;border-left:4px solid #16a34a;border-radius:8px;">
+          <div class="ptcr-pickup-eyebrow" style="font-size:10px;color:#15803d;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
+            📍 Pickup at
+          </div>
+          <div class="ptcr-pickup-text" style="font-size:14px;color:#14532d;font-weight:700;line-height:1.4;">
+            ${escapeHtml(it.pickupPlace)}
+          </div>
+        </div>
+      `
       : "";
-  const dropoff =
+  // Dropoff address — surfaced but softer than pickup. The driver
+  // cares much more about where he STARTS than where he ends up
+  // (he can navigate to the destination once en route); dropoff
+  // stays as a subtle bordered box in the muted grey palette.
+  const dropoffBox =
     it.dropoffPlace && it.dropoffPlace !== it.toName
-      ? ` <span style="color:#6b7280;font-weight:500">· ${escapeHtml(it.dropoffPlace)}</span>`
+      ? `
+        <div style="margin:4px 0 0 0;padding:10px 14px;background:#f9fafb;border-left:4px solid #d1d5db;border-radius:8px;">
+          <div style="font-size:10px;color:#6b7280;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
+            🏁 Drop off at
+          </div>
+          <div style="font-size:13px;color:#374151;font-weight:600;line-height:1.4;">
+            ${escapeHtml(it.dropoffPlace)}
+          </div>
+        </div>
+      `
       : "";
-  // Highlight extra wait/stop hours on its own line so Diego (internal
-  // email) and the customer don't miss it — it changes how the driver
-  // schedules the day. Hidden when 0.
+  // Highlight extra wait/stop hours on its own line — orange pill
+  // (upgraded from amber). Same reason as before: the driver's day
+  // planning changes if there's paid wait time.
   const extraStops =
     it.extraStopHours && it.extraStopHours > 0
-      ? `<div style="font-size:12px;color:#d97706;font-weight:700;margin-top:8px;background:#fef3c7;padding:6px 10px;border-radius:6px;display:inline-block;">⏱ Extra wait: ${it.extraStopHours}h paid</div>`
+      ? `<div style="font-size:12px;color:#c2410c;font-weight:700;margin-top:8px;background:#ffedd5;padding:6px 10px;border-radius:6px;display:inline-block;">⏱ Extra wait: ${it.extraStopHours}h paid</div>`
       : "";
-  // Highlighted child-seat line — same amber pill as Extra wait because
-  // they both change what the driver loads in the van and how he plans
-  // the trip. Emoji helps Diego spot it instantly when scanning his
-  // order inbox.
+  // Highlighted child-seat line — orange pill matching Extra wait.
   const seatsLine = childSeatsSummary(it);
   const childSeats = seatsLine
-    ? `<div style="font-size:12px;color:#d97706;font-weight:700;margin-top:8px;background:#fef3c7;padding:6px 10px;border-radius:6px;display:inline-block;">👶 Child seats: ${escapeHtml(seatsLine)}</div>`
+    ? `<div style="font-size:12px;color:#c2410c;font-weight:700;margin-top:8px;background:#ffedd5;padding:6px 10px;border-radius:6px;display:inline-block;">👶 Child seats: ${escapeHtml(seatsLine)}</div>`
     : "";
   return `
     <tr>
       <td style="padding:16px 20px;border-top:1px solid #e5e7eb;vertical-align:top;">
-        <div class="ptcr-amber" style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">
+        <div class="ptcr-navy" style="font-size:11px;color:#1e3a8a;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">
           Trip #${idx + 1} · ${escapeHtml(service)} · ${escapeHtml(it.vehicleName)}
         </div>
-        <div class="ptcr-heading" style="font-size:14px;color:#111827;font-weight:700;line-height:1.4;">
-          ${escapeHtml(it.fromName)}${pickup}
+        <div class="ptcr-heading" style="font-size:15px;color:#111827;font-weight:700;line-height:1.4;">
+          ${escapeHtml(it.fromName)}
         </div>
-        <div class="ptcr-muted" style="font-size:12px;color:#9ca3af;margin:4px 0 4px 0;">↓</div>
-        <div class="ptcr-heading" style="font-size:14px;color:#111827;font-weight:700;line-height:1.4;">
-          ${escapeHtml(it.toName)}${dropoff}
+        ${pickupBox}
+        <div class="ptcr-muted" style="font-size:12px;color:#9ca3af;margin:6px 0 6px 0;">↓</div>
+        <div class="ptcr-heading" style="font-size:15px;color:#111827;font-weight:700;line-height:1.4;">
+          ${escapeHtml(it.toName)}
         </div>
-        <div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:8px;">
+        ${dropoffBox}
+        <div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:10px;">
           ${formatDate(it.date)} · ${format12h(it.pickupTime)} · ${it.passengers} pax
           ${it.flightNumber ? ` · Flight ${escapeHtml(it.flightNumber)}` : ""}
         </div>
@@ -396,7 +433,7 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
         ${childSeats}
       </td>
       <td style="padding:16px 20px;border-top:1px solid #e5e7eb;text-align:right;vertical-align:top;white-space:nowrap;">
-        <div class="ptcr-heading" style="font-size:16px;color:#111827;font-weight:700;">$${it.totalPrice.toFixed(2)}</div>
+        <div class="ptcr-orange" style="font-size:18px;color:#ea580c;font-weight:800;">$${it.totalPrice.toFixed(2)}</div>
         <div class="ptcr-muted" style="font-size:11px;color:#6b7280;">USD</div>
       </td>
     </tr>
@@ -433,7 +470,7 @@ function shellHtml({
     ? `
       <tr>
         <td style="padding:20px 24px;border-top:1px solid #e5e7eb;">
-          <div style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
+          <div style="font-size:11px;color:#1e3a8a;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Customer</div>
           <div style="font-size:16px;color:#111827;font-weight:700;line-height:1.3;">${escapeHtml(data.customerName)}</div>
           <div style="font-size:14px;color:#374151;font-weight:500;margin-top:4px;line-height:1.4;">${escapeHtml(data.customerEmail)}</div>
           ${data.customerPhone ? `<div style="font-size:14px;color:#374151;font-weight:500;margin-top:2px;line-height:1.4;">${escapeHtml(data.customerPhone)}</div>` : ""}
@@ -451,9 +488,16 @@ function shellHtml({
   // in bed, not a document. The only reliable escape is to give it
   // a light background so Smart-Invert never activates. Every major
   // transactional email service (Stripe, Shopify, Airbnb, Square)
-  // ships light-mode emails for exactly this reason. Brand identity
-  // still shows through the amber accents on the header, price, and
-  // CTAs — the compass logo pops on white just as well as on black.
+  // ships light-mode emails for exactly this reason.
+  //
+  // Palette — 2026-07-02: switched from amber to a nautical trio
+  // (Diego's spec).
+  //   Navy   #1e3a8a  — eyebrows, order number, "Trip #N", CTA border
+  //   Orange #ea580c  — total, trip price, primary emphasis
+  //   Green  #16a34a  — dedicated PICKUP address block so drivers
+  //                     spot the pickup at a glance (was the whole
+  //                     point of this redesign per Diego).
+  // Headings stay near-black (#111827) for max legibility.
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -468,15 +512,21 @@ function shellHtml({
   <style>
     :root { color-scheme: only light; supported-color-schemes: only light; }
     /* Belt-and-suspenders block for any client that STILL tries to
-       flip colors in dark mode — pin the surface colors so the light
-       theme stays intact regardless of what the OS thinks. */
+       flip colors in dark mode — pin the surface colors so the nautical
+       navy/orange/green palette stays intact regardless of what the
+       OS thinks. */
     @media (prefers-color-scheme: dark) {
       body, table { background: #f3f4f6 !important; }
       .ptcr-card { background: #ffffff !important; }
       .ptcr-heading { color: #111827 !important; }
       .ptcr-body { color: #374151 !important; }
       .ptcr-muted { color: #6b7280 !important; }
-      .ptcr-amber { color: #d97706 !important; }
+      .ptcr-navy { color: #1e3a8a !important; }
+      .ptcr-orange { color: #ea580c !important; }
+      .ptcr-green { color: #16a34a !important; }
+      .ptcr-pickup-box { background: #dcfce7 !important; border-color: #16a34a !important; }
+      .ptcr-pickup-eyebrow { color: #15803d !important; }
+      .ptcr-pickup-text { color: #14532d !important; }
     }
   </style>
 </head>
@@ -486,7 +536,7 @@ function shellHtml({
       <td align="center">
         <table role="presentation" class="ptcr-card" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
           <tr>
-            <td style="padding:32px 24px 24px 24px;text-align:center;background:#fffbeb;border-bottom:1px solid #fde68a;">
+            <td style="padding:32px 24px 24px 24px;text-align:center;background:#eff6ff;border-bottom:3px solid #1e3a8a;">
               <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
                 <img
                   src="https://www.privatetravelcr.com/logo-ptcr.svg"
@@ -496,7 +546,7 @@ function shellHtml({
                   style="display:block;margin:0 auto 4px auto;width:180px;height:auto;border:0;"
                 />
               </a>
-              <div class="ptcr-amber" style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
+              <div class="ptcr-navy" style="font-size:11px;color:#1e3a8a;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
               <h1 class="ptcr-heading" style="margin:14px 0 0 0;font-size:24px;color:#111827;font-weight:800;">${escapeHtml(title)}</h1>
               <p class="ptcr-body" style="margin:10px 0 0 0;font-size:14px;color:#374151;line-height:1.5;">${escapeHtml(intro)}</p>
             </td>
@@ -509,11 +559,11 @@ function shellHtml({
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td class="ptcr-muted" style="font-size:12px;color:#6b7280;">Order number</td>
-                        <td class="ptcr-amber" style="font-size:13px;color:#d97706;font-family:'SFMono-Regular',Menlo,monospace;font-weight:700;text-align:right;">${escapeHtml(data.orderNumber)}</td>
+                        <td class="ptcr-navy" style="font-size:13px;color:#1e3a8a;font-family:'SFMono-Regular',Menlo,monospace;font-weight:700;text-align:right;">${escapeHtml(data.orderNumber)}</td>
                       </tr>
                       <tr>
                         <td class="ptcr-muted" style="font-size:12px;color:#6b7280;padding-top:8px;">Total</td>
-                        <td class="ptcr-heading" style="font-size:18px;color:#111827;font-weight:700;text-align:right;padding-top:8px;">$${data.totalUsd.toFixed(2)} USD</td>
+                        <td class="ptcr-orange" style="font-size:20px;color:#ea580c;font-weight:800;text-align:right;padding-top:8px;">$${data.totalUsd.toFixed(2)} USD</td>
                       </tr>
                       ${
                         data.authCode
@@ -550,7 +600,7 @@ function shellHtml({
                     <a href="https://wa.me/50686334133" style="display:inline-block;background:#16a34a;color:#ffffff;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;">Chat on WhatsApp</a>
                   </td>
                   <td style="padding:0 6px;">
-                    <a href="mailto:info@privatetravelcr.com" style="display:inline-block;background:#ffffff;color:#d97706;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;border:1px solid #f59e0b;">Email us</a>
+                    <a href="mailto:info@privatetravelcr.com" style="display:inline-block;background:#ffffff;color:#1e3a8a;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;border:1px solid #1e3a8a;">Email us</a>
                   </td>
                 </tr>
               </table>
@@ -795,7 +845,12 @@ export async function sendPaymentRequestEmail(data: {
       .ptcr-heading { color: #111827 !important; }
       .ptcr-body { color: #374151 !important; }
       .ptcr-muted { color: #6b7280 !important; }
-      .ptcr-amber { color: #d97706 !important; }
+      .ptcr-navy { color: #1e3a8a !important; }
+      .ptcr-orange { color: #ea580c !important; }
+      .ptcr-green { color: #16a34a !important; }
+      .ptcr-pickup-box { background: #dcfce7 !important; border-color: #16a34a !important; }
+      .ptcr-pickup-eyebrow { color: #15803d !important; }
+      .ptcr-pickup-text { color: #14532d !important; }
     }
   </style>
 </head>
@@ -805,22 +860,22 @@ export async function sendPaymentRequestEmail(data: {
       <td align="center">
         <table role="presentation" class="ptcr-card" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
           <tr>
-            <td style="padding:32px 24px 24px 24px;text-align:center;background:#fffbeb;border-bottom:1px solid #fde68a;">
+            <td style="padding:32px 24px 24px 24px;text-align:center;background:#eff6ff;border-bottom:3px solid #1e3a8a;">
               <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
                 <img src="https://www.privatetravelcr.com/logo-ptcr.svg" alt="Private Travel Costa Rica" width="180" height="78" style="display:block;margin:0 auto 4px auto;width:180px;height:auto;border:0;" />
               </a>
-              <div class="ptcr-amber" style="font-size:11px;color:#d97706;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
+              <div class="ptcr-navy" style="font-size:11px;color:#1e3a8a;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
               <h1 class="ptcr-heading" style="margin:14px 0 0 0;font-size:24px;color:#111827;font-weight:800;">Complete your booking</h1>
               <p class="ptcr-body" style="margin:10px 0 0 0;font-size:14px;color:#374151;line-height:1.5;">Hi ${escapeHtml(firstName)}, Diego from Private Travel CR prepared this booking for you. One click below to confirm and pay.</p>
             </td>
           </tr>
           <tr>
             <td style="padding:24px 24px 8px 24px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ecfdf5;border:1px solid #10b981;border-radius:12px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff7ed;border:1px solid #ea580c;border-radius:12px;">
                 <tr>
                   <td style="padding:20px;text-align:center;">
-                    <div style="font-size:12px;color:#047857;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Amount to pay</div>
-                    <div style="font-size:32px;color:#064e3b;font-weight:800;margin:6px 0 14px 0;">${totalStr}</div>
+                    <div style="font-size:12px;color:#c2410c;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Amount to pay</div>
+                    <div style="font-size:32px;color:#7c2d12;font-weight:800;margin:6px 0 14px 0;">${totalStr}</div>
                     <a href="${escapeHtml(data.payUrl)}" style="display:inline-block;background:#16a34a;color:#ffffff;font-weight:800;font-size:16px;text-decoration:none;padding:16px 32px;border-radius:12px;letter-spacing:0.02em;">Pay now &amp; confirm booking →</a>
                     <div style="font-size:11px;color:#6b7280;margin-top:12px;">Secure payment via Tilopay · Link expires ${escapeHtml(expiresStr)}</div>
                   </td>
@@ -836,7 +891,7 @@ export async function sendPaymentRequestEmail(data: {
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td class="ptcr-muted" style="font-size:12px;color:#6b7280;">Order number</td>
-                        <td class="ptcr-amber" style="font-size:13px;color:#d97706;font-family:'SFMono-Regular',Menlo,monospace;font-weight:700;text-align:right;">${escapeHtml(data.orderNumber)}</td>
+                        <td class="ptcr-navy" style="font-size:13px;color:#1e3a8a;font-family:'SFMono-Regular',Menlo,monospace;font-weight:700;text-align:right;">${escapeHtml(data.orderNumber)}</td>
                       </tr>
                     </table>
                   </td>
