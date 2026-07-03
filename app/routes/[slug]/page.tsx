@@ -6,6 +6,7 @@ import { isPopularRoute } from "@/lib/popular-routes";
 import { siteConfig } from "@/lib/site-config";
 import { getAllPosts } from "@/lib/blog";
 import { getRelatedArticles } from "@/lib/related-articles";
+import { displayLocation } from "@/lib/locations";
 import RouteDetail from "@/components/RouteDetail";
 
 interface Props {
@@ -39,16 +40,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = "Private Shuttle " + route.origen + " to " + route.destino + " | $" + route.precio1a6 + " USD";
-  const description = route.journey_description || "Private shuttle service from " + route.origen + " to " + route.destino + ". Door-to-door, professional bilingual drivers. Starting at $" + route.precio1a6 + " USD.";
+  // Friendly names — same treatment as /private-shuttle/[slug].
+  const originName = displayLocation(route.origen);
+  const destName = displayLocation(route.destino);
+  const originCode = /^SJO\b/.test(route.origen)
+    ? " (SJO)"
+    : /^LIR\b/.test(route.origen)
+      ? " (LIR)"
+      : "";
+  const destCode = /^SJO\b/.test(route.destino)
+    ? " (SJO)"
+    : /^LIR\b/.test(route.destino)
+      ? " (LIR)"
+      : "";
+
+  const title = `${originName}${originCode} to ${destName}${destCode} Shuttle from $${route.precio1a6} | Private Transfer 2026`;
+  const description =
+    route.journey_description ||
+    `Private shuttle from ${originName}${originCode} to ${destName}${destCode} from $${route.precio1a6} USD. Door-to-door, bilingual driver, free child seats, flight tracking. ⭐ 5.0 · 200+ reviews.`;
 
   return {
     title,
     description: description.substring(0, 160),
     keywords: [
-      route.origen + " to " + route.destino,
-      "private shuttle " + route.destino,
-      route.origen + " transportation",
+      `${originName} to ${destName}`,
+      `${originName} to ${destName} shuttle`,
+      `private shuttle ${destName}`,
+      `${destName} transportation`,
       "Costa Rica shuttle",
       "private transfer Costa Rica",
     ],
@@ -65,7 +83,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: siteConfig.ogImage,
           width: 1200,
           height: 630,
-          alt: `Private shuttle from ${route.origen} to ${route.destino}`,
+          alt: `Private shuttle from ${originName} to ${destName}`,
         },
       ],
     },
