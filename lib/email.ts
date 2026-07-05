@@ -347,8 +347,8 @@ function tourRowHtml(it: TourEmailItem, idx: number): string {
         <div class="ptcr-heading" style="font-size:15px;color:#111827;font-weight:700;line-height:1.35;">
           ${escapeHtml(it.tourName)}
         </div>
-        <div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:8px;">
-          ${formatDate(it.date)} · Departure ${format12h(it.pickupTime)} · ${escapeHtml(pax)}
+        <div class="ptcr-trip-meta" style="font-size:14px;color:#b45309;font-weight:700;margin-top:10px;padding:8px 12px;background:#fef3c7;border-radius:6px;display:inline-block;">
+          📅 ${formatDate(it.date)} · 🕐 Departure ${format12h(it.pickupTime)} · 👥 ${escapeHtml(pax)}
         </div>
         ${pickupBox}
       </td>
@@ -381,18 +381,19 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
         </div>
       `
       : "";
-  // Dropoff address — surfaced but softer than pickup. The driver
-  // cares much more about where he STARTS than where he ends up
-  // (he can navigate to the destination once en route); dropoff
-  // stays as a subtle bordered box in the muted grey palette.
+  // Dropoff address — matches the same treatment as the pickup box
+  // but in blue so the driver can tell them apart at a glance
+  // (green = start here, blue = end here). Diego 2026-07-05 asked
+  // to promote dropoff from the muted grey pill it used to be to
+  // a full blue box on par with the green PICKUP.
   const dropoffBox =
     it.dropoffPlace && it.dropoffPlace !== it.toName
       ? `
-        <div style="margin:4px 0 0 0;padding:10px 14px;background:#f9fafb;border-left:4px solid #d1d5db;border-radius:8px;">
-          <div style="font-size:10px;color:#6b7280;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
+        <div class="ptcr-dropoff-box" style="margin:10px 0 4px 0;padding:12px 14px;background:#dbeafe;border-left:4px solid #3b82f6;border-radius:8px;">
+          <div class="ptcr-dropoff-eyebrow" style="font-size:10px;color:#1e40af;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
             🏁 Drop off at
           </div>
-          <div style="font-size:13px;color:#374151;font-weight:600;line-height:1.4;">
+          <div class="ptcr-dropoff-text" style="font-size:14px;color:#1e3a8a;font-weight:700;line-height:1.4;">
             ${escapeHtml(it.dropoffPlace)}
           </div>
         </div>
@@ -425,9 +426,8 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
           ${escapeHtml(it.toName)}
         </div>
         ${dropoffBox}
-        <div class="ptcr-muted" style="font-size:12px;color:#6b7280;margin-top:10px;">
-          ${formatDate(it.date)} · ${format12h(it.pickupTime)} · ${it.passengers} pax
-          ${it.flightNumber ? ` · Flight ${escapeHtml(it.flightNumber)}` : ""}
+        <div class="ptcr-trip-meta" style="font-size:14px;color:#b45309;font-weight:700;margin-top:12px;padding:8px 12px;background:#fef3c7;border-radius:6px;display:inline-block;">
+          📅 ${formatDate(it.date)} · 🕐 ${format12h(it.pickupTime)} · 👥 ${it.passengers} pax${it.flightNumber ? ` · ✈️ Flight ${escapeHtml(it.flightNumber)}` : ""}
         </div>
         ${extraStops}
         ${childSeats}
@@ -527,6 +527,10 @@ function shellHtml({
       .ptcr-pickup-box { background: #dcfce7 !important; border-color: #16a34a !important; }
       .ptcr-pickup-eyebrow { color: #15803d !important; }
       .ptcr-pickup-text { color: #14532d !important; }
+      .ptcr-dropoff-box { background: #dbeafe !important; border-color: #3b82f6 !important; }
+      .ptcr-dropoff-eyebrow { color: #1e40af !important; }
+      .ptcr-dropoff-text { color: #1e3a8a !important; }
+      .ptcr-trip-meta { color: #b45309 !important; }
     }
   </style>
 </head>
@@ -851,6 +855,10 @@ export async function sendPaymentRequestEmail(data: {
       .ptcr-pickup-box { background: #dcfce7 !important; border-color: #16a34a !important; }
       .ptcr-pickup-eyebrow { color: #15803d !important; }
       .ptcr-pickup-text { color: #14532d !important; }
+      .ptcr-dropoff-box { background: #dbeafe !important; border-color: #3b82f6 !important; }
+      .ptcr-dropoff-eyebrow { color: #1e40af !important; }
+      .ptcr-dropoff-text { color: #1e3a8a !important; }
+      .ptcr-trip-meta { color: #b45309 !important; }
     }
   </style>
 </head>
