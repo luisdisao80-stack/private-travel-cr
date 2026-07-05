@@ -19,6 +19,15 @@ const nextConfig: NextConfig = {
       { source: "/shuttles", destination: "/routes", permanent: true },
       { source: "/shuttle-service", destination: "/routes", permanent: true },
       { source: "/our-fleet", destination: "/fleet", permanent: true },
+      // GSC 2026-07-05 Not-found (404) report — two URLs Google
+      // still crawls from somewhere but that returned 404. /booking
+      // was the pre-migration checkout entrypoint (this app uses
+      // /book instead); /adult is a scraper/garbage query that we
+      // send to the home page so the URL stops surfacing in the
+      // GSC 404 list. Same permanent 301 as the rest so any inbound
+      // link equity is preserved.
+      { source: "/booking", destination: "/book", permanent: true },
+      { source: "/adult", destination: "/", permanent: true },
 
       // ---- Legacy blog URLs (the old site used /blog/post/<slug>) ----
       // Search Console (2026-06-05) showed several of these still
