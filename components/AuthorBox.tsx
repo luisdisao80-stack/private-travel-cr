@@ -38,9 +38,10 @@ export default function AuthorBox() {
           </p>
           <p className="text-sm md:text-base text-gray-300 leading-relaxed mb-5">
             I live in La Fortuna and run Private Travel Costa Rica — a
-            private shuttle service operating across Costa Rica since
-            2014. I write these guides from the perspective of someone
-            who drives these routes every week and knows the country
+            private shuttle service I founded in 2022. I&apos;ve been
+            in Costa Rica&apos;s tourism industry for 20+ years and
+            write these guides from the perspective of someone who
+            drives these routes every week and knows the country
             firsthand.
           </p>
 

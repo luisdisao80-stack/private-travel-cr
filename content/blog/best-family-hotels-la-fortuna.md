@@ -16,7 +16,8 @@ Skip this post if you want the "best of the best" list every travel magazine wri
 ## Quick answer (in case you're skimming)
 
 - **Best luxury family resort:** [Nayara Gardens](/hotels/nayara-gardens) — quiet, sloth sightings on your balcony, kids' club that's genuinely good.
-- **Best mid-range with pools that kids will lose their minds over:** [The Springs Resort & Spa](/hotels/the-springs-resort) — 28 hot spring pools, wildlife rescue center, real "wow" moment.
+- **Best premium resort with the biggest "wow" factor:** [The Springs Resort & Spa](/hotels/the-springs-resort) — 28 hot spring pools, wildlife rescue center, real cinematic moment.
+- **Best mid-range family sweet spot:** [Arenal Springs Resort](/hotels/arenal-springs-resort) — private bungalows, thermal pools, direct volcano views, walking distance to town.
 - **Best budget family option with waterslides:** [Los Lagos Resort](/hotels/los-lagos-arenal) — thermal pools + water park + affordable.
 - **Best for classic Costa Rican vibe with kids:** [Tabacón Thermal Resort](/hotels/tabacon-thermal-resort) — the natural hot river running through the property is unforgettable.
 
@@ -71,22 +72,22 @@ The natural hot river that flows through Tabacón is the single most magical thi
 - **Who it's for:** multigenerational trips, families who want "the iconic La Fortuna experience".
 - **Kids' highlights:** the natural hot river (unforgettable), giant grounds to explore, waterfall pool, safe walking paths.
 - **Watch out for:** the property is huge and there's a lot of walking. Some rooms are far from the springs.
-- **Approximate price:** $450–800/night.
-
-## Mid-range family hotels (sweet spot — $200–400/night)
-
-This is where most of my families actually stay. And honestly, **for a family, mid-range in La Fortuna is often BETTER than luxury** because you get all the volcano views + hot springs + a pool that kids can actually splash in, without walking 400m to your room.
+- **Approximate price:** $500–900/night.
 
 ### 4. The Springs Resort & Spa — the "wow" pool complex
 
 [Full page → /hotels/the-springs-resort](/hotels/the-springs-resort)
 
-28 hot spring pools cascading down a hillside. Yes, twenty-eight. There's an on-site wildlife rescue center kids love (jaguar, monkeys, sloths in rehab), a river tubing activity, restaurants at every level. If your kids have never been to a "resort with amenities" type place, this is going to blow their minds.
+28 hot spring pools cascading down a hillside. Yes, twenty-eight. There's an on-site wildlife rescue center kids love (jaguar, monkeys, sloths in rehab), a river tubing activity, restaurants at every level. If your kids have never been to a "resort with amenities" type place, this is going to blow their minds. This is one of the priciest properties in La Fortuna — but the sheer scale earns it.
 
 - **Who it's for:** families with kids 4–12 who want a lot of on-site variety.
 - **Kids' highlights:** 28 pools with varying temperatures (find the perfect one), wildlife rescue center, kid-approved buffet, river tubing course.
 - **Watch out for:** the property has a serious elevation change — steep walk between top and bottom. Some rooms require a driver's help to reach.
-- **Approximate price:** $380–600/night.
+- **Approximate price:** $700–1,300/night in peak season.
+
+## Mid-range family hotels (sweet spot — $200–400/night)
+
+This is where most of my families actually stay. And honestly, **for a family, mid-range in La Fortuna is often BETTER than luxury** because you get all the volcano views + hot springs + a pool that kids can actually splash in, without walking 400m to your room.
 
 ### 5. Arenal Springs Resort — the reliable pick
 
