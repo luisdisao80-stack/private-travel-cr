@@ -123,5 +123,18 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(target, req.url), 301);
   }
 
+  // /post/<slug> → mapped post or /blog. The pre-Next.js WordPress
+  // build used the /post/ prefix without the /blog/ segment. GSC
+  // 2026-07-05 "Crawled - currently not indexed" report still lists
+  // three of these Google keeps trying (best-restaurants-in-la-fortuna,
+  // best-places-for-sloth-watching, reliable-taxi-services). Route them
+  // through the same LEGACY_BLOG_REDIRECTS table so the mapping stays
+  // single-source-of-truth.
+  const postMatch = pathname.match(/^\/post\/([^/]+)\/?$/);
+  if (postMatch) {
+    const target = LEGACY_BLOG_REDIRECTS[postMatch[1]] ?? "/blog";
+    return NextResponse.redirect(new URL(target, req.url), 301);
+  }
+
   return NextResponse.next();
 }
