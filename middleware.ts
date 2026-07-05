@@ -36,6 +36,19 @@ export const config = {
 const BLOCKED_BOT_RE =
   /(AhrefsBot|SemrushBot|MJ12bot|DotBot|BLEXBot|DataForSeoBot|PetalBot|AspiegelBot|SeznamBot|coccocbot|magpie-crawler|YandexBot|Bytespider|ZoominfoBot|serpstatbot|barkrowler|MegaIndex|spbot|linkfluence|TurnitinBot|MauiBot|AwarioBot|Linguee)/i;
 
+// Search-engine + social-media crawlers that MUST be able to reach every
+// URL, even from the countries we blanket-block below. Google (2026-07-03
+// email in GSC) reported "Blocked due to access forbidden (403)" and
+// "Redirect error" — root cause was Googlebot occasionally crawls from
+// Singapore-region IPs, which our BLOCKED_COUNTRIES list was 403-ing.
+// The right fix is UA-first: if the request looks like a legit crawler,
+// let it through regardless of country. Bot verification via reverse
+// DNS is possible but overkill for the blast radius this list has —
+// even if a scraper faked one of these UAs, they still eat the same
+// generic 403 the geo block would have served, no downside.
+const ALLOWED_CRAWLER_RE =
+  /(Googlebot|Google-InspectionTool|AdsBot-Google|APIs-Google|Google-Site-Verification|Bingbot|DuckDuckBot|Slurp|Applebot|Baiduspider|facebookexternalhit|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterestbot|redditbot|GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|Google-Extended)/i;
+
 // Geo block. After the UA-based bot block was deployed (2026-06-14)
 // Singapore traffic *still* sat at ~48% of total visitors per Vercel
 // Analytics. None of Diego's 21 real bookings to date came from
@@ -69,9 +82,16 @@ export function middleware(req: NextRequest) {
   // null, so this branch is a no-op locally. Real users from blocked
   // countries get a 403 (we don't ship a friendlier page because the
   // ratio of real-to-bot is ~0:48 for SG; surfacing copy invites them
-  // to abuse other paths).
+  // to abuse other paths). EXCEPTION: legit search engine + social
+  // crawlers (Googlebot, Bingbot, ChatGPT, WhatsApp preview, etc.)
+  // are allowed through regardless of country — see ALLOWED_CRAWLER_RE
+  // and the GSC 403 issue that surfaced 2026-07-03.
   const country = req.headers.get("x-vercel-ip-country");
-  if (country && BLOCKED_COUNTRIES.has(country)) {
+  if (
+    country &&
+    BLOCKED_COUNTRIES.has(country) &&
+    !ALLOWED_CRAWLER_RE.test(ua)
+  ) {
     return new NextResponse(null, { status: 403 });
   }
 
