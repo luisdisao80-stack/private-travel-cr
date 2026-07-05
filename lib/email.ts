@@ -202,6 +202,8 @@ export function buildBookingIcs(
           (it.children > 0 ? ` adult${it.adults !== 1 ? "s" : ""} + ${it.children} child${it.children !== 1 ? "ren" : ""}` : ` adult${it.adults !== 1 ? "s" : ""}`);
         const desc = [
           `Private Travel CR · Order ${data.orderNumber}`,
+          data.customerName ? `Customer: ${data.customerName}` : "",
+          data.customerPhone ? `Phone: ${data.customerPhone}` : "",
           `Tour: ${it.tourName}`,
           `Departure: ${it.pickupTime}`,
           it.durationLabel ? `Duration: ${it.durationLabel}` : "",
@@ -212,6 +214,14 @@ export function buildBookingIcs(
         ]
           .filter(Boolean)
           .join("\\n");
+        // Prepend the customer name onto the calendar event title so the
+        // Google Calendar / iCal notification that fires 24h and 2h
+        // before pickup surfaces WHO the trip is for. Diego added this
+        // 2026-07-05 — the previous summary just said the tour name and
+        // he'd have to open the event to see whose trip it was.
+        const summary = data.customerName
+          ? `${data.customerName} — ${it.tourName}`
+          : it.tourName;
         return [
           "BEGIN:VEVENT",
           `UID:${data.orderNumber}-${idx}@privatetravelcr.com`,
@@ -219,7 +229,7 @@ export function buildBookingIcs(
           `SEQUENCE:${sequence}`,
           `DTSTART:${start}`,
           `DTEND:${end}`,
-          `SUMMARY:${escapeIcs(it.tourName)}`,
+          `SUMMARY:${escapeIcs(summary)}`,
           `DESCRIPTION:${desc}`,
           `LOCATION:${escapeIcs(it.pickupHotel || "La Fortuna, Costa Rica")}`,
           "STATUS:CONFIRMED",
@@ -259,6 +269,8 @@ export function buildBookingIcs(
       const seats = childSeatsSummary(it);
       const desc = [
         `Private Travel CR · Order ${data.orderNumber}`,
+        data.customerName ? `Customer: ${data.customerName}` : "",
+        data.customerPhone ? `Phone: ${data.customerPhone}` : "",
         `From: ${pickup}`,
         `To: ${dropoff}`,
         `Passengers: ${it.passengers}`,
@@ -278,6 +290,12 @@ export function buildBookingIcs(
       ]
         .filter(Boolean)
         .join("\\n");
+      // Prepend the customer name onto the shuttle calendar event so the
+      // 24h / 2h reminders show WHO is being picked up without opening
+      // the event. See the tour branch above — same pattern.
+      const shuttleSummary = data.customerName
+        ? `${data.customerName} — ${it.fromName} → ${it.toName}`
+        : `Private Shuttle: ${it.fromName} → ${it.toName}`;
       return [
         "BEGIN:VEVENT",
         `UID:${data.orderNumber}-${idx}@privatetravelcr.com`,
@@ -285,7 +303,7 @@ export function buildBookingIcs(
         `SEQUENCE:${sequence}`,
         `DTSTART:${start}`,
         `DTEND:${end}`,
-        `SUMMARY:${escapeIcs(`Private Shuttle: ${it.fromName} → ${it.toName}`)}`,
+        `SUMMARY:${escapeIcs(shuttleSummary)}`,
         `DESCRIPTION:${desc}`,
         `LOCATION:${escapeIcs(pickup)}`,
         "STATUS:CONFIRMED",

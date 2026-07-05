@@ -18,12 +18,19 @@ export const dynamic = "force-dynamic";
 
 type Context = { params: Promise<{ orderNumber: string }> };
 
-export async function GET(_req: NextRequest, ctx: Context) {
+export async function GET(req: NextRequest, ctx: Context) {
   const { orderNumber } = await ctx.params;
 
   if (!orderNumber) {
     return NextResponse.json({ error: "missing order number" }, { status: 400 });
   }
+
+  // ?variant=driver renders a version WITHOUT any pricing info — total,
+  // per-trip prices, auth code, and card last-4 are all hidden. Used by
+  // Diego to WhatsApp the trip sheet to his drivers without revealing
+  // what the customer paid. Any other value falls back to the standard
+  // customer receipt.
+  const driverVariant = req.nextUrl.searchParams.get("variant") === "driver";
 
   const { data: booking, error } = await supabaseAdmin
     .from("bookings")
@@ -64,8 +71,13 @@ export async function GET(_req: NextRequest, ctx: Context) {
       cardLast4={booking.tilopay_last4}
       items={(booking.items as CartItem[]) || []}
       logoUrl={logoUrl}
+      driverVariant={driverVariant}
     />
   );
+
+  const filename = driverVariant
+    ? `driver-sheet-${booking.order_number}.pdf`
+    : `private-travel-cr-${booking.order_number}.pdf`;
 
   // Convert the Node Readable stream to a web ReadableStream so it can
   // be passed straight back as the Response body. This keeps memory low
@@ -81,7 +93,7 @@ export async function GET(_req: NextRequest, ctx: Context) {
   return new NextResponse(webStream, {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `inline; filename="private-travel-cr-${booking.order_number}.pdf"`,
+      "Content-Disposition": `inline; filename="${filename}"`,
       "Cache-Control": "private, max-age=0, must-revalidate",
     },
   });

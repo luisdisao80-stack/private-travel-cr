@@ -289,6 +289,11 @@ export type BookingPdfProps = {
   /** Absolute URL to the logo PNG. Required because react-pdf can't
    *  resolve `/public` relative paths the way Next.js can. */
   logoUrl: string;
+  /** When true, render a driver-only trip sheet: same trip info, but
+   *  every pricing element (total paid, per-trip prices, tax line,
+   *  auth code, card last-4) is stripped. Diego forwards these
+   *  sheets to his drivers over WhatsApp without revealing revenue. */
+  driverVariant?: boolean;
 };
 
 export default function BookingPdfDocument({
@@ -301,12 +306,21 @@ export default function BookingPdfDocument({
   cardLast4,
   items,
   logoUrl,
+  driverVariant = false,
 }: BookingPdfProps) {
   return (
     <Document
-      title={`Booking Confirmation ${orderNumber}`}
+      title={
+        driverVariant
+          ? `Driver Trip Sheet ${orderNumber}`
+          : `Booking Confirmation ${orderNumber}`
+      }
       author="Private Travel Costa Rica"
-      subject={`Booking confirmation for order ${orderNumber}`}
+      subject={
+        driverVariant
+          ? `Driver trip sheet for order ${orderNumber}`
+          : `Booking confirmation for order ${orderNumber}`
+      }
     >
       <Page size="A4" style={styles.page}>
         {/* Header with logo + brand block */}
@@ -322,34 +336,45 @@ export default function BookingPdfDocument({
         </View>
 
         {/* Title */}
-        <Text style={styles.title}>Booking Confirmation</Text>
+        <Text style={styles.title}>
+          {driverVariant ? "Driver Trip Sheet" : "Booking Confirmation"}
+        </Text>
         <Text style={styles.subtitle}>
-          Thank you, {customerName.split(" ")[0] || "friend"}. Your payment has
-          been received. Keep this confirmation handy — your driver will text
-          you the day before your trip.
+          {driverVariant
+            ? `Trip details for order ${orderNumber}. Contact the customer 24h before pickup to confirm.`
+            : `Thank you, ${
+                customerName.split(" ")[0] || "friend"
+              }. Your payment has been received. Keep this confirmation handy — your driver will text you the day before your trip.`}
         </Text>
 
-        {/* Order summary */}
+        {/* Order summary — driver variant only shows the order number
+            (no total, no auth code, no card). */}
         <View style={styles.orderBox}>
           <View style={styles.orderRow}>
             <Text style={styles.orderLabel}>Order number</Text>
             <Text style={styles.orderValueMono}>{orderNumber}</Text>
           </View>
-          <View style={styles.orderRow}>
-            <Text style={styles.orderLabel}>Total paid</Text>
-            <Text style={styles.orderValue}>${totalUsd.toFixed(2)} USD</Text>
-          </View>
-          {authCode ? (
-            <View style={styles.orderRow}>
-              <Text style={styles.orderLabel}>Authorization</Text>
-              <Text style={styles.orderValueMono}>{authCode}</Text>
-            </View>
-          ) : null}
-          {cardLast4 ? (
-            <View style={styles.orderRow}>
-              <Text style={styles.orderLabel}>Card</Text>
-              <Text style={styles.orderValueMono}>•••• {cardLast4}</Text>
-            </View>
+          {!driverVariant ? (
+            <>
+              <View style={styles.orderRow}>
+                <Text style={styles.orderLabel}>Total paid</Text>
+                <Text style={styles.orderValue}>
+                  ${totalUsd.toFixed(2)} USD
+                </Text>
+              </View>
+              {authCode ? (
+                <View style={styles.orderRow}>
+                  <Text style={styles.orderLabel}>Authorization</Text>
+                  <Text style={styles.orderValueMono}>{authCode}</Text>
+                </View>
+              ) : null}
+              {cardLast4 ? (
+                <View style={styles.orderRow}>
+                  <Text style={styles.orderLabel}>Card</Text>
+                  <Text style={styles.orderValueMono}>•••• {cardLast4}</Text>
+                </View>
+              ) : null}
+            </>
           ) : null}
         </View>
 
@@ -383,9 +408,11 @@ export default function BookingPdfDocument({
                     </Text>
                     <Text style={styles.tripRoute}>{it.tourName}</Text>
                   </View>
-                  <Text style={styles.tripPrice}>
-                    ${it.totalPrice.toFixed(2)}
-                  </Text>
+                  {!driverVariant ? (
+                    <Text style={styles.tripPrice}>
+                      ${it.totalPrice.toFixed(2)}
+                    </Text>
+                  ) : null}
                 </View>
                 <Text style={styles.tripMeta}>
                   {formatDate(it.date)} · Departure {format12h(it.pickupTime)} ·{" "}
@@ -427,9 +454,11 @@ export default function BookingPdfDocument({
                     {dropoff}
                   </Text>
                 </View>
-                <Text style={styles.tripPrice}>
-                  ${it.totalPrice.toFixed(2)}
-                </Text>
+                {!driverVariant ? (
+                  <Text style={styles.tripPrice}>
+                    ${it.totalPrice.toFixed(2)}
+                  </Text>
+                ) : null}
               </View>
               <Text style={styles.tripMeta}>
                 {formatDate(it.date)} · {format12h(it.pickupTime)} ·{" "}
@@ -464,14 +493,16 @@ export default function BookingPdfDocument({
           );
         })}
 
-        {/* Totals */}
-        <View style={styles.totalsBox}>
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total Paid</Text>
-            <Text style={styles.totalAmount}>${totalUsd.toFixed(2)} USD</Text>
+        {/* Totals — customer receipt only. Driver sheet skips this entirely. */}
+        {!driverVariant ? (
+          <View style={styles.totalsBox}>
+            <View style={styles.totalRow}>
+              <Text style={styles.totalLabel}>Total Paid</Text>
+              <Text style={styles.totalAmount}>${totalUsd.toFixed(2)} USD</Text>
+            </View>
+            <Text style={styles.taxLine}>Taxes included · Final price</Text>
           </View>
-          <Text style={styles.taxLine}>Taxes included · Final price</Text>
-        </View>
+        ) : null}
 
         {/* Contact */}
         <View style={styles.contactBox}>
