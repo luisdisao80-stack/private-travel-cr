@@ -46,12 +46,18 @@ Font.register({
   src: "Helvetica",
 });
 
+// Palette — 2026-07-05 repaint to match the transactional email
+// (PR #18 + #26). Navy for eyebrows / order # / brand, orange for
+// prices, green box for PICKUP address, blue box for DROP OFF address,
+// amber pill for the meta line (date · time · pax · flight). Same
+// visual language across the confirmation email, the payment-request
+// email, and the PDF so all three feel like the same product.
 const styles = StyleSheet.create({
   page: {
     padding: 32,
     fontFamily: "Helvetica",
     backgroundColor: "#ffffff",
-    color: "#1a1a1a",
+    color: "#111827",
     fontSize: 10,
   },
   header: {
@@ -59,8 +65,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f59e0b",
+    borderBottomWidth: 3,
+    borderBottomColor: "#1e3a8a",
     marginBottom: 20,
   },
   logo: {
@@ -74,28 +80,28 @@ const styles = StyleSheet.create({
   brandName: {
     fontSize: 11,
     fontWeight: 700,
-    color: "#1a1a1a",
+    color: "#1e3a8a",
     marginBottom: 2,
   },
   brandLine: {
     fontSize: 8,
-    color: "#666",
+    color: "#6b7280",
     marginBottom: 1,
   },
   title: {
     fontSize: 20,
     fontWeight: 700,
-    color: "#1a1a1a",
+    color: "#111827",
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 9,
-    color: "#666",
+    color: "#374151",
     marginBottom: 20,
   },
   orderBox: {
-    backgroundColor: "#fef3c7",
-    borderColor: "#f59e0b",
+    backgroundColor: "#f9fafb",
+    borderColor: "#e5e7eb",
     borderWidth: 1,
     borderRadius: 6,
     padding: 12,
@@ -108,23 +114,23 @@ const styles = StyleSheet.create({
   },
   orderLabel: {
     fontSize: 9,
-    color: "#666",
+    color: "#6b7280",
   },
   orderValue: {
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: 700,
-    color: "#1a1a1a",
+    color: "#ea580c",
   },
   orderValueMono: {
     fontSize: 10,
     fontFamily: "Courier",
     fontWeight: 700,
-    color: "#92400e",
+    color: "#1e3a8a",
   },
   sectionTitle: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: 700,
-    color: "#1a1a1a",
+    color: "#1e3a8a",
     marginTop: 16,
     marginBottom: 8,
     textTransform: "uppercase",
@@ -138,7 +144,7 @@ const styles = StyleSheet.create({
   },
   customerLine: {
     fontSize: 10,
-    color: "#1a1a1a",
+    color: "#111827",
     marginBottom: 2,
   },
   tripCard: {
@@ -156,7 +162,7 @@ const styles = StyleSheet.create({
   },
   tripEyebrow: {
     fontSize: 8,
-    color: "#92400e",
+    color: "#1e3a8a",
     fontWeight: 700,
     textTransform: "uppercase",
     letterSpacing: 1,
@@ -165,33 +171,93 @@ const styles = StyleSheet.create({
   tripRoute: {
     fontSize: 12,
     fontWeight: 700,
-    color: "#1a1a1a",
+    color: "#111827",
     marginBottom: 1,
   },
   tripArrow: {
     fontSize: 10,
-    color: "#999",
+    color: "#9ca3af",
     marginVertical: 1,
   },
   tripPrice: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: 700,
-    color: "#1a1a1a",
+    color: "#ea580c",
   },
+  // PICKUP address box — green pill, matches the email's green
+  // pickup box exactly (bg + border-left). Diego wants the driver's
+  // starting address to jump off the page.
+  pickupBox: {
+    backgroundColor: "#dcfce7",
+    borderLeftWidth: 3,
+    borderLeftColor: "#16a34a",
+    borderRadius: 4,
+    padding: 8,
+    marginTop: 8,
+  },
+  pickupEyebrow: {
+    fontSize: 7,
+    color: "#15803d",
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  pickupText: {
+    fontSize: 10,
+    color: "#14532d",
+    fontWeight: 700,
+  },
+  // DROPOFF address box — blue pill mirroring the email's blue
+  // dropoff box (bg + border-left).
+  dropoffBox: {
+    backgroundColor: "#dbeafe",
+    borderLeftWidth: 3,
+    borderLeftColor: "#3b82f6",
+    borderRadius: 4,
+    padding: 8,
+    marginTop: 4,
+  },
+  dropoffEyebrow: {
+    fontSize: 7,
+    color: "#1e40af",
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  dropoffText: {
+    fontSize: 10,
+    color: "#1e3a8a",
+    fontWeight: 700,
+  },
+  // Meta pill — date/time/pax/flight in a bright amber pill so the
+  // driver spots it at a glance, matching the email meta pill.
   tripMeta: {
-    fontSize: 9,
-    color: "#555",
-    marginTop: 6,
+    fontSize: 10,
+    color: "#b45309",
+    fontWeight: 700,
+    backgroundColor: "#fef3c7",
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginTop: 8,
   },
   tripDetail: {
     fontSize: 9,
-    color: "#666",
+    color: "#6b7280",
     marginTop: 3,
   },
+  // Extra wait / Child seats — orange pill so it stays visually
+  // distinct from the amber meta pill above it.
   tripExtra: {
     fontSize: 9,
-    color: "#92400e",
+    color: "#c2410c",
     fontWeight: 700,
+    backgroundColor: "#ffedd5",
+    borderRadius: 4,
+    paddingVertical: 3,
+    paddingHorizontal: 6,
     marginTop: 4,
   },
   totalsBox: {
@@ -208,21 +274,23 @@ const styles = StyleSheet.create({
   },
   totalLabel: {
     fontSize: 11,
-    color: "#1a1a1a",
+    color: "#111827",
     fontWeight: 700,
   },
   totalAmount: {
-    fontSize: 16,
-    color: "#1a1a1a",
+    fontSize: 18,
+    color: "#ea580c",
     fontWeight: 700,
   },
   taxLine: {
     fontSize: 8,
-    color: "#16a34a",
+    color: "#6b7280",
     marginTop: 2,
   },
   contactBox: {
-    backgroundColor: "#fef3c7",
+    backgroundColor: "#eff6ff",
+    borderLeftWidth: 3,
+    borderLeftColor: "#1e3a8a",
     borderRadius: 6,
     padding: 12,
     marginTop: 20,
@@ -230,12 +298,12 @@ const styles = StyleSheet.create({
   contactHeader: {
     fontSize: 10,
     fontWeight: 700,
-    color: "#1a1a1a",
+    color: "#1e3a8a",
     marginBottom: 4,
   },
   contactLine: {
     fontSize: 9,
-    color: "#1a1a1a",
+    color: "#111827",
     marginBottom: 2,
   },
   footer: {
@@ -419,40 +487,45 @@ export default function BookingPdfDocument({
                   {paxLabel}
                 </Text>
                 {it.pickupHotel ? (
-                  <Text style={styles.tripDetail}>
-                    Pickup: {it.pickupHotel}
-                  </Text>
+                  <View style={styles.pickupBox}>
+                    <Text style={styles.pickupEyebrow}>Pickup at</Text>
+                    <Text style={styles.pickupText}>{it.pickupHotel}</Text>
+                  </View>
                 ) : null}
               </View>
             );
           }
 
-          // Shuttle item
+          // Shuttle item — trip card now mirrors the email layout:
+          // origin city → green PICKUP box → arrow → destination city
+          // → blue DROPOFF box → amber META pill (date/time/pax/flight).
           const service = it.serviceType === "vip" ? "VIP" : "Standard";
-          const pickup =
-            it.pickupPlace && it.pickupPlace !== it.fromName
-              ? ` · ${it.pickupPlace}`
-              : "";
-          const dropoff =
-            it.dropoffPlace && it.dropoffPlace !== it.toName
-              ? ` · ${it.dropoffPlace}`
-              : "";
+          const showPickupBox =
+            it.pickupPlace && it.pickupPlace !== it.fromName;
+          const showDropoffBox =
+            it.dropoffPlace && it.dropoffPlace !== it.toName;
           return (
             <View key={idx} style={styles.tripCard}>
               <View style={styles.tripHeader}>
-                <View>
+                <View style={{ flex: 1 }}>
                   <Text style={styles.tripEyebrow}>
                     Trip #{idx + 1} · {service} · {it.vehicleName}
                   </Text>
-                  <Text style={styles.tripRoute}>
-                    {it.fromName}
-                    {pickup}
-                  </Text>
+                  <Text style={styles.tripRoute}>{it.fromName}</Text>
+                  {showPickupBox ? (
+                    <View style={styles.pickupBox}>
+                      <Text style={styles.pickupEyebrow}>Pickup at</Text>
+                      <Text style={styles.pickupText}>{it.pickupPlace}</Text>
+                    </View>
+                  ) : null}
                   <Text style={styles.tripArrow}>↓</Text>
-                  <Text style={styles.tripRoute}>
-                    {it.toName}
-                    {dropoff}
-                  </Text>
+                  <Text style={styles.tripRoute}>{it.toName}</Text>
+                  {showDropoffBox ? (
+                    <View style={styles.dropoffBox}>
+                      <Text style={styles.dropoffEyebrow}>Drop off at</Text>
+                      <Text style={styles.dropoffText}>{it.dropoffPlace}</Text>
+                    </View>
+                  ) : null}
                 </View>
                 {!driverVariant ? (
                   <Text style={styles.tripPrice}>
