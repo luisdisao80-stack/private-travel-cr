@@ -1,6 +1,6 @@
 ---
-title: "How to Get from La Fortuna to Monteverde: All 4 Routes Explained"
-description: "Taxi-boat-taxi, private shuttle, rental car, or shared van — the real cost, time, and trade-offs of every way to get from Arenal to Monteverde."
+title: "La Fortuna to Monteverde 2026: Shuttle from $255 (All 4 Options)"
+description: "Private shuttle from $255, shared van $55/pax, scenic taxi-boat-taxi combo, or self-drive 4h. Real 2026 costs, times, and honest pick per group size."
 date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
