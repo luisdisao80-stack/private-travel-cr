@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby, Send } from "lucide-react";
+import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby, Send, Download } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import type { CartItem } from "@/lib/CartContext";
 import {
@@ -503,6 +503,42 @@ export default async function AdminBookingDetailPage({
           </button>
         </form>
       </div>
+
+      {/* Driver Trip Sheet PDF — same PDF pipeline as the customer
+          receipt but with pricing stripped. Diego 2026-07-05: forwards
+          this file to his drivers over WhatsApp without revealing what
+          the customer paid. Opens in a new tab (target="_blank") so he
+          doesn't lose the admin page context; download attribute
+          renames the file to match the driver-sheet naming convention
+          the API sets in Content-Disposition. Only shown once the
+          booking is approved — pending/rejected bookings 409 from the
+          PDF route. */}
+      {data.status === "approved" && (
+        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mt-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 inline-flex items-center gap-2">
+            <Download size={14} className="text-blue-400" />
+            Driver trip sheet (no pricing)
+          </h2>
+          <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+            Downloads a PDF with the trip details (route, addresses,
+            date, passengers, flight, notes) but WITHOUT the total, the
+            per-trip prices, or the Tilopay auth / card info. Send this
+            to your driver over WhatsApp and they won&apos;t see what
+            the customer paid.
+          </p>
+          <a
+            href={`/api/booking/${encodeURIComponent(
+              data.order_number,
+            )}/pdf?variant=driver`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs px-4 py-2 rounded-md transition-colors"
+          >
+            <Download size={12} />
+            Download driver PDF
+          </a>
+        </div>
+      )}
     </div>
   );
 }
