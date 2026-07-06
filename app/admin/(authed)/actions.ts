@@ -318,6 +318,71 @@ async function nextBookingOrderNumber(): Promise<string> {
  * On success: redirect to /admin/<order> so Diego can see the row + the
  * "Resend payment link" button (added later on that page).
  */
+// Pull one trip's payload out of the FormData at a given index. The
+// CreateQuoteForm client sends fields named `trips[N].<field>` for
+// each trip in its state array; this helper collects them into a
+// plain object with defensive trimming. Multi-trip support was added
+// 2026-07-05 after Diego booked a family that needed SJO→La Fortuna
+// + La Fortuna→Manuel Antonio + Manuel Antonio→SJO in one payment.
+type TripInput = {
+  fromName: string;
+  toName: string;
+  pickupPlace: string;
+  dropoffPlace: string;
+  date: string;
+  pickupTime: string;
+  passengers: number;
+  serviceType: "standard" | "vip";
+  vehicleName: string;
+  flightNumber: string;
+  tripPrice: number;
+};
+
+function readTrip(formData: FormData, idx: number): TripInput | null {
+  const get = (field: string): string =>
+    String(formData.get(`trips[${idx}].${field}`) ?? "").trim();
+
+  const fromName = get("fromName");
+  const toName = get("toName");
+  const date = get("date");
+  const pickupTime = get("pickupTime");
+  const tripPriceRaw = get("tripPrice");
+  const passengersRaw = get("passengers");
+
+  // A trip with no fromName is either an empty extra row the operator
+  // dragged in and then abandoned, or a bug on the client — either way
+  // we skip it silently rather than 500-ing.
+  if (!fromName) return null;
+  if (!toName || !date || !pickupTime) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  if (!/^\d{2}:\d{2}$/.test(pickupTime)) return null;
+
+  const passengers = Math.max(
+    1,
+    Math.min(12, parseInt(passengersRaw, 10) || 1),
+  );
+  const tripPrice = Number(tripPriceRaw);
+  if (!Number.isFinite(tripPrice) || tripPrice <= 0) return null;
+
+  const serviceRaw = get("serviceType");
+  const serviceType: "vip" | "standard" =
+    serviceRaw === "vip" ? "vip" : "standard";
+
+  return {
+    fromName,
+    toName,
+    pickupPlace: get("pickupPlace"),
+    dropoffPlace: get("dropoffPlace"),
+    date,
+    pickupTime,
+    passengers,
+    serviceType,
+    vehicleName: get("vehicleName"),
+    flightNumber: get("flightNumber"),
+    tripPrice,
+  };
+}
+
 export async function createQuoteAction(formData: FormData): Promise<void> {
   if (!(await isAdminAuthed())) {
     redirect("/admin/login");
@@ -326,29 +391,27 @@ export async function createQuoteAction(formData: FormData): Promise<void> {
   const customerName = String(formData.get("customerName") ?? "").trim();
   const customerEmail = String(formData.get("customerEmail") ?? "").trim();
   const customerPhone = String(formData.get("customerPhone") ?? "").trim();
-  const fromName = String(formData.get("fromName") ?? "").trim();
-  const toName = String(formData.get("toName") ?? "").trim();
-  const date = String(formData.get("date") ?? "").trim();
-  const pickupTime = String(formData.get("pickupTime") ?? "").trim();
-  const passengersRaw = String(formData.get("passengers") ?? "1").trim();
-  const serviceType = (String(formData.get("serviceType") ?? "standard") ===
-  "vip"
-    ? "vip"
-    : "standard") as "vip" | "standard";
-  const vehicleName = String(formData.get("vehicleName") ?? "").trim();
   const totalUsdRaw = String(formData.get("totalUsd") ?? "").trim();
-  const flightNumber = String(formData.get("flightNumber") ?? "").trim();
-  const pickupPlace = String(formData.get("pickupPlace") ?? "").trim();
-  const dropoffPlace = String(formData.get("dropoffPlace") ?? "").trim();
   const notes = String(formData.get("notes") ?? "").trim();
 
-  // Basic validation — nothing fancy, this is an admin-only form and
-  // Diego is going to see the result immediately on the /admin page.
-  if (!customerName || !customerEmail || !fromName || !toName) return;
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
-  if (!/^\d{2}:\d{2}$/.test(pickupTime)) return;
+  if (!customerName || !customerEmail) return;
 
-  const passengers = Math.max(1, Math.min(12, parseInt(passengersRaw, 10) || 1));
+  // Walk trips[0..N-1] until we hit an empty slot. Cap at 20 so a
+  // runaway form submission can't force us into an infinite loop.
+  const trips: TripInput[] = [];
+  for (let i = 0; i < 20; i++) {
+    const t = readTrip(formData, i);
+    if (t) trips.push(t);
+    else if (i === 0) {
+      // Trip #0 must exist; anything else is a valid stop condition.
+      return;
+    } else if (i > trips.length) {
+      // We've walked past the last valid trip; stop scanning.
+      break;
+    }
+  }
+  if (trips.length === 0) return;
+
   const totalUsd = Number(totalUsdRaw);
   if (!Number.isFinite(totalUsd) || totalUsd <= 0) return;
 
@@ -356,40 +419,50 @@ export async function createQuoteAction(formData: FormData): Promise<void> {
   const token = generatePaymentToken();
   const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
 
-  // Shape the item exactly like a real CartItem so downstream consumers
-  // (email template, admin detail page, PDF) render identically to a
-  // customer-created booking. Kept as a single-item array — Diego can
-  // add multi-trip support later if he needs it.
-  const item = {
-    id: orderNumber + "-1",
-    fromName,
-    toName,
-    pickupPlace: pickupPlace || fromName,
-    dropoffPlace: dropoffPlace || toName,
-    date,
-    pickupTime,
-    passengers,
+  // Shape each trip as a CartItem so downstream consumers (email
+  // template, admin detail page, PDF, ICS) render identically to a
+  // customer-created booking.
+  const items = trips.map((t, idx) => ({
+    id: `${orderNumber}-${idx + 1}`,
+    fromName: t.fromName,
+    toName: t.toName,
+    pickupPlace: t.pickupPlace || t.fromName,
+    dropoffPlace: t.dropoffPlace || t.toName,
+    date: t.date,
+    pickupTime: t.pickupTime,
+    passengers: t.passengers,
     children: 0,
     infantSeats: 0,
     convertibleSeats: 0,
     boosterSeats: 0,
-    serviceType,
-    vehicleName: vehicleName || (passengers <= 5 ? "Hyundai Staria" : passengers <= 9 ? "Toyota Hiace" : "Maxus V90"),
-    basePrice: totalUsd,
-    totalPrice: totalUsd,
+    serviceType: t.serviceType,
+    vehicleName:
+      t.vehicleName ||
+      (t.passengers <= 5
+        ? "Hyundai Staria"
+        : t.passengers <= 9
+          ? "Toyota Hiace"
+          : "Maxus V90"),
+    basePrice: t.tripPrice,
+    totalPrice: t.tripPrice,
     extraStopHours: 0,
-    flightNumber: flightNumber || undefined,
+    flightNumber: t.flightNumber || undefined,
     duration: null,
-  };
+  }));
+
+  // Bookings row keeps flight_number as a top-level column too, from
+  // the pre-multi-trip era; populate it with the first airport-origin
+  // trip's flight for backwards compat with any legacy reader.
+  const firstFlight = trips.find((t) => t.flightNumber)?.flightNumber ?? null;
 
   const { error: insertErr } = await supabaseAdmin.from("bookings").insert({
     order_number: orderNumber,
     customer_name: customerName,
     customer_email: customerEmail,
     customer_phone: customerPhone || null,
-    flight_number: flightNumber || null,
+    flight_number: firstFlight,
     notes: notes || null,
-    items: [item],
+    items,
     total_usd: totalUsd,
     currency: "USD",
     status: "pending",
@@ -412,7 +485,7 @@ export async function createQuoteAction(formData: FormData): Promise<void> {
       customerName,
       customerEmail,
       totalUsd,
-      items: [item] as unknown as CartItem[],
+      items: items as unknown as CartItem[],
       payUrl,
       expiresAt,
     });
