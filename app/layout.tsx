@@ -26,7 +26,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: "Private Transportation Costa Rica from $135 | ⭐ 5.0 · 200+ Reviews",
+    default: "Costa Rica Private Shuttles from $135 — Door-to-Door | 2026",
     template: "%s | Private Travel CR",
   },
   description: siteConfig.descriptionEN,
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Private Transportation Costa Rica from $135 | ⭐ 5.0 · 200+ Reviews",
+    title: "Costa Rica Private Shuttles from $135 — Door-to-Door | 2026",
     description: siteConfig.descriptionEN,
     url: siteConfig.siteUrl,
     siteName: siteConfig.name,
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Private Transportation Costa Rica from $135 | ⭐ 5.0 · 200+ Reviews",
+    title: "Costa Rica Private Shuttles from $135 — Door-to-Door | 2026",
     description: siteConfig.descriptionEN,
     images: [siteConfig.ogImage],
   },

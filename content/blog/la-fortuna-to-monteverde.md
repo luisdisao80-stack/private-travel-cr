@@ -1,6 +1,6 @@
 ---
-title: "La Fortuna to Monteverde 2026: Shuttle from $255 (All 4 Options)"
-description: "Private shuttle from $255, shared van $55/pax, scenic taxi-boat-taxi combo, or self-drive 4h. Real 2026 costs, times, and honest pick per group size."
+title: "La Fortuna → Monteverde: Bus, Boat, or Shuttle? [2026]"
+description: "4 ways to get there: taxi-boat-taxi $30, shared van $55, private shuttle $255, or self-drive. A La Fortuna shuttle operator ranks each honestly."
 date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
