@@ -321,6 +321,38 @@ const styles = StyleSheet.create({
     fontSize: 7,
     color: "#9ca3af",
   },
+  // Post-trip review block — QR + caption. Sits below the totals/contact
+  // and above the fixed page footer. Customer variant only; driver sheet
+  // stays clean. Thin gray rule above so the block doesn't feel bolted
+  // on. No wording about star count / rating anywhere — Google prohibits
+  // directed reviews.
+  reviewRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#e5e7eb",
+  },
+  reviewQr: {
+    width: 80,
+    height: 80,
+    marginRight: 12,
+  },
+  reviewCaption: {
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  reviewCaptionLine1: {
+    fontSize: 11,
+    color: "#1e3a8a",
+    fontWeight: 700,
+    marginBottom: 2,
+  },
+  reviewCaptionLine2: {
+    fontSize: 10,
+    color: "#1e3a8a",
+  },
 });
 
 function formatDate(iso: string): string {
@@ -362,6 +394,11 @@ export type BookingPdfProps = {
    *  auth code, card last-4) is stripped. Diego forwards these
    *  sheets to his drivers over WhatsApp without revealing revenue. */
   driverVariant?: boolean;
+  /** Optional base64 data-URL for the "Leave a Google review" QR code.
+   *  Generated in the PDF route handler (synchronous render-time on the
+   *  server) and passed in as a prop so this component stays sync. If
+   *  omitted (or on the driver variant) the block is skipped. */
+  reviewQrDataUrl?: string;
 };
 
 export default function BookingPdfDocument({
@@ -375,6 +412,7 @@ export default function BookingPdfDocument({
   items,
   logoUrl,
   driverVariant = false,
+  reviewQrDataUrl,
 }: BookingPdfProps) {
   return (
     <Document
@@ -586,6 +624,21 @@ export default function BookingPdfDocument({
           <Text style={styles.contactLine}>Email: info@privatetravelcr.com</Text>
           <Text style={styles.contactLine}>Web: www.privatetravelcr.com</Text>
         </View>
+
+        {/* Post-trip Google review QR — customer variant only. The
+            driver sheet stays free of pricing AND of the review CTA
+            (drivers hand the sheet back, they don't leave the review). */}
+        {!driverVariant && reviewQrDataUrl ? (
+          <View style={styles.reviewRow}>
+            <Image src={reviewQrDataUrl} style={styles.reviewQr} />
+            <View style={styles.reviewCaption}>
+              <Text style={styles.reviewCaptionLine1}>After your trip:</Text>
+              <Text style={styles.reviewCaptionLine2}>
+                Scan to share your experience
+              </Text>
+            </View>
+          </View>
+        ) : null}
 
         {/* Footer */}
         <View style={styles.footer} fixed>

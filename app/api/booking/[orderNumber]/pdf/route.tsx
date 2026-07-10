@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { renderToStream } from "@react-pdf/renderer";
+import QRCode from "qrcode";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import BookingPdfDocument from "@/components/BookingPdfDocument";
 import { siteConfig } from "@/lib/site-config";
+import { REVIEW_URL } from "@/lib/email";
 import type { CartItem } from "@/lib/CartContext";
 
 // Streams a PDF receipt for a single booking. Customers hit this from
@@ -60,6 +62,25 @@ export async function GET(req: NextRequest, ctx: Context) {
 
   const logoUrl = `${siteConfig.siteUrl}/logo-ptcr.png`;
 
+  // Generate the "Leave a Google review" QR only for the customer
+  // receipt. Driver sheets skip pricing AND this CTA. Navy dots on
+  // white to match the nautical palette; @react-pdf/renderer's Image
+  // component accepts a base64 data URL directly.
+  let reviewQrDataUrl: string | undefined;
+  if (!driverVariant) {
+    try {
+      reviewQrDataUrl = await QRCode.toDataURL(REVIEW_URL, {
+        margin: 0,
+        color: { dark: "#1e3a8a", light: "#ffffff" },
+        width: 200,
+      });
+    } catch (e) {
+      // QR generation is a soft-fail — the rest of the PDF still
+      // renders. Log so we notice if the encoder starts throwing.
+      console.error("[booking/pdf] review QR generation failed:", e);
+    }
+  }
+
   const stream = await renderToStream(
     <BookingPdfDocument
       orderNumber={booking.order_number}
@@ -72,6 +93,7 @@ export async function GET(req: NextRequest, ctx: Context) {
       items={(booking.items as CartItem[]) || []}
       logoUrl={logoUrl}
       driverVariant={driverVariant}
+      reviewQrDataUrl={reviewQrDataUrl}
     />
   );
 
