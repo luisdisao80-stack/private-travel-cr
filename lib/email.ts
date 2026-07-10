@@ -74,6 +74,17 @@ function childSeatsSummary(it: CartItem): string {
 
 const DEFAULT_FROM = "Private Travel CR <onboarding@resend.dev>";
 
+// Google Business Profile review link — Diego's GBP was verified
+// 2026-07 and the plan is to systematically capture reviews from
+// every customer after a completed trip. Kept as a single exported
+// constant so the PDF QR-code generator can pull the same URL and
+// we can update it in one place if Google changes the short link.
+//
+// IMPORTANT: no CTA copy anywhere may mention a specific rating
+// ("5 stars", "give us five", etc.). Google explicitly penalises
+// profiles that solicit directed / incentivised reviews.
+export const REVIEW_URL = "https://g.page/r/CeinMJ5pgxMPEBM/review";
+
 // Default internal recipients for "new booking" / "booking updated" pings.
 // Resend's `to` field accepts up to 50 addresses as an array, so we just
 // pass the whole list. Order matters only for replyTo — the FIRST entry
@@ -469,11 +480,18 @@ function shellHtml({
   intro,
   data,
   showCustomer,
+  showReview = false,
 }: {
   title: string;
   intro: string;
   data: BookingEmailInput;
   showCustomer: boolean;
+  /** When true, append the "After your trip / Leave a Google review"
+   *  amber pill block. Only set on customer-facing emails for approved
+   *  bookings (confirmation + update). Never on internal / admin
+   *  pings, never on the pre-payment quote email — Google penalises
+   *  profiles that solicit reviews before the service is delivered. */
+  showReview?: boolean;
 }): string {
   // Customer block — light-mode redesign 2026-06-30. After three failed
   // attempts to defeat iOS Mail Smart-Invert on the dark template
@@ -484,6 +502,40 @@ function shellHtml({
   // user comfort, regardless of what CSS declares. Every major
   // transactional email service (Stripe, Shopify, Airbnb) sidesteps
   // this by using a light theme; going with the industry standard now.
+  // Post-trip Google review CTA — amber pill matching the meta-line
+  // treatment already used inside the trip rows so it feels native to
+  // the template. Only rendered when showReview is true (customer
+  // confirmation + customer update emails). Table-based layout with
+  // explicit color: on every text node so iOS Mail Smart-Invert can't
+  // wash out the copy. No mention of star count / rating anywhere —
+  // Google penalises directed solicitations.
+  const reviewBlock = showReview
+    ? `
+      <tr>
+        <td style="padding:0 24px 20px 24px;">
+          <table role="presentation" class="ptcr-review-box" width="100%" cellpadding="0" cellspacing="0" style="background:#fef3c7;border-left:4px solid #f59e0b;border-radius:10px;">
+            <tr>
+              <td style="padding:16px 18px;">
+                <div class="ptcr-review-eyebrow" style="font-size:10px;color:#b45309;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;">
+                  After your trip
+                </div>
+                <div class="ptcr-review-title" style="font-size:15px;color:#78350f;font-weight:800;line-height:1.3;margin-bottom:4px;">
+                  Enjoyed your ride with us?
+                </div>
+                <div class="ptcr-review-body" style="font-size:13px;color:#78350f;line-height:1.5;margin-bottom:12px;">
+                  Your feedback helps our small family business grow &mdash; takes 30 seconds.
+                </div>
+                <a href="${REVIEW_URL}" style="display:inline-block;background:#1e3a8a;color:#ffffff;font-weight:700;font-size:13px;text-decoration:none;padding:10px 18px;border-radius:8px;">
+                  Leave a Google review &rarr;
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    `
+    : "";
+
   const customerBlock = showCustomer
     ? `
       <tr>
@@ -549,6 +601,13 @@ function shellHtml({
       .ptcr-dropoff-eyebrow { color: #1e40af !important; }
       .ptcr-dropoff-text { color: #1e3a8a !important; }
       .ptcr-trip-meta { color: #b45309 !important; }
+      /* Review CTA — Gmail Android is the main dark-mode client
+         we care about here. Keep the amber palette pinned so the
+         block still reads as the same call-out. */
+      .ptcr-review-box { background: #fef3c7 !important; border-color: #f59e0b !important; }
+      .ptcr-review-eyebrow { color: #b45309 !important; }
+      .ptcr-review-title { color: #78350f !important; }
+      .ptcr-review-body { color: #78350f !important; }
     }
   </style>
 </head>
@@ -611,6 +670,7 @@ function shellHtml({
               </table>
             </td>
           </tr>
+          ${reviewBlock}
           <tr>
             <td style="padding:24px 24px 28px 24px;text-align:center;">
               <p class="ptcr-muted" style="margin:0 0 18px 0;font-size:13px;color:#6b7280;">
@@ -662,6 +722,7 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
     intro: `Thank you, ${data.customerName.split(" ")[0] || "friend"}. We've received your payment.`,
     data,
     showCustomer: false,
+    showReview: true,
   });
   const internalHtml = shellHtml({
     title: "New booking received",
@@ -744,6 +805,7 @@ export async function sendBookingUpdateEmails(
     intro: `Hi ${data.customerName.split(" ")[0] || "there"}, we've updated your booking with the new date or pickup time. Latest details below — please replace any earlier confirmation with this one.`,
     data,
     showCustomer: false,
+    showReview: true,
   });
   const internalHtml = shellHtml({
     title: "Booking updated by admin",
