@@ -81,14 +81,33 @@ export default function LocationInput({
   }, [value]);
 
   const suggestions = useMemo<Suggestion[]>(() => {
-    const query = locationSet.has(debouncedValue) ? "" : debouncedValue;
+    // Filter by whatever the user has typed. We used to zero the query
+    // when the value happened to equal a DB name exactly — the intent
+    // was "already picked, show everything again" — but that fired
+    // mid-typing too: someone typing "Jaco" would suddenly see the
+    // full unfiltered list (airports first) as soon as the last
+    // character landed, because "Jaco" IS a DB name. The visitor sees
+    // Liberia highlighted at the top and — worst case — hits Enter
+    // and books Liberia instead of Jacó. Always filter by the actual
+    // input; when the input matches a DB name, matchScore naturally
+    // scores that name at 1000 and floats it to the top.
+    const query = debouncedValue;
 
     const locItems: Suggestion[] = locations
-      .map<Suggestion>((loc) => ({
-        kind: "location" as const,
-        loc,
-        score: matchScore(loc, query) + priorityScore(loc),
-      }))
+      .map<Suggestion>((loc) => {
+        const base = matchScore(loc, query);
+        return {
+          kind: "location" as const,
+          loc,
+          // Airport priority only kicks in for locations that already
+          // match the query. Without this guard, airports scored 50 on
+          // every query — including gibberish like "xyz123" — so the
+          // dropdown would fall back to "Liberia Airport" for anything
+          // that didn't match, which is exactly the wrong-destination
+          // trap that got Diego reporting the Jacó bug.
+          score: base > 0 ? base + priorityScore(loc) : 0,
+        };
+      })
       .filter((x) => x.score > 0);
 
     const hotelItems: Suggestion[] = hotels
@@ -104,7 +123,7 @@ export default function LocationInput({
     return [...locItems, ...hotelItems]
       .sort((a, b) => b.score - a.score)
       .slice(0, 10);
-  }, [debouncedValue, locations, locationSet, hotels]);
+  }, [debouncedValue, locations, hotels]);
 
   // Reset the highlight to the top match every time the visible
   // suggestion list changes — otherwise pressing Enter after typing
