@@ -5,9 +5,21 @@ import { supabase } from "@/lib/supabase";
 import type { Route, Hotel } from "@/lib/types";
 import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
 import { useCart } from "@/lib/CartContext";
+import { useLanguage } from "@/lib/LanguageContext";
 import { DatePicker } from "@/components/ui/date-picker";
 import LocationInput from "@/components/LocationInput";
 import Price from "@/components/Price";
+import {
+  MIN_LEAD_TIME_HOURS,
+  WHATSAPP_URGENT_URL_EN,
+  WHATSAPP_URGENT_URL_ES,
+  LEAD_TIME_MESSAGE_EN,
+  LEAD_TIME_MESSAGE_ES,
+  getMinPickupCRDate,
+  getMinPickupDate,
+  parseCostaRicaPickup,
+  isPickupWithinLeadTime,
+} from "@/lib/booking-rules";
 import { MapPin, Users, Crown, ArrowRight, ArrowLeftRight, Plane, Clock, Calendar, Baby, MapPinned } from "lucide-react";
 
 type Props = {
@@ -46,6 +58,7 @@ export default function QuoteCalculatorV2({
   heroTo,
 }: Props) {
   const { addItem: cartAddItem, itemCount: cartItemCount } = useCart();
+  const { lang } = useLanguage();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [pickupAddress, setPickupAddress] = useState("");
@@ -153,6 +166,46 @@ export default function QuoteCalculatorV2({
   const adults = parseInt(adultsStr) || 0;
   const children = parseInt(childrenStr) || 0;
   const totalPax = adults + children;
+
+  // 12-hour lead time (see lib/booking-rules.ts). We compute all pieces
+  // here so the DatePicker `minDate`, the time-slot disabling, and the
+  // Add-to-Cart guard all agree on the same instant.
+  //
+  // recompute-per-second isn't necessary — the picker & time list only
+  // re-render when the visitor interacts, and any drift under a minute is
+  // caught by the server action guard.
+  const minPickupCRDate = getMinPickupCRDate(); // 00:00 CR of earliest allowed day
+  const minPickupCRIsoDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Costa_Rica",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(getMinPickupDate()); // "YYYY-MM-DD" in CR-local calendar
+  const isPickingEarliestDate = travelDate === minPickupCRIsoDate;
+  const timeOptionsFiltered = useMemo(() => {
+    if (!isPickingEarliestDate) return TIME_OPTIONS;
+    // On the earliest allowed calendar day, some slots (early morning)
+    // are still inside the 12h window. Hide those from the dropdown so
+    // the visitor can only pick from what's actually bookable.
+    return TIME_OPTIONS.filter((opt) => {
+      const pickup = parseCostaRicaPickup(travelDate, opt.value);
+      return pickup ? isPickupWithinLeadTime(pickup) : true;
+    });
+  }, [isPickingEarliestDate, travelDate]);
+
+  // If the visitor previously picked a time that's now filtered out
+  // (they picked a later date and moved back to today's earliest date),
+  // clear it so the "Pick a pickup time" gate re-fires below.
+  useEffect(() => {
+    if (!travelTime) return;
+    if (!timeOptionsFiltered.some((t) => t.value === travelTime)) {
+      setTravelTime("");
+    }
+  }, [timeOptionsFiltered, travelTime]);
+
+  const pickedPickup = parseCostaRicaPickup(travelDate, travelTime);
+  const pickupTooSoon =
+    pickedPickup !== null && !isPickupWithinLeadTime(pickedPickup);
 
   // Set-lookup for O(1) validity checks. If the visitor is halfway
   // through typing ("m", "man", "manu"...) `from` isn't a DB location
@@ -414,7 +467,13 @@ export default function QuoteCalculatorV2({
             <Calendar size={16} />
             <span>Date</span>
           </label>
-          <DatePicker value={travelDate} onChange={setTravelDate} placeholder="Select date..." />
+          <DatePicker
+            value={travelDate}
+            onChange={setTravelDate}
+            placeholder="Select date..."
+            lang={lang}
+            minDate={minPickupCRDate}
+          />
         </div>
         <div>
           <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
@@ -423,8 +482,15 @@ export default function QuoteCalculatorV2({
           </label>
           <select value={travelTime} onChange={(e) => setTravelTime(e.target.value)} className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none">
             <option value="">Select time...</option>
-            {TIME_OPTIONS.map((t) => (<option key={t.value} value={t.value}>{t.label}</option>))}
+            {timeOptionsFiltered.map((t) => (<option key={t.value} value={t.value}>{t.label}</option>))}
           </select>
+          {isPickingEarliestDate && timeOptionsFiltered.length < TIME_OPTIONS.length && (
+            <p className="text-[10px] text-gray-500 mt-1">
+              {lang === "en"
+                ? `Earlier times need ${MIN_LEAD_TIME_HOURS}h notice — pick a later slot or day.`
+                : `Los horarios antes requieren ${MIN_LEAD_TIME_HOURS}h de anticipación — escoge un horario más tarde o otro día.`}
+            </p>
+          )}
         </div>
       </div>
 
@@ -629,10 +695,25 @@ export default function QuoteCalculatorV2({
             const missingDate = !travelDate;
             const missingTime = !travelTime;
             const missingPax = totalPax < 1;
-            const canAdd = !missingDate && !missingTime && !missingPax;
+            const canAdd = !missingDate && !missingTime && !missingPax && !pickupTooSoon;
             return (
               <>
-                {(missingDate || missingTime || missingPax) && (
+                {pickupTooSoon && (
+                  <div className="mb-3 rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
+                    <p className="leading-snug mb-2">
+                      {lang === "en" ? LEAD_TIME_MESSAGE_EN : LEAD_TIME_MESSAGE_ES}
+                    </p>
+                    <a
+                      href={lang === "en" ? WHATSAPP_URGENT_URL_EN : WHATSAPP_URGENT_URL_ES}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+                    >
+                      {lang === "en" ? "WhatsApp us" : "Escríbenos por WhatsApp"}
+                    </a>
+                  </div>
+                )}
+                {!pickupTooSoon && (missingDate || missingTime || missingPax) && (
                   <div className="text-xs text-amber-300/80 mb-2 text-center">
                     {missingDate
                       ? "Pick a travel date to continue."

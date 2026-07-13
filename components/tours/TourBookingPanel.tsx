@@ -1,11 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Calendar, Minus, Plus, Loader2, ArrowRight } from "lucide-react";
 import type { TourScheduleSlot } from "@/lib/types";
 import Price from "@/components/Price";
+import {
+  MIN_LEAD_TIME_HOURS,
+  WHATSAPP_URGENT_URL_EN,
+  LEAD_TIME_MESSAGE_EN,
+  getMinPickupCRDate,
+  getMinPickupDate,
+  parseCostaRicaPickup,
+  isPickupWithinLeadTime,
+} from "@/lib/booking-rules";
 
 type Props = {
   tour: {
@@ -41,7 +50,39 @@ export default function TourBookingPanel({ tour }: Props) {
   const meetsMin = totalPax >= tour.minPax;
   const hasTime = Boolean(timeSlot);
   const hasDate = Boolean(date);
-  const isValid = meetsMin && hasTime && hasDate && adults >= 1;
+
+  // 12h lead-time — same rule as shuttle bookings. See lib/booking-rules.ts.
+  // Tours: `date` is YYYY-MM-DD and `timeSlot` is "HH:MM" (departure).
+  const minPickupCRDate = getMinPickupCRDate();
+  const minPickupCRIsoDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Costa_Rica",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(getMinPickupDate());
+  const isPickingEarliestDate = date === minPickupCRIsoDate;
+  const scheduleTimesFiltered = useMemo(() => {
+    if (!isPickingEarliestDate) return tour.scheduleTimes;
+    return tour.scheduleTimes.filter((slot) => {
+      const pickup = parseCostaRicaPickup(date, slot.departure);
+      return pickup ? isPickupWithinLeadTime(pickup) : true;
+    });
+  }, [isPickingEarliestDate, date, tour.scheduleTimes]);
+
+  // If the previously-selected slot is now filtered out, clear it so the
+  // Continue button re-disables and the visitor re-picks.
+  useEffect(() => {
+    if (!timeSlot) return;
+    if (!scheduleTimesFiltered.some((s) => s.departure === timeSlot)) {
+      setTimeSlot("");
+    }
+  }, [scheduleTimesFiltered, timeSlot]);
+
+  const pickedPickup = parseCostaRicaPickup(date, timeSlot);
+  const pickupTooSoon =
+    pickedPickup !== null && !isPickupWithinLeadTime(pickedPickup);
+
+  const isValid = meetsMin && hasTime && hasDate && adults >= 1 && !pickupTooSoon;
 
   function clampAdults(n: number) {
     return Math.max(1, Math.min(20, n));
@@ -99,6 +140,7 @@ export default function TourBookingPanel({ tour }: Props) {
           value={date}
           onChange={setDate}
           placeholder="Select a date..."
+          minDate={minPickupCRDate}
         />
       </div>
 
@@ -109,7 +151,7 @@ export default function TourBookingPanel({ tour }: Props) {
             Departure time
           </label>
           <div className="grid grid-cols-2 gap-2">
-            {tour.scheduleTimes.map((slot) => {
+            {scheduleTimesFiltered.map((slot) => {
               const active = timeSlot === slot.departure;
               return (
                 <button
@@ -128,6 +170,19 @@ export default function TourBookingPanel({ tour }: Props) {
               );
             })}
           </div>
+          {isPickingEarliestDate &&
+            scheduleTimesFiltered.length < tour.scheduleTimes.length && (
+              <p className="text-[10px] text-gray-500 mt-2">
+                Earlier departures need {MIN_LEAD_TIME_HOURS}h notice —
+                pick a later slot or day.
+              </p>
+            )}
+          {isPickingEarliestDate && scheduleTimesFiltered.length === 0 && (
+            <p className="text-[11px] text-amber-300 mt-2">
+              No departures on this date meet the {MIN_LEAD_TIME_HOURS}h
+              minimum notice. Please pick a later day.
+            </p>
+          )}
         </div>
       ) : null}
 
@@ -194,6 +249,20 @@ export default function TourBookingPanel({ tour }: Props) {
           Minimum {tour.minPax} people per booking.
         </p>
       ) : null}
+
+      {pickupTooSoon && (
+        <div className="mb-3 rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
+          <p className="leading-snug mb-2">{LEAD_TIME_MESSAGE_EN}</p>
+          <a
+            href={WHATSAPP_URGENT_URL_EN}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+          >
+            WhatsApp us
+          </a>
+        </div>
+      )}
 
       <button
         type="button"
