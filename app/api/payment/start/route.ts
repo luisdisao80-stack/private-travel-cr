@@ -4,6 +4,11 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { processPayment, isSandboxMode } from "@/lib/tilopay";
 import { getTourBySlug, quoteTour } from "@/lib/tours-db";
 import type { CartItem } from "@/lib/CartContext";
+import {
+  LEAD_TIME_MESSAGE_EN,
+  isPickupWithinLeadTime,
+  parseCostaRicaPickup,
+} from "@/lib/booking-rules";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -158,6 +163,35 @@ export async function POST(req: NextRequest) {
   }
   if (!(body.totalUsd > 0)) {
     return NextResponse.json({ error: "Total must be > 0" }, { status: 400 });
+  }
+
+  // 12-hour minimum lead time — see lib/booking-rules.ts. Enforced at
+  // BOOKING CREATION, not at payment time (existing admin quotes with
+  // payment_token skip this via /api/payment/start-from-token). The
+  // admin's createQuoteAction also skips this on purpose so Diego can
+  // accept last-minute WhatsApp requests manually.
+  //
+  // Defense-in-depth: the client-side pickers already block this, so a
+  // rejection here means the request was crafted outside the UI (curl,
+  // postman, stale tab that raced past the window). We return 400 with
+  // the English copy — locale detection lives on the client.
+  {
+    const firstPickup =
+      body.kind === "tour"
+        ? parseCostaRicaPickup(
+            (body as TourBody).tour?.date,
+            (body as TourBody).tour?.time,
+          )
+        : (() => {
+            const items = (body as ShuttleBody).items;
+            const first = Array.isArray(items) ? items[0] : undefined;
+            return first
+              ? parseCostaRicaPickup(first.date, first.pickupTime)
+              : null;
+          })();
+    if (firstPickup && !isPickupWithinLeadTime(firstPickup)) {
+      return NextResponse.json({ error: LEAD_TIME_MESSAGE_EN }, { status: 400 });
+    }
   }
 
   // Tour vs shuttle branch — both end up in the same bookings table but

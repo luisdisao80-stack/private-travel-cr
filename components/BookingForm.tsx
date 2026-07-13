@@ -23,7 +23,15 @@ import { isAirport, VIP_EXTRA_USD } from "@/lib/quote-helpers";
 import { events } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
 import { useCurrency } from "@/lib/CurrencyContext";
+import { useLanguage } from "@/lib/LanguageContext";
 import { formatPrice } from "@/lib/currency";
+import {
+  isFirstTripLeadTimeOk,
+  LEAD_TIME_MESSAGE_EN,
+  LEAD_TIME_MESSAGE_ES,
+  WHATSAPP_URGENT_URL_EN,
+  WHATSAPP_URGENT_URL_ES,
+} from "@/lib/booking-rules";
 import Price from "@/components/Price";
 
 const EXTRA_STOP_PRICE = 35;
@@ -51,8 +59,16 @@ type FlightStateMap = Record<string, { number: string; time: string }>;
 export default function BookingForm({ onBack }: BookingFormProps) {
   const { items, updateItem, removeItem, totalPrice } = useCart();
   const { currency, hydrated } = useCurrency();
+  const { lang } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // 12h lead-time guard. In practice the calculator already blocks bad
+  // slots at pick time, but a cart hydrated from localStorage could hold
+  // a trip that was valid yesterday and isn't anymore. Also protects
+  // against a visitor sitting on the checkout screen until the window
+  // closes on them.
+  const firstTripLeadTimeOk = isFirstTripLeadTimeOk(items);
 
   // Tilopay charges USD — that's the only number the bank sees. Show
   // the converted approximation parenthetically when the visitor is
@@ -104,6 +120,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
     form.phoneLocal.replace(/\D/g, "").length >= 7 &&
     items.length > 0 &&
     airportTripsMissingFlight.length === 0 &&
+    firstTripLeadTimeOk &&
     acceptedTerms;
 
   const handleSubmit = async () => {
@@ -349,6 +366,22 @@ export default function BookingForm({ onBack }: BookingFormProps) {
               We need them to track your flights for delays.
             </>
           )}
+        </div>
+      )}
+
+      {!firstTripLeadTimeOk && items.length > 0 && (
+        <div className="rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
+          <p className="leading-snug mb-2">
+            {lang === "es" ? LEAD_TIME_MESSAGE_ES : LEAD_TIME_MESSAGE_EN}
+          </p>
+          <a
+            href={lang === "es" ? WHATSAPP_URGENT_URL_ES : WHATSAPP_URGENT_URL_EN}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+          >
+            {lang === "es" ? "Escríbenos por WhatsApp" : "WhatsApp us"}
+          </a>
         </div>
       )}
 

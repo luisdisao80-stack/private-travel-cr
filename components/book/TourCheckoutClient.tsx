@@ -17,6 +17,12 @@ import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-code
 import Price from "@/components/Price";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { formatPrice } from "@/lib/currency";
+import {
+  LEAD_TIME_MESSAGE_EN,
+  WHATSAPP_URGENT_URL_EN,
+  isPickupWithinLeadTime,
+  parseCostaRicaPickup,
+} from "@/lib/booking-rules";
 
 type TourSnapshot = {
   id: number;
@@ -73,6 +79,13 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
     : "—";
 
   const phoneDigits = phoneLocal.replace(/\D/g, "");
+
+  // Rare edge case: the visitor sat on the checkout page long enough
+  // for the 12h window to close on the tour departure they'd already
+  // chosen upstream. Block the submit and surface a WhatsApp escape.
+  const tourPickup = parseCostaRicaPickup(booking.date, booking.time);
+  const leadTimeOk = tourPickup ? isPickupWithinLeadTime(tourPickup) : true;
+
   const canSubmit =
     !submitting &&
     accepts &&
@@ -81,7 +94,8 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
     phoneDigits.length >= 7 &&
     booking.date &&
     booking.time &&
-    booking.total > 0;
+    booking.total > 0 &&
+    leadTimeOk;
 
   async function submit() {
     if (!canSubmit) return;
@@ -275,6 +289,20 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
                 <span>{error}</span>
               </div>
             ) : null}
+
+            {!leadTimeOk && (
+              <div className="rounded-xl border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
+                <p className="leading-snug mb-2">{LEAD_TIME_MESSAGE_EN}</p>
+                <a
+                  href={WHATSAPP_URGENT_URL_EN}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+                >
+                  WhatsApp us
+                </a>
+              </div>
+            )}
 
             <button
               type="button"
