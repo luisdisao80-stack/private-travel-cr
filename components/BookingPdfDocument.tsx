@@ -353,6 +353,58 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#1e3a8a",
   },
+  // Customer-note callout — new 2026-07-17. Sits at the BOTTOM of the
+  // reservation (Diego's placement request), above the review QR
+  // block on the customer variant, and above the contact box on the
+  // driver variant. Driver variant renders red (impossible to miss —
+  // drivers need to know about stops / requests before they leave);
+  // customer variant renders amber (soft, informative, matching the
+  // amber meta pill already used on the trip card). Same border-left
+  // accent pattern as pickupBox / dropoffBox.
+  requestBoxDriver: {
+    backgroundColor: "#fef2f2",
+    borderLeftWidth: 3,
+    borderLeftColor: "#dc2626",
+    borderRadius: 6,
+    padding: 10,
+    marginTop: 16,
+  },
+  requestEyebrowDriver: {
+    fontSize: 8,
+    color: "#991b1b",
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 3,
+  },
+  requestTextDriver: {
+    fontSize: 11,
+    color: "#7f1d1d",
+    fontWeight: 700,
+    lineHeight: 1.4,
+  },
+  requestBoxCustomer: {
+    backgroundColor: "#fef3c7",
+    borderLeftWidth: 3,
+    borderLeftColor: "#f59e0b",
+    borderRadius: 6,
+    padding: 10,
+    marginTop: 16,
+  },
+  requestEyebrowCustomer: {
+    fontSize: 8,
+    color: "#b45309",
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 3,
+  },
+  requestTextCustomer: {
+    fontSize: 11,
+    color: "#78350f",
+    fontWeight: 700,
+    lineHeight: 1.4,
+  },
 });
 
 function formatDate(iso: string): string {
@@ -399,6 +451,14 @@ export type BookingPdfProps = {
    *  server) and passed in as a prop so this component stays sync. If
    *  omitted (or on the driver variant) the block is skipped. */
   reviewQrDataUrl?: string;
+  /** Customer-submitted note captured on the booking form (special
+   *  requests, allergies, extra stops, etc.). Rendered as a callout at
+   *  the BOTTOM of the reservation on both variants — RED on the driver
+   *  sheet (impossible to miss — operational info drivers need before
+   *  leaving) and AMBER on the customer receipt (soft confirmation
+   *  that we saw the request). Empty / null / whitespace = no block.
+   *  Diego 2026-07-17: closes the loop from the missed-stop incident. */
+  notes?: string | null;
 };
 
 export default function BookingPdfDocument({
@@ -413,7 +473,9 @@ export default function BookingPdfDocument({
   logoUrl,
   driverVariant = false,
   reviewQrDataUrl,
+  notes,
 }: BookingPdfProps) {
+  const trimmedNote = notes && notes.trim() ? notes.trim() : "";
   return (
     <Document
       title={
@@ -612,6 +674,43 @@ export default function BookingPdfDocument({
               <Text style={styles.totalAmount}>${totalUsd.toFixed(2)} USD</Text>
             </View>
             <Text style={styles.taxLine}>Taxes included · Final price</Text>
+          </View>
+        ) : null}
+
+        {/* Customer-request callout — BOTTOM of the reservation, per
+            Diego's placement request (2026-07-17: "pon la nota abajo
+            en la reserva no arriba"). Red on the driver sheet so
+            stops / special requests are impossible to miss before
+            leaving; amber on the customer receipt as a soft
+            confirmation that the request was received. Rendered on
+            both variants — pricing stays hidden on the driver sheet,
+            but operational notes are exactly what drivers need. */}
+        {trimmedNote ? (
+          <View
+            style={
+              driverVariant
+                ? styles.requestBoxDriver
+                : styles.requestBoxCustomer
+            }
+          >
+            <Text
+              style={
+                driverVariant
+                  ? styles.requestEyebrowDriver
+                  : styles.requestEyebrowCustomer
+              }
+            >
+              {driverVariant ? "⚠️ CUSTOMER REQUEST" : "SPECIAL REQUEST"}
+            </Text>
+            <Text
+              style={
+                driverVariant
+                  ? styles.requestTextDriver
+                  : styles.requestTextCustomer
+              }
+            >
+              {trimmedNote}
+            </Text>
           </View>
         ) : null}
 
