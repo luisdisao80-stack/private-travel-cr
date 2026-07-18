@@ -128,6 +128,18 @@ export type BookingEmailInput = {
   authCode?: string | null;
   cardLast4?: string | null;
   items: BookingItem[];
+  /** Customer-submitted note captured on the booking form (special
+   *  requests: "please stop at Denny's for 20 min", "baby seat needed",
+   *  allergies, etc.). Rendered as a strong callout at the BOTTOM of
+   *  the reservation on the internal + customer emails and on both
+   *  PDF variants. Empty / null / whitespace = block is omitted.
+   *
+   *  Diego 2026-07-17: yesterday a customer requested an intermediate
+   *  stop via this field. The note was stored in the DB and visible
+   *  in the admin panel — but NEVER surfaced in the confirmation
+   *  email or driver sheet. Driver discovered it last-minute. This
+   *  field closes that loop. */
+  notes?: string | null;
 };
 
 function formatDate(iso: string): string {
@@ -475,12 +487,71 @@ function tripRowsHtml(items: BookingItem[]): string {
     .join("");
 }
 
+/**
+ * Render the customer-note callout that sits at the BOTTOM of the
+ * reservation table (per Diego's placement request 2026-07-17: "pon
+ * la nota abajo en la reserva no arriba"). Returns "" when the note
+ * is empty / null / whitespace so callers can splat this into the
+ * template without a wrapper condition.
+ *
+ * Two variants:
+ *   internal — red/orange strong callout for the 🚐 New booking
+ *              email (Diego reads this on his phone at 6am). Impossible
+ *              to miss so stops / requests get seen before dispatch.
+ *   customer — amber soft callout for the confirmation email. Purpose
+ *              is to reassure the customer that their request was
+ *              received (reduces "did they see my note?" WhatsApp
+ *              messages).
+ *
+ * The block is a full-width `<tr>` inside the same reservation table
+ * as the trip rows, styled with a border-left accent + soft background.
+ * Multi-trip bookings share ONE note per booking, so we render exactly
+ * once at the bottom rather than per-trip. Colors + font size follow
+ * the spec Diego signed off on. All colors inline (iOS Mail Smart-Invert
+ * safe) with matching @media (prefers-color-scheme: dark) overrides in
+ * the shell CSS so Gmail Android dark mode doesn't wash out the pill.
+ */
+function renderNoteBlockHtml(
+  notes: string | null | undefined,
+  variant: "internal" | "customer",
+): string {
+  if (!notes || !notes.trim()) return "";
+  const safe = escapeHtml(notes.trim());
+  if (variant === "internal") {
+    return `
+      <tr>
+        <td colspan="2" style="padding:0;">
+          <div class="ptcr-request-box ptcr-request-internal" style="margin:16px 20px 8px 20px;padding:12px 14px;background:#fef2f2;border-left:4px solid #dc2626;border-radius:8px;">
+            <div class="ptcr-request-eyebrow-internal" style="font-size:11px;color:#991b1b;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
+              ⚠️ CUSTOMER REQUEST
+            </div>
+            <div class="ptcr-request-text-internal" style="font-size:15px;color:#7f1d1d;font-weight:700;line-height:1.45;white-space:pre-wrap;">${safe}</div>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+  return `
+    <tr>
+      <td colspan="2" style="padding:0;">
+        <div class="ptcr-request-box ptcr-request-customer" style="margin:16px 20px 8px 20px;padding:12px 14px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:8px;">
+          <div class="ptcr-request-eyebrow-customer" style="font-size:11px;color:#b45309;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
+            SPECIAL REQUEST
+          </div>
+          <div class="ptcr-request-text-customer" style="font-size:14px;color:#78350f;font-weight:700;line-height:1.45;white-space:pre-wrap;">${safe}</div>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+
 function shellHtml({
   title,
   intro,
   data,
   showCustomer,
   showReview = false,
+  noteVariant,
 }: {
   title: string;
   intro: string;
@@ -492,6 +563,12 @@ function shellHtml({
    *  pings, never on the pre-payment quote email — Google penalises
    *  profiles that solicit reviews before the service is delivered. */
   showReview?: boolean;
+  /** Which customer-note styling to render at the bottom of the
+   *  reservation table. `internal` = red/orange callout for Diego's
+   *  🚐 New booking email; `customer` = amber soft callout for the
+   *  confirmation email. Block is omitted entirely when data.notes
+   *  is empty / null / whitespace. */
+  noteVariant: "internal" | "customer";
 }): string {
   // Customer block — light-mode redesign 2026-06-30. After three failed
   // attempts to defeat iOS Mail Smart-Invert on the dark template
@@ -608,6 +685,17 @@ function shellHtml({
       .ptcr-review-eyebrow { color: #b45309 !important; }
       .ptcr-review-title { color: #78350f !important; }
       .ptcr-review-body { color: #78350f !important; }
+      /* Customer-request callout — new 2026-07-17. Two variants
+         share the .ptcr-request-box class but split for the color
+         palette so Gmail Android dark mode doesn't wash out the
+         "impossible to miss" red on Diego's internal email or the
+         soft amber on the customer confirmation. */
+      .ptcr-request-internal { background: #fef2f2 !important; border-color: #dc2626 !important; }
+      .ptcr-request-eyebrow-internal { color: #991b1b !important; }
+      .ptcr-request-text-internal { color: #7f1d1d !important; }
+      .ptcr-request-customer { background: #fef3c7 !important; border-color: #f59e0b !important; }
+      .ptcr-request-eyebrow-customer { color: #b45309 !important; }
+      .ptcr-request-text-customer { color: #78350f !important; }
     }
   </style>
 </head>
@@ -667,6 +755,7 @@ function shellHtml({
                 </tr>
                 ${tripRowsHtml(data.items)}
                 ${customerBlock}
+                ${renderNoteBlockHtml(data.notes, noteVariant)}
               </table>
             </td>
           </tr>
@@ -723,12 +812,14 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
     data,
     showCustomer: false,
     showReview: true,
+    noteVariant: "customer",
   });
   const internalHtml = shellHtml({
     title: "New booking received",
     intro: `Order ${data.orderNumber} just paid. Reach out to confirm pickup details.`,
     data,
     showCustomer: true,
+    noteVariant: "internal",
   });
 
   const ics = buildBookingIcs(data);
@@ -806,12 +897,14 @@ export async function sendBookingUpdateEmails(
     data,
     showCustomer: false,
     showReview: true,
+    noteVariant: "customer",
   });
   const internalHtml = shellHtml({
     title: "Booking updated by admin",
     intro: `Order ${data.orderNumber} — trip date / pickup time changed. The customer is being notified at the same time.`,
     data,
     showCustomer: true,
+    noteVariant: "internal",
   });
 
   // SEQUENCE must monotonically increase per the iCalendar spec for the

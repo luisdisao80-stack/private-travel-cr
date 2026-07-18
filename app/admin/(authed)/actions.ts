@@ -178,7 +178,7 @@ export async function sendTripUpdateEmailAction(
   const { data: row, error } = await supabaseAdmin
     .from("bookings")
     .select(
-      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4",
+      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4, notes",
     )
     .eq("order_number", orderNumber)
     .maybeSingle();
@@ -208,6 +208,7 @@ export async function sendTripUpdateEmailAction(
       authCode: row.tilopay_auth ?? null,
       cardLast4: row.tilopay_last4 ?? null,
       items,
+      notes: row.notes ?? null,
     });
   } catch (e) {
     console.error("[admin] sendTripUpdateEmail send threw:", e);
@@ -241,7 +242,7 @@ export async function resendConfirmationEmailAction(
   const { data: row, error } = await supabaseAdmin
     .from("bookings")
     .select(
-      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4",
+      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4, notes",
     )
     .eq("order_number", orderNumber)
     .maybeSingle();
@@ -271,6 +272,7 @@ export async function resendConfirmationEmailAction(
       authCode: row.tilopay_auth ?? null,
       cardLast4: row.tilopay_last4 ?? null,
       items,
+      notes: row.notes ?? null,
     });
   } catch (e) {
     console.error("[admin] resendConfirmation send threw:", e);

@@ -37,7 +37,7 @@ export async function GET(req: NextRequest, ctx: Context) {
   const { data: booking, error } = await supabaseAdmin
     .from("bookings")
     .select(
-      "order_number, customer_name, customer_email, customer_phone, total_usd, items, status, tilopay_auth, tilopay_last4"
+      "order_number, customer_name, customer_email, customer_phone, total_usd, items, status, tilopay_auth, tilopay_last4, notes"
     )
     .eq("order_number", orderNumber)
     .maybeSingle();
@@ -94,6 +94,7 @@ export async function GET(req: NextRequest, ctx: Context) {
       logoUrl={logoUrl}
       driverVariant={driverVariant}
       reviewQrDataUrl={reviewQrDataUrl}
+      notes={booking.notes}
     />
   );
 
