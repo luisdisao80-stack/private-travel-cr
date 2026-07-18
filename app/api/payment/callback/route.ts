@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
         const { data: booking } = await supabaseAdmin
           .from("bookings")
           .select(
-            "order_number, customer_name, customer_email, customer_phone, total_usd, items, tilopay_auth, tilopay_last4"
+            "order_number, customer_name, customer_email, customer_phone, total_usd, items, tilopay_auth, tilopay_last4, notes"
           )
           .eq("order_number", orderNumber)
           .maybeSingle();
@@ -56,6 +56,7 @@ export async function GET(req: NextRequest) {
             authCode: booking.tilopay_auth,
             cardLast4: booking.tilopay_last4,
             items: (booking.items as CartItem[]) || [],
+            notes: booking.notes,
           });
         }
       } catch (mailErr) {
