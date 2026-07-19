@@ -39,6 +39,13 @@ export default async function AuthedAdminLayout({
             >
               Admin
             </Link>
+            <span className="text-zinc-700">·</span>
+            <Link
+              href="/admin/analytics"
+              className="text-sm font-medium text-gray-300 hover:text-amber-300 inline-flex items-center gap-1"
+            >
+              <span aria-hidden>📊</span> Analytics
+            </Link>
           </div>
           <form action={logoutAction}>
             <button
