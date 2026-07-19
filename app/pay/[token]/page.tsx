@@ -54,7 +54,6 @@ export default async function PayPage({ params }: Props) {
   if (!booking) notFound();
 
   const items = (booking.items as CartItem[]) || [];
-  const item = items[0]; // MVP: single-trip quotes only.
 
   const now = new Date();
   const expiresAt = booking.token_expires_at
@@ -130,7 +129,7 @@ export default async function PayPage({ params }: Props) {
                 </div>
                 <div className="text-right">
                   <div className="text-[10px] uppercase tracking-widest text-white/50">
-                    Total
+                    Total{items.length > 1 ? ` · ${items.length} trips` : ""}
                   </div>
                   <div className="text-3xl font-bold text-white">
                     ${totalUsd.toFixed(2)}{" "}
@@ -140,74 +139,19 @@ export default async function PayPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Trip details */}
-            {item && (
-              <div className="p-5 space-y-4">
-                <div>
-                  <div className="text-[10px] uppercase tracking-widest text-amber-400 font-bold mb-2">
-                    Trip · {item.serviceType === "vip" ? "VIP" : "Standard"} ·{" "}
-                    {item.vehicleName}
-                  </div>
-                  <div className="space-y-2 text-white">
-                    <div className="flex items-start gap-2">
-                      <MapPin size={16} className="text-amber-400 shrink-0 mt-0.5" />
-                      <div>
-                        <div className="font-bold">{item.fromName}</div>
-                        {item.pickupPlace && item.pickupPlace !== item.fromName && (
-                          <div className="text-xs text-white/60">
-                            {item.pickupPlace}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="text-white/40 pl-6">↓</div>
-                    <div className="flex items-start gap-2">
-                      <MapPin size={16} className="text-amber-400 shrink-0 mt-0.5" />
-                      <div>
-                        <div className="font-bold">{item.toName}</div>
-                        {item.dropoffPlace && item.dropoffPlace !== item.toName && (
-                          <div className="text-xs text-white/60">
-                            {item.dropoffPlace}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
-                  <MetaRow
-                    icon={<Calendar size={14} />}
-                    label="Date"
-                    value={item.date}
-                  />
-                  <MetaRow
-                    icon={<Clock size={14} />}
-                    label="Pickup time"
-                    value={item.pickupTime}
-                  />
-                  <MetaRow
-                    icon={<Users size={14} />}
-                    label="Passengers"
-                    value={String(item.passengers)}
-                  />
-                  {item.flightNumber && (
-                    <MetaRow
-                      icon={<Plane size={14} />}
-                      label="Flight"
-                      value={item.flightNumber}
-                    />
-                  )}
-                  {item.serviceType === "vip" && (
-                    <MetaRow
-                      icon={<Crown size={14} />}
-                      label="Service"
-                      value="VIP"
-                    />
-                  )}
-                </div>
-              </div>
-            )}
+            {/* Trip details — loops per trip. Multi-trip quotes stack the
+                trips vertically with dividers between them; single-trip
+                quotes render identical to the pre-multi-trip layout. */}
+            <div className="divide-y divide-white/10">
+              {items.map((item, idx) => (
+                <TripBlock
+                  key={idx}
+                  item={item}
+                  index={idx}
+                  total={items.length}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Pay button */}
@@ -272,6 +216,104 @@ export default async function PayPage({ params }: Props) {
       <Footer />
       <WhatsAppFloat />
     </main>
+  );
+}
+
+function TripBlock({
+  item,
+  index,
+  total,
+}: {
+  item: CartItem;
+  index: number;
+  total: number;
+}) {
+  const isMultiTrip = total > 1;
+  // Per-trip price only shown on multi-trip quotes so single-trip renders
+  // identically to the pre-refactor layout (no visual regression).
+  const perTripPrice = Number(
+    (item as unknown as { totalPrice?: number; tripPrice?: number }).totalPrice ??
+      (item as unknown as { totalPrice?: number; tripPrice?: number }).tripPrice ??
+      0,
+  );
+
+  return (
+    <div className="p-5 space-y-4">
+      <div>
+        <div className="flex items-baseline justify-between gap-3 mb-2">
+          <div className="text-[10px] uppercase tracking-widest text-amber-400 font-bold">
+            {isMultiTrip ? `Trip ${index + 1} of ${total}` : "Trip"} ·{" "}
+            {item.serviceType === "vip" ? "VIP" : "Standard"} ·{" "}
+            {item.vehicleName}
+          </div>
+          {isMultiTrip && perTripPrice > 0 && (
+            <div className="text-sm font-bold text-white whitespace-nowrap">
+              ${perTripPrice.toFixed(2)}
+              <span className="text-[10px] font-normal text-white/60 ml-1">
+                USD
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="space-y-2 text-white">
+          <div className="flex items-start gap-2">
+            <MapPin size={16} className="text-amber-400 shrink-0 mt-0.5" />
+            <div>
+              <div className="font-bold">{item.fromName}</div>
+              {item.pickupPlace && item.pickupPlace !== item.fromName && (
+                <div className="text-xs text-white/60">
+                  {item.pickupPlace}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="text-white/40 pl-6">↓</div>
+          <div className="flex items-start gap-2">
+            <MapPin size={16} className="text-amber-400 shrink-0 mt-0.5" />
+            <div>
+              <div className="font-bold">{item.toName}</div>
+              {item.dropoffPlace && item.dropoffPlace !== item.toName && (
+                <div className="text-xs text-white/60">
+                  {item.dropoffPlace}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
+        <MetaRow
+          icon={<Calendar size={14} />}
+          label="Date"
+          value={item.date}
+        />
+        <MetaRow
+          icon={<Clock size={14} />}
+          label="Pickup time"
+          value={item.pickupTime}
+        />
+        <MetaRow
+          icon={<Users size={14} />}
+          label="Passengers"
+          value={String(item.passengers)}
+        />
+        {item.flightNumber && (
+          <MetaRow
+            icon={<Plane size={14} />}
+            label="Flight"
+            value={item.flightNumber}
+          />
+        )}
+        {item.serviceType === "vip" && (
+          <MetaRow
+            icon={<Crown size={14} />}
+            label="Service"
+            value="VIP"
+          />
+        )}
+      </div>
+    </div>
   );
 }
 
