@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby, Send, Download } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { pdfTokenFor } from "@/lib/pdf-token";
 import type { CartItem } from "@/lib/CartContext";
 import {
   STATUSES,
@@ -529,7 +530,7 @@ export default async function AdminBookingDetailPage({
           <a
             href={`/api/booking/${encodeURIComponent(
               data.order_number,
-            )}/pdf?variant=driver`}
+            )}/pdf?variant=driver&t=${pdfTokenFor(data.order_number)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs px-4 py-2 rounded-md transition-colors"

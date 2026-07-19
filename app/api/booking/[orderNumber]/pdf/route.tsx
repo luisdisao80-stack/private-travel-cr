@@ -5,13 +5,21 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import BookingPdfDocument from "@/components/BookingPdfDocument";
 import { siteConfig } from "@/lib/site-config";
 import { REVIEW_URL } from "@/lib/email";
+import { verifyPdfToken } from "@/lib/pdf-token";
 import type { CartItem } from "@/lib/CartContext";
 
 // Streams a PDF receipt for a single booking. Customers hit this from
 // the "Download confirmation (PDF)" button on /booking/success and from
-// links in the confirmation email. We don't gate on session because
-// the order number is a sufficient secret (10-digit random) and the
-// booking page already shows the same data unauthenticated.
+// the admin panel's Driver-sheet download. The endpoint is token-gated:
+// callers must pass ?t=<pdfTokenFor(orderNumber)> derived by HMAC-SHA256
+// under ADMIN_SESSION_SECRET (see lib/pdf-token.ts for the rationale).
+//
+// Previously the route was unauthenticated on the (false) assumption
+// that the order number was a sufficient secret. It isn't — order
+// numbers are sequential from the next_booking_number RPC, so anyone
+// could enumerate PTCR-1541, 1542, 1543… and pull every booking's PII.
+// Now: missing / wrong token returns 404 (not 401/403) so we don't leak
+// whether the order number exists.
 //
 // Uses the Node runtime — @react-pdf/renderer needs Node APIs and
 // won't run on the Edge runtime.
@@ -20,12 +28,24 @@ export const dynamic = "force-dynamic";
 
 type Context = { params: Promise<{ orderNumber: string }> };
 
+// Uniform 404 helper. Any auth failure or "no such booking" case must
+// funnel through this so an attacker can't distinguish the two states
+// by response body, status, or header set.
+function notFound(): NextResponse {
+  return NextResponse.json({ error: "not found" }, { status: 404 });
+}
+
 export async function GET(req: NextRequest, ctx: Context) {
   const { orderNumber } = await ctx.params;
 
-  if (!orderNumber) {
-    return NextResponse.json({ error: "missing order number" }, { status: 400 });
-  }
+  if (!orderNumber) return notFound();
+
+  // Token check happens FIRST so we don't even hit the DB for a
+  // request that lacks a valid signature. Prevents an unauthenticated
+  // caller from using this endpoint to fingerprint valid order numbers
+  // via response-time differences.
+  const providedToken = req.nextUrl.searchParams.get("t") || "";
+  if (!verifyPdfToken(orderNumber, providedToken)) return notFound();
 
   // ?variant=driver renders a version WITHOUT any pricing info — total,
   // per-trip prices, auth code, and card last-4 are all hidden. Used by
@@ -47,18 +67,14 @@ export async function GET(req: NextRequest, ctx: Context) {
     return NextResponse.json({ error: "lookup failed" }, { status: 500 });
   }
 
-  if (!booking) {
-    return NextResponse.json({ error: "not found" }, { status: 404 });
-  }
+  if (!booking) return notFound();
 
   // Only render PDFs for approved bookings — pending/rejected don't have
-  // a receipt to show yet.
-  if (booking.status !== "approved") {
-    return NextResponse.json(
-      { error: "booking not yet approved" },
-      { status: 409 }
-    );
-  }
+  // a receipt to show yet. Returned as 404 (not 409) so the response is
+  // indistinguishable from "no such order number" — an attacker who
+  // somehow learned a valid token still can't tell approved-vs-pending
+  // from outside.
+  if (booking.status !== "approved") return notFound();
 
   const logoUrl = `${siteConfig.siteUrl}/logo-ptcr.png`;
 
