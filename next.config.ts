@@ -29,6 +29,27 @@ const nextConfig: NextConfig = {
       { source: "/booking", destination: "/book", permanent: true },
       { source: "/adult", destination: "/", permanent: true },
 
+      // ---- Legacy PHP URLs from the pre-migration site ----
+      // GSC 2026-07-18 "Blocked due to access forbidden (403)"
+      // validation failed for 23 URLs. All were /book-now.php?id=N
+      // patterns from the old PHP site that this Next.js app doesn't
+      // serve. Middleware was returning 403 for unknown paths and
+      // Google kept trying — burning crawl budget and dragging site
+      // health. Map every .php entrypoint we can identify to its
+      // modern equivalent so link equity transfers and Google drops
+      // the old URLs from the index. The `:path*` on book-now catches
+      // every ?id=... query variant since Next matches on pathname
+      // and the query string is thrown away by the /book landing.
+      { source: "/book-now.php", destination: "/book", permanent: true },
+      { source: "/book-now", destination: "/book", permanent: true },
+      { source: "/index.php", destination: "/", permanent: true },
+      { source: "/contact.php", destination: "/contact", permanent: true },
+      { source: "/about.php", destination: "/about", permanent: true },
+      { source: "/blog.php", destination: "/blog", permanent: true },
+      { source: "/routes.php", destination: "/routes", permanent: true },
+      { source: "/tours.php", destination: "/tours", permanent: true },
+      { source: "/fleet.php", destination: "/fleet", permanent: true },
+
       // ---- Legacy blog URLs (the old site used /blog/post/<slug>) ----
       // Search Console (2026-06-05) showed several of these still
       // indexed with hundreds of impressions. Without these specific
