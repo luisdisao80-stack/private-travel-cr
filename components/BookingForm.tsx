@@ -17,6 +17,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import HotelAddressAutocomplete from "@/components/HotelAddressAutocomplete";
+import type { Hotel } from "@/lib/types";
 import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
 import { isAirport, VIP_EXTRA_USD } from "@/lib/quote-helpers";
@@ -52,11 +54,16 @@ const TIME_OPTIONS = generateTimeOptions();
 
 type BookingFormProps = {
   onBack: () => void;
+  /** Optional hotels list to power address autocomplete inside each
+   *  TripConfigCard. When omitted (e.g., cart drawer, which doesn't
+   *  server-fetch hotels) the fields fall back to plain free-text —
+   *  same UX as before autocomplete existed. */
+  hotels?: Hotel[];
 };
 
 type FlightStateMap = Record<string, { number: string; time: string }>;
 
-export default function BookingForm({ onBack }: BookingFormProps) {
+export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
   const { items, updateItem, removeItem, totalPrice } = useCart();
   const { currency, hydrated } = useCurrency();
   const { lang } = useLanguage();
@@ -230,6 +237,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
             key={item.id}
             index={idx}
             item={item}
+            hotels={hotels}
             flight={flightByItem[item.id] ?? { number: item.flightNumber ?? "", time: "" }}
             onFlightChange={(next) =>
               setFlightByItem((prev) => ({ ...prev, [item.id]: next }))
@@ -473,6 +481,7 @@ export default function BookingForm({ onBack }: BookingFormProps) {
 type TripConfigCardProps = {
   index: number;
   item: CartItem;
+  hotels: Hotel[];
   flight: { number: string; time: string };
   onFlightChange: (next: { number: string; time: string }) => void;
   onUpdateItem: (patch: Partial<Omit<CartItem, "id">>) => void;
@@ -482,6 +491,7 @@ type TripConfigCardProps = {
 function TripConfigCard({
   index,
   item,
+  hotels,
   flight,
   onFlightChange,
   onUpdateItem,
@@ -612,11 +622,13 @@ function TripConfigCard({
             <MapPin size={12} className="text-amber-400" />
             Pickup address
           </Label>
-          <Input
+          <HotelAddressAutocomplete
             value={pickupValue}
-            onChange={(e) => setPickup(e.target.value)}
+            onChange={setPickup}
+            hotels={hotels}
+            contextArea={item.fromName}
             placeholder={`Hotel, Airbnb or address in ${item.fromName}`}
-            className="bg-black/50 border-amber-500/30 text-white h-10"
+            inputClassName="w-full bg-black/50 border border-amber-500/30 text-white rounded-md h-10 px-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
           />
         </div>
 
@@ -625,11 +637,13 @@ function TripConfigCard({
             <MapPin size={12} className="text-amber-400" />
             Drop-off address
           </Label>
-          <Input
+          <HotelAddressAutocomplete
             value={dropoffValue}
-            onChange={(e) => setDropoff(e.target.value)}
+            onChange={setDropoff}
+            hotels={hotels}
+            contextArea={item.toName}
             placeholder={`Hotel, Airbnb or address in ${item.toName}`}
-            className="bg-black/50 border-amber-500/30 text-white h-10"
+            inputClassName="w-full bg-black/50 border border-amber-500/30 text-white rounded-md h-10 px-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
           />
         </div>
 

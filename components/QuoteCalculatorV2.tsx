@@ -8,6 +8,7 @@ import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
 import { DatePicker } from "@/components/ui/date-picker";
 import LocationInput from "@/components/LocationInput";
+import HotelAddressAutocomplete from "@/components/HotelAddressAutocomplete";
 import Price from "@/components/Price";
 import {
   MIN_LEAD_TIME_HOURS,
@@ -429,18 +430,22 @@ export default function QuoteCalculatorV2({
         </>
       )}
 
-      {/* Specific pickup address (hotel, Airbnb, exact street) */}
+      {/* Specific pickup address (hotel, Airbnb, exact street) — the
+          autocomplete surfaces matching hotels from the DB while still
+          accepting any free text (Airbnb, private residence, etc.). See
+          components/HotelAddressAutocomplete.tsx for why. */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <MapPin size={16} />
           <span>Pickup address</span>
         </label>
-        <input
-          type="text"
+        <HotelAddressAutocomplete
           value={pickupAddress}
-          onChange={(e) => setPickupAddress(e.target.value)}
+          onChange={setPickupAddress}
+          onHotelPick={handlePickupHotel}
+          hotels={hotels}
+          contextArea={from}
           placeholder="Hotel, Airbnb, or exact address..."
-          className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
         />
         <p className="text-xs text-gray-500 mt-1">Where should the driver pick you up?</p>
       </div>
@@ -451,12 +456,13 @@ export default function QuoteCalculatorV2({
           <MapPin size={16} />
           <span>Drop-off address</span>
         </label>
-        <input
-          type="text"
+        <HotelAddressAutocomplete
           value={dropoffAddress}
-          onChange={(e) => setDropoffAddress(e.target.value)}
+          onChange={setDropoffAddress}
+          onHotelPick={handleDropoffHotel}
+          hotels={hotels}
+          contextArea={to}
           placeholder="Hotel, Airbnb, or exact address..."
-          className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none"
         />
         <p className="text-xs text-gray-500 mt-1">Where would you like to be dropped off?</p>
       </div>
