@@ -164,7 +164,10 @@ function format12h(time: string): string {
   return `${h12}:${mStr} ${period}`;
 }
 
-function escapeHtml(s: string): string {
+// Exported so other email builders (e.g. the cron reminder route) can
+// reuse the same escaping instead of hand-rolling their own — a divergent
+// escape helper is how latent XSS bugs get shipped.
+export function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

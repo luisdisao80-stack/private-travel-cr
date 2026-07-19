@@ -5,12 +5,18 @@
 // Once it's set, the booking is skipped. Add the column in Supabase with:
 //   alter table bookings add column reminder_sent_at timestamptz;
 //
-// Security: Vercel Cron sends a Bearer token equal to CRON_SECRET when set.
-// We accept either that header or the Vercel-internal cron header.
+// Security: Vercel Cron sends `Authorization: Bearer <CRON_SECRET>` on
+// every scheduled invocation. isAuthorized() verifies that header in
+// constant time. On Vercel deployments a missing CRON_SECRET returns
+// 401 — no silent open surface. Local dev without VERCEL set allows
+// unauthenticated calls so `curl localhost:3000/api/cron/send-reminders`
+// still works while iterating on the template.
 
 import { NextRequest, NextResponse } from "next/server";
+import { timingSafeEqual } from "node:crypto";
 import { Resend } from "resend";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { escapeHtml } from "@/lib/email";
 import type { CartItem } from "@/lib/CartContext";
 
 export const runtime = "nodejs";
@@ -22,11 +28,34 @@ const REMINDER_TARGET_HOURS = 24;
 
 function isAuthorized(req: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;
-  // Vercel Cron sends this header on every cron invocation.
-  if (req.headers.get("x-vercel-cron") === "1") return true;
-  if (!secret) return true; // No secret configured → permissive (dev/test).
   const auth = req.headers.get("authorization");
-  return auth === `Bearer ${secret}`;
+
+  // Vercel Cron sends `Authorization: Bearer <CRON_SECRET>` on every
+  // scheduled invocation, matching whatever we set in the Vercel
+  // dashboard. Compare in constant time so a bulk-guesser can't learn
+  // the secret prefix from response-time differences.
+  if (secret && auth) {
+    const expected = `Bearer ${secret}`;
+    if (auth.length === expected.length) {
+      const a = Buffer.from(auth);
+      const b = Buffer.from(expected);
+      try {
+        if (timingSafeEqual(a, b)) return true;
+      } catch {
+        // fall through to the deny below
+      }
+    }
+  }
+
+  // Local-development fallback: permissive only when CRON_SECRET is
+  // absent AND we're not running inside a Vercel deployment. Never
+  // permissive in prod / preview — a missing secret in Vercel is a
+  // misconfiguration we WANT to notice via 401s, not paper over
+  // (previous behavior silently allowed any caller through when the
+  // env var was blank, defeating the whole point of the header).
+  if (!secret && !process.env.VERCEL) return true;
+
+  return false;
 }
 
 function pickupAt(item: CartItem): Date | null {
@@ -67,6 +96,15 @@ function buildReminderHtml(opts: {
     it.pickupPlace && it.pickupPlace !== it.fromName ? it.pickupPlace : it.fromName;
   const dropoff =
     it.dropoffPlace && it.dropoffPlace !== it.toName ? it.dropoffPlace : it.toName;
+  // Every user-supplied field goes through escapeHtml before landing
+  // in this template. Without it, a hotel name like `Hotel & Spa "Best"`
+  // rendered as `Hotel  Spa Best` in Gmail (& swallowed as an entity
+  // start, quotes broke attributes), and a hostile string like `<script>`
+  // in the passenger note would have executed in whichever preview
+  // client didn't sandbox it. The single-name-split for the greeting
+  // is escaped after the split so any punctuation in the first name
+  // still gets treated safely.
+  const firstName = escapeHtml(opts.customerName.split(" ")[0] || "there");
   return `<!doctype html><html><body style="margin:0;padding:24px;background:#000;font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#fff;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:linear-gradient(180deg,#0a0a0a,#000);border:1px solid rgba(245,158,11,0.25);border-radius:18px;overflow:hidden;">
   <tr><td style="padding:24px;text-align:center;border-bottom:1px solid #1f2937;">
@@ -82,22 +120,22 @@ function buildReminderHtml(opts: {
     <div style="font-size:11px;color:#fbbf24;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
     <h1 style="margin:12px 0 0 0;font-size:22px;font-weight:800;">Your shuttle is tomorrow</h1>
     <p style="margin:6px 0 0 0;font-size:13px;color:#d1d5db;">
-      Hi ${opts.customerName.split(" ")[0] || "there"} — a quick reminder of your pickup.
+      Hi ${firstName} — a quick reminder of your pickup.
     </p>
   </td></tr>
   <tr><td style="padding:20px 24px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;">
       <tr><td style="color:#9ca3af;padding:4px 0;">Order</td>
-          <td style="color:#fbbf24;text-align:right;font-family:Menlo,monospace;font-size:12px;">${opts.orderNumber}</td></tr>
+          <td style="color:#fbbf24;text-align:right;font-family:Menlo,monospace;font-size:12px;">${escapeHtml(opts.orderNumber)}</td></tr>
       <tr><td style="color:#9ca3af;padding:4px 0;">Pickup</td>
-          <td style="text-align:right;font-weight:600;">${formatLocal(opts.pickupAt)} (Costa Rica)</td></tr>
+          <td style="text-align:right;font-weight:600;">${escapeHtml(formatLocal(opts.pickupAt))} (Costa Rica)</td></tr>
       <tr><td style="color:#9ca3af;padding:4px 0;">From</td>
-          <td style="text-align:right;font-weight:600;">${pickup}</td></tr>
+          <td style="text-align:right;font-weight:600;">${escapeHtml(pickup)}</td></tr>
       <tr><td style="color:#9ca3af;padding:4px 0;">To</td>
-          <td style="text-align:right;font-weight:600;">${dropoff}</td></tr>
+          <td style="text-align:right;font-weight:600;">${escapeHtml(dropoff)}</td></tr>
       <tr><td style="color:#9ca3af;padding:4px 0;">Passengers</td>
           <td style="text-align:right;font-weight:600;">${it.passengers}</td></tr>
-      ${it.flightNumber ? `<tr><td style="color:#9ca3af;padding:4px 0;">Flight</td><td style="text-align:right;font-weight:600;">${it.flightNumber}</td></tr>` : ""}
+      ${it.flightNumber ? `<tr><td style="color:#9ca3af;padding:4px 0;">Flight</td><td style="text-align:right;font-weight:600;">${escapeHtml(it.flightNumber)}</td></tr>` : ""}
       ${it.extraStopHours && it.extraStopHours > 0 ? `<tr><td style="color:#9ca3af;padding:4px 0;">Extra wait</td><td style="text-align:right;font-weight:600;color:#fbbf24;">${it.extraStopHours}h paid</td></tr>` : ""}
     </table>
     <p style="margin:18px 0 4px 0;font-size:13px;color:#d1d5db;line-height:1.5;">

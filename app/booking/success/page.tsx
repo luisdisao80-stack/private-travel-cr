@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import WizardProgress from "@/components/book/WizardProgress";
 import ClearCartOnMount from "@/components/book/ClearCartOnMount";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { pdfTokenFor } from "@/lib/pdf-token";
 
 export const dynamic = "force-dynamic";
 
@@ -102,7 +103,9 @@ export default async function BookingSuccessPage({
                 regardless of deliverability. */}
             {booking ? (
               <a
-                href={`/api/booking/${encodeURIComponent(booking.order_number)}/pdf`}
+                href={`/api/booking/${encodeURIComponent(
+                  booking.order_number,
+                )}/pdf?t=${pdfTokenFor(booking.order_number)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold transition mb-3"
