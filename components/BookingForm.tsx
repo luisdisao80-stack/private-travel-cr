@@ -126,6 +126,11 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
     // while filtering out obvious truncation.
     form.phoneLocal.replace(/\D/g, "").length >= 7 &&
     items.length > 0 &&
+    // Guard against a cart hydrated from a corrupt/legacy localStorage
+    // state (or an item whose price failed to compute). Without this
+    // the button reads "Pay $0.00 USD" and posts to Tilopay which
+    // rejects the charge — a scary dead-end mid-checkout.
+    totalPrice > 0 &&
     airportTripsMissingFlight.length === 0 &&
     firstTripLeadTimeOk &&
     acceptedTerms;
@@ -429,6 +434,18 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           for an alternative payment link.
         </p>
       </div>
+
+      {/* Zero-total guard. If localStorage was corrupted (an item stored
+          with totalPrice=0 by an older calculator, or a partial write)
+          the cart hydrates but the Pay button reads "Pay $0.00 USD"
+          and Tilopay rejects the charge. Surfacing this early avoids
+          a dead-end mid-checkout. */}
+      {items.length > 0 && totalPrice <= 0 ? (
+        <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200">
+          Your cart looks empty or invalid — please refresh the page and
+          re-add your trips to continue.
+        </div>
+      ) : null}
 
       <Button
         onClick={handleSubmit}

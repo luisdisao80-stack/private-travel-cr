@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { processPayment } from "@/lib/tilopay";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -35,6 +36,21 @@ function siteOrigin(req: NextRequest): string {
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit — same rationale as /api/payment/start. This endpoint
+  // reads a booking by token and opens a Tilopay checkout; abuse would
+  // spam Tilopay and could enumerate tokens.
+  const ip = getClientIp(req);
+  const rl = rateLimit(ip, { max: 30, windowMs: 60_000 });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Try again shortly." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rl.retryAfterSeconds) },
+      },
+    );
+  }
+
   let body: StartFromTokenBody;
   try {
     body = (await req.json()) as StartFromTokenBody;
