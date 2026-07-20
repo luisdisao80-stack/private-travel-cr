@@ -43,8 +43,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
     languages: {
+      // es-CR intentionally omitted — the site has no real /es/* URLs yet,
+      // only a client-side LanguageProvider toggle. Declaring hreflang="es-CR"
+      // pointing at the same English URL is inconsistent and Google may
+      // downgrade or ignore both hreflang entries. Restore this entry once
+      // localized Spanish routes exist.
       "en-US": "/",
-      "es-CR": "/",
     },
   },
   openGraph: {
@@ -100,6 +104,19 @@ export default function RootLayout({
         inter.variable
       )}
     >
+      <head>
+        {/* LCP perf: warm up TCP + TLS to the two image CDNs before the
+            first <img> hits them. images.unsplash.com serves blog hero art;
+            privatecr2.imgix.net serves the vehicle + destination photos.
+            Without these hints the browser pays a full handshake round-trip
+            on the first image request — a measurable LCP hit on cold visits,
+            especially on mobile. The dns-prefetch lines are a fallback for
+            older browsers that don't honor preconnect. */}
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://privatecr2.imgix.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://privatecr2.imgix.net" />
+      </head>
       <body className="min-h-full flex flex-col">
         <SchemaOrg />
         <AttributionCapture />

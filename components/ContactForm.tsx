@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { useLanguage } from "@/lib/LanguageContext";
+import { getMinPickupCRDate } from "@/lib/booking-rules";
 
 type ContactFormProps = {
   /** When true, render only the form fields — no wrapping <section>, no
@@ -274,6 +275,12 @@ export default function ContactForm({ embedded = false }: ContactFormProps) {
                     value={formData.fecha}
                     onChange={(iso) => handleChange("fecha", iso)}
                     lang={lang === "es" ? "es" : "en"}
+                    // Block past dates in the calendar. Without this the
+                    // visitor could pick yesterday and fire a WhatsApp
+                    // message with an impossible date. Using the same
+                    // 12h-lead-time helper as the booking form so the two
+                    // pickers stay in sync.
+                    minDate={getMinPickupCRDate()}
                   />
                 </div>
               </div>
