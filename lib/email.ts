@@ -870,6 +870,70 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
 }
 
 /**
+ * Customer-only variant of sendBookingEmails: fires the SAME "Booking
+ * Confirmed" HTML + .ics to the customer, but does NOT ping the
+ * internal "🚐 New booking" copy to Diego / info@.
+ *
+ * Why (2026-07-20): Diego needs to manually resend a confirmation to
+ * customers who never got the original (spam filter drop) or after he
+ * corrects a pickup/dropoff address. In both cases the internal ping
+ * would be a false alarm — Diego already knows about the booking, and
+ * duplicate "new booking" pings for the same order train him to ignore
+ * the alerts. The customer, meanwhile, still needs the full email.
+ *
+ * Kept as a sibling function (not a flag on sendBookingEmails) so the
+ * default path — a real, first-time payment — can never accidentally
+ * be forked into skipping the internal notification. This one is
+ * explicitly opt-in via its distinct name.
+ */
+export async function sendBookingCustomerEmailOnly(
+  data: BookingEmailInput,
+): Promise<void> {
+  const resend = client();
+  if (!resend) {
+    console.warn(
+      "[email] RESEND_API_KEY not set — skipping customer-only booking email",
+    );
+    return;
+  }
+  const from = process.env.EMAIL_FROM || DEFAULT_FROM;
+  const businessRecipients = getBusinessRecipients();
+  const businessReplyTo = businessRecipients[0] || DEFAULT_BUSINESS;
+
+  const customerHtml = shellHtml({
+    title: "Booking Confirmed",
+    intro: `Thank you, ${data.customerName.split(" ")[0] || "friend"}. We've received your payment.`,
+    data,
+    showCustomer: false,
+    showReview: true,
+    noteVariant: "customer",
+  });
+
+  const ics = buildBookingIcs(data);
+  const icsAttachment = {
+    filename: `private-travel-cr-${data.orderNumber}.ics`,
+    content: Buffer.from(ics, "utf-8").toString("base64"),
+    contentType: "text/calendar; charset=utf-8; method=PUBLISH",
+  };
+
+  const res = await resend.emails.send({
+    from,
+    to: data.customerEmail,
+    subject: `Booking Confirmed · ${data.orderNumber}`,
+    html: customerHtml,
+    replyTo: businessReplyTo,
+    attachments: [icsAttachment],
+  });
+
+  if (res.error) {
+    console.error(
+      "[email] customer-only resend error:",
+      res.error,
+    );
+  }
+}
+
+/**
  * Re-send the booking confirmation after Diego edits a trip's date or
  * pickup time from the admin panel. Uses the same shellHtml + ICS
  * machinery as the initial confirmation so the customer's calendar

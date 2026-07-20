@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { clearAdminSession, isAdminAuthed } from "@/lib/admin-auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import {
-  sendBookingEmails,
+  sendBookingCustomerEmailOnly,
   sendBookingUpdateEmails,
   sendPaymentRequestEmail,
 } from "@/lib/email";
@@ -154,6 +154,101 @@ export async function updateTripDateTimeAction(
   redirect(`/admin/${orderNumber}?saved=trip-${tripIndex}`);
 }
 
+// Allow-list of trip fields the address editor can mutate. Kept literal
+// so a typo in the client can't sneak an arbitrary key into the JSONB
+// items[] row (e.g. writing to `passengers` via this action). Any value
+// outside this set is a silent no-op.
+const EDITABLE_ADDRESS_FIELDS = new Set(["pickupPlace", "dropoffPlace"]);
+
+/**
+ * Edit ONLY the pickupPlace or dropoffPlace of a single trip inside a
+ * booking's items[] JSONB. Scoped deliberately — fromName / toName /
+ * date / passengers are NOT touchable through this path, because those
+ * fields feed price, route pairing, and calendar events and changing
+ * them safely is a bigger surface than a copy-fix.
+ *
+ * Use case (Diego, 2026-07-20): a customer wrote
+ *   pickupPlace = "the yellow house near the church, calle 12"
+ * and Diego needs to swap it for the actual Marriott address so the
+ * driver's WhatsApp trip sheet is unambiguous. Before this action the
+ * only way was raw SQL against the JSONB items column.
+ *
+ * Silent-update by design — no email is sent when saving. If Diego wants
+ * to notify the customer he uses the existing "Notify customer of
+ * changes" or "Resend confirmation" buttons on the same page. This
+ * mirrors the same split we made for updateTripDateTimeAction on
+ * 2026-06-24 (auto-send made iterative edits dangerous).
+ *
+ * Works for past trips too (no date guard) — sometimes an address gets
+ * corrected retroactively for reconciliation with the driver's log.
+ */
+export async function updateTripAddressAction(
+  formData: FormData,
+): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
+  }
+
+  const orderNumber = String(formData.get("orderNumber") ?? "").trim();
+  const tripIndex = parseInt(String(formData.get("tripIndex") ?? ""), 10);
+  const field = String(formData.get("field") ?? "").trim();
+  // Trim edges but don't collapse internal whitespace — an address like
+  // "17662  Tide Line Drive" is technically ugly but not wrong, and
+  // rewriting it silently would surprise the operator.
+  const newValue = String(formData.get("newValue") ?? "").trim();
+
+  if (!orderNumber || Number.isNaN(tripIndex) || tripIndex < 0) return;
+  if (!EDITABLE_ADDRESS_FIELDS.has(field)) return;
+
+  const { data: row, error: readErr } = await supabaseAdmin
+    .from("bookings")
+    .select("items")
+    .eq("order_number", orderNumber)
+    .maybeSingle();
+
+  if (readErr || !row) {
+    console.error("[admin] updateTripAddress read failed:", readErr);
+    return;
+  }
+
+  const items = Array.isArray(row.items)
+    ? (row.items as Record<string, unknown>[])
+    : [];
+  if (tripIndex >= items.length) {
+    console.error(
+      `[admin] updateTripAddress: tripIndex ${tripIndex} out of range for order ${orderNumber}`,
+    );
+    return;
+  }
+
+  // Empty value → fall back to the location name (fromName for pickup,
+  // toName for dropoff). Matches the customer form convention in
+  // createQuoteAction above (`pickupPlace: t.pickupPlace || t.fromName`)
+  // so a cleared field never renders as literally empty in downstream
+  // emails / PDFs / driver sheets.
+  const fallbackKey = field === "pickupPlace" ? "fromName" : "toName";
+  const fallback = String(items[tripIndex][fallbackKey] ?? "");
+  const finalValue = newValue || fallback;
+
+  items[tripIndex] = {
+    ...items[tripIndex],
+    [field]: finalValue,
+  };
+
+  const { error: writeErr } = await supabaseAdmin
+    .from("bookings")
+    .update({ items })
+    .eq("order_number", orderNumber);
+
+  if (writeErr) {
+    console.error("[admin] updateTripAddress write failed:", writeErr);
+    return;
+  }
+
+  revalidatePath("/admin");
+  revalidatePath(`/admin/${orderNumber}`);
+}
+
 /**
  * Manually fire the "your booking has been updated" email after Diego
  * edits a trip's date / time. Split out from updateTripDateTimeAction
@@ -227,7 +322,17 @@ export async function sendTripUpdateEmailAction(
  * (2026-06-20), the second send usually lands in the inbox cleanly.
  *
  * Diego triggers this from the admin booking detail page when a
- * customer messages him saying "I never got the confirmation".
+ * customer messages him saying "I never got the confirmation", or after
+ * he edits a pickup/dropoff address and wants the customer to have the
+ * refreshed details.
+ *
+ * IMPORTANT (2026-07-20): this path is CUSTOMER-ONLY. It uses
+ * sendBookingCustomerEmailOnly, which skips the internal "🚐 New
+ * booking" ping to Diego's inbox. Diego already saw the original
+ * booking; a manual resend is by definition NOT a new booking, and
+ * getting a duplicate ping every time an address was corrected was
+ * training him to ignore the alerts. Only allowed on approved bookings
+ * — resending a pending/cancelled confirmation would be misleading.
  */
 export async function resendConfirmationEmailAction(
   formData: FormData,
@@ -242,7 +347,7 @@ export async function resendConfirmationEmailAction(
   const { data: row, error } = await supabaseAdmin
     .from("bookings")
     .select(
-      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4, notes",
+      "items, customer_name, customer_email, customer_phone, total_usd, tilopay_auth, tilopay_last4, notes, status",
     )
     .eq("order_number", orderNumber)
     .maybeSingle();
@@ -257,13 +362,19 @@ export async function resendConfirmationEmailAction(
     );
     return;
   }
+  if (row.status !== "approved") {
+    console.error(
+      `[admin] resendConfirmation: refusing to resend on status "${row.status}" for ${orderNumber}`,
+    );
+    return;
+  }
 
   const items = Array.isArray(row.items)
     ? (row.items as unknown as CartItem[])
     : [];
 
   try {
-    await sendBookingEmails({
+    await sendBookingCustomerEmailOnly({
       orderNumber,
       customerName: row.customer_name ?? "",
       customerEmail: row.customer_email,
