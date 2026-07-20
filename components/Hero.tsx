@@ -60,8 +60,23 @@ export default function Hero({
   // work" — they'd bounce. Now we tell them: "We don't recognize that
   // place — pick one from the list".
   const [resolveError, setResolveError] = useState<"pickup" | "dropoff" | null>(null);
+  // Separate error for the case where pickup and dropoff resolve to the
+  // same canonical location. Without this guard, a visitor could pick
+  // "La Fortuna" in both fields, land on /book?from=La+Fortuna&to=La+Fortuna
+  // and see a broken "Custom route" nothing-state. Silent dead-end.
+  const [sameLocationError, setSameLocationError] = useState<boolean>(false);
 
-  const canContinue = pickup.trim().length > 0 && dropoff.trim().length > 0;
+  // Live equality check for disabling Continue as the visitor types —
+  // uses the raw trimmed strings (case-insensitive) so a match is visible
+  // immediately even before resolveLocation runs. handleContinue does the
+  // authoritative check on the resolved DB names.
+  const rawSameLocation =
+    pickup.trim().length > 0 &&
+    dropoff.trim().length > 0 &&
+    pickup.trim().toLowerCase() === dropoff.trim().toLowerCase();
+
+  const canContinue =
+    pickup.trim().length > 0 && dropoff.trim().length > 0 && !rawSameLocation;
 
   const handleContinue = () => {
     if (!canContinue || isPending) return;
@@ -79,6 +94,16 @@ export default function Hero({
       return;
     }
     setResolveError(null);
+
+    // Same-location guard: two different free-text inputs (e.g. "fortuna"
+    // and "La Fortuna") can still resolve to the same DB row. Check after
+    // resolution so the guard catches every equivalence, not just literal
+    // string matches.
+    if (resolvedPickup.toLowerCase() === resolvedDropoff.toLowerCase()) {
+      setSameLocationError(true);
+      return;
+    }
+    setSameLocationError(false);
 
     // Fast path: popular pair we know exists in the DB → direct to the SEO
     // landing page, skipping the /book → server-redirect round-trip
@@ -207,6 +232,7 @@ export default function Hero({
                 onChange={(v) => {
                   setPickup(v);
                   if (resolveError === "pickup") setResolveError(null);
+                  if (sameLocationError) setSameLocationError(false);
                 }}
                 placeholder={lang === "en" ? "Where from?" : "¿De dónde?"}
                 locations={locations}
@@ -224,6 +250,18 @@ export default function Hero({
               <button
                 type="button"
                 onClick={() => {
+                  // Skip when the two fields are equal (case-insensitive) —
+                  // swapping A ↔ A is a no-op that would leave the same-
+                  // same state in place; clearing the error and doing
+                  // nothing else would falsely suggest the problem was
+                  // resolved.
+                  if (
+                    pickup.trim().toLowerCase() ===
+                      dropoff.trim().toLowerCase() &&
+                    pickup.trim().length > 0
+                  ) {
+                    return;
+                  }
                   setPickup(dropoff);
                   setDropoff(pickup);
                   const nextPickupHotel = dropoffHotel;
@@ -231,6 +269,7 @@ export default function Hero({
                   setPickupHotel(nextPickupHotel);
                   setDropoffHotel(nextDropoffHotel);
                   if (resolveError) setResolveError(null);
+                  if (sameLocationError) setSameLocationError(false);
                 }}
                 aria-label={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
                 title={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
@@ -244,6 +283,7 @@ export default function Hero({
                 onChange={(v) => {
                   setDropoff(v);
                   if (resolveError === "dropoff") setResolveError(null);
+                  if (sameLocationError) setSameLocationError(false);
                 }}
                 placeholder={lang === "en" ? "Where to?" : "¿A dónde?"}
                 locations={locations}
@@ -262,10 +302,25 @@ export default function Hero({
               </div>
             )}
 
+            {(sameLocationError || rawSameLocation) && (
+              <div className="mt-3 rounded-lg border border-red-400/40 bg-red-500/10 px-4 py-2.5 text-center text-xs text-red-200">
+                {lang === "en"
+                  ? "Pickup and drop-off can't be the same place. Please pick a different drop-off location."
+                  : "El origen y el destino no pueden ser iguales. Elegí un destino diferente."}
+              </div>
+            )}
+
             <button
               type="button"
               onClick={handleContinue}
               disabled={!canContinue || isPending}
+              title={
+                rawSameLocation
+                  ? lang === "en"
+                    ? "Pickup and drop-off can't be the same place"
+                    : "El origen y el destino no pueden ser iguales"
+                  : undefined
+              }
               className="mt-4 w-full inline-flex items-center justify-center gap-2 h-12 md:h-14 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"
             >
               {isPending ? (
