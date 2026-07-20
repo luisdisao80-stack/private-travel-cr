@@ -20,6 +20,14 @@ import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { formatPrice } from "@/lib/currency";
+import { isAirport } from "@/lib/quote-helpers";
+import {
+  isFirstTripLeadTimeOk,
+  LEAD_TIME_MESSAGE_EN,
+  LEAD_TIME_MESSAGE_ES,
+  WHATSAPP_URGENT_URL_EN,
+  WHATSAPP_URGENT_URL_ES,
+} from "@/lib/booking-rules";
 import BookingForm from "@/components/BookingForm";
 import Price from "@/components/Price";
 
@@ -52,8 +60,57 @@ export default function Cart() {
     setShowBookingForm(false);
   };
 
+  // Cart-side pre-validation. BookingForm has always enforced these
+  // rules (12h lead time, flight-number-for-airport-pickup, no same-same
+  // route), but the cart drawer used to only check items.length > 0 —
+  // so a visitor with a stale cart (12h window closed overnight) or a
+  // half-configured trip would hit Continue, land on checkout, and see
+  // the Pay button silently disabled with no clear reason. Now we
+  // surface the specific issue right here so they can fix it before
+  // even leaving the drawer.
+  const leadTimeOk = isFirstTripLeadTimeOk(items);
+  const airportMissingFlightIndex = items.findIndex(
+    (it) =>
+      isAirport(it.fromName) &&
+      !(it.flightNumber && it.flightNumber.trim().length > 0),
+  );
+  const sameRouteIndex = items.findIndex(
+    (it) => it.fromName.trim().toLowerCase() === it.toName.trim().toLowerCase(),
+  );
+
+  // First-issue message + type — used to render a single banner above
+  // Continue. Order matters: lead-time is the only issue that can't be
+  // fixed inside the checkout form (the clock has already run out), so
+  // it takes precedence with the WhatsApp fallback CTA.
+  type CartIssue =
+    | { kind: "leadTime" }
+    | { kind: "missingFlight"; tripIndex: number; fromName: string }
+    | { kind: "sameRoute"; tripIndex: number };
+
+  let cartIssue: CartIssue | null = null;
+  if (items.length > 0) {
+    if (!leadTimeOk) {
+      cartIssue = { kind: "leadTime" };
+    } else if (airportMissingFlightIndex !== -1) {
+      const it = items[airportMissingFlightIndex];
+      cartIssue = {
+        kind: "missingFlight",
+        tripIndex: airportMissingFlightIndex,
+        fromName: it.fromName,
+      };
+    } else if (sameRouteIndex !== -1) {
+      cartIssue = { kind: "sameRoute", tripIndex: sameRouteIndex };
+    }
+  }
+
+  // isCartValid gates the Continue button. Missing-flight and same-route
+  // ARE technically fixable on the checkout page (BookingForm surfaces
+  // them there), but pushing the visitor forward when we already know
+  // they're going to hit a wall is bad UX — better to fix in place.
+  const isCartValid = items.length > 0 && cartIssue === null;
+
   const handleContinue = () => {
-    if (items.length === 0) return;
+    if (!isCartValid) return;
     setCartOpen(false);
     // /book uses ?checkout=1 to skip the calculator and render the booking form.
     router.push("/book?checkout=1");
@@ -320,9 +377,72 @@ export default function Cart() {
                     <div className="text-[11px] text-gray-500 mt-0.5">{t.quote.taxesIncluded} · {lang === "en" ? "Charges in USD via Tilopay" : "Cobros en USD vía Tilopay"}</div>
                   </div>
                 </div>
+                {cartIssue && (
+                  <div
+                    className={
+                      cartIssue.kind === "leadTime"
+                        ? "rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100"
+                        : "rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200"
+                    }
+                  >
+                    {cartIssue.kind === "leadTime" && (
+                      <>
+                        <p className="leading-snug mb-2">
+                          {lang === "es"
+                            ? LEAD_TIME_MESSAGE_ES
+                            : LEAD_TIME_MESSAGE_EN}
+                        </p>
+                        <a
+                          href={
+                            lang === "es"
+                              ? WHATSAPP_URGENT_URL_ES
+                              : WHATSAPP_URGENT_URL_EN
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+                        >
+                          {lang === "es"
+                            ? "Escríbenos por WhatsApp"
+                            : "WhatsApp us"}
+                        </a>
+                      </>
+                    )}
+                    {cartIssue.kind === "missingFlight" && (
+                      <p className="leading-snug">
+                        {lang === "es"
+                          ? `El viaje #${cartIssue.tripIndex + 1} (${cartIssue.fromName}) necesita un número de vuelo. Continuá al checkout para agregarlo — sin él no podemos rastrear tu vuelo por retrasos.`
+                          : `Trip #${cartIssue.tripIndex + 1} (${cartIssue.fromName}) needs a flight number. Continue to checkout to add it — without it we can't track your flight for delays.`}
+                      </p>
+                    )}
+                    {cartIssue.kind === "sameRoute" && (
+                      <p className="leading-snug">
+                        {lang === "es"
+                          ? `El origen y el destino del viaje #${cartIssue.tripIndex + 1} son iguales. Eliminá el viaje y agregalo de nuevo con destinos diferentes.`
+                          : `Pickup and drop-off are the same on trip #${cartIssue.tripIndex + 1}. Remove that trip and add it again with different locations.`}
+                      </p>
+                    )}
+                  </div>
+                )}
                 <Button
                   onClick={handleContinue}
-                  className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg"
+                  disabled={!isCartValid}
+                  title={
+                    cartIssue?.kind === "leadTime"
+                      ? lang === "es"
+                        ? "El horario de reserva ya pasó — usá WhatsApp"
+                        : "Lead time expired — use WhatsApp"
+                      : cartIssue?.kind === "missingFlight"
+                        ? lang === "es"
+                          ? "Falta el número de vuelo en un viaje al aeropuerto"
+                          : "Airport pickup is missing a flight number"
+                        : cartIssue?.kind === "sameRoute"
+                          ? lang === "es"
+                            ? "Origen y destino son iguales en un viaje"
+                            : "Pickup and drop-off are the same on a trip"
+                          : undefined
+                  }
+                  className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {t.cart.continueBooking}
                   <ArrowRight size={18} className="ml-2" />

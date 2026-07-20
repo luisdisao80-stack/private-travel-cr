@@ -661,7 +661,7 @@ export default function QuoteCalculatorV2({
       ) : notFound ? (
         <div className="bg-amber-900/20 border border-amber-500/30 rounded-lg p-6 text-center">
           <p className="text-amber-400 font-semibold mb-2">Custom route</p>
-          <p className="text-sm text-gray-400 mb-4">We dont have a fixed price. Contact us via WhatsApp for a custom quote.</p>
+          <p className="text-sm text-gray-400 mb-4">We don&apos;t have a fixed price. Contact us via WhatsApp for a custom quote.</p>
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
             <span>Get Custom Quote on WhatsApp</span>
           </a>
