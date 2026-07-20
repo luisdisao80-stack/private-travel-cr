@@ -9,6 +9,7 @@ import {
   isPickupWithinLeadTime,
   parseCostaRicaPickup,
 } from "@/lib/booking-rules";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -147,7 +148,60 @@ function siteOrigin(req: NextRequest): string {
   return `${proto}://${host}`;
 }
 
+// Shape guards for shuttle cart items. Client already validates most of
+// this, but a stale tab or a crafted request can still POST garbage —
+// we don't want a booking row (or a Tilopay charge) with zero passengers
+// or an empty pickup time. Kept as narrow shape checks; business-price
+// re-quoting is a separate concern.
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const TIME_RE = /^\d{2}:\d{2}$/;
+
+function validateShuttleItem(
+  item: unknown,
+): { ok: true } | { ok: false; reason: string } {
+  if (!item || typeof item !== "object") {
+    return { ok: false, reason: "not an object" };
+  }
+  const it = item as Record<string, unknown>;
+  const fromName = typeof it.fromName === "string" ? it.fromName.trim() : "";
+  const toName = typeof it.toName === "string" ? it.toName.trim() : "";
+  const date = typeof it.date === "string" ? it.date.trim() : "";
+  const pickupTime =
+    typeof it.pickupTime === "string" ? it.pickupTime.trim() : "";
+  const passengers = typeof it.passengers === "number" ? it.passengers : NaN;
+  const totalPrice = typeof it.totalPrice === "number" ? it.totalPrice : NaN;
+
+  if (!fromName) return { ok: false, reason: "missing pickup location" };
+  if (!toName) return { ok: false, reason: "missing drop-off location" };
+  if (fromName === toName)
+    return { ok: false, reason: "pickup and drop-off are the same" };
+  if (!DATE_RE.test(date)) return { ok: false, reason: "invalid date" };
+  if (!TIME_RE.test(pickupTime))
+    return { ok: false, reason: "invalid pickup time" };
+  if (!(passengers >= 1))
+    return { ok: false, reason: "at least 1 passenger required" };
+  if (!(totalPrice > 0))
+    return { ok: false, reason: "price must be greater than zero" };
+  return { ok: true };
+}
+
 export async function POST(req: NextRequest) {
+  // Rate limit BEFORE we touch the DB or Tilopay. Public endpoint; an
+  // attacker flooding this could pile hundreds of pending rows into
+  // Supabase (each = write op + storage) or blow through Tilopay quota.
+  // 30/min per IP is generous for a real visitor (they hit this once).
+  const ip = getClientIp(req);
+  const rl = rateLimit(ip, { max: 30, windowMs: 60_000 });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Try again shortly." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rl.retryAfterSeconds) },
+      },
+    );
+  }
+
   let body: StartPaymentBody;
   try {
     body = (await req.json()) as StartPaymentBody;
@@ -262,6 +316,20 @@ export async function POST(req: NextRequest) {
     const items = (body as ShuttleBody).items;
     if (!Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: "Empty cart" }, { status: 400 });
+    }
+    // Per-trip server-side validation. Client-side guards catch most of
+    // this, but a stale tab or a curl'd request can still send garbage
+    // (0 passengers, blank pickup, same fromName/toName). We stop it
+    // here so we never write a bogus booking row or hand Tilopay a
+    // charge with invalid trip data.
+    for (let i = 0; i < items.length; i++) {
+      const check = validateShuttleItem(items[i]);
+      if (!check.ok) {
+        return NextResponse.json(
+          { error: `Trip ${i + 1} has invalid data: ${check.reason}` },
+          { status: 400 },
+        );
+      }
     }
     bookingItems = items;
     bookingRow = { kind: "shuttle" };

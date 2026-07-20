@@ -1,10 +1,27 @@
 import { NextResponse } from "next/server";
 import { getRouteByLocations } from "@/lib/routes-db";
 import { getPriceForGroupSize, formatDuration } from "@/lib/quote-helpers";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
+  // Rate limit — the hero preview hits this once per visitor, but the
+  // route pulls from Supabase, so we don't want it flooded either.
+  // Higher window than payment endpoints since a legit visitor may
+  // preview several routes while browsing.
+  const ip = getClientIp(request);
+  const rl = rateLimit(ip, { max: 60, windowMs: 60_000 });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Try again shortly." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rl.retryAfterSeconds) },
+      },
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const from = searchParams.get("from");
   const to = searchParams.get("to");
