@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Mail, MessageCircle, Phone, Plane, MapPin, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby, Send, Download } from "lucide-react";
+import { ChevronLeft, Mail, MessageCircle, Phone, Plane, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby, Send, Download } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { pdfTokenFor } from "@/lib/pdf-token";
+import { getAllHotels } from "@/lib/hotels-db";
 import type { CartItem } from "@/lib/CartContext";
 import {
   STATUSES,
@@ -10,6 +11,7 @@ import {
   formatCRDateTime,
   pickupAt,
 } from "@/components/admin/booking-helpers";
+import EditableTripAddresses from "@/components/admin/EditableTripAddresses";
 import {
   updateBookingStatusAction,
   updateTripDateTimeAction,
@@ -40,13 +42,21 @@ export default async function AdminBookingDetailPage({
     : null;
   const justSentUpdate = sent === "update";
 
-  const { data, error } = await supabaseAdmin
-    .from("bookings")
-    .select(
-      "order_number, customer_name, customer_email, customer_phone, customer_hotel, flight_number, flight_time, notes, items, total_usd, currency, status, created_at, reminder_sent_at, tilopay_auth, tilopay_last4, attribution"
-    )
-    .eq("order_number", orderNumber)
-    .maybeSingle();
+  // Fetch the booking and the hotel list in parallel — hotels feed the
+  // per-trip <EditableTripAddresses> autocomplete so Diego gets the same
+  // 156-hotel suggestions the customer sees on /book. The list is small
+  // (~156 rows) and cached in Supabase, so the added round-trip is
+  // negligible next to the booking read.
+  const [{ data, error }, hotels] = await Promise.all([
+    supabaseAdmin
+      .from("bookings")
+      .select(
+        "order_number, customer_name, customer_email, customer_phone, customer_hotel, flight_number, flight_time, notes, items, total_usd, currency, status, created_at, reminder_sent_at, tilopay_auth, tilopay_last4, attribution",
+      )
+      .eq("order_number", orderNumber)
+      .maybeSingle(),
+    getAllHotels(),
+  ]);
 
   if (error) {
     return (
@@ -250,20 +260,26 @@ export default async function AdminBookingDetailPage({
                         ? ` · ${it.children} child${it.children === 1 ? "" : "ren"}`
                         : ""}
                     </div>
-                    {it.pickupPlace && (
-                      <div className="inline-flex items-center gap-1.5 sm:col-span-2">
-                        <MapPin size={12} className="text-gray-500" />
-                        <span className="text-gray-500">Pickup:</span>{" "}
-                        {it.pickupPlace}
-                      </div>
-                    )}
-                    {it.dropoffPlace && (
-                      <div className="inline-flex items-center gap-1.5 sm:col-span-2">
-                        <MapPin size={12} className="text-gray-500" />
-                        <span className="text-gray-500">Drop-off:</span>{" "}
-                        {it.dropoffPlace}
-                      </div>
-                    )}
+                    {/* Pickup + drop-off addresses — inline-editable via
+                        the shared HotelAddressAutocomplete. Previously
+                        read-only, so a customer who typed an ambiguous
+                        address ("the yellow house near the church")
+                        forced Diego to fix it via raw SQL. The row now
+                        always renders (even if the customer left it
+                        empty — falls back to fromName / toName in
+                        italics) so Diego can add an address post-hoc
+                        as well. Silent save; use "Resend confirmation"
+                        below to notify the customer. */}
+                    <EditableTripAddresses
+                      orderNumber={data.order_number}
+                      tripIndex={idx}
+                      pickupPlace={it.pickupPlace ?? ""}
+                      dropoffPlace={it.dropoffPlace ?? ""}
+                      fromName={it.fromName}
+                      toName={it.toName}
+                      hotels={hotels}
+                    />
+
                     {it.flightNumber && (
                       <div className="inline-flex items-center gap-1.5">
                         <Plane size={12} className="text-gray-500" />
@@ -469,41 +485,50 @@ export default async function AdminBookingDetailPage({
           two actions don't crowd each other and Diego doesn't fire one
           when he meant the other. The form uses a server action with
           one hidden input; clicking the button re-fires the original
-          "Booking Confirmed" email to the customer + an internal copy
-          to BUSINESS_EMAIL. */}
-      <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mt-6">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 inline-flex items-center gap-2">
-          <Send size={14} className="text-amber-400" />
-          Resend confirmation email
-        </h2>
-        <p className="text-xs text-gray-500 mb-4 leading-relaxed">
-          Use when a customer messages saying they didn&apos;t receive the
-          ORIGINAL confirmation (e.g. it landed in spam). Re-sends the
-          original &ldquo;Booking Confirmed&rdquo; template to{" "}
-          <span className="text-amber-400 font-medium">{data.customer_email || "(no email on file)"}</span>{" "}
-          and a copy to your internal inbox. For changes to an existing
-          booking, use &ldquo;Notify customer of changes&rdquo; above
-          instead.
-        </p>
-        <form
-          action={resendConfirmationEmailAction}
-          className="flex items-center gap-3 flex-wrap"
-        >
-          <input
-            type="hidden"
-            name="orderNumber"
-            value={data.order_number}
-          />
-          <button
-            type="submit"
-            disabled={!data.customer_email}
-            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-zinc-800 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+          "Booking Confirmed" email to the customer ONLY (no internal
+          copy — Diego already knows about the booking; duplicate pings
+          for the same order train him to ignore them). Only shown for
+          approved bookings — resending a "confirmation" for a pending
+          / cancelled booking would confuse the customer. */}
+      {data.status === "approved" && (
+        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mt-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 inline-flex items-center gap-2">
+            <Send size={14} className="text-amber-400" />
+            Resend confirmation email
+          </h2>
+          <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+            Use when a customer messages saying they didn&apos;t receive
+            the ORIGINAL confirmation (e.g. it landed in spam), or after
+            you&apos;ve corrected a pickup / drop-off address and want
+            the customer to have the refreshed details. Re-sends the
+            original &ldquo;Booking Confirmed&rdquo; template to{" "}
+            <span className="text-amber-400 font-medium">
+              {data.customer_email || "(no email on file)"}
+            </span>{" "}
+            only — your internal inbox is NOT copied. For date / time
+            changes to an existing booking, use &ldquo;Notify customer
+            of changes&rdquo; above instead.
+          </p>
+          <form
+            action={resendConfirmationEmailAction}
+            className="flex items-center gap-3 flex-wrap"
           >
-            <Send size={12} />
-            Resend confirmation
-          </button>
-        </form>
-      </div>
+            <input
+              type="hidden"
+              name="orderNumber"
+              value={data.order_number}
+            />
+            <button
+              type="submit"
+              disabled={!data.customer_email}
+              className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-zinc-800 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+            >
+              <Send size={12} />
+              Resend confirmation to customer
+            </button>
+          </form>
+        </div>
+      )}
 
       {/* Driver Trip Sheet PDF — same PDF pipeline as the customer
           receipt but with pricing stripped. Diego 2026-07-05: forwards
