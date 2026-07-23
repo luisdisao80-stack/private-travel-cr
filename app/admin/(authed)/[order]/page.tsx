@@ -12,6 +12,7 @@ import {
   pickupAt,
 } from "@/components/admin/booking-helpers";
 import EditableTripAddresses from "@/components/admin/EditableTripAddresses";
+import ResendConfirmationButton from "@/components/admin/ResendConfirmationButton";
 import {
   updateBookingStatusAction,
   updateTripDateTimeAction,
@@ -509,24 +510,11 @@ export default async function AdminBookingDetailPage({
             changes to an existing booking, use &ldquo;Notify customer
             of changes&rdquo; above instead.
           </p>
-          <form
+          <ResendConfirmationButton
+            orderNumber={data.order_number}
+            customerEmail={data.customer_email}
             action={resendConfirmationEmailAction}
-            className="flex items-center gap-3 flex-wrap"
-          >
-            <input
-              type="hidden"
-              name="orderNumber"
-              value={data.order_number}
-            />
-            <button
-              type="submit"
-              disabled={!data.customer_email}
-              className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-zinc-800 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
-            >
-              <Send size={12} />
-              Resend confirmation to customer
-            </button>
-          </form>
+          />
         </div>
       )}
 
