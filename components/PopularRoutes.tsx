@@ -162,6 +162,36 @@ export default function PopularRoutes() {
             <span className="text-white font-semibold">{t.routes.routesAvailable}</span>{" "}
             {t.routes.inCostaRica}
           </p>
+          {/* In-content contextual link to the money landing page. Editorial
+              body links carry more weight than the footer link, and the
+              exact-keyword anchor ("private transportation in Costa Rica")
+              reinforces the ranking signal for the generic queries that were
+              stuck at position ~10 in GSC (2026-07). */}
+          <p className="text-gray-400 mb-5 text-sm">
+            {lang === "en" ? (
+              <>
+                Learn more about our{" "}
+                <Link
+                  href="/private-transportation-costa-rica"
+                  className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                >
+                  private transportation in Costa Rica
+                </Link>{" "}
+                — door-to-door private transfers from SJO &amp; LIR airports.
+              </>
+            ) : (
+              <>
+                Conocé más sobre nuestro{" "}
+                <Link
+                  href="/private-transportation-costa-rica"
+                  className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                >
+                  transporte privado en Costa Rica
+                </Link>{" "}
+                — traslados puerta a puerta desde los aeropuertos SJO y LIR.
+              </>
+            )}
+          </p>
           <Link href="/routes">
             <Button
               size="lg"

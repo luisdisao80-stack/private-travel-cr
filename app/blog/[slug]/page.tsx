@@ -260,8 +260,18 @@ export default async function BlogPostPage({
               Need a private shuttle in Costa Rica?
             </h3>
             <p className="text-gray-400 text-sm md:text-base mb-4">
-              Door-to-door private transfers from SJO and LIR airports. Get an
-              instant quote.
+              Door-to-door{" "}
+              {/* Contextual internal link on every blog post → the money
+                  landing page. Exact-keyword anchor reinforces ranking for
+                  the generic "costa rica private transportation / transfers"
+                  queries that GSC (2026-07) showed stuck at position ~10. */}
+              <Link
+                href="/private-transportation-costa-rica"
+                className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+              >
+                private transportation in Costa Rica
+              </Link>{" "}
+              from SJO and LIR airports. Get an instant quote.
             </p>
             <Link
               href="/book"
