@@ -14,9 +14,20 @@ export default function Footer() {
   // every page in the site footer (Hotels was dropped from the navbar
   // to declutter; Routes and Tours are in the navbar too but a second
   // link from the footer doesn't hurt).
+  //
+  // "Private Transportation" (/private-transportation-costa-rica) is the
+  // money landing page for the generic "costa rica private transportation
+  // / transfers" queries. GSC (2026-07) showed those queries getting lots
+  // of impressions but ~5% CTR — a classic position-10 signal — and the
+  // landing had ZERO internal links pointing at it. This site-wide footer
+  // link with exact-keyword anchor text is the fastest lever to push it
+  // from page-1-bottom toward top 5. Anchor text is deliberately the
+  // keyword ("Private Transportation" / "Transporte Privado"), not a
+  // generic "Services", because anchor text is a ranking signal.
   const quickLinks = lang === "en"
     ? [
         { label: "Home", href: "/#inicio" },
+        { label: "Private Transportation", href: "/private-transportation-costa-rica" },
         { label: "Routes", href: "/routes" },
         { label: "Tours", href: "/tours" },
         { label: "Hotels", href: "/hotels" },
@@ -27,6 +38,7 @@ export default function Footer() {
       ]
     : [
         { label: "Inicio", href: "/#inicio" },
+        { label: "Transporte Privado", href: "/private-transportation-costa-rica" },
         { label: "Rutas", href: "/routes" },
         { label: "Tours", href: "/tours" },
         { label: "Hoteles", href: "/hotels" },
