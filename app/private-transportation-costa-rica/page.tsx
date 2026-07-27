@@ -12,6 +12,7 @@ import {
   MapPin,
   CreditCard,
   Baby,
+  Users,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -93,6 +94,42 @@ const INCLUDED_FEATURES = [
   { icon: Baby, label: "Free child seats (infant, convertible, booster)" },
   { icon: ShieldCheck, label: "Full insurance through INS (Costa Rica's national insurer)" },
   { icon: CreditCard, label: "All taxes and tolls included — no hidden fees" },
+];
+
+// On-page vehicle photos. The landing had zero images — a page that ranks
+// for a high-intent commercial query needs to show the actual product.
+// Real photos build trust (lower bounce, higher conversion) and each <img>
+// alt is another keyword-relevant crawl signal. Prices are the per-vehicle
+// starting rates, kept in sync with /fleet and the homepage FleetPreview.
+// "View details" links to /fleet — an extra internal link to a deeper page.
+const VEHICLES = [
+  {
+    name: "Hyundai Staria",
+    model: "PREMIUM SUV",
+    pax: "1–5 passengers",
+    image: "/staria.webp",
+    alt: "Hyundai Staria premium SUV for private transportation in Costa Rica",
+    priceFrom: 90,
+    badge: "MOST POPULAR",
+  },
+  {
+    name: "Toyota Hiace",
+    model: "HIGH ROOF VAN",
+    pax: "6–9 passengers",
+    image: "/hiace.png",
+    alt: "Toyota Hiace high-roof van for group private transfers in Costa Rica",
+    priceFrom: 120,
+    badge: "LARGE GROUPS",
+  },
+  {
+    name: "Maxus V90",
+    model: "EXECUTIVE VAN",
+    pax: "10–12 passengers",
+    image: "/maxus-v90.webp",
+    alt: "Maxus V90 executive van for large-group private transportation in Costa Rica",
+    priceFrom: 180,
+    badge: "XL GROUPS",
+  },
 ];
 
 // FAQ content lives in one place so the on-page <details> accordion AND the
@@ -359,6 +396,87 @@ export default async function PrivateTransportationCostaRicaPage() {
             <Link href="/routes" className="text-amber-400 hover:underline font-medium">
               Browse all 1,200+ routes →
             </Link>
+          </p>
+        </div>
+      </section>
+
+      {/* THE FLEET */}
+      <section className="px-4 py-16 border-t border-amber-500/10">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+              Modern 2024+ Fleet · Air-Conditioned
+            </span>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-white">
+              The vehicles for your private transfer
+            </h2>
+            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+              Every transfer runs in a clean, modern, air-conditioned vehicle
+              sized to your group — from a premium SUV for couples to an
+              executive van for groups of 12.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {VEHICLES.map((v) => (
+              <div
+                key={v.name}
+                className="rounded-2xl border border-amber-500/20 bg-zinc-950/50 overflow-hidden"
+              >
+                <div className="relative h-48 bg-white p-4">
+                  <img
+                    src={v.image}
+                    alt={v.alt}
+                    width={400}
+                    height={240}
+                    loading="lazy"
+                    className="w-full h-full object-contain"
+                  />
+                  <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500 text-black text-xs font-bold tracking-wider shadow-lg">
+                    {v.badge}
+                  </div>
+                  <div className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-sm border border-white/10">
+                    <Users className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="text-white text-sm font-medium">{v.pax}</span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="text-amber-400 text-xs tracking-widest font-medium mb-1">
+                    {v.model}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">{v.name}</h3>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-white/50 uppercase tracking-wider">
+                        From
+                      </div>
+                      <div className="text-2xl font-bold text-white">
+                        ${v.priceFrom}
+                      </div>
+                    </div>
+                    <Link
+                      href="/fleet"
+                      className="text-amber-400 text-sm flex items-center gap-1 hover:gap-2 transition-all font-medium"
+                    >
+                      View details
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-8 text-center text-sm text-white/60">
+            Traveling with more than 12 passengers?{" "}
+            <a
+              href={siteConfig.business.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-400 hover:underline font-medium"
+            >
+              Message Diego on WhatsApp for a custom quote →
+            </a>
           </p>
         </div>
       </section>
