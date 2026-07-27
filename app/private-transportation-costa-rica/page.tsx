@@ -120,6 +120,14 @@ const FAQS = [
     a: "Yes. Add each leg to your cart on our booking page. Each trip is priced and confirmed separately, all paid in a single checkout. Cancellation policy applies per trip.",
   },
   {
+    // Answer mirrors the official Terms & Conditions (section 3,
+    // /terms) verbatim in substance — 48h full refund, inside 48h /
+    // no-show non-refundable, provider-side cancellation = full refund
+    // or free reschedule. Keep in sync with app/terms/page.tsx.
+    q: "What is your cancellation policy?",
+    a: "Cancellations made 48 hours or more before your scheduled pickup receive a full refund of the amount paid. Cancellations within 48 hours, no-shows, and last-minute changes are non-refundable. If we ever have to cancel from our side — severe weather, road closures, or safety concerns — you get a full refund or a free reschedule. To cancel or reschedule, message Diego on WhatsApp at +506 8633-4133.",
+  },
+  {
     q: "What if my flight is delayed?",
     a: "Flight tracking is included on every airport pickup. The driver monitors your flight in real-time and adjusts pickup automatically. There's no extra charge for delays.",
   },
