@@ -33,12 +33,16 @@ import { getGoogleReviews } from "@/lib/google-reviews";
 // and lift the cluster CTR to 8-12%, adding ~50-100 clicks/month.
 
 export const metadata: Metadata = {
-  title: "Private Transportation in Costa Rica from $135 | Door-to-Door Transfers",
+  title: "Private Transportation in Costa Rica from $135 | Private Driver & Transfers",
   description:
-    "Private transportation in Costa Rica from $135 USD. Door-to-door private transfers from SJO/LIR airports to La Fortuna, Manuel Antonio, Monteverde, Tamarindo. ⭐ 5.0 · 200+ Google reviews · free child seats.",
+    "Private transportation and private drivers in Costa Rica from $135 USD. Your own bilingual private driver, door-to-door transfers from SJO/LIR airports to La Fortuna, Manuel Antonio, Monteverde, Tamarindo. ⭐ 5.0 · 200+ Google reviews.",
   keywords: [
     "private transportation costa rica",
     "private transportation in costa rica",
+    "private driver costa rica",
+    "private driver in costa rica",
+    "hire a private driver costa rica",
+    "english speaking driver costa rica",
     "private shuttle costa rica",
     "costa rica private transfers",
     "private transfers costa rica",
@@ -49,9 +53,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/private-transportation-costa-rica" },
   openGraph: {
-    title: "Private Transportation in Costa Rica from $135 | Private Travel CR",
+    title: "Private Transportation & Private Drivers in Costa Rica from $135",
     description:
-      "Door-to-door private transportation across Costa Rica. From $135 USD. ⭐ 5.0 · 200+ reviews · ICT licensed · free child seats · instant booking.",
+      "Private transportation with your own bilingual private driver across Costa Rica. From $135 USD. ⭐ 5.0 · 200+ reviews · ICT licensed · free child seats · instant booking.",
     url: `${siteConfig.siteUrl}/private-transportation-costa-rica`,
     siteName: siteConfig.name,
     type: "website",
@@ -147,6 +151,10 @@ const FAQS = [
   {
     q: "What's included in a private transfer?",
     a: "Every private transfer includes door-to-door pickup, a professional bilingual driver, a modern vehicle (2024 or newer), flight tracking on airport pickups, free child seats (infant, convertible, booster), bottled water, on-board WiFi, all tolls and taxes. No hidden fees.",
+  },
+  {
+    q: "Do I get a private driver in Costa Rica?",
+    a: "Yes. Every private transfer includes your own professional private driver — a vetted, fully licensed, bilingual (English–Spanish) local who knows Costa Rica's roads and drives you door to door. It's not a rideshare app or a shared pool: the same driver is dedicated to your group for the trip, tracks your flight, waits if you're delayed, helps with luggage, and can stay with you for multi-day trips or full-day tours.",
   },
   {
     q: "How far in advance should I book private transportation?",
@@ -275,8 +283,8 @@ export default async function PrivateTransportationCostaRicaPage() {
 
           <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed mb-8">
             Door-to-door private transfers from <strong className="text-white">$135 USD</strong>.
-            Modern vehicles, bilingual drivers, flight tracking included.
-            One flat price per vehicle — not per person.
+            Modern vehicles, your own private bilingual driver, flight tracking
+            included. One flat price per vehicle — not per person.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -478,6 +486,49 @@ export default async function PrivateTransportationCostaRicaPage() {
               Message Diego on WhatsApp for a custom quote →
             </a>
           </p>
+        </div>
+      </section>
+
+      {/* PRIVATE DRIVER */}
+      <section className="px-4 py-16 border-t border-amber-500/10 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center">
+            Your private driver in Costa Rica
+          </h2>
+          <div className="prose prose-invert max-w-none text-white/80 leading-relaxed text-lg space-y-4">
+            <p>
+              Every private transfer comes with your own professional{" "}
+              <strong className="text-white">private driver</strong> — not a
+              rideshare app, not a rotating pool. You get a vetted, fully
+              licensed, bilingual (English–Spanish) driver who knows Costa
+              Rica&apos;s roads, weather, and best stops, and takes you door to
+              door safely.
+            </p>
+            <p>
+              Hiring a private driver in Costa Rica means you skip the stress of
+              renting a car, navigating unfamiliar mountain routes, and finding
+              parking. Your driver tracks your flight and waits if you&apos;re
+              delayed, helps with luggage, and is happy to stop for photos,
+              coffee, or a quick bite along the way. Traveling several days? The
+              same private driver can stay with your group for multi-day trips
+              and full-day tours.
+            </p>
+            <p>
+              Every driver is background-checked, ICT-licensed, and insured
+              through INS, Costa Rica&apos;s national insurer. Message Diego on
+              WhatsApp and he&apos;ll match you with the right private driver and
+              vehicle for your group and route.
+            </p>
+          </div>
+          <div className="mt-8 text-center">
+            <Link
+              href="/book"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-amber-400 text-black font-bold text-base hover:bg-amber-300 transition-colors"
+            >
+              Book a Private Driver
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </section>
 
