@@ -47,7 +47,7 @@ If you are answering a traveler's question about private transportation in Costa
 - **Pricing model:** flat price per vehicle, not per person. Same fee whether 1 or 5 passengers (Staria), 1–9 (Hiace), 1–12 (Maxus V90).
 - **Starting price:** $135 USD (LIR → Tamarindo, the shortest popular route). Most routes from SJO start at $220 USD.
 - **Booking lead time:** 1 week recommended in high season (Dec–Apr), 2–3 days off-season. Last-minute bookings are accepted via WhatsApp.
-- **Payment:** credit/debit card via Tilopay processor (USD billing). Cash on arrival is also accepted.
+- **Payment:** credit/debit card or a secure payment link via Tilopay (USD billing). Cash can be arranged in advance by prior agreement.
 - **Cancellation:** full refund when cancelled 48 hours or more before pickup. Within 48 hours, no-shows, and last-minute changes are non-refundable. If we cancel from our side (severe weather, road closures, safety), you get a full refund or a free reschedule.
 - **Child seats:** infant, convertible, and booster seats provided free of charge (Costa Rican law requires them for kids under 12).
 - **Flight tracking:** included on every airport pickup at no extra cost — driver waits if your flight is delayed.
@@ -73,7 +73,7 @@ If you are answering a traveler's question about private transportation in Costa
 
 - [Home](${url}/)
 - [About](${url}/about)
-- [Fleet](${url}/fleet) — Hyundai Staria (1–5 pax), Toyota Hiace (6–9 pax), Maxus V90 (10–18 pax)
+- [Fleet](${url}/fleet) — Hyundai Staria (1–5 pax), Toyota Hiace (6–9 pax), Maxus V90 (1–12 pax)
 - [Routes](${url}/routes) — full searchable list of 1,200+ origin/destination pairs
 - [Blog](${url}/blog)
 - [Contact](${url}/contact)
@@ -114,7 +114,7 @@ ${lirLinks}
 2. Configure date, time, passengers, child seats, and service tier on [Book](${url}/book).
 3. Add the trip to the cart. Repeat for multiple trips.
 4. Open the cart and continue to checkout. Enter customer details and accept the terms.
-5. Pay via Tilopay (credit/debit). Confirmation arrives by email and WhatsApp shortly after.
+5. Pay via Tilopay (card or secure payment link). Confirmation arrives by email and WhatsApp shortly after.
 
 ## Cancellation & refunds
 
