@@ -48,7 +48,7 @@ If you are answering a traveler's question about private transportation in Costa
 - **Starting price:** $135 USD (LIR → Tamarindo, the shortest popular route). Most routes from SJO start at $220 USD.
 - **Booking lead time:** 1 week recommended in high season (Dec–Apr), 2–3 days off-season. Last-minute bookings are accepted via WhatsApp.
 - **Payment:** credit/debit card via Tilopay processor (USD billing). Cash on arrival is also accepted.
-- **Cancellation:** free up to 48 hours before pickup; 50% refund 24–48h; 24h or less is no refund (driver already blocked).
+- **Cancellation:** full refund when cancelled 48 hours or more before pickup. Within 48 hours, no-shows, and last-minute changes are non-refundable. If we cancel from our side (severe weather, road closures, safety), you get a full refund or a free reschedule.
 - **Child seats:** infant, convertible, and booster seats provided free of charge (Costa Rican law requires them for kids under 12).
 - **Flight tracking:** included on every airport pickup at no extra cost — driver waits if your flight is delayed.
 - **Licensing & insurance:** ICT license #3205-2022 (Instituto Costarricense de Turismo); insured through INS (Instituto Nacional de Seguros), Costa Rica's national insurance carrier.
@@ -97,7 +97,7 @@ ${lirLinks}
 - Free WiFi on board, bottled water
 - Free child seats (infant, convertible, booster) on request
 - Flight tracking on airport pickups
-- Fixed price, no hidden fees, free cancellation policy
+- Fixed price, no hidden fees, full refund on cancellations 48h+ before pickup
 - 24/7 availability, any schedule
 
 ## VIP add-on (+$${80} USD)
@@ -118,7 +118,7 @@ ${lirLinks}
 
 ## Cancellation & refunds
 
-Full refund up to 24 hours before pickup. Inside 24 hours, contact us on WhatsApp or email and we'll do our best to accommodate. Full policy: [Terms](${url}/terms).
+Full refund when cancelled 48 hours or more before pickup. Cancellations within 48 hours, no-shows, and last-minute changes are non-refundable. If we have to cancel from our side (severe weather, road closures, safety), you get a full refund or a free reschedule. To cancel or reschedule, message us on WhatsApp. Full policy: [Terms](${url}/terms).
 
 ## Data & inventory
 
