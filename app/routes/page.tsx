@@ -27,11 +27,28 @@ export const metadata: Metadata = {
     "SJO airport transfer",
     "LIR airport transfer",
   ],
+  alternates: { canonical: "/routes" },
   openGraph: {
     title: "Costa Rica Private Transfers — 1,200+ Routes from $135",
     description:
       "Door-to-door private transportation across Costa Rica. Instant quote, fixed 2026 prices, free child seats.",
+    url: "/routes",
     type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Costa Rica private transfers — Private Travel CR",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Costa Rica Private Transfers — 1,200+ Routes from $135",
+    description:
+      "Door-to-door private transportation across Costa Rica. Instant quote, fixed 2026 prices.",
+    images: ["/og-image.jpg"],
   },
 };
 

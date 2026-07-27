@@ -95,13 +95,116 @@ const INCLUDED_FEATURES = [
   { icon: CreditCard, label: "All taxes and tolls included — no hidden fees" },
 ];
 
+// FAQ content lives in one place so the on-page <details> accordion AND the
+// FAQPage JSON-LD below are always in sync. Google requires the structured
+// FAQ text to match the visible answer verbatim, so both render from FAQS.
+const FAQS = [
+  {
+    q: "How much does private transportation cost in Costa Rica?",
+    a: "Private transportation in Costa Rica starts at $135 USD per vehicle for short routes (e.g. LIR Airport to Tamarindo) and goes up to ~$420 USD for the longest popular routes (SJO Airport to Papagayo Peninsula). Most popular routes are between $220-$260. The price is per vehicle, not per person, so the cost stays the same for groups of 1 to 5 in a standard van.",
+  },
+  {
+    q: "Is private transportation worth it vs. a shared shuttle?",
+    a: "For solo travelers on a budget, shared shuttles ($55 per person) win on price. For couples, the math is closer. For groups of 3+, private transportation is usually the same total cost as a shared shuttle but gets you there 1-2 hours faster and door-to-door without other passengers.",
+  },
+  {
+    q: "What's included in a private transfer?",
+    a: "Every private transfer includes door-to-door pickup, a professional bilingual driver, a modern vehicle (2024 or newer), flight tracking on airport pickups, free child seats (infant, convertible, booster), bottled water, on-board WiFi, all tolls and taxes. No hidden fees.",
+  },
+  {
+    q: "How far in advance should I book private transportation?",
+    a: "In high season (December-April) we recommend booking at least 1 week ahead, especially for holiday weeks. In low season (May-November), 2-3 days is usually enough. Last-minute bookings are accepted via WhatsApp if a vehicle is available.",
+  },
+  {
+    q: "Can I book multiple legs (e.g. SJO → La Fortuna → Monteverde → SJO)?",
+    a: "Yes. Add each leg to your cart on our booking page. Each trip is priced and confirmed separately, all paid in a single checkout. Cancellation policy applies per trip.",
+  },
+  {
+    q: "What if my flight is delayed?",
+    a: "Flight tracking is included on every airport pickup. The driver monitors your flight in real-time and adjusts pickup automatically. There's no extra charge for delays.",
+  },
+  {
+    q: "Do you provide service from Liberia Airport (LIR) too?",
+    a: "Yes — we operate from both major Costa Rica airports: SJO (Juan Santamaría International, San José) and LIR (Daniel Oduber International, Liberia). LIR is the gateway to the Guanacaste beach resorts (Tamarindo, Papagayo, Conchal, Flamingo).",
+  },
+];
+
+// Lowest / highest advertised route price on this page — used for the
+// Service offer's priceRange so Google has structured price data.
+const PRICE_LOW = Math.min(...POPULAR_ROUTES.map((r) => r.price));
+const PRICE_HIGH = Math.max(...POPULAR_ROUTES.map((r) => r.price));
+
 export default async function PrivateTransportationCostaRicaPage() {
   const google = await getGoogleReviews();
   const reviewCount = google.count;
   const rating = google.rating;
 
+  // Page-specific structured data. The global layout only emits a
+  // sitewide LocalBusiness schema — this page had zero page-level JSON-LD,
+  // so the 7 on-page FAQs never surfaced as rich results. FAQPage is the
+  // single biggest CTR lever here (expandable Q&A in the SERP); Service
+  // gives Google structured price data; BreadcrumbList clarifies hierarchy.
+  const pageUrl = `${siteConfig.siteUrl}/private-transportation-costa-rica`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "FAQPage",
+        "@id": `${pageUrl}#faq`,
+        mainEntity: FAQS.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+      {
+        "@type": "Service",
+        "@id": `${pageUrl}#service`,
+        serviceType: "Private transportation",
+        name: "Private Transportation in Costa Rica",
+        description:
+          "Door-to-door private transfers across Costa Rica from SJO and LIR airports to La Fortuna, Monteverde, Manuel Antonio, Tamarindo and any destination. Priced per vehicle, not per person.",
+        provider: {
+          "@type": "LocalBusiness",
+          name: siteConfig.name,
+          url: siteConfig.siteUrl,
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: rating.toFixed(1),
+            reviewCount: reviewCount,
+          },
+        },
+        areaServed: { "@type": "Country", name: "Costa Rica" },
+        offers: {
+          "@type": "AggregateOffer",
+          priceCurrency: "USD",
+          lowPrice: PRICE_LOW,
+          highPrice: PRICE_HIGH,
+          offerCount: POPULAR_ROUTES.length,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.siteUrl },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Private Transportation in Costa Rica",
+            item: pageUrl,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <main className="min-h-screen bg-black text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
 
       {/* HERO */}
@@ -376,36 +479,7 @@ export default async function PrivateTransportationCostaRicaPage() {
             Private transportation FAQs
           </h2>
           <div className="space-y-4">
-            {[
-              {
-                q: "How much does private transportation cost in Costa Rica?",
-                a: "Private transportation in Costa Rica starts at $135 USD per vehicle for short routes (e.g. LIR Airport to Tamarindo) and goes up to ~$420 USD for the longest popular routes (SJO Airport to Papagayo Peninsula). Most popular routes are between $220-$260. The price is per vehicle, not per person, so the cost stays the same for groups of 1 to 5 in a standard van.",
-              },
-              {
-                q: "Is private transportation worth it vs. a shared shuttle?",
-                a: "For solo travelers on a budget, shared shuttles ($55 per person) win on price. For couples, the math is closer. For groups of 3+, private transportation is usually the same total cost as a shared shuttle but gets you there 1-2 hours faster and door-to-door without other passengers.",
-              },
-              {
-                q: "What's included in a private transfer?",
-                a: "Every private transfer includes door-to-door pickup, a professional bilingual driver, a modern vehicle (2024 or newer), flight tracking on airport pickups, free child seats (infant, convertible, booster), bottled water, on-board WiFi, all tolls and taxes. No hidden fees.",
-              },
-              {
-                q: "How far in advance should I book private transportation?",
-                a: "In high season (December-April) we recommend booking at least 1 week ahead, especially for holiday weeks. In low season (May-November), 2-3 days is usually enough. Last-minute bookings are accepted via WhatsApp if a vehicle is available.",
-              },
-              {
-                q: "Can I book multiple legs (e.g. SJO → La Fortuna → Monteverde → SJO)?",
-                a: "Yes. Add each leg to your cart on our booking page. Each trip is priced and confirmed separately, all paid in a single checkout. Cancellation policy applies per trip.",
-              },
-              {
-                q: "What if my flight is delayed?",
-                a: "Flight tracking is included on every airport pickup. The driver monitors your flight in real-time and adjusts pickup automatically. There's no extra charge for delays.",
-              },
-              {
-                q: "Do you provide service from Liberia Airport (LIR) too?",
-                a: "Yes — we operate from both major Costa Rica airports: SJO (Juan Santamaría International, San José) and LIR (Daniel Oduber International, Liberia). LIR is the gateway to the Guanacaste beach resorts (Tamarindo, Papagayo, Conchal, Flamingo).",
-              },
-            ].map((f) => (
+            {FAQS.map((f) => (
               <details
                 key={f.q}
                 className="group rounded-xl border border-amber-500/10 bg-zinc-950/50 overflow-hidden"
