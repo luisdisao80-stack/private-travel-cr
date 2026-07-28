@@ -50,6 +50,12 @@ export const metadata: Metadata = {
     "door-to-door costa rica shuttle",
     "private transfer SJO airport",
     "private transfer LIR airport",
+    "costa rica ground transportation",
+    "ground transportation costa rica",
+    "costa rica airport transfers",
+    "costa rica airport transfer",
+    "costa rica airport transportation",
+    "private shuttle service costa rica",
   ],
   alternates: { canonical: "/private-transportation-costa-rica" },
   openGraph: {
@@ -179,6 +185,10 @@ const FAQS = [
   {
     q: "Do you provide service from Liberia Airport (LIR) too?",
     a: "Yes — we operate from both major Costa Rica airports: SJO (Juan Santamaría International, San José) and LIR (Daniel Oduber International, Liberia). LIR is the gateway to the Guanacaste beach resorts (Tamarindo, Papagayo, Conchal, Flamingo).",
+  },
+  {
+    q: "Do you handle airport transfers and ground transportation across Costa Rica?",
+    a: "Yes — airport transfers are our most-booked service, and we cover ground transportation for your whole trip. We pick you up curbside at SJO or LIR arrivals with a name sign, track your flight so we're there even if you land late, and drive you door-to-door to any hotel, beach town, or destination. Beyond the airport, we handle every leg of your ground transportation in Costa Rica — hotel-to-hotel transfers, day trips, and multi-stop itineraries — all as private rides priced per vehicle, not per person.",
   },
 ];
 
@@ -321,7 +331,18 @@ export default async function PrivateTransportationCostaRicaPage() {
               no detours. You choose the pickup time, the pickup address (any
               hotel, Airbnb, or location in the country), and the destination.
               A professional bilingual driver arrives in a modern van or SUV and
-              takes you directly there.
+              takes you directly there. It&apos;s the simplest way to handle all
+              your ground transportation in Costa Rica — from the moment you land
+              until you&apos;re back at the airport.
+            </p>
+            <p>
+              Most travelers start with an{" "}
+              <strong className="text-white">airport transfer</strong> from SJO
+              (San José) or LIR (Liberia) to their first hotel, then book
+              point-to-point transfers between destinations for the rest of the
+              trip. Whether you need a single airport transfer or full ground
+              transportation for a two-week itinerary, every leg is a private,
+              door-to-door ride priced per vehicle.
             </p>
             <p>
               Unlike a shared shuttle (which costs about <strong className="text-amber-400">$55 per person</strong>{" "}
