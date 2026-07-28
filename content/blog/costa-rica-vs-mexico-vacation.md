@@ -1,6 +1,6 @@
 ---
-title: "Costa Rica vs Mexico: 7 Real Differences (2026)"
-description: "Is Costa Rica really safer than Mexico? A La Fortuna tour operator ranks both on safety, cost, food, beaches, and ease — and picks a winner. 2026 guide."
+title: "Costa Rica vs Mexico: Which Should You Visit? (2026)"
+description: "Costa Rica or Mexico for your next trip? A Costa Rican tour operator compares safety, cost, food, beaches, wildlife, and ease — honestly — and picks a winner. 2026 guide."
 date: "2026-06-03"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
@@ -204,6 +204,8 @@ Costa Rica is safer for solo travelers; Mexico has more nightlife scene (especia
 
 ---
 
-If you've landed on Costa Rica, the rest of your planning gets easier — fly into SJO or LIR, pick a region or two, and let the shuttles handle the in-country driving so you can focus on monkeys and waterfalls instead of mountain roads.
+If you've landed on Costa Rica, the rest of your planning gets easier — fly into SJO or LIR, pick a region or two, and let a private driver handle the in-country roads so you can focus on monkeys and waterfalls instead of mountain switchbacks.
 
-[See all our shuttle routes →](/routes)
+We're a family-run shuttle company based in La Fortuna. Every transfer is one flat price **per vehicle** (not per person), door-to-door, with flight tracking and free child seats included — and Diego answers every WhatsApp personally, usually in under 5 minutes.
+
+[Get an instant shuttle quote →](/book) · [browse all our routes →](/routes)
