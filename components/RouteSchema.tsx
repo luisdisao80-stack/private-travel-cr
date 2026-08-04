@@ -1,6 +1,7 @@
 import { siteConfig } from "@/lib/site-config";
 import type { Route } from "@/lib/types";
 import { parseDurationToMinutes } from "@/lib/quote-helpers";
+import { displayLocation } from "@/lib/locations";
 
 type Props = {
   route: Route;
@@ -27,14 +28,20 @@ export default function RouteSchema({ route, basePath }: Props) {
   const price = route.precio1a6 ?? 0;
   const durationMin = parseDurationToMinutes(route.duracion);
 
+  // Friendly, search-aligned names ("San Jose Airport" not "SJO - Juan
+  // Santamaria Int. Airport") so the schema Google reads matches how people
+  // actually query. Same rename table used in the page metadata + visible UI.
+  const originName = displayLocation(route.origen);
+  const destName = displayLocation(route.destino);
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "TaxiService",
     "@id": `${pageUrl}#service`,
-    name: `Private Shuttle ${route.origen} to ${route.destino}`,
+    name: `Private Shuttle ${originName} to ${destName}`,
     description:
       route.journey_description ||
-      `Private door-to-door shuttle from ${route.origen} to ${route.destino}, Costa Rica. Professional bilingual driver, modern vehicle, fixed price.`,
+      `Private door-to-door shuttle from ${originName} to ${destName}, Costa Rica. Professional bilingual driver, modern vehicle, fixed price.`,
     url: pageUrl,
     image: siteConfig.ogImage,
     provider: {

@@ -3,6 +3,7 @@ import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle, Building2 } from "lu
 import type { Route, RouteFAQ, Hotel } from "@/lib/types";
 import type { BlogPostMeta } from "@/lib/blog";
 import { isPopularRoute } from "@/lib/popular-routes";
+import { displayLocation } from "@/lib/locations";
 import RouteSchema from "@/components/RouteSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
@@ -11,27 +12,30 @@ import Price from "@/components/Price";
 
 // Generic auto-FAQs that work for every route. Manual route.faqs land
 // above these (they're more route-specific = higher SEO value).
-function buildAutoFAQs(route: Route): RouteFAQ[] {
+// `originName`/`destName` are the friendly, search-aligned display names
+// (e.g. "San Jose Airport") so both the visible Q&As and the FAQ schema
+// match how travelers actually phrase these queries.
+function buildAutoFAQs(route: Route, originName: string, destName: string): RouteFAQ[] {
   const baseList: RouteFAQ[] = [
     {
-      question: `How much does a private shuttle from ${route.origen} to ${route.destino} cost?`,
-      answer: `Private shuttle from ${route.origen} to ${route.destino} starts at $${route.precio1a6} USD per vehicle (1-5 passengers). The price is per vehicle, not per person — everyone in your group travels together for the same flat rate. Larger vehicles for 6-18 passengers are available at higher tiers.`,
+      question: `How much does a private shuttle from ${originName} to ${destName} cost?`,
+      answer: `Private shuttle from ${originName} to ${destName} starts at $${route.precio1a6} USD per vehicle (1-5 passengers). The price is per vehicle, not per person — everyone in your group travels together for the same flat rate. Larger vehicles for 6-18 passengers are available at higher tiers.`,
     },
   ];
   if (route.duracion) {
     baseList.push({
-      question: `How long does the drive from ${route.origen} to ${route.destino} take?`,
-      answer: `The drive from ${route.origen} to ${route.destino} takes approximately ${route.duracion}. Travel times can vary slightly depending on traffic, weather, and road conditions. Our drivers monitor conditions in real time to choose the fastest safe route.`,
+      question: `How long does the drive from ${originName} to ${destName} take?`,
+      answer: `The drive from ${originName} to ${destName} takes approximately ${route.duracion}. Travel times can vary slightly depending on traffic, weather, and road conditions. Our drivers monitor conditions in real time to choose the fastest safe route.`,
     });
   }
   baseList.push(
     {
-      question: `Is the shuttle from ${route.origen} to ${route.destino} private?`,
+      question: `Is the shuttle from ${originName} to ${destName} private?`,
       answer: `Yes. Every Private Travel CR shuttle is fully private — you ride only with your group, no shared seats with strangers. The price covers the entire vehicle door-to-door, including a professional bilingual driver, free WiFi, bottled water, free child seats on request, and full insurance.`,
     },
     {
-      question: `Do you pick up at any address in ${route.origen}?`,
-      answer: `Yes, we offer door-to-door pickup anywhere in ${route.origen} — hotels, Airbnbs, private villas, or any specific address you give us at booking. We confirm the exact pickup location 24 hours before your trip.`,
+      question: `Do you pick up at any address in ${originName}?`,
+      answer: `Yes, we offer door-to-door pickup anywhere in ${originName} — hotels, Airbnbs, private villas, or any specific address you give us at booking. We confirm the exact pickup location 24 hours before your trip.`,
     }
   );
   return baseList;
@@ -79,17 +83,29 @@ export default function RouteDetail({
   basePath,
 }: Props) {
   const points = parsePOI(route.points_of_interest);
+
+  // Friendly, search-aligned display names ("San Jose Airport" instead of
+  // "SJO - Juan Santamaria Int. Airport") for every VISIBLE label + heading
+  // + FAQ + schema. The raw route.origen/route.destino values are kept ONLY
+  // in the /book links and quote params below, because the booking system
+  // matches against the exact DB names. (Diego 2026-08: the page metadata
+  // title was already switched to friendly names in July; this brings the
+  // H1, breadcrumb, section headings, FAQs and schema in line so the whole
+  // page reinforces the "san jose airport to la fortuna" query cluster.)
+  const originName = displayLocation(route.origen);
+  const destName = displayLocation(route.destino);
+
   const whatsappUrl =
     "https://wa.me/50686334133?text=" +
     encodeURIComponent(
-      "Hello! I'm interested in a private shuttle from " + route.origen + " to " + route.destino + "."
+      "Hello! I'm interested in a private shuttle from " + originName + " to " + destName + "."
     );
 
   // Manual FAQs (from Supabase routes.faqs JSONB) win the top slots —
   // they're route-specific and more valuable for long-tail SEO. Auto-FAQs
   // fill in below so every route page still ships with at least 3-4 Q&As.
   const manualFAQs = Array.isArray(route.faqs) ? route.faqs : [];
-  const allFAQs: RouteFAQ[] = [...manualFAQs, ...buildAutoFAQs(route)];
+  const allFAQs: RouteFAQ[] = [...manualFAQs, ...buildAutoFAQs(route, originName, destName)];
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
@@ -99,7 +115,7 @@ export default function RouteDetail({
           { name: "Home", url: "/" },
           { name: "Routes", url: "/routes" },
           {
-            name: `${route.origen} to ${route.destino}`,
+            name: `${originName} to ${destName}`,
             url: `${basePath}/${route.slug}`,
           },
         ]}
@@ -113,7 +129,7 @@ export default function RouteDetail({
             Routes
           </Link>
           {" / "}
-          <span className="text-gray-300">{route.origen} to {route.destino}</span>
+          <span className="text-gray-300">{originName} to {destName}</span>
         </nav>
 
         <section className="mb-12">
@@ -121,7 +137,7 @@ export default function RouteDetail({
             <span className="text-amber-400 text-sm font-medium tracking-wider">PRIVATE SHUTTLE</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-            {route.origen} <span className="text-amber-400">to</span> {route.destino}
+            {originName} <span className="text-amber-400">to</span> {destName}
           </h1>
           <div className="flex flex-wrap gap-4 text-gray-300 mb-6">
             {route.duracion ? (
@@ -143,7 +159,7 @@ export default function RouteDetail({
 
         <section className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/30 rounded-2xl p-6 md:p-8 mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">
-            How much does a private shuttle from {route.origen} to {route.destino} cost?
+            How much does a private shuttle from {originName} to {destName} cost?
           </h2>
           {/* Vehicle/PAX tier cards. Clarity recordings (2026-06-03) showed
               25% of visitors clicking these cards expecting them to be
@@ -222,7 +238,7 @@ export default function RouteDetail({
         {route.journey_description ? (
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-white mb-4">
-              What is the drive from {route.origen} to {route.destino} like?
+              What is the drive from {originName} to {destName} like?
             </h2>
             <p className="text-gray-300 leading-relaxed">{route.journey_description}</p>
           </section>
@@ -231,7 +247,7 @@ export default function RouteDetail({
         {points.length > 0 ? (
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-white mb-4">
-              What can you see between {route.origen} and {route.destino}?
+              What can you see between {originName} and {destName}?
             </h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {points.map((p, i) => (
@@ -247,7 +263,7 @@ export default function RouteDetail({
         {route.road_type ? (
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-white mb-4">
-              What are the road conditions from {route.origen} to {route.destino}?
+              What are the road conditions from {originName} to {destName}?
             </h2>
             <p className="text-gray-300 leading-relaxed">{route.road_type}</p>
           </section>
@@ -263,7 +279,7 @@ export default function RouteDetail({
         {route.family_info ? (
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-white mb-4">
-              Is the shuttle from {route.origen} to {route.destino} family-friendly?
+              Is the shuttle from {originName} to {destName} family-friendly?
             </h2>
             <p className="text-gray-300 leading-relaxed">{route.family_info}</p>
           </section>
@@ -286,7 +302,7 @@ export default function RouteDetail({
         {route.late_night_info ? (
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-white mb-4">
-              Is the shuttle from {route.origen} to {route.destino} available 24/7?
+              Is the shuttle from {originName} to {destName} available 24/7?
             </h2>
             <p className="text-gray-300 leading-relaxed">{route.late_night_info}</p>
           </section>
@@ -308,7 +324,7 @@ export default function RouteDetail({
               <HelpCircle size={20} className="text-amber-400" />
             </div>
             <h2 id="route-faq-heading" className="text-2xl font-bold text-white">
-              Frequently asked about {route.origen} → {route.destino}
+              Frequently asked about {originName} → {destName}
             </h2>
           </div>
           <div className="space-y-3">
@@ -348,11 +364,11 @@ export default function RouteDetail({
                 <Building2 size={20} className="text-amber-400" />
               </div>
               <h2 id="dest-hotels-heading" className="text-2xl font-bold text-white">
-                Top hotels in {route.destino}
+                Top hotels in {destName}
               </h2>
             </div>
             <p className="text-gray-400 text-sm mb-6">
-              We pick up at any of these properties. Click for shuttle pricing from {route.destino} to anywhere in Costa Rica.
+              We pick up at any of these properties. Click for shuttle pricing from {destName} to anywhere in Costa Rica.
             </p>
             <div className="grid md:grid-cols-2 gap-4">
               {destinationHotels.map((h) => (
@@ -379,7 +395,7 @@ export default function RouteDetail({
 
         {related.length > 0 ? (
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">Other routes from {route.origen}</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">Other routes from {originName}</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {related.map((r) => (
                 <Link
@@ -389,7 +405,7 @@ export default function RouteDetail({
                 >
                   <div>
                     <div className="text-xs text-amber-400 mb-1">{r.duracion}</div>
-                    <div className="text-white font-medium">{r.destino}</div>
+                    <div className="text-white font-medium">{displayLocation(r.destino)}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-amber-400 font-bold"><Price usd={r.precio1a6 ?? 0} /></div>
@@ -410,7 +426,7 @@ export default function RouteDetail({
 
         <section className="bg-gradient-to-br from-amber-500/20 to-amber-500/10 border border-amber-500/40 rounded-2xl p-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Ready to book?</h2>
-          <p className="text-gray-300 mb-6">Get your private shuttle from {route.origen} to {route.destino} starting at ${route.precio1a6} USD</p>
+          <p className="text-gray-300 mb-6">Get your private shuttle from {originName} to {destName} starting at ${route.precio1a6} USD</p>
           <Link
             href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
             className="inline-block bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-8 rounded-xl transition"
