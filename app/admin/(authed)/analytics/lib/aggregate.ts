@@ -18,6 +18,7 @@
  *     compute keys via Intl.DateTimeFormat and trust the shift.
  */
 import type { CartItem } from "@/lib/CartContext";
+import type { Attribution } from "@/lib/attribution";
 
 export type BookingRow = {
   order_number: string;
@@ -27,6 +28,10 @@ export type BookingRow = {
   items: CartItem[] | null;
   status: string | null;
   created_at: string; // ISO UTC timestamp
+  /** First-touch marketing attribution captured at landing. Optional —
+   *  bookings created before attribution shipped (or in private mode) have
+   *  none. */
+  attribution?: Attribution | null;
 };
 
 export type Delta = {
@@ -64,6 +69,20 @@ export type RouteAggregate = {
   revenue: number;
 };
 
+export type SourceAggregate = {
+  /** referrer domain, e.g. "google.com", or "direct" / "(no data)". */
+  source: string;
+  bookings: number;
+  revenue: number;
+};
+
+export type LandingAggregate = {
+  /** Landing page pathname (query string stripped), e.g. "/blog/costa-rica-vs-mexico-vacation". */
+  landing: string;
+  bookings: number;
+  revenue: number;
+};
+
 export type RecentBooking = {
   order_number: string;
   customer_name: string;
@@ -95,6 +114,11 @@ export type AggregatedStats = {
   monthly: MonthlyPoint[]; // last 12 months incl. current
   topRoutes30d: RouteAggregate[];
   topRoutesThisMonth: RouteAggregate[];
+  /** Booking attribution over the full fetched window (~12 months). Answers
+   *  "where do the people who actually book come from?" — the marketing
+   *  ROI counterpart to Search Console's clicks. */
+  sourcesAllTime: SourceAggregate[];
+  landingPagesAllTime: LandingAggregate[];
   recentBookings: RecentBooking[];
 };
 
@@ -213,6 +237,15 @@ function safeRouteName(name: string | undefined | null): string {
   return (name || "?").trim();
 }
 
+/** Landing page for grouping: drop the query string so
+ *  "/blog/x?utm_source=fb" and "/blog/x" count as the same page. */
+function normalizeLanding(landing: string | undefined | null): string {
+  if (!landing) return "(no data)";
+  const q = landing.indexOf("?");
+  const path = q >= 0 ? landing.slice(0, q) : landing;
+  return path || "(no data)";
+}
+
 // --- Main aggregation ---------------------------------------------------
 
 export function aggregate(rows: BookingRow[], now: Date = new Date()): AggregatedStats {
@@ -270,6 +303,8 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
 
   const routes30d = new Map<string, RouteAggregate>();
   const routesThisMonth = new Map<string, RouteAggregate>();
+  const sources = new Map<string, SourceAggregate>();
+  const landings = new Map<string, LandingAggregate>();
 
   // Sort rows so "recentBookings" is deterministic.
   const sortedByRecency = [...rows].sort(
@@ -311,6 +346,23 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
       monthlyPoint.revenue += total;
       monthlyPoint.bookings += 1;
     }
+
+    // Attribution aggregation (over the full fetched window). First-touch:
+    // referrer_domain = where they arrived from ("google.com", "direct"),
+    // landing_page = the exact page that earned the visit.
+    const attr = row.attribution || undefined;
+    const src = attr?.referrer_domain || "(no data)";
+    const land = normalizeLanding(attr?.landing_page);
+
+    const srcAgg = sources.get(src) || { source: src, bookings: 0, revenue: 0 };
+    srcAgg.bookings += 1;
+    srcAgg.revenue += total;
+    sources.set(src, srcAgg);
+
+    const landAgg = landings.get(land) || { landing: land, bookings: 0, revenue: 0 };
+    landAgg.bookings += 1;
+    landAgg.revenue += total;
+    landings.set(land, landAgg);
 
     // Route aggregation: split total_usd proportionally by each trip's
     // totalPrice. If per-trip prices all sum to 0 (edge case: manual
@@ -366,6 +418,13 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 10);
 
+  const sourcesAllTime = [...sources.values()]
+    .sort((a, b) => b.bookings - a.bookings)
+    .slice(0, 12);
+  const landingPagesAllTime = [...landings.values()]
+    .sort((a, b) => b.bookings - a.bookings)
+    .slice(0, 12);
+
   const recentBookings: RecentBooking[] = sortedByRecency.slice(0, 10).map((r) => {
     const items = r.items || [];
     const first = items[0];
@@ -418,6 +477,8 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
     monthly,
     topRoutes30d,
     topRoutesThisMonth,
+    sourcesAllTime,
+    landingPagesAllTime,
     recentBookings,
   };
 }

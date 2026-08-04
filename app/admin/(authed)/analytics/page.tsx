@@ -34,7 +34,7 @@ async function fetchBookings(): Promise<{ rows: BookingRow[]; error: string | nu
   const { data, error } = await supabaseAdmin
     .from("bookings")
     .select(
-      "order_number, customer_name, customer_email, total_usd, items, status, created_at"
+      "order_number, customer_name, customer_email, total_usd, items, status, created_at, attribution"
     )
     .eq("status", "approved")
     .gte("created_at", cutoff.toISOString())
@@ -258,6 +258,100 @@ export default async function AnalyticsPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Attribution — where the people who ACTUALLY book come from. The
+          revenue counterpart to Search Console clicks: a page can pull
+          thousands of clicks yet convert nothing, while a quiet route page
+          may drive real bookings. First-touch over the last 12 months. */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        {/* By source */}
+        <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-zinc-900">
+            <div className="text-sm font-semibold text-gray-200">
+              Where bookings come from
+              <span className="text-xs text-gray-500 font-normal ml-2">
+                first-touch · last 12 months
+              </span>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-zinc-900/70 text-xs uppercase tracking-wider text-gray-400">
+                <tr>
+                  <th className="text-left font-medium px-4 py-3">Source</th>
+                  <th className="text-right font-medium px-4 py-3">Bookings</th>
+                  <th className="text-right font-medium px-4 py-3">Revenue</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.sourcesAllTime.length === 0 && (
+                  <tr>
+                    <td colSpan={3} className="text-center text-gray-500 py-8 text-sm">
+                      No attribution data yet.
+                    </td>
+                  </tr>
+                )}
+                {stats.sourcesAllTime.map((s) => (
+                  <tr
+                    key={s.source}
+                    className="border-t border-zinc-900 hover:bg-zinc-900/40 transition-colors"
+                  >
+                    <td className="px-4 py-3">{s.source}</td>
+                    <td className="px-4 py-3 text-right font-mono">{s.bookings}</td>
+                    <td className="px-4 py-3 text-right font-mono text-amber-300">
+                      {formatUsd(s.revenue)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* By landing page */}
+        <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-zinc-900">
+            <div className="text-sm font-semibold text-gray-200">
+              Top converting pages
+              <span className="text-xs text-gray-500 font-normal ml-2">
+                landing page · last 12 months
+              </span>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-zinc-900/70 text-xs uppercase tracking-wider text-gray-400">
+                <tr>
+                  <th className="text-left font-medium px-4 py-3">Landing page</th>
+                  <th className="text-right font-medium px-4 py-3">Bookings</th>
+                  <th className="text-right font-medium px-4 py-3">Revenue</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.landingPagesAllTime.length === 0 && (
+                  <tr>
+                    <td colSpan={3} className="text-center text-gray-500 py-8 text-sm">
+                      No attribution data yet.
+                    </td>
+                  </tr>
+                )}
+                {stats.landingPagesAllTime.map((l) => (
+                  <tr
+                    key={l.landing}
+                    className="border-t border-zinc-900 hover:bg-zinc-900/40 transition-colors"
+                  >
+                    <td className="px-4 py-3 text-xs font-mono break-all">{l.landing}</td>
+                    <td className="px-4 py-3 text-right font-mono">{l.bookings}</td>
+                    <td className="px-4 py-3 text-right font-mono text-amber-300">
+                      {formatUsd(l.revenue)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
