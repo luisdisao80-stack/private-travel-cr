@@ -25,6 +25,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // worth 200-800 impressions/month.
     { url: `${baseUrl}/private-transportation-costa-rica`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
     { url: `${baseUrl}/airport-to-la-fortuna`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
+    // Airport-transfer query cluster (~2,900 impressions/mo, stuck on page 2
+    // at pos 14-26 with ~0 clicks per GSC). Dedicated landing page added
+    // 2026-08-08 to consolidate "Costa Rica airport transfers / SJO / LIR
+    // shuttle" intent that the individual /private-shuttle/ pages don't rank
+    // for as a group.
+    { url: `${baseUrl}/costa-rica-airport-transfers`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
     // /book is the booking wizard — transactional, no canonical content of
     // its own. SEO entries belong on /private-shuttle/[slug] and /routes/[slug].
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },

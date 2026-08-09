@@ -80,6 +80,36 @@ const LA_FORTUNA_RESTAURANTS_FAQ = [
   },
 ];
 
+// Blog↔route cannibalization fix (2026-08-08). A handful of posts share
+// their exact query with a transactional route/landing page — e.g.
+// /blog/sjo-to-la-fortuna vs /private-shuttle/sjo-to-la-fortuna. Google
+// was splitting authority between the two and often ranking the blog
+// (informational) for a query the route page (transactional) should own.
+// Rather than canonicalize across different content (risky — Google
+// ignores cross-content canonicals), we point the post's booking CTA
+// directly at its matching money page with an exact-keyword anchor. That
+// concentrates the internal-link signal on the route page and routes the
+// reader straight to the bookable version. Posts not in this map fall
+// back to the generic /private-transportation-costa-rica link.
+const ROUTE_CTA: Record<string, { href: string; anchor: string }> = {
+  "sjo-to-la-fortuna": {
+    href: "/private-shuttle/sjo-to-la-fortuna",
+    anchor: "San Jose Airport to La Fortuna shuttle",
+  },
+  "la-fortuna-to-monteverde": {
+    href: "/private-shuttle/la-fortuna-to-monteverde",
+    anchor: "La Fortuna to Monteverde shuttle",
+  },
+  "liberia-airport-to-tamarindo": {
+    href: "/private-shuttle/lir-liberia-int-airport-to-tamarindo",
+    anchor: "Liberia Airport to Tamarindo shuttle",
+  },
+  "how-much-does-costa-rica-shuttle-cost": {
+    href: "/costa-rica-airport-transfers",
+    anchor: "Costa Rica airport transfers",
+  },
+};
+
 // Generar páginas estáticas para cada post
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs();
@@ -152,6 +182,12 @@ export default async function BlogPostPage({
   const rawMarkdown = readPostMarkdown(slug);
   const howToSteps = rawMarkdown ? extractHowToSteps(rawMarkdown) : [];
   const isLaFortunaRestaurants = slug === "best-restaurants-la-fortuna";
+  // If this post cannibalizes a route/landing page, point its CTA at that
+  // page specifically; otherwise fall back to the generic money page.
+  const routeCta = ROUTE_CTA[slug] ?? {
+    href: "/private-transportation-costa-rica",
+    anchor: "private transportation in Costa Rica",
+  };
 
   return (
     <>
@@ -262,14 +298,16 @@ export default async function BlogPostPage({
             <p className="text-gray-400 text-sm md:text-base mb-4">
               Door-to-door{" "}
               {/* Contextual internal link on every blog post → the money
-                  landing page. Exact-keyword anchor reinforces ranking for
-                  the generic "costa rica private transportation / transfers"
-                  queries that GSC (2026-07) showed stuck at position ~10. */}
+                  page. Exact-keyword anchor reinforces ranking. For posts
+                  that share a query with a transactional route/landing page
+                  (see ROUTE_CTA) this points straight at that page to fix
+                  cannibalization; otherwise it uses the generic landing page.
+                  GSC (2026-07) showed the generic queries stuck at ~pos 10. */}
               <Link
-                href="/private-transportation-costa-rica"
+                href={routeCta.href}
                 className="text-amber-400 font-semibold underline-offset-4 hover:underline"
               >
-                private transportation in Costa Rica
+                {routeCta.anchor}
               </Link>{" "}
               from SJO and LIR airports. Get an instant quote.
             </p>

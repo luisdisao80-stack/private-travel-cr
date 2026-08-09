@@ -177,6 +177,13 @@ export default function PopularRoutes() {
                 >
                   private transportation in Costa Rica
                 </Link>{" "}
+                and{" "}
+                <Link
+                  href="/costa-rica-airport-transfers"
+                  className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                >
+                  Costa Rica airport transfers
+                </Link>{" "}
                 — door-to-door private transfers from SJO &amp; LIR airports.
               </>
             ) : (
@@ -187,6 +194,13 @@ export default function PopularRoutes() {
                   className="text-amber-400 font-semibold underline-offset-4 hover:underline"
                 >
                   transporte privado en Costa Rica
+                </Link>{" "}
+                y los{" "}
+                <Link
+                  href="/costa-rica-airport-transfers"
+                  className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                >
+                  traslados desde el aeropuerto
                 </Link>{" "}
                 — traslados puerta a puerta desde los aeropuertos SJO y LIR.
               </>

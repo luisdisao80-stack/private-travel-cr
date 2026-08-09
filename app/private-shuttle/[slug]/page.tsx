@@ -57,11 +57,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // full title in the SERP. Year appended for freshness signal.
   const title = `${originName}${originCode} to ${destName}${destCode} Shuttle from $${route.precio1a6} | Private Transfer 2026`;
 
-  // Description leads with the same price anchor and adds trust signals
-  // (bilingual driver, door-to-door, 5.0 rating).
-  const description =
-    route.journey_description ||
-    `Private shuttle from ${originName}${originCode} to ${destName}${destCode} from $${route.precio1a6} USD. Door-to-door, bilingual driver, free child seats, flight tracking. ⭐ 5.0 · 200+ reviews.`;
+  // Meta description is ALWAYS the conversion-optimized SERP snippet —
+  // price anchor first, then trust signals (door-to-door, bilingual
+  // driver, free child seats, flight tracking, 5.0 rating). We do NOT
+  // use route.journey_description here: that prose renders on-page, but
+  // as a SERP snippet it buries the price/rating hooks that drive CTR.
+  // (Regression fix 2026-08-08: after the long-tail content enrichment
+  // filled journey_description on most routes, the old `journey_description
+  // || fallback` line silently replaced every SERP snippet with prose and
+  // dropped the price/⭐ hooks — hurting CTR on striking-distance pages.)
+  const description = `Private shuttle from ${originName}${originCode} to ${destName}${destCode} from $${route.precio1a6} USD. Door-to-door, bilingual driver, free child seats, flight tracking. ⭐ 5.0 · 200+ reviews.`;
 
   return {
     title,

@@ -55,9 +55,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : "";
 
   const title = `${originName}${originCode} to ${destName}${destCode} Shuttle from $${route.precio1a6} | Private Transfer 2026`;
-  const description =
-    route.journey_description ||
-    `Private shuttle from ${originName}${originCode} to ${destName}${destCode} from $${route.precio1a6} USD. Door-to-door, bilingual driver, free child seats, flight tracking. ⭐ 5.0 · 200+ reviews.`;
+  // Meta description is ALWAYS the conversion-optimized SERP snippet (price
+  // first, then trust signals). We deliberately do NOT fall back to
+  // route.journey_description — that prose renders on-page but as a SERP
+  // snippet it buries the price/rating hooks that drive CTR. See the same
+  // regression fix note in app/private-shuttle/[slug]/page.tsx (2026-08-08).
+  const description = `Private shuttle from ${originName}${originCode} to ${destName}${destCode} from $${route.precio1a6} USD. Door-to-door, bilingual driver, free child seats, flight tracking. ⭐ 5.0 · 200+ reviews.`;
 
   return {
     title,
