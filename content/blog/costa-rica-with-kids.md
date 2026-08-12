@@ -23,6 +23,8 @@ If you're thinking "**can we actually do Costa Rica with kids?**" — yes. It's 
 
 Now the real detail.
 
+> **Planning the transport already?** Skip the stress — we run private, child-seat-equipped shuttles for families every day. [Get an instant quote →](/book) or [see all routes and prices →](/routes). Free child seats, flight tracking, no per-person surprises.
+
 ## Best ages for a Costa Rica family trip
 
 I've moved families with 6-month-olds and I've moved teenagers. Here's what I've noticed works:
@@ -90,7 +92,7 @@ Only place I know where you can literally see a sloth and a capuchin monkey whil
 
 Where to stay: I like **Si Como No** for families (kids' club, two pools, monkeys on the balcony), **Parador Resort** for premium (adults-only sections + family sections), or **Costa Verde** for the classic Manuel Antonio experience.
 
-How to get there: **[from SJO airport ($220)](/private-shuttle/sjo-to-manuel-antonio)**, from La Fortuna ($330), or from LIR Liberia ($385, longer).
+How to get there: **[from SJO airport ($220)](/private-shuttle/sjo-to-manuel-antonio)**, [from La Fortuna ($330)](/private-shuttle/la-fortuna-to-manuel-antonio), or from LIR Liberia ($385, longer).
 
 ### 3. Guanacaste beaches — pure resort vacation
 
@@ -109,7 +111,7 @@ Where to stay:
 - **[JW Marriott Guanacaste](/hotels/jw-marriott-guanacaste)** — huge pool, quiet beach.
 - **Wyndham Tamarindo** — walkable to Tamarindo town, mid-range.
 
-How to get there: **[LIR to Tamarindo $135](/private-shuttle/lir-liberia-int-airport-to-tamarindo)**, LIR to Papagayo $95, LIR to Conchal $120. This is where flying into LIR instead of SJO saves you a lot of driving time.
+How to get there: **[LIR to Tamarindo $135](/private-shuttle/lir-liberia-int-airport-to-tamarindo)**, [LIR to Papagayo $95](/private-shuttle/lir-to-papagayo), [LIR to Conchal $120](/private-shuttle/lir-liberia-int-airport-to-conchal). This is where flying into LIR instead of SJO saves you a lot of driving time.
 
 ## The classic 7-day family itinerary (works for most)
 
@@ -121,7 +123,7 @@ If you want a proven route that isn't over-touristed and doesn't burn out the ki
 - Day 3: Coffee + chocolate tour morning + full-afternoon hot springs (Tabacón or Baldi).
 
 **Days 4–6: Manuel Antonio**
-- Day 4: Shuttle Arenal → Manuel Antonio (4h30 with a lunch stop). Beach afternoon.
+- Day 4: [Shuttle Arenal → Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) (4h30 with a lunch stop). Beach afternoon.
 - Day 5: Manuel Antonio National Park morning (start early, before it gets hot). Pool afternoon.
 - Day 6: Catamaran tour with snorkeling. Sunset beach walk.
 
