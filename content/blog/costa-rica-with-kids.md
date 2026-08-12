@@ -92,7 +92,7 @@ Only place I know where you can literally see a sloth and a capuchin monkey whil
 
 Where to stay: I like **Si Como No** for families (kids' club, two pools, monkeys on the balcony), **Parador Resort** for premium (adults-only sections + family sections), or **Costa Verde** for the classic Manuel Antonio experience.
 
-How to get there: **[from SJO airport ($220)](/private-shuttle/sjo-to-manuel-antonio)**, [from La Fortuna ($330)](/private-shuttle/la-fortuna-to-manuel-antonio), or from LIR Liberia ($385, longer).
+How to get there: **[from SJO airport ($220)](/private-shuttle/sjo-to-manuel-antonio)**, [from La Fortuna ($330)](/private-shuttle/la-fortuna-to-manuel-antonio), or from LIR Liberia ($375, longer).
 
 ### 3. Guanacaste beaches — pure resort vacation
 
@@ -111,7 +111,7 @@ Where to stay:
 - **[JW Marriott Guanacaste](/hotels/jw-marriott-guanacaste)** — huge pool, quiet beach.
 - **Wyndham Tamarindo** — walkable to Tamarindo town, mid-range.
 
-How to get there: **[LIR to Tamarindo $135](/private-shuttle/lir-liberia-int-airport-to-tamarindo)**, [LIR to Papagayo $95](/private-shuttle/lir-to-papagayo), [LIR to Conchal $120](/private-shuttle/lir-liberia-int-airport-to-conchal). This is where flying into LIR instead of SJO saves you a lot of driving time.
+How to get there: **[LIR to Tamarindo $135](/private-shuttle/lir-liberia-int-airport-to-tamarindo)**, [LIR to Papagayo $110](/private-shuttle/lir-to-papagayo), [LIR to Conchal $135](/private-shuttle/lir-liberia-int-airport-to-conchal). This is where flying into LIR instead of SJO saves you a lot of driving time.
 
 ## The classic 7-day family itinerary (works for most)
 

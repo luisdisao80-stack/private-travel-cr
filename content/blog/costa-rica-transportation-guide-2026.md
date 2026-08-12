@@ -34,14 +34,14 @@ Most travelers end up using a combination of 2–3 of these on a single trip. He
 
 | Route | 1–5 pax | 6–9 pax | Time |
 |---|---|---|---|
-| SJO → La Fortuna | $220 | $260 | 3 h |
-| SJO → Manuel Antonio | $220 | $260 | 3 h |
-| SJO → Monteverde | $220 | $290 | 4 h |
-| SJO → Tamarindo | $345 | $395 | 5 h |
-| LIR → Tamarindo | $135 | $185 | 1 h 15 min |
-| LIR → La Fortuna | $225 | $265 | 3 h |
-| La Fortuna ↔ Monteverde | $255 | $310 | 3 h |
-| La Fortuna ↔ Manuel Antonio | $330 | $370 | 4 h 30 min |
+| SJO → La Fortuna | $220 | $275 | 3 h |
+| SJO → Manuel Antonio | $220 | $275 | 3 h |
+| SJO → Monteverde | $220 | $265 | 4 h |
+| SJO → Tamarindo | $345 | $390 | 5 h |
+| LIR → Tamarindo | $135 | $175 | 1 h 15 min |
+| LIR → La Fortuna | $225 | $280 | 3 h |
+| La Fortuna ↔ Monteverde | $255 | $300 | 3 h |
+| La Fortuna ↔ Manuel Antonio | $330 | $375 | 4 h 30 min |
 
 **Pros:**
 - Door-to-door — no lugging bags through bus terminals.

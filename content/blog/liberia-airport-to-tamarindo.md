@@ -13,7 +13,7 @@ Tamarindo is roughly **75 km** (47 miles) from Liberia (LIR) airport — closer 
 
 Here are your four real options.
 
-## 1. Private shuttle (~$130 USD per vehicle)
+## 1. Private shuttle (~$135 USD per vehicle)
 
 **Door-to-door from LIR to your hotel, villa, or Airbnb in Tamarindo.** Driver meets you outside arrivals with your name on a sign, loads luggage, drives you straight there. Free child seats on request, bottled water, WiFi, and we track your flight in case it's delayed.
 

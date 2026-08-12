@@ -53,7 +53,7 @@ A door-to-door private vehicle (van or SUV) with a professional bilingual driver
 
 - **Where it works:** Anywhere in Costa Rica. We've driven shuttles from SJO to Puerto Viejo, LIR to Drake Bay, La Fortuna to Tortuguero — anywhere with a road.
 - **Airport use:** Yes, including SJO and LIR. Drivers wait inside arrivals with a sign with your name. Flight tracking included.
-- **Cost:** Fixed in advance, no surge pricing. SJO to La Fortuna $220 USD for the whole vehicle (up to 6 people). LIR to Tamarindo $130 USD. La Fortuna to Manuel Antonio $330 USD.
+- **Cost:** Fixed in advance, no surge pricing. SJO to La Fortuna $220 USD for the whole vehicle (up to 5 people; larger vans available). LIR to Tamarindo $135 USD. La Fortuna to Manuel Antonio $330 USD.
 - **Reliability:** High when booked with a licensed operator. The vehicle is guaranteed, the driver speaks English, child seats and WiFi included.
 
 **When to use a private shuttle:**
