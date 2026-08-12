@@ -15,7 +15,7 @@ This guide is current as of 2026 — these are the prices we charge, and a reaso
 
 ## How private shuttle pricing works
 
-Private shuttles are sold **per vehicle, not per person**. So a $220 USD shuttle from SJO to La Fortuna costs the same whether you're 1 person or 5 people in the vehicle. Pricing tiers usually break at:
+Private shuttles are sold **per vehicle, not per person**. So a [$220 USD shuttle from SJO to La Fortuna](/private-shuttle/sjo-to-la-fortuna) costs the same whether you're 1 person or 5 people in the vehicle. Pricing tiers usually break at:
 
 - **1–5 passengers:** Standard van (Hyundai Staria)
 - **6–9 passengers:** Larger van (Toyota Hiace)
@@ -56,7 +56,7 @@ All prices below are for **1–5 passengers in a standard van** and include all 
 
 | Destination | 1–5 pax | Duration |
 |---|---|---|
-| Tamarindo | $130 | 1h15min |
+| Tamarindo | $135 | 1h15min |
 | Nosara | $240 | 2h30min |
 | La Fortuna | $225 | 3h |
 | Monteverde | $230 | 3h30min |
@@ -127,5 +127,7 @@ Tip in cash (USD or colones), directly to the driver, at the end of the trip.
 ## How to book
 
 Book at least 1 week in advance for high season (December–April), 2–3 days minimum any other time. Most operators (us included) confirm by email within a few hours of booking with the driver's contact info and a tracking link for the day of.
+
+Want the full breakdown with 6–9 passenger pricing, payment methods, cancellation policy, and how to spot a scam quote? Read our companion guide: [How much does private transportation cost in Costa Rica? →](/blog/how-much-does-private-transportation-cost-costa-rica)
 
 [See all our routes and get an instant quote →](/routes)

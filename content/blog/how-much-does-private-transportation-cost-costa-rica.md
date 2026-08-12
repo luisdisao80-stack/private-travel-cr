@@ -21,45 +21,45 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 
 | Destination | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| La Fortuna (Arenal) | **$220** | $260 | 3 h |
-| Manuel Antonio | **$220** | $260 | 3 h |
-| Monteverde | **$220** | $290 | 4 h |
-| Jacó | **$175** | $215 | 1 h 30 min |
-| Tamarindo | **$345** | $395 | 5 h |
-| Santa Teresa | **$390** | $430 | 5 h |
-| Puerto Viejo (Caribbean) | **$320** | $360 | 4 h 30 min |
-| Papagayo Peninsula | **$420** | $470 | 5 h |
-| Nosara | **$390** | $440 | 5 h |
+| La Fortuna (Arenal) | **$220** | $275 | 3 h |
+| Manuel Antonio | **$220** | $275 | 3 h |
+| Monteverde | **$220** | $265 | 4 h |
+| Jacó | **$175** | $190 | 1 h 30 min |
+| Tamarindo | **$345** | $390 | 5 h |
+| Santa Teresa | **$375** | $420 | 5 h |
+| Puerto Viejo (Caribbean) | **$320** | $365 | 4 h 30 min |
+| Papagayo Peninsula | **$340** | $385 | 5 h |
+| Nosara | **$370** | $415 | 5 h |
 | Drake Bay | **$390** | $440 | 6 h |
 
 ### From LIR Airport (Daniel Oduber, Liberia)
 
 | Destination | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| Tamarindo | **$135** | $185 | 1 h 15 min |
-| Papagayo Peninsula | **$95** | $130 | 30 min |
-| Playa Conchal | **$120** | $160 | 1 h |
-| Playa Flamingo | **$135** | $185 | 1 h |
-| Playa Hermosa | **$95** | $130 | 30 min |
-| La Fortuna | **$225** | $265 | 3 h |
-| Monteverde | **$220** | $260 | 3 h |
-| Santa Teresa | **$295** | $345 | 4 h |
-| Nosara | **$240** | $290 | 2 h 30 min |
-| Manuel Antonio | **$385** | $435 | 5 h |
+| Tamarindo | **$135** | $175 | 1 h 15 min |
+| Papagayo Peninsula | **$110** | $140 | 30 min |
+| Playa Conchal | **$135** | $175 | 1 h |
+| Playa Flamingo | **$135** | $175 | 1 h |
+| Playa Hermosa | **$110** | $140 | 30 min |
+| La Fortuna | **$225** | $280 | 3 h |
+| Monteverde | **$230** | $275 | 3 h |
+| Santa Teresa | **$350** | $395 | 4 h |
+| Nosara | **$240** | $285 | 2 h 30 min |
+| Manuel Antonio | **$375** | $420 | 5 h |
 
 ### Between popular destinations
 
 | Route | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| La Fortuna ↔ Monteverde | **$255** | $310 | 3 h |
-| La Fortuna ↔ Manuel Antonio | **$330** | $370 | 4 h 30 min |
-| La Fortuna ↔ Tamarindo | **$315** | $365 | 4 h 30 min |
-| La Fortuna ↔ Jacó | **$260** | $310 | 3 h 30 min |
-| La Fortuna ↔ Puerto Viejo | **$390** | $440 | 5 h |
-| Monteverde ↔ Manuel Antonio | **$310** | $360 | 4 h |
-| Monteverde ↔ Tamarindo | **$270** | $320 | 3 h 30 min |
-| Manuel Antonio ↔ Tamarindo | **$410** | $460 | 5 h |
-| Manuel Antonio ↔ Uvita | **$165** | $205 | 1 h 30 min |
+| La Fortuna ↔ Monteverde | **$255** | $300 | 3 h |
+| La Fortuna ↔ Manuel Antonio | **$330** | $375 | 4 h 30 min |
+| La Fortuna ↔ Tamarindo | **$315** | $360 | 4 h 30 min |
+| La Fortuna ↔ Jacó | **$260** | $305 | 3 h 30 min |
+| La Fortuna ↔ Puerto Viejo | **$390** | $435 | 5 h |
+| Monteverde ↔ Manuel Antonio | **$310** | $355 | 4 h |
+| Monteverde ↔ Tamarindo | **$270** | $315 | 3 h 30 min |
+| Manuel Antonio ↔ Tamarindo | **$410** | $455 | 5 h |
+| Manuel Antonio ↔ Uvita | **$180** | $195 | 1 h 30 min |
 
 (These are our 2026 published rates; competitors in the same quality tier are typically within $30–40 of these prices.)
 
@@ -202,5 +202,7 @@ That's ~$250 per person for a family of 4 — for a stress-free, door-to-door pr
 For Guanacaste-only trips (flying into LIR), expect $250–500 total for shuttle expenses depending on how many beach towns you visit.
 
 ---
+
+Just want the airport-shuttle basics (SJO and LIR rates, what's included, private vs shared)? See our shorter guide: [Costa Rica private shuttle cost →](/blog/how-much-does-costa-rica-shuttle-cost).
 
 Get instant 2026 prices for your specific route on our [book page →](/book) or browse all [1,200+ routes →](/routes). For anything custom (multi-stop trips, group transport, weddings), [WhatsApp us](https://wa.me/50686334133) — replies within minutes during business hours.
