@@ -49,7 +49,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const saved = localStorage.getItem("ptcr_cart");
-      if (saved) setItems(JSON.parse(saved));
+      if (saved) {
+        // Validar que sea realmente un arreglo: un carrito a medio escribir
+        // (por un cierre abrupto del navegador) puede parsear a null/objeto,
+        // y luego .map/.filter/for-of reventarían en tiempo de ejecución.
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) setItems(parsed);
+      }
     } catch (e) {
       console.error("Error loading cart:", e);
     }
