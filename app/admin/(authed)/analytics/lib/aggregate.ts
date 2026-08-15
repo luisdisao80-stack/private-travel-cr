@@ -40,6 +40,40 @@ export type BookingRow = {
   attribution?: Attribution | null;
 };
 
+/**
+ * A manually-logged sale from an external platform (WeTravel). These live
+ * in the `external_sales` table, are entered by Diego in the admin, and are
+ * folded into the dashboard so it shows the TRUE combined total (website +
+ * WeTravel) instead of only the website portion.
+ *
+ * `sale_date` is a plain CR calendar date ("YYYY-MM-DD") — the day the money
+ * came in — NOT a UTC instant. We bucket it directly by its string parts, so
+ * there's no timezone shift to get wrong (unlike bookings, whose timestamps
+ * are UTC and must be converted to CR).
+ */
+export type ExternalSaleRow = {
+  id?: string;
+  source?: string | null;
+  amount_usd: number | string | null;
+  sale_date: string; // "YYYY-MM-DD" CR calendar date
+  customer_name?: string | null;
+  route?: string | null;
+  notes?: string | null;
+  created_at?: string;
+};
+
+/** The revenue figures for the standard set of periods, reused for the
+ *  combined total and for each channel's breakdown (web / WeTravel). */
+export type RevenueBuckets = {
+  today: number;
+  thisWeek: number;
+  thisMonth: number;
+  thisYear: number;
+  lastWeek: number;
+  lastMonth: number;
+  sameMonthLastYear: number | null; // null when no data that far back
+};
+
 export type Delta = {
   /** Percentage change vs. baseline. null = no comparable baseline. */
   pct: number | null;
@@ -100,15 +134,13 @@ export type RecentBooking = {
 
 export type AggregatedStats = {
   now: string; // ISO of "now" used, for display / debugging
-  revenue: {
-    today: number;
-    thisWeek: number;
-    thisMonth: number;
-    thisYear: number;
-    lastWeek: number;
-    lastMonth: number;
-    sameMonthLastYear: number | null; // null when no data that far back
-  };
+  /** Combined revenue: website (Tilopay) + WeTravel. This is what the cards
+   *  and deltas show, so Diego sees his true total on one screen. */
+  revenue: RevenueBuckets;
+  /** Website-only revenue (Supabase bookings / Tilopay). */
+  revenueWeb: RevenueBuckets;
+  /** WeTravel-only revenue (external_sales). */
+  revenueExternal: RevenueBuckets;
   bookingsThisMonth: number;
   avgTicketThisMonth: number;
   deltas: {
@@ -254,7 +286,11 @@ function normalizeLanding(landing: string | undefined | null): string {
 
 // --- Main aggregation ---------------------------------------------------
 
-export function aggregate(rows: BookingRow[], now: Date = new Date()): AggregatedStats {
+export function aggregate(
+  rows: BookingRow[],
+  external: ExternalSaleRow[] = [],
+  now: Date = new Date()
+): AggregatedStats {
   // Precompute CR calendar keys we care about.
   const todayKey = crDateKey(now);
   const thisMonthKey = crMonthKey(now);
@@ -306,6 +342,17 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
   let revSameMonthLastYear = 0;
   let sameMonthLastYearHasData = false;
   let bookingsThisMonth = 0;
+
+  // Parallel WeTravel (external_sales) accumulators. Kept separate from the
+  // web ones so the dashboard can show the breakdown; combined = web + ext.
+  let extToday = 0;
+  let extThisWeek = 0;
+  let extThisMonth = 0;
+  let extThisYear = 0;
+  let extLastWeek = 0;
+  let extLastMonth = 0;
+  let extSameMonthLastYear = 0;
+  let extSameMonthLastYearHasData = false;
 
   const routes30d = new Map<string, RouteAggregate>();
   const routesThisMonth = new Map<string, RouteAggregate>();
@@ -427,6 +474,49 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
     }
   }
 
+  // WeTravel sales. `sale_date` is already a CR calendar date string, so we
+  // bucket by its parts directly (no timezone conversion). We fold the amounts
+  // into the same daily/monthly chart points as the website revenue so the
+  // charts show the combined line, but we do NOT touch bookings counts, routes
+  // or attribution — those stay website-only concepts.
+  for (const sale of external) {
+    const amt = toNumber(sale.amount_usd);
+    const dayKey = (sale.sale_date || "").slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dayKey)) continue;
+    const monthKey = dayKey.slice(0, 7);
+    const yearKey = dayKey.slice(0, 4);
+    // CR midnight instant of the sale day, comparable to the week windows
+    // (which are also CR-midnight instants).
+    const instant = crDayStart(dayKey);
+
+    if (dayKey === todayKey) extToday += amt;
+    if (instant >= thisWeekStart && instant < nextWeekStart) extThisWeek += amt;
+    if (instant >= lastWeekStart && instant < thisWeekStart) extLastWeek += amt;
+    if (monthKey === thisMonthKey) extThisMonth += amt;
+    if (monthKey === lastMonthKey) extLastMonth += amt;
+    if (monthKey === sameMonthLastYearKey) {
+      extSameMonthLastYear += amt;
+      extSameMonthLastYearHasData = true;
+    }
+    if (yearKey === thisYearKey) extThisYear += amt;
+
+    const dailyPoint = dailyByKey.get(dayKey);
+    if (dailyPoint) dailyPoint.revenue += amt;
+    const monthlyPoint = monthlyByKey.get(monthKey);
+    if (monthlyPoint) monthlyPoint.revenue += amt;
+  }
+
+  // Combined = website + WeTravel, for the cards and deltas.
+  const combToday = revToday + extToday;
+  const combThisWeek = revThisWeek + extThisWeek;
+  const combLastWeek = revLastWeek + extLastWeek;
+  const combThisMonth = revThisMonth + extThisMonth;
+  const combLastMonth = revLastMonth + extLastMonth;
+  const combThisYear = revThisYear + extThisYear;
+  const combSameMonthLastYear = revSameMonthLastYear + extSameMonthLastYear;
+  const combSameMonthLastYearHasData =
+    sameMonthLastYearHasData || extSameMonthLastYearHasData;
+
   const topRoutes30d = [...routes30d.values()]
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 10);
@@ -461,7 +551,18 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
 
   return {
     now: now.toISOString(),
+    // Cards + deltas run on the COMBINED total so Diego sees web + WeTravel
+    // on one screen; the per-channel breakdown lives in revenueWeb/External.
     revenue: {
+      today: combToday,
+      thisWeek: combThisWeek,
+      thisMonth: combThisMonth,
+      thisYear: combThisYear,
+      lastWeek: combLastWeek,
+      lastMonth: combLastMonth,
+      sameMonthLastYear: combSameMonthLastYearHasData ? combSameMonthLastYear : null,
+    },
+    revenueWeb: {
       today: revToday,
       thisWeek: revThisWeek,
       thisMonth: revThisMonth,
@@ -470,23 +571,34 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
       lastMonth: revLastMonth,
       sameMonthLastYear: sameMonthLastYearHasData ? revSameMonthLastYear : null,
     },
+    revenueExternal: {
+      today: extToday,
+      thisWeek: extThisWeek,
+      thisMonth: extThisMonth,
+      thisYear: extThisYear,
+      lastWeek: extLastWeek,
+      lastMonth: extLastMonth,
+      sameMonthLastYear: extSameMonthLastYearHasData ? extSameMonthLastYear : null,
+    },
     bookingsThisMonth,
+    // Avg ticket stays a WEBSITE metric (per-booking value from real bookings);
+    // WeTravel rows have no booking count so folding them in would distort it.
     avgTicketThisMonth: bookingsThisMonth > 0 ? revThisMonth / bookingsThisMonth : 0,
     deltas: {
       weekOverWeek: {
-        pct: pct(revThisWeek, revLastWeek),
-        current: revThisWeek,
-        baseline: revLastWeek,
+        pct: pct(combThisWeek, combLastWeek),
+        current: combThisWeek,
+        baseline: combLastWeek,
       },
       monthOverMonth: {
-        pct: pct(revThisMonth, revLastMonth),
-        current: revThisMonth,
-        baseline: revLastMonth,
+        pct: pct(combThisMonth, combLastMonth),
+        current: combThisMonth,
+        baseline: combLastMonth,
       },
       yearOverYear: {
-        pct: sameMonthLastYearHasData ? pct(revThisMonth, revSameMonthLastYear) : null,
-        current: revThisMonth,
-        baseline: revSameMonthLastYear,
+        pct: combSameMonthLastYearHasData ? pct(combThisMonth, combSameMonthLastYear) : null,
+        current: combThisMonth,
+        baseline: combSameMonthLastYear,
       },
     },
     daily,

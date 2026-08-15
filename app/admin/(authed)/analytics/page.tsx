@@ -5,7 +5,11 @@ import {
   statusBadgeClass,
   formatCRDateTime,
 } from "@/components/admin/booking-helpers";
-import { aggregate, type BookingRow } from "./lib/aggregate";
+import {
+  aggregate,
+  type BookingRow,
+  type ExternalSaleRow,
+} from "./lib/aggregate";
 import RevenueChart from "./RevenueChart";
 import BookingsChart from "./BookingsChart";
 import TopRoutesChart from "./TopRoutesChart";
@@ -45,6 +49,26 @@ async function fetchBookings(): Promise<{ rows: BookingRow[]; error: string | nu
     rows: (data as unknown as BookingRow[]) || [],
     error: null,
   };
+}
+
+/**
+ * WeTravel (external platform) sales that Diego logs manually in the admin.
+ * These aren't in the bookings table — they're the other half of his revenue
+ * — so we pull them here and fold them into the aggregator for the combined
+ * total. If the table doesn't exist yet (feature not migrated), we degrade
+ * gracefully to an empty list rather than erroring the whole dashboard.
+ */
+async function fetchExternalSales(): Promise<ExternalSaleRow[]> {
+  const { data, error } = await supabaseAdmin
+    .from("external_sales")
+    .select("id, source, amount_usd, sale_date, customer_name, route, notes")
+    .order("sale_date", { ascending: false });
+
+  if (error) {
+    console.error("[analytics] external_sales fetch failed:", error.message);
+    return [];
+  }
+  return (data as unknown as ExternalSaleRow[]) || [];
 }
 
 function formatUsd(n: number): string {
@@ -103,8 +127,24 @@ function Card({
 }
 
 export default async function AnalyticsPage() {
-  const { rows, error } = await fetchBookings();
-  const stats = aggregate(rows);
+  const [{ rows, error }, external] = await Promise.all([
+    fetchBookings(),
+    fetchExternalSales(),
+  ]);
+  const stats = aggregate(rows, external);
+
+  // Only show the "Web · WeTravel" split when there's at least one WeTravel
+  // sale logged — otherwise the hint is just noise showing "· WeTravel $0".
+  const hasExternal =
+    stats.revenueExternal.thisYear > 0 || stats.revenueExternal.today > 0;
+  const splitHint = (
+    web: number,
+    ext: number,
+    base?: string
+  ): string | undefined => {
+    if (!hasExternal) return base;
+    return `Web ${formatUsd(web)} · WeTravel ${formatUsd(ext)}`;
+  };
 
   return (
     <div>
@@ -119,8 +159,9 @@ export default async function AnalyticsPage() {
           <span aria-hidden>📊</span> Analytics
         </h1>
         <p className="text-xs text-gray-500 mt-1">
-          Revenue and bookings insights · America/Costa_Rica timezone · approved
-          bookings only
+          Revenue = website + WeTravel · America/Costa_Rica timezone · approved
+          bookings only. Bookings count, avg ticket, routes &amp; sources are
+          website-only.
         </p>
       </div>
 
@@ -136,23 +177,39 @@ export default async function AnalyticsPage() {
           emoji="💰"
           label="Today"
           value={formatUsd(stats.revenue.today)}
-          hint="from midnight CR"
+          hint={splitHint(
+            stats.revenueWeb.today,
+            stats.revenueExternal.today,
+            "from midnight CR"
+          )}
         />
         <Card
           emoji="💰"
           label="This week"
           value={formatUsd(stats.revenue.thisWeek)}
-          hint="Mon–Sun CR"
+          hint={splitHint(
+            stats.revenueWeb.thisWeek,
+            stats.revenueExternal.thisWeek,
+            "Mon–Sun CR"
+          )}
         />
         <Card
           emoji="💰"
           label="This month"
           value={formatUsd(stats.revenue.thisMonth)}
+          hint={splitHint(
+            stats.revenueWeb.thisMonth,
+            stats.revenueExternal.thisMonth
+          )}
         />
         <Card
           emoji="💰"
           label="This year"
           value={formatUsd(stats.revenue.thisYear)}
+          hint={splitHint(
+            stats.revenueWeb.thisYear,
+            stats.revenueExternal.thisYear
+          )}
         />
         <Card
           emoji="📦"

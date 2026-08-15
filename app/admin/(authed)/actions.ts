@@ -18,6 +18,88 @@ export async function logoutAction(): Promise<void> {
   redirect("/admin/login");
 }
 
+/**
+ * Log a WeTravel (external platform) sale so the analytics dashboard can show
+ * the TRUE combined total (website + WeTravel), not just the website portion.
+ *
+ * WeTravel payments never touch the bookings table — they're collected on a
+ * separate platform — so Diego enters them here by hand. Stored in the
+ * `external_sales` table, folded into the aggregator by sale_date.
+ *
+ * `saleDate` is a plain YYYY-MM-DD CR calendar date (from a <input type=date>).
+ * We store it as-is (a DATE column), NOT a timestamp, because "the day the
+ * money came in" is all the dashboard needs and it dodges timezone drift.
+ */
+export async function createExternalSaleAction(
+  formData: FormData
+): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
+  }
+
+  const amountRaw = String(formData.get("amountUsd") ?? "").trim();
+  const saleDate = String(formData.get("saleDate") ?? "").trim();
+  const customerName = String(formData.get("customerName") ?? "").trim();
+  const route = String(formData.get("route") ?? "").trim();
+  const notes = String(formData.get("notes") ?? "").trim();
+
+  const amount = Number(amountRaw);
+  if (!Number.isFinite(amount) || amount <= 0) {
+    redirect("/admin/wetravel?error=amount");
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(saleDate)) {
+    redirect("/admin/wetravel?error=date");
+  }
+
+  const { error } = await supabaseAdmin.from("external_sales").insert({
+    source: "wetravel",
+    amount_usd: amount,
+    sale_date: saleDate,
+    customer_name: customerName || null,
+    route: route || null,
+    notes: notes || null,
+  });
+
+  if (error) {
+    console.error("[admin] createExternalSale insert failed:", error);
+    redirect("/admin/wetravel?error=save");
+  }
+
+  revalidatePath("/admin/wetravel");
+  revalidatePath("/admin/analytics");
+  redirect("/admin/wetravel?saved=1");
+}
+
+/**
+ * Delete a WeTravel sale the operator logged by mistake. Hard delete is fine:
+ * these are manually-entered figures with no downstream references (no emails,
+ * no payment records), so there's nothing to soft-delete for.
+ */
+export async function deleteExternalSaleAction(
+  formData: FormData
+): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
+  }
+
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return;
+
+  const { error } = await supabaseAdmin
+    .from("external_sales")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("[admin] deleteExternalSale failed:", error);
+    return;
+  }
+
+  revalidatePath("/admin/wetravel");
+  revalidatePath("/admin/analytics");
+  redirect("/admin/wetravel?deleted=1");
+}
+
 const ALLOWED_STATUSES = new Set([
   "pending",
   "approved",
