@@ -27,7 +27,13 @@ export type BookingRow = {
   total_usd: number | string | null;
   items: CartItem[] | null;
   status: string | null;
-  created_at: string; // ISO UTC timestamp
+  created_at: string; // ISO UTC timestamp — when the booking row was created
+  /** When the Tilopay payment was approved (ISO UTC). Set only by the payment
+   *  callback, so for approved rows it's the true "money-in" timestamp. Null
+   *  on the rare approved row that never went through the callback (e.g. a
+   *  status flipped to "approved" manually for an offline payment). Revenue is
+   *  bucketed by this date, falling back to created_at when absent. */
+  consulted_at?: string | null;
   /** First-touch marketing attribution captured at landing. Optional —
    *  bookings created before attribution shipped (or in private mode) have
    *  none. */
@@ -313,17 +319,27 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
 
   for (const row of rows) {
     const total = toNumber(row.total_usd);
-    const createdAt = new Date(row.created_at);
-    if (Number.isNaN(createdAt.getTime())) continue;
+    // Bucket revenue by PAYMENT date, not booking-creation date. A booking can
+    // be created one day (created_at) and paid another — e.g. an admin
+    // payment-link quote the customer pays two days later. The Tilopay callback
+    // stamps `consulted_at` at the exact moment the payment is approved and is
+    // the ONLY writer of that column, so it's the true "money-in" timestamp.
+    // Fall back to created_at for the rare approved row that never went through
+    // the callback (a status flipped to "approved" manually for an offline
+    // payment). We deliberately do NOT use updated_at: it moves on any later
+    // edit (trip date, address, status), which would wrongly re-bucket old
+    // revenue into today.
+    const paidAt = new Date(row.consulted_at || row.created_at);
+    if (Number.isNaN(paidAt.getTime())) continue;
 
-    const dayKey = crDateKey(createdAt);
-    const monthKey = crMonthKey(createdAt);
-    const yearKey = crYearKey(createdAt);
+    const dayKey = crDateKey(paidAt);
+    const monthKey = crMonthKey(paidAt);
+    const yearKey = crYearKey(paidAt);
 
     // Card totals.
     if (dayKey === todayKey) revToday += total;
-    if (createdAt >= thisWeekStart && createdAt < nextWeekStart) revThisWeek += total;
-    if (createdAt >= lastWeekStart && createdAt < thisWeekStart) revLastWeek += total;
+    if (paidAt >= thisWeekStart && paidAt < nextWeekStart) revThisWeek += total;
+    if (paidAt >= lastWeekStart && paidAt < thisWeekStart) revLastWeek += total;
     if (monthKey === thisMonthKey) {
       revThisMonth += total;
       bookingsThisMonth += 1;
@@ -374,7 +390,7 @@ export function aggregate(rows: BookingRow[], now: Date = new Date()): Aggregate
       const priceSum = perTripPrices.reduce((s, p) => s + p, 0);
       const evenShare = total / items.length;
 
-      const isRecent30d = createdAt.getTime() >= dailyCutoffInstant.getTime();
+      const isRecent30d = paidAt.getTime() >= dailyCutoffInstant.getTime();
       const isThisMonth = monthKey === thisMonthKey;
 
       items.forEach((it, idx) => {

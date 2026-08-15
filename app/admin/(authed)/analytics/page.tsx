@@ -34,7 +34,7 @@ async function fetchBookings(): Promise<{ rows: BookingRow[]; error: string | nu
   const { data, error } = await supabaseAdmin
     .from("bookings")
     .select(
-      "order_number, customer_name, customer_email, total_usd, items, status, created_at, attribution"
+      "order_number, customer_name, customer_email, total_usd, items, status, created_at, consulted_at, attribution"
     )
     .eq("status", "approved")
     .gte("created_at", cutoff.toISOString())
