@@ -126,4 +126,6 @@ For best deals: **September or October** if you don't mind rain.
 
 For everyone else: **January through March** is the safe answer.
 
+Whenever you decide to come, we'll get you there door-to-door — from [San José Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna) or [Liberia Airport → La Fortuna](/private-shuttle/lir-to-la-fortuna).
+
 [Plan your shuttle to La Fortuna →](/private-shuttle/sjo-to-la-fortuna)

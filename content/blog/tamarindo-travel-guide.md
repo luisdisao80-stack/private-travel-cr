@@ -31,7 +31,7 @@ We drive guests to Tamarindo from every major hub. Here's the honest breakdown:
 
 **From SJO (San José airport).** A long day — 4.5 to 5 hours depending on traffic crossing the Río Tempisque bridge. Most guests who fly into SJO break the trip with a stop (more on that below). If you're going direct, [SJO → Tamarindo](/routes/sjo-to-tamarindo) is a comfortable private shuttle with one bathroom stop and Wi-Fi onboard.
 
-**From La Fortuna.** Around 4 hours via Cañas. This is a popular combo: people do volcano first, then beach. [La Fortuna → Tamarindo](/routes/la-fortuna-to-tamarindo) is one of our most-booked Pacific transfers.
+**From La Fortuna.** Around 4 hours via Cañas. This is a popular combo: people do volcano first, then beach. [La Fortuna → Tamarindo](/private-shuttle/la-fortuna-to-tamarindo) is one of our most-booked Pacific transfers.
 
 **From Monteverde.** About 3.5 hours descending from the cloud forest to sea level via the new Cañas road. [Monteverde → Tamarindo](/routes/monteverde-to-tamarindo) — most guests appreciate the silence after a few foggy mornings up in the mountains.
 

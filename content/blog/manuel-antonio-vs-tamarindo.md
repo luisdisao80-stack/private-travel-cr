@@ -95,7 +95,7 @@ A typical 4-night trip for two:
 
 Yes — but they're 5 hours apart by road. We do this combination trip a couple of times a week. The drive is along the Pacific (some scenic stretches, some highway) and you can stop at Jaco or Dominical along the way for lunch.
 
-A common 7–10 day itinerary is: SJO → La Fortuna (3 nights) → Manuel Antonio (3 nights) → Tamarindo (3 nights) → LIR out. We handle each shuttle leg separately or as a multi-stop booking.
+A common 7–10 day itinerary is: SJO → La Fortuna (3 nights) → Manuel Antonio (3 nights) → Tamarindo (3 nights) → LIR out. We handle each shuttle leg separately or as a multi-stop booking — the two inland connectors most guests ask about are the [La Fortuna to Manuel Antonio shuttle](/private-shuttle/la-fortuna-to-manuel-antonio) and the [La Fortuna to Tamarindo shuttle](/private-shuttle/la-fortuna-to-tamarindo).
 
 ## Our take
 

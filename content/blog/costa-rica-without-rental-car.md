@@ -100,7 +100,7 @@ We're going to use our own pricing because it's what we know. Other operators ar
 
 For a typical 7-night itinerary — **SJO → La Fortuna → Monteverde → Manuel Antonio → SJO** — here's the shuttle math:
 
-- [SJO → La Fortuna](/routes/sjo-to-la-fortuna): ~$220 (up to 5 passengers, door-to-door, ~3 hours)
+- [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna): ~$220 (up to 5 passengers, door-to-door, ~3 hours)
 - [La Fortuna → Monteverde](/routes/la-fortuna-to-monteverde): ~$255 (~3.5 hours via Cañas)
 - [Monteverde → Manuel Antonio](/routes/monteverde-to-manuel-antonio): ~$310 (~5 hours)
 - [Manuel Antonio → SJO](/routes/manuel-antonio-quepos-to-san-jose-downtown): ~$220 (~3 hours)
@@ -128,7 +128,7 @@ For most other itineraries — especially the 7–14 day "tour the country" trip
 
 Here's a real, bookable itinerary using only private shuttles and walking. No rental car, no rental car insurance, no parking stress.
 
-**Day 1 — Arrive SJO, transfer to La Fortuna.** Land at SJO, [private shuttle to La Fortuna](/routes/sjo-to-la-fortuna) (~3 hours), check into your hotel, soak in hot springs. No car needed; your hotel is walkable to the volcano viewpoints.
+**Day 1 — Arrive SJO, transfer to La Fortuna.** Land at SJO, [private shuttle to La Fortuna](/private-shuttle/sjo-to-la-fortuna) (~3 hours), check into your hotel, soak in hot springs. No car needed; your hotel is walkable to the volcano viewpoints.
 
 **Day 2 — La Fortuna.** Volcano hike + hot springs. Tour pickup is from your hotel lobby — every tour operator in town includes round-trip transfers as standard. [Our La Fortuna travel guide](/blog/la-fortuna-travel-guide) has the full play-by-play.
 

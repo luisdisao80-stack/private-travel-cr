@@ -55,6 +55,6 @@ Catch your own tilapia and a local restaurant cooks it for you on the spot. Grea
 
 ## Getting There
 
-La Fortuna is about **3.5 hours from SJO airport** (San José) and **3 hours from LIR** (Liberia). The drive itself is scenic — we recommend doing it during daylight if possible.
+La Fortuna is about **3.5 hours from SJO airport** (San José) and **3 hours from LIR** (Liberia). The drive itself is scenic — we recommend doing it during daylight if possible. The easiest way in is a door-to-door private transfer: our [San José Airport to La Fortuna shuttle](/private-shuttle/sjo-to-la-fortuna) if you fly into SJO, or the [Liberia Airport to La Fortuna shuttle](/private-shuttle/lir-to-la-fortuna) if you land in Guanacaste.
 
 Most travelers stay 2-3 nights in La Fortuna before continuing to other destinations like Monteverde or Manuel Antonio.
