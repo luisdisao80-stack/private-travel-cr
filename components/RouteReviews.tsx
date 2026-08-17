@@ -1,5 +1,6 @@
 import { Star, Quote } from "lucide-react";
 import { getRouteReviews } from "@/lib/reviews-data";
+import { getGoogleReviews } from "@/lib/google-reviews";
 
 /**
  * Route-page social proof.
@@ -17,7 +18,7 @@ import { getRouteReviews } from "@/lib/reviews-data";
  * (Search Console "Invalid object type"). The site-wide LocalBusiness schema
  * already carries the 5.0 aggregate rating on every page.
  */
-export default function RouteReviews({
+export default async function RouteReviews({
   origen,
   destino,
   originName,
@@ -30,7 +31,11 @@ export default function RouteReviews({
   originName: string;
   destName: string;
 }) {
-  const { reviews, routeSpecific } = getRouteReviews(origen, destino);
+  // Live Google reviews (daily ISR) get folded into the candidate pool and
+  // auto-tagged by the places their text mentions, so real Google voices
+  // surface on the exact routes they talk about.
+  const google = await getGoogleReviews();
+  const { reviews, routeSpecific } = getRouteReviews(origen, destino, google.reviews);
   if (reviews.length === 0) return null;
 
   return (

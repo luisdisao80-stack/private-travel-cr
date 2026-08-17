@@ -4,7 +4,11 @@
 // Order: newest first. To add a Google review, paste it as a new object
 // at the top with source: "google" and date in "Mon YYYY" format.
 
-import { matchScore } from "@/lib/locations";
+import { matchScore, detectPlaces } from "@/lib/locations";
+// Type-only import: erased at compile time, so pulling in the (server-only)
+// google-reviews module here does NOT drag its runtime guard into client
+// bundles that import this file.
+import type { GoogleReview } from "@/lib/google-reviews";
 
 export type Review = {
   id: string;
@@ -95,12 +99,38 @@ export const reviews: Review[] = [
  * reviews so every route page still carries real social proof — the caller
  * uses a generic heading in that case.
  */
+// Convert a live Google review into our Review shape, auto-tagging the
+// places it mentions so it can be route-matched just like a curated one.
+function fromGoogle(g: GoogleReview): Review {
+  return {
+    id: `google-${g.id}`,
+    author: g.authorName,
+    location: "Google",
+    rating: 5,
+    date: g.relativeTime || "",
+    title: "",
+    body: g.text,
+    source: "google",
+    places: detectPlaces(g.text),
+  };
+}
+
 export function getRouteReviews(
   origen: string,
   destino: string,
+  // Live Google reviews (from lib/google-reviews). Folded into the candidate
+  // pool so real, fresh Google voices can appear on the routes they mention.
+  googleReviews: GoogleReview[] = [],
   limit = 3
 ): { reviews: Review[]; routeSpecific: boolean } {
-  const scored = reviews.map((r) => {
+  // Curated reviews first (they have titles + travel type), then any live
+  // 5-star Google reviews with enough text to be worth showing.
+  const pool: Review[] = [
+    ...reviews,
+    ...googleReviews.filter((g) => g.rating >= 5 && g.text.trim().length > 40).map(fromGoogle),
+  ];
+
+  const scored = pool.map((r) => {
     const places = r.places ?? [];
     const hitsOrigin = places.some((p) => matchScore(origen, p) > 0);
     const hitsDest = places.some((p) => matchScore(destino, p) > 0);
@@ -117,8 +147,8 @@ export function getRouteReviews(
   }
 
   // No review names either endpoint — show the strongest general reviews
-  // (they're already ordered newest/best first) under a generic heading.
-  return { reviews: reviews.slice(0, limit), routeSpecific: false };
+  // (curated first, then live Google) under a generic heading.
+  return { reviews: pool.slice(0, limit), routeSpecific: false };
 }
 
 // Stats agregados para mostrar en el header de la sección

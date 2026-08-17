@@ -192,3 +192,39 @@ export function matchScore(dbName: string, query: string): number {
 export function priorityScore(dbName: string): number {
   return isAirport(dbName) ? 50 : 0;
 }
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Tokens too short/ambiguous to safely word-match inside free-form review
+// text ("ma" for Manuel Antonio would fire on any word containing it).
+const DETECT_BLOCKLIST = new Set(["ma"]);
+
+/**
+ * Scan free-form text (e.g. a Google/TripAdvisor review body) and return the
+ * canonical DB names of every place it explicitly mentions. Matching is
+ * diacritic-insensitive and word-bounded, so "from La Fortuna to Manuel
+ * Antonio" yields ["La Fortuna (Arenal)", "Manuel Antonio / Quepos"] without
+ * firing on substrings buried inside unrelated words.
+ *
+ * Used to auto-tag which routes a review belongs on, so live Google reviews
+ * can surface on the exact route pages they talk about without anyone hand-
+ * tagging them. The returned DB names slot straight into matchScore().
+ */
+export function detectPlaces(text: string): string[] {
+  if (!text) return [];
+  const hay = stripDiacritics(text.toLowerCase());
+  const found: string[] = [];
+
+  for (const [dbName, aliases] of Object.entries(ALIASES)) {
+    const phrases = [displayLocation(dbName), dbName, ...aliases]
+      .map((p) => stripDiacritics(p.toLowerCase()))
+      .filter((p) => p.length >= 3 && !DETECT_BLOCKLIST.has(p));
+
+    if (phrases.some((p) => new RegExp(`\\b${escapeRegExp(p)}\\b`).test(hay))) {
+      found.push(dbName);
+    }
+  }
+  return found;
+}
