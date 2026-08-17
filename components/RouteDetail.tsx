@@ -8,6 +8,7 @@ import RouteSchema from "@/components/RouteSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
 import RelatedArticles from "@/components/RelatedArticles";
+import RouteReviews from "@/components/RouteReviews";
 import Price from "@/components/Price";
 
 // Generic auto-FAQs that work for every route. Manual route.faqs land
@@ -234,6 +235,17 @@ export default function RouteDetail({
             </a>
           </div>
         </section>
+
+        {/* Social proof right after the price — reviews that mention this
+            exact route's endpoints when we have them, top general reviews
+            otherwise. Highest-impact spot for conversion: the visitor sees
+            the price, then real travelers vouching for this trip. */}
+        <RouteReviews
+          origen={route.origen}
+          destino={route.destino}
+          originName={originName}
+          destName={destName}
+        />
 
         {route.journey_description ? (
           <section className="mb-10">

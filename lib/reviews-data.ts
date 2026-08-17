@@ -4,6 +4,8 @@
 // Order: newest first. To add a Google review, paste it as a new object
 // at the top with source: "google" and date in "Mon YYYY" format.
 
+import { matchScore } from "@/lib/locations";
+
 export type Review = {
   id: string;
   author: string;
@@ -14,6 +16,14 @@ export type Review = {
   body: string;
   source: "tripadvisor" | "google";
   travelType?: "Friends" | "Family" | "Couples" | "Solo" | "Business";
+  /**
+   * Places this review explicitly mentions, as lowercase alias tokens that
+   * match the ALIASES table in lib/locations.ts (e.g. "la fortuna",
+   * "manuel antonio", "san jose", "liberia", "tamarindo"). Used by
+   * getRouteReviews() to surface a review on the pages of the exact routes
+   * it talks about. Leave empty for generic reviews with no route mention.
+   */
+  places?: string[];
 };
 
 export const reviews: Review[] = [
@@ -28,6 +38,7 @@ export const reviews: Review[] = [
       "Absolutely brilliant transfer company. Diego was incredibly easy and efficient to deal with. Very comfortable cars and delightful drivers who were incredibly prompt. Made our trip seamless and I can't recommend them highly enough.",
     source: "tripadvisor",
     travelType: "Couples",
+    places: [],
   },
   {
     id: "katherine-j-dec-2025",
@@ -40,6 +51,7 @@ export const reviews: Review[] = [
       "Our experience with Private Travel Costa Rica was exceptional from start to finish. We used their service for multiple transfers, including from San Juan airport to La Fortuna, between locations in La Fortuna, and from Tamarindo to Liberia International Airport. Every driver was amazing—on time, flexible, and extremely professional. The responsiveness of the entire team made coordinating our travel seamless and stress-free. We highly recommend them for any transportation needs in Costa Rica.",
     source: "tripadvisor",
     travelType: "Friends",
+    places: ["san jose", "la fortuna", "tamarindo", "liberia"],
   },
   {
     id: "ridi0406-dec-2025",
@@ -52,6 +64,7 @@ export const reviews: Review[] = [
       "We used this company for transfers from La Fortuna to San Manuel Antonio and then from San Manuel Antonio to San Jose. I cannot say enough about the professionalism of the company and both the drivers, as well as the cleanliness of the vans. Communication was almost immediate. Our drivers Oscar and Carlos arrived a few minutes early, were highly professional, and super friendly and warm. There was wifi in the van which was much appreciated. All in all, both experiences were excellent. I cannot recommend this company enough. I will definitely use them again for transfers when we are back in CR.",
     source: "tripadvisor",
     travelType: "Family",
+    places: ["la fortuna", "manuel antonio", "san jose"],
   },
   {
     id: "orli-b-jun-2024",
@@ -63,8 +76,50 @@ export const reviews: Review[] = [
     body:
       "I was so glad I booked our transfer from La Fortuna to Manuel Antonio with Diego. He was communicative and professional from the time of booking, confirming everything and checking on our needs. He was friendly, kind, spoke great English, and made the long drive as pleasant as possible. I'd absolutely book again.",
     source: "tripadvisor",
+    places: ["la fortuna", "manuel antonio"],
   },
 ];
+
+/**
+ * Reviews to show on a specific route page.
+ *
+ * Given a route's raw DB origin/destination names, we score each review by
+ * how many of the two endpoints it explicitly mentions (via each review's
+ * `places` tags, matched against the same alias table the quote search
+ * uses). A review that names BOTH endpoints of this exact route wins; one
+ * that names EITHER endpoint is still relevant.
+ *
+ * `routeSpecific` tells the caller whether it found genuinely on-route
+ * reviews. When true, the section can honestly say "what travelers say about
+ * <origin> → <destination>". When false, we fall back to the top general
+ * reviews so every route page still carries real social proof — the caller
+ * uses a generic heading in that case.
+ */
+export function getRouteReviews(
+  origen: string,
+  destino: string,
+  limit = 3
+): { reviews: Review[]; routeSpecific: boolean } {
+  const scored = reviews.map((r) => {
+    const places = r.places ?? [];
+    const hitsOrigin = places.some((p) => matchScore(origen, p) > 0);
+    const hitsDest = places.some((p) => matchScore(destino, p) > 0);
+    return { review: r, score: (hitsOrigin ? 1 : 0) + (hitsDest ? 1 : 0) };
+  });
+
+  const onRoute = scored
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((s) => s.review);
+
+  if (onRoute.length > 0) {
+    return { reviews: onRoute.slice(0, limit), routeSpecific: true };
+  }
+
+  // No review names either endpoint — show the strongest general reviews
+  // (they're already ordered newest/best first) under a generic heading.
+  return { reviews: reviews.slice(0, limit), routeSpecific: false };
+}
 
 // Stats agregados para mostrar en el header de la sección
 export const reviewStats = {
