@@ -95,6 +95,19 @@ export const reviews: Review[] = [
     travelType: "Couples",
     places: ["san jose", "puerto viejo"],
   },
+  {
+    id: "vacation-traveler-nov-2023",
+    author: "Vacation Traveler",
+    location: "TripAdvisor Reviewer",
+    rating: 5,
+    date: "Nov 2023",
+    title: "Monteverde Day Tour",
+    body:
+      "Diego was a great driver and we really enjoyed our day with him. We stayed at the Westin Conchal and wanted to go to Monteverde for the day. Other drivers said we should not do it because it was too much for a day trip, but that's what we wanted to do, so I was very happy that Diego said no problem, even with picking us up at 8:00 AM and dropping us off very late at night. We got to do all the things on my list and see more of Costa Rica. He was a great communicator, on time always, great driver, car was immaculate, and we felt safe and comfortable all day. He recommended a great restaurant for us for lunch, took pics for us at the waterfalls, and got us everywhere we needed to be. Highly recommend his services!",
+    source: "tripadvisor",
+    travelType: "Couples",
+    places: ["conchal", "monteverde"],
+  },
 ];
 
 /**
