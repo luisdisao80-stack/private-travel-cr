@@ -13,6 +13,7 @@ import {
   Check,
   ArrowDown,
   Trash2,
+  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -444,6 +445,47 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
         <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200">
           Your cart looks empty or invalid — please refresh the page and
           re-add your trips to continue.
+        </div>
+      ) : null}
+
+      {/* Last-mile reassurance checklist. The route/landing pages carry a
+          full "Why book with us" block, but the checkout screen — the
+          highest-anxiety moment, right before the card charge — had only
+          disclaimers (declines, FX fees) and no positive trust signal.
+          These four verified points (same facts as RouteTrust) sit
+          directly above the Pay CTA to reinforce the decision at the exact
+          instant of commitment. Bilingual to match the rest of the form. */}
+      {items.length > 0 && totalPrice > 0 ? (
+        <div className="rounded-xl border border-white/10 bg-gray-900/40 px-4 py-3">
+          <div className="flex items-center gap-2 mb-2">
+            <ShieldCheck size={16} className="text-amber-400 shrink-0" />
+            <span className="text-xs font-semibold text-white">
+              {lang === "es"
+                ? "Por qué reservar con nosotros"
+                : "Why book with us"}
+            </span>
+          </div>
+          <ul className="space-y-1.5">
+            {(lang === "es"
+              ? [
+                  "Con licencia y seguro — transporte turístico certificado por el ICT",
+                  "Seguimiento de vuelo gratis y soporte 24/7 por WhatsApp",
+                  "Sillas para niños gratis · agua y WiFi a bordo",
+                  "Pago seguro — tus datos de tarjeta nunca pasan por nuestros servidores",
+                ]
+              : [
+                  "Licensed & insured — ICT-certified tourist transport",
+                  "Free flight tracking & 24/7 WhatsApp support",
+                  "Free child seats · water and WiFi on board",
+                  "Secure payment — card details never touch our servers",
+                ]
+            ).map((item) => (
+              <li key={item} className="flex items-start gap-2 text-xs text-gray-300 leading-snug">
+                <Check size={14} className="text-green-400 mt-0.5 shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       ) : null}
 
