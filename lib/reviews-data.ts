@@ -82,6 +82,19 @@ export const reviews: Review[] = [
     source: "tripadvisor",
     places: ["la fortuna", "manuel antonio"],
   },
+  {
+    id: "susie-e-jun-2024",
+    author: "Susie E",
+    location: "TripAdvisor Reviewer",
+    rating: 5,
+    date: "Jun 2024",
+    title: "Safe, comfortable, courteous",
+    body:
+      "Great round trip experience from San Jose airport to Puerto Viejo and back. Carlos and Luis were safe, courteous and made sure we were comfortable.",
+    source: "tripadvisor",
+    travelType: "Couples",
+    places: ["san jose", "puerto viejo"],
+  },
 ];
 
 /**
