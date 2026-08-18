@@ -3,6 +3,7 @@ import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle, Building2, Star } fr
 import type { Route, RouteFAQ, Hotel } from "@/lib/types";
 import type { BlogPostMeta } from "@/lib/blog";
 import { isPopularRoute } from "@/lib/popular-routes";
+import { getDestinationByDbName } from "@/lib/destinations";
 import { displayLocation } from "@/lib/locations";
 import { siteConfig } from "@/lib/site-config";
 import RouteSchema from "@/components/RouteSchema";
@@ -109,6 +110,10 @@ export default function RouteDetail({
   // fill in below so every route page still ships with at least 3-4 Q&As.
   const manualFAQs = Array.isArray(route.faqs) ? route.faqs : [];
   const allFAQs: RouteFAQ[] = [...manualFAQs, ...buildAutoFAQs(route, originName, destName)];
+
+  // If this route's destination has a curated hub page, link to it so the
+  // visitor (and Google) can jump to "every way to reach <destination>".
+  const destinationHub = getDestinationByDbName(route.destino);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
@@ -427,6 +432,28 @@ export default function RouteDetail({
                 </Link>
               ))}
             </div>
+          </section>
+        ) : null}
+
+        {destinationHub ? (
+          <section className="mb-12">
+            <Link
+              href={`/shuttle-to/${destinationHub.slug}`}
+              className="group flex items-center justify-between bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/30 hover:border-amber-500/50 rounded-2xl p-6 transition"
+            >
+              <div className="pr-4">
+                <div className="text-white font-bold text-lg mb-1">
+                  See every shuttle to {destName}
+                </div>
+                <div className="text-sm text-gray-400">
+                  Compare all routes and prices into {destName} on one page.
+                </div>
+              </div>
+              <ArrowRight
+                size={20}
+                className="text-amber-400 shrink-0 group-hover:translate-x-1 transition-transform"
+              />
+            </Link>
           </section>
         ) : null}
 

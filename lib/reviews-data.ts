@@ -177,6 +177,36 @@ export function getRouteReviews(
   return { reviews: pool.slice(0, limit), routeSpecific: false };
 }
 
+/**
+ * Reviews to show on a destination hub page (/shuttle-to/[slug]).
+ *
+ * Unlike getRouteReviews (which scores by BOTH endpoints of a specific pair),
+ * a hub is about a single place — so we score each review by whether it
+ * mentions that one destination, and surface the ones that do. Falls back to
+ * the strongest general reviews when nothing names the place, so every hub
+ * still carries real social proof.
+ */
+export function getReviewsForPlace(
+  place: string,
+  googleReviews: GoogleReview[] = [],
+  limit = 3
+): { reviews: Review[]; placeSpecific: boolean } {
+  const pool: Review[] = [
+    ...reviews,
+    ...googleReviews.filter((g) => g.rating >= 5 && g.text.trim().length > 40).map(fromGoogle),
+  ];
+
+  const onPlace = pool.filter((r) =>
+    (r.places ?? []).some((p) => matchScore(place, p) > 0)
+  );
+
+  if (onPlace.length > 0) {
+    return { reviews: onPlace.slice(0, limit), placeSpecific: true };
+  }
+
+  return { reviews: pool.slice(0, limit), placeSpecific: false };
+}
+
 // Stats agregados para mostrar en el header de la sección
 export const reviewStats = {
   google: {

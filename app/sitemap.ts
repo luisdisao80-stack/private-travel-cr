@@ -4,6 +4,7 @@ import { getAllPostSlugs } from "@/lib/blog";
 import { getIndexableRoutes } from "@/lib/routes-db";
 import { getIndexableHotelSlugs } from "@/lib/hotels-db";
 import { getIndexableTourSlugs } from "@/lib/tours-db";
+import { getAllDestinationSlugs } from "@/lib/destinations";
 import { isPopularRoute } from "@/lib/popular-routes";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -83,5 +84,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...blogPages, ...routePages, ...hotelPages, ...tourPages];
+  // Destination hub pages (/shuttle-to/[slug]) — one strong internal-linking
+  // hub per destination that aggregates every indexable route into that place
+  // ("all the ways to reach La Fortuna"). Priority 0.9: they rival the popular
+  // /private-shuttle/ pages as entry points for "shuttle to <place>" queries.
+  const destinationPages: MetadataRoute.Sitemap = getAllDestinationSlugs().map((slug) => ({
+    url: `${baseUrl}/shuttle-to/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+
+  return [
+    ...staticPages,
+    ...blogPages,
+    ...destinationPages,
+    ...routePages,
+    ...hotelPages,
+    ...tourPages,
+  ];
 }

@@ -102,6 +102,22 @@ export async function getRoutesFromOrigen(origen: string): Promise<Route[]> {
   return data || [];
 }
 
+// All indexable routes INTO a given destino, cheapest first. Powers the
+// destination hub pages (/shuttle-to/[slug]) — "every way to reach <place>".
+export async function getRoutesToDestino(destino: string): Promise<Route[]> {
+  const { data, error } = await supabase
+    .from("routes")
+    .select("*")
+    .eq("destino", destino)
+    .eq("is_indexable", true)
+    .order("precio1a6", { ascending: true });
+  if (error) {
+    console.error(`Error fetching routes to ${destino}:`, error);
+    return [];
+  }
+  return data || [];
+}
+
 export async function getRelatedRoutes(origen: string, currentSlug: string, limit = 4): Promise<Route[]> {
   const { data, error } = await supabase
     .from("routes")
