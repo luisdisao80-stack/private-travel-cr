@@ -22,7 +22,7 @@ import HotelAddressAutocomplete from "@/components/HotelAddressAutocomplete";
 import type { Hotel } from "@/lib/types";
 import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
-import { isAirport, VIP_EXTRA_USD } from "@/lib/quote-helpers";
+import { isAirport, VIP_EXTRA_USD, nightSurchargeFor } from "@/lib/quote-helpers";
 import { events } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
 import { useCurrency } from "@/lib/CurrencyContext";
@@ -556,9 +556,14 @@ function TripConfigCard({
   onUpdateItem,
   onRemove,
 }: TripConfigCardProps) {
+  const { lang } = useLanguage();
   const showFlight = isAirport(item.fromName);
 
-  const standardPrice = item.basePrice + item.extraStopHours * EXTRA_STOP_PRICE;
+  // Late-night pickup surcharge (11 PM–5 AM) is part of both service tiers,
+  // so the card prices the customer picks between already reflect what will
+  // be charged. It's a pure function of the trip's pickup time.
+  const nightExtra = nightSurchargeFor(item.pickupTime);
+  const standardPrice = item.basePrice + item.extraStopHours * EXTRA_STOP_PRICE + nightExtra;
   const vipPrice = standardPrice + VIP_EXTRA_USD;
 
   // Controlled inputs. The previous version used defaultValue + onBlur,
@@ -578,7 +583,7 @@ function TripConfigCard({
   const setService = (service: "standard" | "vip") => {
     const stopsCost = item.extraStopHours * EXTRA_STOP_PRICE;
     const totalForItem =
-      item.basePrice + (service === "vip" ? VIP_EXTRA_USD : 0) + stopsCost;
+      item.basePrice + (service === "vip" ? VIP_EXTRA_USD : 0) + stopsCost + nightExtra;
     onUpdateItem({ serviceType: service, totalPrice: totalForItem });
   };
 
@@ -753,6 +758,17 @@ function TripConfigCard({
           </div>
         ) : null}
       </div>
+
+      {nightExtra > 0 ? (
+        <div className="flex items-center justify-between text-[11px] text-amber-300/90">
+          <span>
+            {lang === "es"
+              ? "Recargo por recogida nocturna (11PM–5AM)"
+              : "Late-night pickup surcharge (11PM–5AM)"}
+          </span>
+          <span className="font-semibold">+<Price usd={nightExtra} /></span>
+        </div>
+      ) : null}
 
       <div className="flex items-center justify-between pt-2 border-t border-white/5">
         <span className="text-xs text-gray-400">Trip total</span>

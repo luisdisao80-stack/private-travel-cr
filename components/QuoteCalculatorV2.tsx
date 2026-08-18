@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Route, Hotel } from "@/lib/types";
-import { VIP_EXTRA_USD, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
+import { VIP_EXTRA_USD, nightSurchargeFor, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
 import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -246,7 +246,10 @@ export default function QuoteCalculatorV2({
   const basePrice = route ? getPriceForGroupSize(route, totalPax || 1) : 0;
   const vipExtra = serviceType === "vip" ? VIP_EXTRA_USD : 0;
   const stopsExtra = extraStops * EXTRA_STOP_PRICE;
-  const totalPrice = basePrice + vipExtra + stopsExtra;
+  // Late-night pickup surcharge (11 PM–5 AM). Zero when the route has no
+  // price yet (basePrice 0) so an empty calculator never shows a lone $30.
+  const nightExtra = basePrice > 0 ? nightSurchargeFor(travelTime) : 0;
+  const totalPrice = basePrice + vipExtra + stopsExtra + nightExtra;
   const vehicle = getVehicleForPax(totalPax || 1);
   const requiresFlight = (from && isAirport(from)) || (to && isAirport(to));
   const totalChildSeats = infantSeats + convertibleSeats + boosterSeats;
@@ -267,6 +270,7 @@ export default function QuoteCalculatorV2({
       if (travelTime) lines.push("Time: " + timeLabel);
       if (flightNumber) lines.push("Flight: " + flightNumber);
       if (extraStops > 0) lines.push("Extra stops: " + extraStops + "hr (+$" + stopsExtra + ")");
+      if (nightExtra > 0) lines.push("Late-night pickup (11PM-5AM): +$" + nightExtra);
       if (totalChildSeats > 0) {
         const seats: string[] = [];
         if (infantSeats > 0) seats.push(infantSeats + " infant");
@@ -679,11 +683,12 @@ export default function QuoteCalculatorV2({
               <div className="text-4xl font-bold text-amber-400"><Price usd={totalPrice} /></div>
               <div className="text-[11px] text-gray-500 mt-1">Taxes included · Charged in USD via Tilopay</div>
             </div>
-            {(serviceType === "vip" || extraStops > 0) ? (
+            {(serviceType === "vip" || extraStops > 0 || nightExtra > 0) ? (
               <div className="text-right">
                 <div className="text-xs text-gray-500">Base: <Price usd={basePrice} /></div>
                 {serviceType === "vip" ? (<div className="text-xs text-amber-400">+ VIP: <Price usd={VIP_EXTRA_USD} /></div>) : null}
                 {extraStops > 0 ? (<div className="text-xs text-amber-400">+ Stops: <Price usd={stopsExtra} /></div>) : null}
+                {nightExtra > 0 ? (<div className="text-xs text-amber-400">+ Night (11PM–5AM): <Price usd={nightExtra} /></div>) : null}
               </div>
             ) : null}
           </div>

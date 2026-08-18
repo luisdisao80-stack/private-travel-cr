@@ -5,6 +5,26 @@ import type { Route } from "./types";
 
 export const VIP_EXTRA_USD = 80;
 
+// Late-night pickup surcharge. Drivers pick up between 11:00 PM and 5:00 AM
+// get a flat $30 extra per trip (unsocial-hours pay + empty return legs at
+// night). Applies to the PICKUP time the customer selects, in Costa Rica
+// local time (pickupTime is stored as "HH:MM"). Window: 23:00–04:59.
+export const NIGHT_SURCHARGE_USD = 30;
+
+export function isNightPickup(pickupTime: string | null | undefined): boolean {
+  if (!pickupTime) return false;
+  const m = /^(\d{1,2}):(\d{2})$/.exec(pickupTime.trim());
+  if (!m) return false;
+  const hour = parseInt(m[1], 10);
+  if (Number.isNaN(hour)) return false;
+  // 11 PM (23) through 4:59 AM (hour < 5).
+  return hour >= 23 || hour < 5;
+}
+
+export function nightSurchargeFor(pickupTime: string | null | undefined): number {
+  return isNightPickup(pickupTime) ? NIGHT_SURCHARGE_USD : 0;
+}
+
 export type ServiceType = "standard" | "vip";
 export type VehicleType = "staria" | "hiace" | "maxus";
 
