@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle, Building2 } from "lucide-react";
+import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle, Building2, Star } from "lucide-react";
 import type { Route, RouteFAQ, Hotel } from "@/lib/types";
 import type { BlogPostMeta } from "@/lib/blog";
 import { isPopularRoute } from "@/lib/popular-routes";
 import { displayLocation } from "@/lib/locations";
+import { siteConfig } from "@/lib/site-config";
 import RouteSchema from "@/components/RouteSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FAQSchema from "@/components/FAQSchema";
 import RelatedArticles from "@/components/RelatedArticles";
 import RouteReviews from "@/components/RouteReviews";
+import RouteTrust from "@/components/RouteTrust";
 import Price from "@/components/Price";
 
 // Generic auto-FAQs that work for every route. Manual route.faqs land
@@ -140,7 +142,25 @@ export default function RouteDetail({
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
             {originName} <span className="text-amber-400">to</span> {destName}
           </h1>
-          <div className="flex flex-wrap gap-4 text-gray-300 mb-6">
+          <div className="flex flex-wrap items-center gap-4 text-gray-300 mb-6">
+            {/* Rating badge — 5.0 stars + review count. Puts the trust
+                signal in the hero where every visitor sees it, matching
+                how competitors lead their route pages. Visible only; the
+                machine-readable aggregateRating lives in the site-wide
+                LocalBusiness schema (RouteSchema deliberately omits it). */}
+            <span className="flex items-center gap-1.5 text-sm">
+              <span className="flex items-center gap-0.5" aria-hidden="true">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={15} className="fill-amber-400 text-amber-400" strokeWidth={0} />
+                ))}
+              </span>
+              <span className="font-semibold text-white">
+                {siteConfig.business.rating.googleStars.toFixed(1)}
+              </span>
+              <span className="text-gray-400">
+                ({siteConfig.business.rating.googleReviews}+ reviews)
+              </span>
+            </span>
             {route.duracion ? (
               <span className="flex items-center gap-2 text-sm">
                 <Clock size={16} className="text-amber-400" />
@@ -235,6 +255,11 @@ export default function RouteDetail({
             </a>
           </div>
         </section>
+
+        {/* Why-us credibility block right under the price: licensing,
+            rating, flight tracking, child seats, fleet, local business.
+            Reinforces the buying decision before the visitor scrolls. */}
+        <RouteTrust />
 
         {/* Social proof right after the price — reviews that mention this
             exact route's endpoints when we have them, top general reviews
