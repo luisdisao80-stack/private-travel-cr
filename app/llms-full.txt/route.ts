@@ -7,38 +7,70 @@
 //   - siteConfig (business info, ratings)
 //   - lib/faqs.ts (FAQS_EN)
 //   - content/blog/*.md (read at build/revalidate time)
+//   - Supabase `routes` table (slugs, prices, durations — fetched live so
+//     this file never drifts from what's actually bookable on the site;
+//     route slugs aren't 100% consistent, e.g. "sjo-to-x" vs
+//     "sjo-juan-santamaria-int-airport-to-x", so we always use the real
+//     `route.slug` from the DB instead of a hardcoded guess)
 
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { siteConfig } from "@/lib/site-config";
 import { FAQS_EN } from "@/lib/faqs";
+import { VIP_EXTRA_USD, formatDuration } from "@/lib/quote-helpers";
+import { getRouteByLocations } from "@/lib/routes-db";
+import { isPopularRoute } from "@/lib/popular-routes";
+import type { Route } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
 export const revalidate = 86400;
 
-const POPULAR_FROM_SJO: ReadonlyArray<[string, string, string, string]> = [
-  // [name, slug, approxPriceUSD, approxDurationHours]
-  ["La Fortuna (Arenal)", "sjo-to-la-fortuna", "220", "3h"],
-  ["Manuel Antonio / Quepos", "sjo-to-manuel-antonio", "245", "3.5h"],
-  ["Monteverde", "sjo-to-monteverde", "260", "3.5h"],
-  ["Tamarindo (Guanacaste)", "sjo-juan-santamaria-int-airport-to-tamarindo", "395", "5h"],
-  ["Jaco", "sjo-juan-santamaria-int-airport-to-jaco", "175", "1.5h"],
-  ["Santa Teresa (Nicoya)", "sjo-juan-santamaria-int-airport-to-santa-teresa", "390", "5h"],
-  ["Puerto Viejo (Caribbean)", "sjo-to-puerto-viejo", "320", "4.5h"],
-  ["Papagayo (Guanacaste)", "sjo-juan-santamaria-int-airport-to-papagayo-peninsula-guanacaste", "420", "5h"],
+const SJO = "SJO - Juan Santamaria Int. Airport";
+const LIR = "LIR - Liberia Int. Airport";
+
+// Curated destinations to feature below. `dbName` must match routes.destino
+// in Supabase exactly (see lib/popular-routes.ts / lib/destinations.ts).
+const FROM_SJO: ReadonlyArray<[string, string]> = [
+  ["La Fortuna (Arenal)", "La Fortuna (Arenal)"],
+  ["Manuel Antonio / Quepos", "Manuel Antonio / Quepos"],
+  ["Monteverde", "Monteverde (Cloud Forest)"],
+  ["Tamarindo (Guanacaste)", "Tamarindo (Guanacaste)"],
+  ["Jaco", "Jaco"],
+  ["Santa Teresa (Nicoya)", "Santa Teresa (Nicoya Peninsula)"],
+  ["Puerto Viejo (Caribbean)", "Puerto Viejo (Caribbean Coast)"],
+  ["Papagayo (Guanacaste)", "Papagayo Peninsula, Guanacaste"],
 ];
 
-const POPULAR_FROM_LIR: ReadonlyArray<[string, string, string, string]> = [
-  ["La Fortuna (Arenal)", "lir-to-la-fortuna", "225", "3h"],
-  ["Manuel Antonio / Quepos", "lir-liberia-int-airport-to-manuel-antonio-quepos", "385", "5h"],
-  ["Monteverde", "lir-liberia-int-airport-to-monteverde", "220", "2.5h"],
-  ["Tamarindo (Guanacaste)", "lir-liberia-int-airport-to-tamarindo", "115", "1.25h"],
-  ["Santa Teresa (Nicoya)", "lir-liberia-int-airport-to-santa-teresa", "295", "3.5h"],
-  ["Papagayo (Guanacaste)", "lir-liberia-int-airport-to-papagayo-peninsula-guanacaste", "95", "0.5h"],
-  ["Conchal (Guanacaste)", "lir-liberia-int-airport-to-conchal", "120", "1h"],
+const FROM_LIR: ReadonlyArray<[string, string]> = [
+  ["La Fortuna (Arenal)", "La Fortuna (Arenal)"],
+  ["Manuel Antonio / Quepos", "Manuel Antonio / Quepos"],
+  ["Monteverde", "Monteverde (Cloud Forest)"],
+  ["Tamarindo (Guanacaste)", "Tamarindo (Guanacaste)"],
+  ["Santa Teresa (Nicoya)", "Santa Teresa (Nicoya Peninsula)"],
+  ["Papagayo (Guanacaste)", "Papagayo Peninsula, Guanacaste"],
+  ["Conchal (Guanacaste)", "Conchal (Guanacaste)"],
 ];
+
+type Featured = { label: string; route: Route };
+
+function linkPathFor(route: Route): string {
+  return isPopularRoute(route.origen, route.destino) ? "private-shuttle" : "routes";
+}
+
+async function fetchFeatured(airport: string, list: ReadonlyArray<[string, string]>): Promise<Featured[]> {
+  const results = await Promise.all(list.map(([, dbName]) => getRouteByLocations(airport, dbName)));
+  return list
+    .map(([label], i) => ({ label, route: results[i] }))
+    .filter((r): r is Featured => !!r.route && !!r.route.slug);
+}
+
+function formatRouteLine(url: string, { label, route }: Featured): string {
+  const price = route.precio1a6 ? `$${route.precio1a6} USD` : "contact for pricing";
+  const dur = formatDuration(route.duracion);
+  return `- **${label}** — from ${price} · ~${dur} drive · [${url}/${linkPathFor(route)}/${route.slug}](${url}/${linkPathFor(route)}/${route.slug})`;
+}
 
 function readBlogPosts(): Array<{ slug: string; title: string; date: string; description: string; body: string }> {
   const dir = path.join(process.cwd(), "content/blog");
@@ -66,15 +98,13 @@ export async function GET() {
   const biz = siteConfig.business;
   const posts = readBlogPosts();
 
-  const sjoRoutes = POPULAR_FROM_SJO.map(
-    ([name, slug, price, dur]) =>
-      `- **${name}** — from $${price} USD · ~${dur} drive · [${url}/private-shuttle/${slug}](${url}/private-shuttle/${slug})`
-  ).join("\n");
+  const [sjoFeatured, lirFeatured] = await Promise.all([
+    fetchFeatured(SJO, FROM_SJO),
+    fetchFeatured(LIR, FROM_LIR),
+  ]);
 
-  const lirRoutes = POPULAR_FROM_LIR.map(
-    ([name, slug, price, dur]) =>
-      `- **${name}** — from $${price} USD · ~${dur} drive · [${url}/private-shuttle/${slug}](${url}/private-shuttle/${slug})`
-  ).join("\n");
+  const sjoRoutes = sjoFeatured.map((f) => formatRouteLine(url, f)).join("\n");
+  const lirRoutes = lirFeatured.map((f) => formatRouteLine(url, f)).join("\n");
 
   const faqs = FAQS_EN.map(
     (q) => `### ${q.question}\n\n${q.answer}`
@@ -137,7 +167,7 @@ reviews and is a TripAdvisor Travelers' Choice 2025 award winner.
 - Short stops (restroom, photos, coffee) at no extra cost
 - 24/7 availability, any schedule
 
-### VIP service (+$80 USD on top of base)
+### VIP service (+$${VIP_EXTRA_USD} USD on top of base)
 
 Designed for honeymoons, special occasions, and travelers who want the journey
 to be part of the trip — not just transit.

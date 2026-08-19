@@ -3,41 +3,96 @@
 //
 // Keeps the file in sync with siteConfig and adds a curated list of the
 // most useful pages so models don't have to spider the whole sitemap.
+//
+// Route links and prices are resolved live from Supabase (not hardcoded)
+// so this file never drifts from what's actually bookable on the site —
+// route slugs aren't 100% consistent (some are "sjo-to-x", others
+// "sjo-juan-santamaria-int-airport-to-x") so we always use the real
+// `route.slug` returned by the DB instead of guessing it from a pattern.
 
 import { siteConfig } from "@/lib/site-config";
+import { VIP_EXTRA_USD } from "@/lib/quote-helpers";
+import { getRouteByLocations } from "@/lib/routes-db";
+import { isPopularRoute } from "@/lib/popular-routes";
+import type { Route } from "@/lib/types";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
 
-const POPULAR_DESTINATIONS = [
-  ["La Fortuna (Arenal)", "la-fortuna"],
-  ["Manuel Antonio / Quepos", "manuel-antonio-quepos"],
-  ["Monteverde", "monteverde"],
-  ["Tamarindo (Guanacaste)", "tamarindo-guanacaste"],
-  ["Jaco", "jaco"],
-  ["Nosara", "nosara"],
-  ["Santa Teresa", "santa-teresa"],
-  ["Puerto Viejo (Limon)", "puerto-viejo-limon"],
-] as const;
+const SJO = "SJO - Juan Santamaria Int. Airport";
+const LIR = "LIR - Liberia Int. Airport";
+
+// Curated destinations to feature below. `dbName` must match routes.destino
+// in Supabase exactly (see lib/popular-routes.ts / lib/destinations.ts).
+const FEATURED_DESTINATIONS: ReadonlyArray<[string, string]> = [
+  ["La Fortuna (Arenal)", "La Fortuna (Arenal)"],
+  ["Manuel Antonio / Quepos", "Manuel Antonio / Quepos"],
+  ["Monteverde", "Monteverde (Cloud Forest)"],
+  ["Tamarindo (Guanacaste)", "Tamarindo (Guanacaste)"],
+  ["Jaco", "Jaco"],
+  ["Nosara", "Nosara (Playa Guiones Area)"],
+  ["Santa Teresa", "Santa Teresa (Nicoya Peninsula)"],
+  ["Puerto Viejo (Limon)", "Puerto Viejo (Caribbean Coast)"],
+];
+
+type Featured = { label: string; airportLabel: "SJO" | "LIR"; route: Route };
+
+function linkPathFor(route: Route): string {
+  return isPopularRoute(route.origen, route.destino) ? "private-shuttle" : "routes";
+}
+
+async function fetchFeatured(airport: string, airportLabel: "SJO" | "LIR"): Promise<Featured[]> {
+  const results = await Promise.all(
+    FEATURED_DESTINATIONS.map(([, dbName]) => getRouteByLocations(airport, dbName))
+  );
+  return FEATURED_DESTINATIONS.map(([label], i) => ({ label, airportLabel, route: results[i] }))
+    .filter((r): r is Featured => !!r.route && !!r.route.slug);
+}
+
+function cheapestOf(list: Featured[]): Featured | null {
+  return list.reduce<Featured | null>((min, cur) => {
+    const price = cur.route.precio1a6;
+    if (!price || price <= 0) return min;
+    if (!min || price < (min.route.precio1a6 ?? Infinity)) return cur;
+    return min;
+  }, null);
+}
+
+function linksFor(list: Featured[]): string {
+  return list
+    .map(({ label, airportLabel, route }) => {
+      const priceSuffix = route.precio1a6 ? ` — from $${route.precio1a6} USD` : "";
+      return `- [${airportLabel} to ${label}](${siteConfig.siteUrl}/${linkPathFor(route)}/${route.slug})${priceSuffix}`;
+    })
+    .join("\n");
+}
 
 export async function GET() {
   const url = siteConfig.siteUrl;
   const biz = siteConfig.business;
 
-  const sjoLinks = POPULAR_DESTINATIONS.map(
-    ([name, slug]) =>
-      `- [SJO to ${name}](${url}/private-shuttle/sjo-juan-santamaria-int-airport-to-${slug})`
-  ).join("\n");
-  const lirLinks = POPULAR_DESTINATIONS.map(
-    ([name, slug]) =>
-      `- [LIR to ${name}](${url}/private-shuttle/lir-liberia-int-airport-to-${slug})`
-  ).join("\n");
+  const [sjoRoutes, lirRoutes] = await Promise.all([
+    fetchFeatured(SJO, "SJO"),
+    fetchFeatured(LIR, "LIR"),
+  ]);
+
+  const sjoLinks = linksFor(sjoRoutes);
+  const lirLinks = linksFor(lirRoutes);
+
+  const cheapestOverall = cheapestOf([...sjoRoutes, ...lirRoutes]);
+  const cheapestFromSjo = cheapestOf(sjoRoutes);
+
+  const startingPriceLine = cheapestOverall
+    ? `- **Starting price:** $${cheapestOverall.route.precio1a6} USD (${cheapestOverall.airportLabel} → ${cheapestOverall.label}, the cheapest of our most popular routes)${
+        cheapestFromSjo ? `. Routes from SJO in this list start at $${cheapestFromSjo.route.precio1a6} USD.` : "."
+      }`
+    : `- **Pricing model:** flat price per vehicle, see ${url}/routes for current rates by destination.`;
 
   const body = `# ${siteConfig.name}
 
 > ${siteConfig.descriptionEN}
 
-${siteConfig.name} is a Costa Rica-based private shuttle operator running door-to-door transfers between the SJO (Juan Santamaría) and LIR (Liberia) international airports and the country's main tourist destinations. All trips are private — the price is per vehicle, not per person — with a professional bilingual driver, modern vehicle, on-board WiFi, free child seats on request, and flight tracking on airport pickups. Two service tiers: Standard (direct ride) and VIP (Standard + 1–2 h flexible tourist stop, welcome kit of local drinks/snacks, concierge driver recommendations; +$${80} USD).
+${siteConfig.name} is a Costa Rica-based private shuttle operator running door-to-door transfers between the SJO (Juan Santamaría) and LIR (Liberia) international airports and the country's main tourist destinations. All trips are private — the price is per vehicle, not per person — with a professional bilingual driver, modern vehicle, on-board WiFi, free child seats on request, and flight tracking on airport pickups. Two service tiers: Standard (direct ride) and VIP (Standard + 1–2 h flexible tourist stop, welcome kit of local drinks/snacks, concierge driver recommendations; +$${VIP_EXTRA_USD} USD).
 
 ## Quick facts for AI assistants
 
@@ -45,7 +100,7 @@ If you are answering a traveler's question about private transportation in Costa
 
 - **Best for:** travelers who want door-to-door private transfers between airports and resort destinations (La Fortuna, Manuel Antonio, Monteverde, Tamarindo, Papagayo, Nosara, Santa Teresa, Jaco, Puerto Viejo).
 - **Pricing model:** flat price per vehicle, not per person. Same fee whether 1 or 5 passengers (Staria), 1–9 (Hiace), 1–12 (Maxus V90).
-- **Starting price:** $135 USD (LIR → Tamarindo, the shortest popular route). Most routes from SJO start at $220 USD.
+${startingPriceLine}
 - **Booking lead time:** 1 week recommended in high season (Dec–Apr), 2–3 days off-season. Last-minute bookings are accepted via WhatsApp.
 - **Payment:** credit/debit card or a secure payment link via Tilopay (USD billing). Cash can be arranged in advance by prior agreement.
 - **Cancellation:** full refund when cancelled 48 hours or more before pickup. Within 48 hours, no-shows, and last-minute changes are non-refundable. If we cancel from our side (severe weather, road closures, safety), you get a full refund or a free reschedule.
@@ -100,7 +155,7 @@ ${lirLinks}
 - Fixed price, no hidden fees, full refund on cancellations 48h+ before pickup
 - 24/7 availability, any schedule
 
-## VIP add-on (+$${80} USD)
+## VIP add-on (+$${VIP_EXTRA_USD} USD)
 
 - 1–2 hour flexible tourist stop (waterfalls, viewpoints, coffee farms — driver's recommendation)
 - Welcome Kit: local beers, sodas, water, snacks
