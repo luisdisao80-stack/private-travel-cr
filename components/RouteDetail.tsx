@@ -3,6 +3,7 @@ import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle, Building2, Star } fr
 import type { Route, RouteFAQ, Hotel } from "@/lib/types";
 import type { BlogPostMeta } from "@/lib/blog";
 import { isPopularRoute } from "@/lib/popular-routes";
+import { isAirport } from "@/lib/quote-helpers";
 import { getDestinationByDbName } from "@/lib/destinations";
 import { displayLocation } from "@/lib/locations";
 import { siteConfig } from "@/lib/site-config";
@@ -42,6 +43,19 @@ function buildAutoFAQs(route: Route, originName: string, destName: string): Rout
       answer: `Yes, we offer door-to-door pickup anywhere in ${originName} — hotels, Airbnbs, private villas, or any specific address you give us at booking. We confirm the exact pickup location 24 hours before your trip.`,
     }
   );
+
+  // Airport-specific FAQ: only shown when one endpoint is SJO or LIR, since
+  // "flight delayed" only makes sense on airport-pickup routes. Uses the
+  // exact origen/destino DB values (not the display names) because
+  // isAirport() matches against the raw Supabase strings.
+  const airportName = isAirport(route.origen) ? originName : isAirport(route.destino) ? destName : null;
+  if (airportName) {
+    baseList.push({
+      question: `What happens if my flight at ${airportName} is delayed or cancelled?`,
+      answer: `Don't worry — when you book, we ask for your flight number and monitor it in real time. If your flight is delayed, we automatically adjust your pickup time at no extra cost. If it's cancelled, we reschedule your shuttle for the new date, free of charge.`,
+    });
+  }
+
   return baseList;
 }
 
