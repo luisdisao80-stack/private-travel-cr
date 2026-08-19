@@ -104,12 +104,13 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  // Flight number is required for every trip that picks UP at an
-  // airport — without it Diego can't track the flight for delays and
-  // ends up chasing the customer on WhatsApp for the missing info
-  // hours before pickup. We DON'T require it for trips that DROP OFF
-  // at an airport (the customer isn't flying in, they're flying out
-  // afterwards and don't have an inbound flight to track).
+  // Flight number is HELPFUL (not required) for every trip that picks UP
+  // at an airport — Diego uses it to track the flight for delays, but per
+  // his 2026-08-18 request it must no longer block checkout. Trips that
+  // DROP OFF at an airport never asked for it (the customer isn't flying
+  // in, they're flying out afterwards and don't have an inbound flight to
+  // track). We still compute this list to show a soft, non-blocking
+  // reminder — it's just no longer part of `isValid`.
   const airportTripsMissingFlight = items
     .map((it, idx) => ({ it, idx }))
     .filter(
@@ -132,7 +133,6 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
     // the button reads "Pay $0.00 USD" and posts to Tilopay which
     // rejects the charge — a scary dead-end mid-checkout.
     totalPrice > 0 &&
-    airportTripsMissingFlight.length === 0 &&
     firstTripLeadTimeOk &&
     acceptedTerms;
 
@@ -359,25 +359,28 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
         </span>
       </label>
 
-      {/* Inline summary of missing flight numbers — sits right above
-          the Pay CTA so a visitor who can't see why the button is
-          disabled gets a clear pointer to the offending trip(s) without
-          scrolling back up. Per-card red helper text already exists in
-          the trip card itself; this is the cross-trip aggregate. */}
+      {/* Inline summary of missing flight numbers — sits right above the
+          Pay CTA as a gentle reminder. Flight number is helpful (Diego
+          tracks it for delays) but, per his 2026-08-18 request, no longer
+          blocks checkout — so this is informational only, styled amber
+          (not red) to match the site's other non-blocking hints instead
+          of looking like an error. */}
       {airportTripsMissingFlight.length > 0 && (
-        <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200">
+        <div className="rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
           {airportTripsMissingFlight.length === 1 ? (
             <>
               Trip #{airportTripsMissingFlight[0].idx + 1} (
-              {airportTripsMissingFlight[0].it.fromName}) is missing a
-              flight number. We need it to track your flight for delays.
+              {airportTripsMissingFlight[0].it.fromName}) has no flight
+              number yet. Optional, but it helps us track your flight for
+              delays — you can add it later too.
             </>
           ) : (
             <>
-              {airportTripsMissingFlight.length} airport trips are missing
-              flight numbers (#
+              {airportTripsMissingFlight.length} airport trips have no
+              flight number yet (#
               {airportTripsMissingFlight.map((t) => t.idx + 1).join(", #")}).
-              We need them to track your flights for delays.
+              Optional, but it helps us track your flights for delays — you
+              can add it later too.
             </>
           )}
         </div>
@@ -716,24 +719,19 @@ function TripConfigCard({
             <div className="space-y-1.5">
               <Label className="text-gray-300 text-xs flex items-center gap-1.5">
                 <Plane size={12} className="text-amber-400" />
-                Flight number <span className="text-red-400">*</span>
+                Flight number{" "}
+                <span className="text-gray-500 font-normal">(optional)</span>
               </Label>
               <Input
                 value={flightNumberValue}
                 onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
                 placeholder="e.g. UA1234"
-                required
-                aria-required="true"
-                className={`bg-black/50 text-white h-10 uppercase ${
-                  flightNumberValue.trim().length === 0
-                    ? "border-red-500/60 focus:border-red-400"
-                    : "border-amber-500/30"
-                }`}
+                className="bg-black/50 text-white h-10 uppercase border-amber-500/30"
               />
               {flightNumberValue.trim().length === 0 && (
-                <p className="text-[10px] text-red-400 mt-1">
-                  Required for airport pickups so we can track your flight
-                  for delays.
+                <p className="text-[10px] text-gray-500 mt-1">
+                  Optional — helps us track your flight for delays. You can
+                  also send it later on WhatsApp.
                 </p>
               )}
             </div>
