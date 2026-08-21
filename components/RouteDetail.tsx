@@ -294,7 +294,7 @@ export default function RouteDetail({
         {route.journey_description ? (
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-white mb-4">
-              What is the drive from {originName} to {destName} like?
+              How is the drive from {originName} to {destName}?
             </h2>
             <p className="text-gray-300 leading-relaxed">{route.journey_description}</p>
           </section>
@@ -319,7 +319,7 @@ export default function RouteDetail({
         {route.road_type ? (
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-white mb-4">
-              What are the road conditions from {originName} to {destName}?
+              How are the road conditions from {originName} to {destName}?
             </h2>
             <p className="text-gray-300 leading-relaxed">{route.road_type}</p>
           </section>
