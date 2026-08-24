@@ -1,6 +1,6 @@
 ---
-title: "La Fortuna → Monteverde: Bus, Boat, or Shuttle? [2026]"
-description: "4 ways to get there: taxi-boat-taxi $30, shared van $55, private shuttle $255, or self-drive. A La Fortuna shuttle operator ranks each honestly."
+title: "La Fortuna to Monteverde: 4 Ways to Get There (2026)"
+description: "Lake Arenal sits between them, so 40 km takes 3 hours either way. Taxi-boat-taxi $30, shared van $55, private shuttle $255 or self-drive — ranked honestly."
 date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"

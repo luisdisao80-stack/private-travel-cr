@@ -1,6 +1,6 @@
 ---
-title: "Do You Need a Rental Car in Costa Rica? (2026 Honest Answer + Costs)"
-description: "Local driver's honest answer: when you need a rental car in Costa Rica vs when shuttles are cheaper and safer. Real 2026 LIR/SJO rental prices, Manuel Antonio + La Fortuna alternatives, and a 7-day no-rental itinerary."
+title: "Do You Need a Rental Car in Costa Rica? (2026 Answer)"
+description: "A Costa Rican driver's honest answer: rent for Guanacaste beach-hopping, skip it for La Fortuna, Monteverde and Manuel Antonio. Real rental vs shuttle costs."
 date: "2026-05-21"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"

@@ -20,22 +20,35 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { siteConfig } from "@/lib/site-config";
 import { getGoogleReviews } from "@/lib/google-reviews";
 
-// SEO target query cluster (GSC June 2026, ranked by impressions):
-//   - "private transportation costa rica" (200 impr, 2.5% CTR)
-//   - "private shuttle costa rica"        (196 impr, 3.1% CTR)
-//   - "costa rica private transfers"      (185 impr, 3.8% CTR)
-//   - "private transfers costa rica"      (135 impr, 4.4% CTR)
-//   - "private transportation in costa rica" (95 impr, 14% CTR)
+// SEO target query cluster (GSC, last 3 months to 2026-08-23, by impressions):
+//   - "costa rica ground transportation"   975 impr  pos 16.6   0 clicks
+//   - "costa rica private transportation"  705 impr  pos  3.8  45 clicks
+//   - "private shuttle costa rica"         692 impr  pos  5.0  33 clicks
+//   - "private transportation costa rica"  629 impr  pos  3.0  28 clicks
+//   - "costa rica transportation"          453 impr  pos 16.8   1 click
+//   - "costa rica airport transfers"       436 impr  pos 14.3   2 clicks
+//   - "costa rica airport shuttle"         371 impr  pos 23.8   0 clicks
+//   - "private transportation in costa rica" 358 impr pos 3.2  50 clicks
 //
-// Combined: 811 impressions/month with ~4.5% CTR. This page is built as
-// an exact-match landing for all five — H1 says "Private Transportation
-// in Costa Rica", H2s/copy hit every variant. Goal: rank top 5 in 60 days
-// and lift the cluster CTR to 8-12%, adding ~50-100 clicks/month.
+// Two distinct groups. The "private ..." variants already rank top 5 and
+// convert (156 of the cluster's 159 clicks) — do not disturb the H1, which
+// exact-matches them. The generic variants ("ground transportation",
+// "transportation", "airport shuttle") sit on page 2-3 with essentially
+// zero clicks; that's the ~1,800 impressions of headroom left on this page.
+//
+// The title used to read "Private Transportation in Costa Rica from $135 |
+// Private Driver & Transfers" — 74 chars before the "| Private Travel CR"
+// template, so Google truncated it mid-phrase and the price never showed.
+// The version below is 53 chars, exact-matches the highest-converting query
+// verbatim, and keeps the price visible.
 
 export const metadata: Metadata = {
-  title: "Private Transportation in Costa Rica from $135 | Private Driver & Transfers",
+  title: "Costa Rica Private Transportation & Shuttles from $135",
+  // 154 chars — the previous one ran 231 and Google cut it before the
+  // reviews. Leads with the two phrasings travelers actually type
+  // ("private transportation", "airport shuttle") and keeps the price.
   description:
-    "Private transportation and private drivers in Costa Rica from $135 USD. Your own bilingual private driver, door-to-door transfers from SJO/LIR airports to La Fortuna, Manuel Antonio, Monteverde, Tamarindo. ⭐ 5.0 · 200+ Google reviews.",
+    "Private transportation and airport shuttles across Costa Rica from $135 per vehicle. Bilingual driver, door-to-door from SJO and LIR. ⭐ 5.0 · 200+ reviews.",
   keywords: [
     "private transportation costa rica",
     "private transportation in costa rica",
