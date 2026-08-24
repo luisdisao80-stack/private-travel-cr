@@ -82,6 +82,21 @@ async function submitBatch(urlList: string[], batchNo: number, batchCount: numbe
     return;
   }
 
+  // A 403 has two very different causes and the generic "key rejected"
+  // wording sends you hunting for a problem that isn't there. When the key
+  // file is present but Bing hasn't finished validating it yet (normal for
+  // a few hours after the first deploy) the body carries
+  // errorCode: "SiteVerificationNotCompleted" — that one is just "wait".
+  if (res.status === 403 && body.includes("SiteVerificationNotCompleted")) {
+    console.error(
+      `⏳ Not an error in our setup${label}. The key file is live, but Bing hasn't\n` +
+        `   finished verifying it yet — that takes a few hours after the first deploy.\n` +
+        `   Re-run this exact command later; nothing needs fixing.`,
+    );
+    process.exitCode = 1;
+    return;
+  }
+
   const hints: Record<number, string> = {
     400: "Bad request — the JSON body or the key format is wrong.",
     403: `Key rejected. Confirm ${KEY_LOCATION} is live and returns exactly the key.`,
