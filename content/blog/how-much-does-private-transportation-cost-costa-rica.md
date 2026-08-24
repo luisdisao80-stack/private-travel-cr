@@ -1,6 +1,6 @@
 ---
-title: "How Much Does Private Transportation Cost in Costa Rica? (2026 Prices)"
-description: "Real 2026 prices for private transportation in Costa Rica — full route price table from SJO/LIR airports, what's included, hidden fees to watch for, and how to know if you're being overcharged."
+title: "Costa Rica Private Transportation Cost: 2026 Price List"
+description: "$90–$450 per trip in 2026, per vehicle. Full price table from SJO and LIR airports, what's included, and how to tell when an operator is overcharging you."
 date: "2026-06-22"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"

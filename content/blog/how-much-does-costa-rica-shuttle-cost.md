@@ -1,6 +1,6 @@
 ---
-title: "Costa Rica Private Shuttle Cost in 2026 (Real Prices from SJO & LIR)"
-description: "Real 2026 prices for private shuttles in Costa Rica — exact rates from SJO and LIR airports to La Fortuna, Manuel Antonio, Monteverde, Tamarindo. Plus what's included, hidden fees to avoid, and when shared shuttles beat private."
+title: "How Much Does a Costa Rica Shuttle Cost? 2026 Prices"
+description: "2026 rates from a Costa Rican operator: SJO–La Fortuna $220, LIR–Tamarindo $135, La Fortuna–Monteverde $255. Per vehicle, taxes in, no hidden fees."
 date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"

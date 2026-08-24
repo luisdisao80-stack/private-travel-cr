@@ -1,6 +1,6 @@
 ---
-title: "Liberia Airport to Tamarindo: Private Shuttle from $135 (2026 Guide)"
-description: "LIR Airport to Tamarindo is a 1h15 drive. Private shuttle from $135, shared van from $25, taxi $100. Compare all 4 options + which we recommend for your group size."
+title: "Liberia Airport to Tamarindo: 75 km, 1h15 Drive (2026)"
+description: "LIR to Tamarindo is 75 km — 1h15 to 1h45 on paved highway, no mountain roads. All 4 ways compared: private shuttle $135, shared van $25, taxi, rental car."
 date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
