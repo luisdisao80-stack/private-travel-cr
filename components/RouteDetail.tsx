@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MapPin, Clock, Users, Car, ArrowRight, HelpCircle, Building2, Star } from "lucide-react";
 import type { Route, RouteFAQ, Hotel } from "@/lib/types";
 import type { BlogPostMeta } from "@/lib/blog";
-import { isPopularRoute } from "@/lib/popular-routes";
+import { routeHref } from "@/lib/popular-routes";
 import { isAirport } from "@/lib/quote-helpers";
 import { getDestinationByDbName } from "@/lib/destinations";
 import { displayLocation } from "@/lib/locations";
@@ -69,14 +69,6 @@ function parsePOI(json: string | null): string[] {
   }
 }
 
-// Internal links to related routes use /private-shuttle/[slug] when the related
-// route is among the popular pairs; otherwise fall back to /routes/[slug].
-function routeHref(route: Route): string {
-  return isPopularRoute(route.origen, route.destino)
-    ? `/private-shuttle/${route.slug}`
-    : `/routes/${route.slug}`;
-}
-
 type Props = {
   route: Route;
   related: Route[];
@@ -128,6 +120,12 @@ export default function RouteDetail({
   // If this route's destination has a curated hub page, link to it so the
   // visitor (and Google) can jump to "every way to reach <destination>".
   const destinationHub = getDestinationByDbName(route.destino);
+
+  // `routes.slug` is nullable; resolve each related route's href once and drop
+  // the rows that have none instead of linking to "/routes/null".
+  const linkedRelated = related
+    .map((r) => ({ route: r, href: routeHref(r) }))
+    .filter((r): r is { route: Route; href: string } => r.href !== null);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
@@ -471,14 +469,14 @@ export default function RouteDetail({
           </section>
         ) : null}
 
-        {related.length > 0 ? (
+        {linkedRelated.length > 0 ? (
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-white mb-6">Other routes from {originName}</h2>
             <div className="grid md:grid-cols-2 gap-4">
-              {related.map((r) => (
+              {linkedRelated.map(({ route: r, href }) => (
                 <Link
                   key={r.id}
-                  href={routeHref(r)}
+                  href={href}
                   className="group flex items-center justify-between bg-gray-900/50 border border-amber-500/10 hover:border-amber-500/40 rounded-xl p-5 transition"
                 >
                   <div>

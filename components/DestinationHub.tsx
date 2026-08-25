@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MapPin, Clock, ArrowRight, HelpCircle, Star, Check } from "lucide-react";
 import type { Route, RouteFAQ } from "@/lib/types";
 import type { Destination } from "@/lib/destinations";
-import { isPopularRoute } from "@/lib/popular-routes";
+import { routeHref } from "@/lib/popular-routes";
 import { displayLocation } from "@/lib/locations";
 import { siteConfig } from "@/lib/site-config";
 import { getReviewsForPlace } from "@/lib/reviews-data";
@@ -12,14 +12,6 @@ import FAQSchema from "@/components/FAQSchema";
 import RouteTrust from "@/components/RouteTrust";
 import { Quote } from "lucide-react";
 import Price from "@/components/Price";
-
-// Internal links to each incoming route use /private-shuttle/[slug] when the
-// pair is popular; otherwise /routes/[slug] — same rule RouteDetail uses.
-function routeHref(route: Route): string {
-  return isPopularRoute(route.origen, route.destino)
-    ? `/private-shuttle/${route.slug}`
-    : `/routes/${route.slug}`;
-}
 
 function buildHubFAQs(dest: Destination, fromPrice: number | null): RouteFAQ[] {
   const list: RouteFAQ[] = [];
@@ -54,6 +46,13 @@ export default async function DestinationHub({
 }) {
   const fromPrice = routes.length > 0 ? routes[0].precio1a6 ?? null : null;
   const faqs = buildHubFAQs(destination, fromPrice);
+
+  // `routes.slug` is nullable, and a row without one has no page to point at.
+  // Resolve the href once and drop the unlinkable rows instead of rendering
+  // them as links to "/routes/null".
+  const linkedRoutes = routes
+    .map((route) => ({ route, href: routeHref(route) }))
+    .filter((r): r is { route: Route; href: string } => r.href !== null);
 
   // Destination-focused social proof: reviews that name this place, with a
   // graceful fallback to the strongest general reviews.
@@ -138,7 +137,7 @@ export default async function DestinationHub({
           </div>
         </section>
 
-        {routes.length > 0 ? (
+        {linkedRoutes.length > 0 ? (
           <section className="mb-12" aria-labelledby="hub-routes-heading">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
@@ -156,10 +155,10 @@ export default async function DestinationHub({
                 : `Private door-to-door shuttles to ${destination.name} from every major town and airport. Tap any route for full pricing and details.`}
             </p>
             <div className="grid md:grid-cols-2 gap-4">
-              {routes.map((r) => (
+              {linkedRoutes.map(({ route: r, href }) => (
                 <Link
                   key={r.id}
-                  href={routeHref(r)}
+                  href={href}
                   className="group flex items-center justify-between bg-gray-900/50 border border-amber-500/10 hover:border-amber-500/40 rounded-xl p-5 transition"
                 >
                   <div className="min-w-0 pr-4">
