@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import FAQSection from "@/components/FAQSection";
 import RoutesPageClient from "@/components/RoutesPageClient";
-import { getAllRoutes } from "@/lib/routes-db";
+import RouteIndex from "@/components/RouteIndex";
+import { getAllRoutes, getIndexableRoutes } from "@/lib/routes-db";
 import { getAllHotels } from "@/lib/hotels-db";
 
 export const metadata: Metadata = {
@@ -55,11 +56,19 @@ export const metadata: Metadata = {
 export const revalidate = 86400;
 
 export default async function RoutesPage() {
-  const [routes, hotels] = await Promise.all([getAllRoutes(), getAllHotels()]);
+  // getAllRoutes feeds the search widget (it can quote any pair, indexable
+  // or not). getIndexableRoutes feeds the crawlable index below it — we
+  // only want internal links pointing at pages that are in the sitemap.
+  const [routes, indexable, hotels] = await Promise.all([
+    getAllRoutes(),
+    getIndexableRoutes(),
+    getAllHotels(),
+  ]);
   return (
     <>
       <Navbar />
       <RoutesPageClient routes={routes} hotels={hotels} />
+      <RouteIndex routes={indexable} />
       <FAQSection />
       <Footer />
       <WhatsAppFloat />

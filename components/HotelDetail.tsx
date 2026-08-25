@@ -9,7 +9,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 import type { Hotel, Route } from "@/lib/types";
-import { isPopularRoute } from "@/lib/popular-routes";
+import { routeHref } from "@/lib/popular-routes";
 import { displayLocation } from "@/lib/locations";
 import { siteConfig } from "@/lib/site-config";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -21,14 +21,6 @@ type Props = {
   routes: Route[];
   related: Hotel[];
 };
-
-// Build link to the route detail page — popular pairs live under
-// /private-shuttle/, others under /routes/.
-function routeHref(route: Route): string {
-  return isPopularRoute(route.origen, route.destino)
-    ? `/private-shuttle/${route.slug}`
-    : `/routes/${route.slug}`;
-}
 
 export default function HotelDetail({ hotel, routes, related }: Props) {
   const whatsappUrl =
@@ -48,12 +40,17 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
     "Conchal (Guanacaste)",
     "Papagayo Peninsula, Guanacaste",
   ]);
-  const sortedRoutes = [...routes].sort((a, b) => {
-    const aPopular = popularDestinations.has(a.destino) ? 1 : 0;
-    const bPopular = popularDestinations.has(b.destino) ? 1 : 0;
-    if (aPopular !== bPopular) return bPopular - aPopular;
-    return (a.precio1a6 ?? 0) - (b.precio1a6 ?? 0);
-  });
+  // `routes.slug` is nullable; a row without one has no page to link to, so it
+  // is dropped here rather than rendered as a link to "/routes/null".
+  const sortedRoutes = [...routes]
+    .sort((a, b) => {
+      const aPopular = popularDestinations.has(a.destino) ? 1 : 0;
+      const bPopular = popularDestinations.has(b.destino) ? 1 : 0;
+      if (aPopular !== bPopular) return bPopular - aPopular;
+      return (a.precio1a6 ?? 0) - (b.precio1a6 ?? 0);
+    })
+    .map((route) => ({ route, href: routeHref(route) }))
+    .filter((r): r is { route: Route; href: string } => r.href !== null);
 
   // Auto-generated FAQs specific to the hotel.
   const faqs = [
@@ -157,10 +154,10 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {sortedRoutes.map((route) => (
+                {sortedRoutes.map(({ route, href }) => (
                   <Link
                     key={route.id}
-                    href={routeHref(route)}
+                    href={href}
                     className="group flex items-center justify-between bg-gray-900/50 border border-white/10 hover:border-amber-500/40 rounded-xl p-5 transition"
                   >
                     <div className="min-w-0 pr-4">

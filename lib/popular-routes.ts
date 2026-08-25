@@ -21,3 +21,25 @@ const popularSet = new Set<string>(POPULAR_DESTINATIONS);
 export function isPopularRoute(origen: string, destino: string): boolean {
   return popularSet.has(origen) && popularSet.has(destino);
 }
+
+/**
+ * Canonical URL for a route page, or null when the row has no slug and is
+ * therefore unlinkable. Popular pairs get the /private-shuttle/ landing page;
+ * everything else stays on /routes/. Every internal link to a route must go
+ * through this — linking the wrong tier costs a redirect hop and splits the
+ * signal between two URLs for the same pair.
+ *
+ * `routes.slug` is nullable in the schema, and callers used to interpolate it
+ * straight into the href, which silently produced links to "/routes/null".
+ * Returning null forces the caller to skip those rows instead.
+ */
+export function routeHref(route: {
+  origen: string;
+  destino: string;
+  slug: string | null;
+}): string | null {
+  if (!route.slug) return null;
+  return isPopularRoute(route.origen, route.destino)
+    ? `/private-shuttle/${route.slug}`
+    : `/routes/${route.slug}`;
+}
