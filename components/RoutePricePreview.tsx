@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Clock, Loader2 } from "lucide-react";
 import Price from "@/components/Price";
+
+export type RouteQuote = { basePrice: number; duration?: string };
 
 type Props = {
   from: string;
@@ -11,6 +13,12 @@ type Props = {
   // the "6-9 Hiace" tier card), the preview shows that tier's price so
   // the top of the page matches the calculator below. Defaults to 2.
   adults?: number;
+  // Lets the parent reuse the price this component already fetched
+  // instead of firing a second identical request. The Hero needs it to
+  // build the cart item on "Add to cart". `null` means "no usable price
+  // right now" (idle / loading / notFound / network error) — the parent
+  // must not add to cart in that state.
+  onQuote?: (quote: RouteQuote | null) => void;
 };
 
 type ApiResponse =
@@ -18,7 +26,15 @@ type ApiResponse =
   | { found: false }
   | { error: string };
 
-export default function RoutePricePreview({ from, to, adults }: Props) {
+export default function RoutePricePreview({ from, to, adults, onQuote }: Props) {
+  // Callback held in a ref on purpose: parents pass an inline arrow, so
+  // putting `onQuote` in the effect's dependency array would re-run the
+  // fetch on every parent render (infinite request loop).
+  const onQuoteRef = useRef(onQuote);
+  useEffect(() => {
+    onQuoteRef.current = onQuote;
+  }, [onQuote]);
+
   const [state, setState] = useState<
     | { status: "idle" }
     | { status: "loading" }
@@ -38,11 +54,16 @@ export default function RoutePricePreview({ from, to, adults }: Props) {
     const t = to.trim();
     if (!f || !t) {
       setState({ status: "idle" });
+      onQuoteRef.current?.(null);
       return;
     }
 
     let cancelled = false;
     setState({ status: "loading" });
+    // Invalidate the parent's cached quote as soon as the pair changes,
+    // so a stale price from the previous route can never be added to the
+    // cart while this request is still in flight.
+    onQuoteRef.current?.(null);
 
     const controller = new AbortController();
     const adultsQs = adults && adults >= 1 ? `&adults=${adults}` : "";
@@ -55,6 +76,7 @@ export default function RoutePricePreview({ from, to, adults }: Props) {
         if (cancelled) return;
         if ("error" in data) {
           setState({ status: "error" });
+          onQuoteRef.current?.(null);
           return;
         }
         if (data.found) {
@@ -64,8 +86,13 @@ export default function RoutePricePreview({ from, to, adults }: Props) {
             duration: data.duration,
             adults: data.adults ?? 2,
           });
+          onQuoteRef.current?.({
+            basePrice: data.basePrice,
+            duration: data.duration,
+          });
         } else {
           setState({ status: "notFound" });
+          onQuoteRef.current?.(null);
         }
       })
       .catch(() => {
@@ -73,6 +100,7 @@ export default function RoutePricePreview({ from, to, adults }: Props) {
         // Fetch threw — almost always a network failure (offline, blocked
         // request, etc.). Distinct from a successful 200 with notFound.
         setState({ status: "error" });
+        onQuoteRef.current?.(null);
       });
 
     return () => {

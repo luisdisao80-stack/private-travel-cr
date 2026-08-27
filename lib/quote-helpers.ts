@@ -25,6 +25,12 @@ export function nightSurchargeFor(pickupTime: string | null | undefined): number
   return isNightPickup(pickupTime) ? NIGHT_SURCHARGE_USD : 0;
 }
 
+// Precio por hora de parada extra. Vivía duplicado como una const local en
+// QuoteCalculatorV2 y en BookingForm; ahora que el checkout también
+// recalcula precios (fecha/hora/pasajeros editables ahí) tiene que haber
+// UNA sola fuente de verdad o las dos pantallas se desincronizan.
+export const EXTRA_STOP_PRICE_USD = 35;
+
 export type ServiceType = "standard" | "vip";
 export type VehicleType = "staria" | "hiace" | "maxus";
 
@@ -47,6 +53,44 @@ export function getVehicleForPax(totalPax: number): VehicleType {
   if (totalPax <= 5) return "staria";
   if (totalPax <= 9) return "hiace";
   return "maxus";
+}
+
+// Nombre comercial del vehículo. Estaba escrito a mano (con el mismo
+// ternario triple) en QuoteCalculatorV2 y en el Hero; centralizarlo evita
+// que el carrito muestre "Toyota Hiace" para un vehicleId "maxus".
+export const VEHICLE_NAMES: Record<VehicleType, string> = {
+  staria: "Hyundai Staria",
+  hiace: "Toyota Hiace",
+  maxus: "Maxus V90",
+};
+
+export function getVehicleName(vehicle: VehicleType): string {
+  return VEHICLE_NAMES[vehicle];
+}
+
+/**
+ * Precio total de UN viaje. Es exactamente la fórmula que usaba
+ * QuoteCalculatorV2 inline (base + VIP + paradas + recargo nocturno),
+ * extraída acá porque ahora el checkout (BookingForm) también recalcula
+ * cuando el cliente cambia fecha / hora / pasajeros. Si las dos copias se
+ * separan, el cliente ve un precio en el carrito y paga otro: ruta del
+ * dinero, una sola implementación.
+ *
+ * El recargo nocturno se aplica sólo cuando hay un basePrice real —
+ * si no, un formulario vacío mostraría un $30 suelto (mismo guard que
+ * tenía el calculador).
+ */
+export function computeTripTotal(input: {
+  basePrice: number;
+  serviceType: ServiceType;
+  extraStopHours: number;
+  pickupTime?: string | null;
+}): number {
+  const { basePrice, serviceType, extraStopHours, pickupTime } = input;
+  const vipExtra = serviceType === "vip" ? VIP_EXTRA_USD : 0;
+  const stopsExtra = (extraStopHours || 0) * EXTRA_STOP_PRICE_USD;
+  const nightExtra = basePrice > 0 ? nightSurchargeFor(pickupTime) : 0;
+  return basePrice + vipExtra + stopsExtra + nightExtra;
 }
 
 export function getPriceForGroupSize(route: Route, totalPax: number): number {

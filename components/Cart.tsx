@@ -77,6 +77,12 @@ export default function Cart() {
   const sameRouteIndex = items.findIndex(
     (it) => it.fromName.trim().toLowerCase() === it.toName.trim().toLowerCase(),
   );
+  // Viajes agregados desde el hero: entran sin fecha ni hora a propósito
+  // (Diego 2026-08, "carrito primero, detalles al final"). Acá sólo lo
+  // avisamos; completarlos es trabajo del checkout.
+  const missingScheduleIndex = items.findIndex(
+    (it) => !it.date || !it.pickupTime,
+  );
 
   // First-issue message + type — used to render a single banner above
   // Continue. Order matters: lead-time is the only issue that can't be
@@ -85,12 +91,17 @@ export default function Cart() {
   type CartIssue =
     | { kind: "leadTime" }
     | { kind: "missingFlight"; tripIndex: number; fromName: string }
+    | { kind: "missingSchedule"; tripIndex: number }
     | { kind: "sameRoute"; tripIndex: number };
 
   let cartIssue: CartIssue | null = null;
   if (items.length > 0) {
     if (!leadTimeOk) {
       cartIssue = { kind: "leadTime" };
+    } else if (sameRouteIndex !== -1) {
+      cartIssue = { kind: "sameRoute", tripIndex: sameRouteIndex };
+    } else if (missingScheduleIndex !== -1) {
+      cartIssue = { kind: "missingSchedule", tripIndex: missingScheduleIndex };
     } else if (airportMissingFlightIndex !== -1) {
       const it = items[airportMissingFlightIndex];
       cartIssue = {
@@ -98,16 +109,26 @@ export default function Cart() {
         tripIndex: airportMissingFlightIndex,
         fromName: it.fromName,
       };
-    } else if (sameRouteIndex !== -1) {
-      cartIssue = { kind: "sameRoute", tripIndex: sameRouteIndex };
     }
   }
 
-  // isCartValid gates the Continue button. Missing-flight and same-route
-  // ARE technically fixable on the checkout page (BookingForm surfaces
-  // them there), but pushing the visitor forward when we already know
-  // they're going to hit a wall is bad UX — better to fix in place.
-  const isCartValid = items.length > 0 && cartIssue === null;
+  // Qué issues BLOQUEAN el Continue. `sameRoute` sí (no hay forma de
+  // arreglarlo en el checkout: hay que borrar el viaje) y `leadTime`
+  // también (el reloj ya se pasó, sólo queda WhatsApp).
+  //
+  // `missingSchedule` NO bloquea: el checkout es justamente el lugar
+  // donde se elige fecha y hora en el flujo nuevo. Bloquear acá sería
+  // un callejón sin salida — el drawer no tiene con qué completarlas.
+  //
+  // `missingFlight` tampoco: BookingForm lo dejó de exigir el
+  // 2026-08-18 (Diego lo quiere como dato útil, no como traba) y este
+  // gate quedó desincronizado. Con el hero agregando al carrito, un
+  // SJO → La Fortuna (el par más vendido) nacía SIEMPRE sin vuelo y se
+  // hubiera trabado acá sin manera de arreglarlo.
+  const blockingIssue =
+    cartIssue &&
+    (cartIssue.kind === "leadTime" || cartIssue.kind === "sameRoute");
+  const isCartValid = items.length > 0 && !blockingIssue;
 
   const handleContinue = () => {
     if (!isCartValid) return;
@@ -245,12 +266,30 @@ export default function Cart() {
                         <div className="grid grid-cols-2 gap-2 text-xs text-gray-400 mb-3">
                           <div className="flex items-center gap-1.5">
                             <Calendar size={12} />
-                            <span>{formatDate(item.date)}</span>
-                            {item.pickupTime && (
+                            {/* Los viajes agregados desde el hero llegan
+                                sin fecha/hora: en vez de un hueco vacío
+                                (que parecía un bug) lo decimos y
+                                aclaramos dónde se completa. */}
+                            {item.date ? (
+                              <span>{formatDate(item.date)}</span>
+                            ) : (
+                              <span className="text-amber-400/90 font-medium">
+                                {lang === "es" ? "Falta la fecha" : "Date missing"}
+                              </span>
+                            )}
+                            {item.pickupTime ? (
                               <>
                                 <span className="text-gray-600">·</span>
                                 <Clock size={12} className="text-amber-400/70" />
                                 <span className="text-amber-400/90 font-medium">{formatTime(item.pickupTime)}</span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="text-gray-600">·</span>
+                                <Clock size={12} className="text-amber-400/70" />
+                                <span className="text-amber-400/90 font-medium">
+                                  {lang === "es" ? "Falta la hora" : "Time missing"}
+                                </span>
                               </>
                             )}
                           </div>
@@ -292,14 +331,17 @@ export default function Cart() {
                               <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-1.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
                                 <span className="text-gray-500">{t.cart.pickup}: </span>
-                                <span className="text-gray-200 break-words">{item.pickupPlace}</span>
+                                {/* Fallback al nombre de la zona: el
+                                    quick-add del hero sólo trae dirección
+                                    exacta cuando eligieron un hotel. */}
+                                <span className="text-gray-200 break-words">{item.pickupPlace || item.fromName}</span>
                               </div>
                             </div>
                             <div className="flex items-start gap-2">
                               <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
                                 <span className="text-gray-500">{t.cart.dropoff}: </span>
-                                <span className="text-gray-200 break-words">{item.dropoffPlace}</span>
+                                <span className="text-gray-200 break-words">{item.dropoffPlace || item.toName}</span>
                               </div>
                             </div>
                             {item.flightNumber && (
@@ -380,9 +422,12 @@ export default function Cart() {
                 {cartIssue && (
                   <div
                     className={
-                      cartIssue.kind === "leadTime"
-                        ? "rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100"
-                        : "rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200"
+                      // Ámbar = aviso que se resuelve más adelante;
+                      // rojo = bloqueante. missingSchedule/missingFlight
+                      // ya no bloquean, así que van en ámbar.
+                      cartIssue.kind === "sameRoute"
+                        ? "rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200"
+                        : "rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100"
                     }
                   >
                     {cartIssue.kind === "leadTime" && (
@@ -408,11 +453,18 @@ export default function Cart() {
                         </a>
                       </>
                     )}
+                    {cartIssue.kind === "missingSchedule" && (
+                      <p className="leading-snug">
+                        {lang === "es"
+                          ? `Al viaje #${cartIssue.tripIndex + 1} le falta la fecha y la hora. Continuá al checkout para elegirlas.`
+                          : `Trip #${cartIssue.tripIndex + 1} is missing its date and time. Continue to checkout to pick them.`}
+                      </p>
+                    )}
                     {cartIssue.kind === "missingFlight" && (
                       <p className="leading-snug">
                         {lang === "es"
-                          ? `El viaje #${cartIssue.tripIndex + 1} (${cartIssue.fromName}) necesita un número de vuelo. Continuá al checkout para agregarlo — sin él no podemos rastrear tu vuelo por retrasos.`
-                          : `Trip #${cartIssue.tripIndex + 1} (${cartIssue.fromName}) needs a flight number. Continue to checkout to add it — without it we can't track your flight for delays.`}
+                          ? `El viaje #${cartIssue.tripIndex + 1} (${cartIssue.fromName}) todavía no tiene número de vuelo. Es opcional, pero nos ayuda a rastrear retrasos — podés agregarlo en el checkout.`
+                          : `Trip #${cartIssue.tripIndex + 1} (${cartIssue.fromName}) has no flight number yet. Optional, but it helps us track delays — you can add it at checkout.`}
                       </p>
                     )}
                     {cartIssue.kind === "sameRoute" && (
@@ -432,15 +484,11 @@ export default function Cart() {
                       ? lang === "es"
                         ? "El horario de reserva ya pasó — usá WhatsApp"
                         : "Lead time expired — use WhatsApp"
-                      : cartIssue?.kind === "missingFlight"
+                      : cartIssue?.kind === "sameRoute"
                         ? lang === "es"
-                          ? "Falta el número de vuelo en un viaje al aeropuerto"
-                          : "Airport pickup is missing a flight number"
-                        : cartIssue?.kind === "sameRoute"
-                          ? lang === "es"
-                            ? "Origen y destino son iguales en un viaje"
-                            : "Pickup and drop-off are the same on a trip"
-                          : undefined
+                          ? "Origen y destino son iguales en un viaje"
+                          : "Pickup and drop-off are the same on a trip"
+                        : undefined
                   }
                   className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg disabled:opacity-40 disabled:cursor-not-allowed"
                 >

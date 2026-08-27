@@ -28,6 +28,11 @@ import GoogleGLogo from "@/components/GoogleGLogo";
 import LocationInput from "@/components/LocationInput";
 import Price from "@/components/Price";
 import { useCart } from "@/lib/CartContext";
+import {
+  formatDuration,
+  getVehicleForPax,
+  getVehicleName,
+} from "@/lib/quote-helpers";
 
 interface Props {
   routes: Route[];
@@ -38,7 +43,7 @@ interface Props {
 
 export default function RoutesPageClient({ routes, hotels = [] }: Props) {
   const { lang } = useLanguage();
-  const { items: cartItems } = useCart();
+  const { items: cartItems, addItem } = useCart();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   // Remember the hotel object the customer picked (if any) so the checkout
@@ -287,38 +292,58 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                       </div>
                     </div>
 
-                    {/* Vehicle tiers — was "From $X + Book Now" before. Now
-                        we show each van the route offers as a clickable
-                        button with its real price, so the visitor picks
-                        the one that matches their group on the spot.
-                        Each tier passes `adults=N` so the calculator on
-                        /book opens in the right pricing bracket
-                        (matches RouteDetail behavior). */}
+                    {/* Vehicle tiers. Antes cada tarjeta era un <Link> a
+                        /book?adults=N para configurar el viaje ANTES de
+                        que entrara al carrito. Ahora agregan al carrito
+                        directo (mismo cambio que el hero, Diego 2026-08):
+                        la tarjeta ya sabe la ruta, el tramo de precio y
+                        el vehículo, así que no hay nada más que preguntar
+                        acá — fecha, hora y pasajeros se piden al final,
+                        en el checkout. */}
                     {(() => {
-                      const buildHref = (adults: number) => {
-                        const params = new URLSearchParams();
-                        params.set("from", route.origen);
-                        params.set("to", route.destino);
-                        params.set("direct", "1");
-                        params.set("adults", String(adults));
-                        // Only attach hotel param when the searched hotel
-                        // actually matches this route's origen/destino.
-                        // Without the guard, every result card would carry
-                        // the same hotel name even when the row is for an
-                        // unrelated origin.
-                        if (pickupHotel && pickupHotel.area_origen === route.origen) {
-                          params.set("pickupHotel", pickupHotel.name);
-                        }
-                        if (dropoffHotel && dropoffHotel.area_origen === route.destino) {
-                          params.set("dropoffHotel", dropoffHotel.name);
-                        }
-                        return `/book?${params.toString()}`;
+                      const addTier = (adults: number, price: number) => {
+                        const vehicleId = getVehicleForPax(adults);
+                        addItem({
+                          fromName: route.origen,
+                          toName: route.destino,
+                          // Vacíos a propósito — se completan en el checkout.
+                          date: "",
+                          pickupTime: "",
+                          passengers: adults,
+                          children: 0,
+                          // Sólo pegamos el hotel cuando corresponde a
+                          // ESTA ruta. Sin el guard, todas las tarjetas
+                          // del listado arrastraban el mismo hotel aunque
+                          // la fila fuera de otro origen.
+                          pickupPlace:
+                            pickupHotel && pickupHotel.area_origen === route.origen
+                              ? pickupHotel.name
+                              : undefined,
+                          dropoffPlace:
+                            dropoffHotel && dropoffHotel.area_origen === route.destino
+                              ? dropoffHotel.name
+                              : undefined,
+                          vehicleId,
+                          vehicleName: getVehicleName(vehicleId),
+                          serviceType: "standard",
+                          extraStopHours: 0,
+                          basePrice: price,
+                          // Sin VIP, sin paradas y sin hora: total = base.
+                          totalPrice: price,
+                          duration: formatDuration(route.duracion),
+                        });
                       };
+                      const tierClass =
+                        "rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors";
+                      const addLabel =
+                        lang === "en" ? "Add to cart" : "Agregar al carrito";
                       return (
                         <div className="mt-5 pt-5 border-t border-white/5 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                          <Link
-                            href={buildHref(2)}
-                            className="rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors"
+                          <button
+                            type="button"
+                            onClick={() => addTier(2, route.precio1a6 ?? 0)}
+                            disabled={!route.precio1a6}
+                            className={tierClass + " disabled:opacity-40 disabled:cursor-not-allowed"}
                           >
                             <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
                               <img
@@ -335,11 +360,13 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                             <div className="text-lg font-bold text-amber-400 mt-0.5">
                               <Price usd={route.precio1a6 ?? 0} />
                             </div>
-                          </Link>
+                            <div className="text-[10px] text-amber-300/80 mt-1">{addLabel}</div>
+                          </button>
                           {route.precio7a9 ? (
-                            <Link
-                              href={buildHref(6)}
-                              className="rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors"
+                            <button
+                              type="button"
+                              onClick={() => addTier(6, route.precio7a9 ?? 0)}
+                              className={tierClass}
                             >
                               <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
                                 <img
@@ -356,12 +383,14 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                               <div className="text-lg font-bold text-amber-400 mt-0.5">
                                 <Price usd={route.precio7a9 ?? 0} />
                               </div>
-                            </Link>
+                              <div className="text-[10px] text-amber-300/80 mt-1">{addLabel}</div>
+                            </button>
                           ) : null}
                           {route.precio10a12 ? (
-                            <Link
-                              href={buildHref(10)}
-                              className="rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors"
+                            <button
+                              type="button"
+                              onClick={() => addTier(10, route.precio10a12 ?? 0)}
+                              className={tierClass}
                             >
                               <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
                                 <img
@@ -378,7 +407,8 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                               <div className="text-lg font-bold text-amber-400 mt-0.5">
                                 <Price usd={route.precio10a12 ?? 0} />
                               </div>
-                            </Link>
+                              <div className="text-[10px] text-amber-300/80 mt-1">{addLabel}</div>
+                            </button>
                           ) : null}
                         </div>
                       );
@@ -484,7 +514,17 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
               })()}
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
             >
-              {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
+              {/* Con viajes en el carrito este CTA va derecho al checkout
+                  (ver el href de arriba), así que el texto tiene que
+                  decirlo — "Continuar con la reserva" sonaba a que
+                  todavía faltaba configurar el viaje. */}
+              {cartItems.length > 0
+                ? lang === "en"
+                  ? "Go to checkout"
+                  : "Ir al checkout"
+                : lang === "en"
+                  ? "Continue to booking"
+                  : "Continuar con la reserva"}
               <ArrowRight size={18} />
             </Link>
           </motion.div>
