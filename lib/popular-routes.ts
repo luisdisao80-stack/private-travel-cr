@@ -14,6 +14,10 @@ export const POPULAR_DESTINATIONS: readonly string[] = [
   "Jaco",
   "Puerto Viejo (Caribbean Coast)",
   "Santa Teresa (Nicoya Peninsula)",
+  // Diego 2026-08-27: both sell well through payment links, which never show
+  // up in the bookings table — so the web-only numbers understated them.
+  "Flamingo (Guanacaste)",
+  "Las Catalinas, Guanacaste",
 ] as const;
 
 const popularSet = new Set<string>(POPULAR_DESTINATIONS);
