@@ -3,7 +3,17 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Route, Hotel } from "@/lib/types";
-import { VIP_EXTRA_USD, nightSurchargeFor, getPriceForGroupSize, getVehicleForPax, formatDuration, isAirport } from "@/lib/quote-helpers";
+import {
+  VIP_EXTRA_USD,
+  EXTRA_STOP_PRICE_USD,
+  nightSurchargeFor,
+  computeTripTotal,
+  getPriceForGroupSize,
+  getVehicleForPax,
+  getVehicleName,
+  formatDuration,
+  isAirport,
+} from "@/lib/quote-helpers";
 import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -35,7 +45,9 @@ type Props = {
   heroTo?: string;
 };
 const WHATSAPP_NUMBER = "50686334133";
-const EXTRA_STOP_PRICE = 35;
+// Se movió a lib/quote-helpers.ts (EXTRA_STOP_PRICE_USD) porque ahora el
+// checkout también recalcula precios y las dos copias se desincronizaban.
+const EXTRA_STOP_PRICE = EXTRA_STOP_PRICE_USD;
 
 function generateTimeOptions(): { value: string; label: string }[] {
   const times: { value: string; label: string }[] = [];
@@ -249,7 +261,14 @@ export default function QuoteCalculatorV2({
   // Late-night pickup surcharge (11 PM–5 AM). Zero when the route has no
   // price yet (basePrice 0) so an empty calculator never shows a lone $30.
   const nightExtra = basePrice > 0 ? nightSurchargeFor(travelTime) : 0;
-  const totalPrice = basePrice + vipExtra + stopsExtra + nightExtra;
+  // Misma fórmula, ahora compartida con BookingForm (que recalcula cuando
+  // el cliente edita fecha/hora/pasajeros en el checkout).
+  const totalPrice = computeTripTotal({
+    basePrice,
+    serviceType,
+    extraStopHours: extraStops,
+    pickupTime: travelTime,
+  });
   const vehicle = getVehicleForPax(totalPax || 1);
   const requiresFlight = (from && isAirport(from)) || (to && isAirport(to));
   const totalChildSeats = infantSeats + convertibleSeats + boosterSeats;
@@ -749,12 +768,7 @@ export default function QuoteCalculatorV2({
                       pickupPlace: pickupAddress.trim() || from,
                       dropoffPlace: dropoffAddress.trim() || to,
                       vehicleId: vehicle,
-                      vehicleName:
-                        vehicle === "staria"
-                          ? "Hyundai Staria"
-                          : vehicle === "hiace"
-                            ? "Toyota Hiace"
-                            : "Maxus V90",
+                      vehicleName: getVehicleName(vehicle),
                       serviceType,
                       extraStopHours: extraStops,
                       basePrice,

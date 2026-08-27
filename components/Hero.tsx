@@ -1,16 +1,27 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useCallback, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ArrowRight, ArrowLeftRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowLeftRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2, ShoppingCart } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useCart } from "@/lib/CartContext";
 import { reviewStats } from "@/lib/reviews-data";
 import { matchScore } from "@/lib/locations";
 import { popularDirectUrl } from "@/lib/popular-route-slugs";
+import { getVehicleForPax, getVehicleName } from "@/lib/quote-helpers";
 import GoogleGLogo from "@/components/GoogleGLogo";
 import LocationInput from "@/components/LocationInput";
-import RoutePricePreview from "@/components/RoutePricePreview";
+import RoutePricePreview, { type RouteQuote } from "@/components/RoutePricePreview";
+
+// Defaults for a hero quick-add. The whole point of the new flow (Diego,
+// 2026-08) is that the visitor doesn't configure anything up here — they
+// drop the trip in the cart and fill date / time / passengers at checkout.
+// 2 adults is the same default QuoteCalculatorV2 starts with, and the
+// hero price preview quotes that same tier, so the price the visitor sees
+// is exactly the price that lands in the cart.
+const DEFAULT_ADULTS = 2;
+const DEFAULT_CHILDREN = 0;
 
 // User may type free-text without clicking a suggestion ("la fortuna" lowercase,
 // "fortuna", etc.). Resolve to the best DB name via the same alias-aware match
@@ -45,6 +56,7 @@ export default function Hero({
   liveGoogleRating,
 }: Props) {
   const { t, lang } = useLanguage();
+  const { addItem, setCartOpen } = useCart();
   const router = useRouter();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
@@ -65,6 +77,13 @@ export default function Hero({
   // "La Fortuna" in both fields, land on /book?from=La+Fortuna&to=La+Fortuna
   // and see a broken "Custom route" nothing-state. Silent dead-end.
   const [sameLocationError, setSameLocationError] = useState<boolean>(false);
+  // Price already fetched by RoutePricePreview below. We reuse it instead
+  // of firing a second identical request from here. `null` = no usable
+  // price yet (still loading, unknown pair, or network error).
+  const [quote, setQuote] = useState<RouteQuote | null>(null);
+  // Stable identity so RoutePricePreview's effect doesn't see a "new"
+  // callback on every Hero render.
+  const handleQuote = useCallback((q: RouteQuote | null) => setQuote(q), []);
 
   // Live equality check for disabling Continue as the visitor types —
   // uses the raw trimmed strings (case-insensitive) so a match is visible
@@ -78,20 +97,31 @@ export default function Hero({
   const canContinue =
     pickup.trim().length > 0 && dropoff.trim().length > 0 && !rawSameLocation;
 
-  const handleContinue = () => {
-    if (!canContinue || isPending) return;
-    // Resolve free-text to a canonical DB location so /book can match the
-    // route. Without this, "la fortuna" (lowercase, no suggestion clicked)
-    // never finds the row and the wizard renders empty.
+  // Con precio en mano agregamos al carrito; sin precio (par sin tarifa
+  // fija, error de red o consulta todavía en vuelo) conservamos la
+  // navegación de siempre a /book, que es donde vive el CTA de cotización
+  // por WhatsApp. Cerrar esa puerta habría dejado sin salida a los pares
+  // que no tenemos tarifados.
+  const canAddToCart = canContinue && !!quote && quote.basePrice > 0;
+
+  // Resolves + validates both endpoints. Returns null (and sets the
+  // matching inline error) when the input can't be trusted — every caller
+  // below depends on these guards, they are NOT cosmetic:
+  //   - resolveLocation maps free text ("la fortuna") to the canonical DB
+  //     name; without it /book never finds the row and renders empty.
+  //   - the same-location guard catches "fortuna" vs "La Fortuna"
+  //     resolving to one row, which used to produce a dead-end
+  //     "Custom route" nothing-state.
+  const resolveEndpoints = (): { from: string; to: string } | null => {
     const resolvedPickup = resolveLocation(pickup, locations);
     const resolvedDropoff = resolveLocation(dropoff, locations);
     if (!resolvedPickup) {
       setResolveError("pickup");
-      return;
+      return null;
     }
     if (!resolvedDropoff) {
       setResolveError("dropoff");
-      return;
+      return null;
     }
     setResolveError(null);
 
@@ -101,9 +131,65 @@ export default function Hero({
     // string matches.
     if (resolvedPickup.toLowerCase() === resolvedDropoff.toLowerCase()) {
       setSameLocationError(true);
-      return;
+      return null;
     }
     setSameLocationError(false);
+    return { from: resolvedPickup, to: resolvedDropoff };
+  };
+
+  // Nuevo flujo principal (Diego, 2026-08): "en vez de Continue to booking
+  // mejor que diga Add to cart y al final sea donde el cliente ponga los
+  // detalles". El viaje entra al carrito con fecha/hora vacías y 2 pax por
+  // defecto; el checkout (BookingForm) es quien exige completarlos.
+  const handleAddToCart = () => {
+    if (!canContinue || isPending) return;
+    const resolved = resolveEndpoints();
+    if (!resolved) return;
+    // Sin precio no agregamos nada: un item con basePrice 0 llega al
+    // checkout como "Pay $0.00" y Tilopay lo rechaza.
+    if (!quote || quote.basePrice <= 0) return;
+
+    const vehicleId = getVehicleForPax(DEFAULT_ADULTS + DEFAULT_CHILDREN);
+    addItem({
+      fromName: resolved.from,
+      toName: resolved.to,
+      // Vacíos a propósito — se completan en el checkout.
+      date: "",
+      pickupTime: "",
+      passengers: DEFAULT_ADULTS + DEFAULT_CHILDREN,
+      children: DEFAULT_CHILDREN,
+      // Sólo cuando el visitante eligió un hotel del autocomplete;
+      // si no, dejamos el campo vacío para que el checkout lo pida.
+      pickupPlace: pickupHotel?.name,
+      dropoffPlace: dropoffHotel?.name,
+      vehicleId,
+      vehicleName: getVehicleName(vehicleId),
+      serviceType: "standard",
+      extraStopHours: 0,
+      basePrice: quote.basePrice,
+      // Sin VIP, sin paradas y sin hora todavía, el total ES el precio base.
+      totalPrice: quote.basePrice,
+      duration: quote.duration,
+    });
+    // addItem ya abre el drawer, pero lo dejamos explícito: si mañana
+    // cambia ese side-effect el hero no se queda sin feedback visual.
+    setCartOpen(true);
+    // Limpiamos la búsqueda para que un segundo click no duplique el
+    // mismo viaje y para que el visitante que cierra el drawer vea el
+    // buscador listo para la siguiente pierna.
+    setPickup("");
+    setDropoff("");
+    setPickupHotel(null);
+    setDropoffHotel(null);
+    setQuote(null);
+  };
+
+  const handleContinue = () => {
+    if (!canContinue || isPending) return;
+    const resolved = resolveEndpoints();
+    if (!resolved) return;
+    const resolvedPickup = resolved.from;
+    const resolvedDropoff = resolved.to;
 
     // Fast path: popular pair we know exists in the DB → direct to the SEO
     // landing page, skipping the /book → server-redirect round-trip
@@ -292,7 +378,9 @@ export default function Hero({
               />
             </div>
 
-            <RoutePricePreview from={pickup} to={dropoff} />
+            {/* onQuote nos devuelve el precio que este componente ya
+                consultó — el hero no vuelve a pegarle a la API. */}
+            <RoutePricePreview from={pickup} to={dropoff} onQuote={handleQuote} />
 
             {resolveError && (
               <div className="mt-3 rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-2.5 text-center text-xs text-amber-200">
@@ -310,9 +398,16 @@ export default function Hero({
               </div>
             )}
 
+            {/* Un solo botón, dos comportamientos:
+                  con precio  → "Add to cart" (el 99% de los casos)
+                  sin precio  → "Continue to booking", la navegación de
+                                siempre a /book, que ofrece la cotización
+                                manual por WhatsApp para pares sin tarifa.
+                No podemos agregar al carrito algo que no sabemos cuánto
+                cuesta, y tampoco queremos dejar sin salida a esos pares. */}
             <button
               type="button"
-              onClick={handleContinue}
+              onClick={canAddToCart ? handleAddToCart : handleContinue}
               disabled={!canContinue || isPending}
               title={
                 rawSameLocation
@@ -328,6 +423,11 @@ export default function Hero({
                   <Loader2 size={18} className="animate-spin" />
                   {lang === "en" ? "Loading..." : "Cargando..."}
                 </>
+              ) : canAddToCart ? (
+                <>
+                  <ShoppingCart size={18} />
+                  {lang === "en" ? "Add to cart" : "Agregar al carrito"}
+                </>
               ) : (
                 <>
                   {lang === "en" ? "Continue to booking" : "Continuar con la reserva"}
@@ -335,6 +435,14 @@ export default function Hero({
                 </>
               )}
             </button>
+
+            {canAddToCart && (
+              <p className="mt-2 text-center text-[11px] text-gray-400">
+                {lang === "en"
+                  ? "Pick your date, time and passengers at checkout."
+                  : "Elegís fecha, hora y pasajeros en el checkout."}
+              </p>
+            )}
 
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
               <span className="flex items-center gap-1.5">

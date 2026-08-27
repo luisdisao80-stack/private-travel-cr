@@ -7,8 +7,18 @@ export type CartItem = {
   id: string;
   fromName: string;
   toName: string;
+  /**
+   * "YYYY-MM-DD" — o "" cuando el viaje entró por el quick-add del hero
+   * (Diego, 2026-08: carrito primero, detalles al final). BookingForm es
+   * el que obliga a completarlo antes de pagar, y /api/payment/start lo
+   * vuelve a validar con un regex por si alguien fuerza el POST.
+   * Los items viejos de localStorage siguen trayendo su fecha: nadie
+   * pierde nada, sólo aceptamos el vacío como estado intermedio válido.
+   */
   date: string;
+  /** "HH:MM" — o "" por la misma razón que `date`. */
   pickupTime: string;
+  /** Total de pasajeros (adultos + niños). `children` es el subconjunto. */
   passengers: number;
   children: number;
   flightNumber?: string;

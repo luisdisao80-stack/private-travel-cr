@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -10,6 +10,8 @@ import {
   MapPin,
   Plane,
   Clock,
+  Calendar,
+  Users,
   Check,
   ArrowDown,
   Trash2,
@@ -18,11 +20,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import HotelAddressAutocomplete from "@/components/HotelAddressAutocomplete";
 import type { Hotel } from "@/lib/types";
 import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
-import { isAirport, VIP_EXTRA_USD, nightSurchargeFor } from "@/lib/quote-helpers";
+import {
+  isAirport,
+  VIP_EXTRA_USD,
+  nightSurchargeFor,
+  computeTripTotal,
+  getVehicleForPax,
+  getVehicleName,
+} from "@/lib/quote-helpers";
 import { events } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
 import { useCurrency } from "@/lib/CurrencyContext";
@@ -30,6 +40,11 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { formatPrice } from "@/lib/currency";
 import {
   isFirstTripLeadTimeOk,
+  isPickupWithinLeadTime,
+  parseCostaRicaPickup,
+  getMinPickupCRDate,
+  getMinPickupDate,
+  MIN_LEAD_TIME_HOURS,
   LEAD_TIME_MESSAGE_EN,
   LEAD_TIME_MESSAGE_ES,
   WHATSAPP_URGENT_URL_EN,
@@ -37,7 +52,9 @@ import {
 } from "@/lib/booking-rules";
 import Price from "@/components/Price";
 
-const EXTRA_STOP_PRICE = 35;
+// Grupo máximo que despachamos por la web — mismo tope que QuoteCalculatorV2.
+// Arriba de eso Diego cotiza a mano por WhatsApp (necesita 2+ vehículos).
+const MAX_TOTAL_PAX = 12;
 
 function generateTimeOptions(): { value: string; label: string }[] {
   const times: { value: string; label: string }[] = [];
@@ -52,6 +69,56 @@ function generateTimeOptions(): { value: string; label: string }[] {
   return times;
 }
 const TIME_OPTIONS = generateTimeOptions();
+
+/**
+ * Qué le falta a un viaje para poder cobrarlo.
+ *
+ * Desde que el hero agrega al carrito directo (Diego, 2026-08) un item
+ * puede llegar acá sin fecha ni hora — antes era imposible porque
+ * QuoteCalculatorV2 las exigía para habilitar "Add to Cart". El checkout
+ * pasa a ser el único punto donde se exige completarlas; el servidor
+ * (/api/payment/start → validateShuttleItem) vuelve a chequear lo mismo
+ * por si alguien fuerza el POST desde una pestaña vieja.
+ */
+type TripGap = "date" | "time" | "passengers" | "capacity";
+
+function tripGap(item: CartItem): TripGap | null {
+  if (!item.date) return "date";
+  if (!item.pickupTime) return "time";
+  if (!(item.passengers >= 1)) return "passengers";
+  if (item.passengers > MAX_TOTAL_PAX) return "capacity";
+  return null;
+}
+
+function tripGapMessage(
+  gap: TripGap,
+  tripNumber: number,
+  route: string,
+  lang: "en" | "es",
+): string {
+  const trip =
+    lang === "es"
+      ? `El viaje #${tripNumber} (${route})`
+      : `Trip #${tripNumber} (${route})`;
+  switch (gap) {
+    case "date":
+      return lang === "es"
+        ? `${trip} no tiene fecha de viaje. Elegila arriba para continuar.`
+        : `${trip} has no travel date. Pick one above to continue.`;
+    case "time":
+      return lang === "es"
+        ? `${trip} no tiene hora de recogida. Elegila arriba para continuar.`
+        : `${trip} has no pickup time. Pick one above to continue.`;
+    case "passengers":
+      return lang === "es"
+        ? `${trip} necesita al menos 1 pasajero.`
+        : `${trip} needs at least 1 passenger.`;
+    case "capacity":
+      return lang === "es"
+        ? `${trip} supera los ${MAX_TOTAL_PAX} pasajeros. Escribinos por WhatsApp y lo cotizamos con más vehículos.`
+        : `${trip} is over ${MAX_TOTAL_PAX} passengers. WhatsApp us and we'll quote it with extra vehicles.`;
+  }
+}
 
 type BookingFormProps = {
   onBack: () => void;
@@ -118,6 +185,18 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
         isAirport(it.fromName) && !(it.flightNumber && it.flightNumber.trim().length > 0),
     );
 
+  // Primer viaje incompleto (sin fecha, sin hora, sin pasajeros o con
+  // grupo sobre el tope). Mostramos UNO solo, el primero, para no tapar
+  // el CTA con una lista de errores — el visitante lo arregla y aparece
+  // el siguiente si lo hay. Mismo criterio que el banner de vuelos.
+  const incompleteTrip = (() => {
+    for (let i = 0; i < items.length; i++) {
+      const gap = tripGap(items[i]);
+      if (gap) return { index: i, gap, item: items[i] };
+    }
+    return null;
+  })();
+
   const isValid =
     form.name.trim().length > 1 &&
     /\S+@\S+\.\S+/.test(form.email) &&
@@ -133,6 +212,9 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
     // the button reads "Pay $0.00 USD" and posts to Tilopay which
     // rejects the charge — a scary dead-end mid-checkout.
     totalPrice > 0 &&
+    // Ningún viaje puede quedar sin fecha / hora / pasajeros. Los items
+    // que entran por el quick-add del hero nacen así a propósito.
+    incompleteTrip === null &&
     firstTripLeadTimeOk &&
     acceptedTerms;
 
@@ -386,6 +468,34 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
         </div>
       )}
 
+      {/* Viaje incompleto — bloqueante. Rojo (no ámbar) porque, a
+          diferencia del número de vuelo, esto sí impide pagar: sin fecha
+          y hora no hay chofer que asignar, y el servidor rechaza el POST
+          igual. Apunta al viaje concreto por número + ruta, como el
+          resto de los mensajes del carrito. */}
+      {incompleteTrip && (
+        <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200">
+          <p className="leading-snug">
+            {tripGapMessage(
+              incompleteTrip.gap,
+              incompleteTrip.index + 1,
+              `${incompleteTrip.item.fromName} → ${incompleteTrip.item.toName}`,
+              lang === "es" ? "es" : "en",
+            )}
+          </p>
+          {incompleteTrip.gap === "capacity" && (
+            <a
+              href={lang === "es" ? WHATSAPP_URGENT_URL_ES : WHATSAPP_URGENT_URL_EN}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+            >
+              {lang === "es" ? "Escríbenos por WhatsApp" : "WhatsApp us"}
+            </a>
+          )}
+        </div>
+      )}
+
       {!firstTripLeadTimeOk && items.length > 0 && (
         <div className="rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
           <p className="leading-snug mb-2">
@@ -566,7 +676,15 @@ function TripConfigCard({
   // so the card prices the customer picks between already reflect what will
   // be charged. It's a pure function of the trip's pickup time.
   const nightExtra = nightSurchargeFor(item.pickupTime);
-  const standardPrice = item.basePrice + item.extraStopHours * EXTRA_STOP_PRICE + nightExtra;
+  // Precios de las dos tarjetas de servicio. Misma fórmula que
+  // QuoteCalculatorV2 — ahora compartida en lib/quote-helpers.ts para que
+  // no se separen (el checkout ya recalcula por su cuenta).
+  const standardPrice = computeTripTotal({
+    basePrice: item.basePrice,
+    serviceType: "standard",
+    extraStopHours: item.extraStopHours,
+    pickupTime: item.pickupTime,
+  });
   const vipPrice = standardPrice + VIP_EXTRA_USD;
 
   // Controlled inputs. The previous version used defaultValue + onBlur,
@@ -583,11 +701,202 @@ function TripConfigCard({
   );
   const [flightNumberValue, setFlightNumberValue] = useState(item.flightNumber ?? "");
 
+  // `passengers` en el CartItem es el TOTAL (adultos + niños), igual que
+  // lo guarda QuoteCalculatorV2. Los adultos son la resta.
+  const [adultsStr, setAdultsStr] = useState(
+    String(Math.max(0, item.passengers - item.children)),
+  );
+  const [childrenStr, setChildrenStr] = useState(String(item.children));
+  const adults = parseInt(adultsStr, 10) || 0;
+  const children = parseInt(childrenStr, 10) || 0;
+  const totalPax = adults + children;
+  const overCapacity = totalPax > MAX_TOTAL_PAX;
+
+  // Se prende cuando el re-cotizado por cambio de pasajeros falla (red
+  // caída o par sin tarifa). Dejamos el precio anterior — nunca ponemos 0.
+  const [repriceFailed, setRepriceFailed] = useState(false);
+  const [repricing, setRepricing] = useState(false);
+
+  // Regla de 12h (lib/booking-rules.ts). Mismos tres puntos de acuerdo que
+  // el calculador: `minDate` del picker, filtro de horarios y validación.
+  const minPickupCRDate = getMinPickupCRDate();
+  const minPickupCRIsoDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Costa_Rica",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(getMinPickupDate());
+  const isPickingEarliestDate = item.date === minPickupCRIsoDate;
+  const timeOptionsFiltered = useMemo(() => {
+    if (!isPickingEarliestDate) return TIME_OPTIONS;
+    return TIME_OPTIONS.filter((opt) => {
+      const pickup = parseCostaRicaPickup(item.date, opt.value);
+      return pickup ? isPickupWithinLeadTime(pickup) : true;
+    });
+  }, [isPickingEarliestDate, item.date]);
+
+  /**
+   * Único punto de escritura al carrito desde esta tarjeta. Aplica el
+   * patch y RECALCULA el total con la fórmula compartida, así ningún
+   * handler puede dejar el precio desincronizado del resto del item.
+   */
+  const applyPatch = (patch: Partial<Omit<CartItem, "id">>) => {
+    const next = { ...item, ...patch };
+    onUpdateItem({
+      ...patch,
+      totalPrice: computeTripTotal({
+        basePrice: next.basePrice,
+        serviceType: next.serviceType,
+        extraStopHours: next.extraStopHours,
+        pickupTime: next.pickupTime,
+      }),
+    });
+  };
+
+  // Refs para el efecto de re-cotización: `item` y `onUpdateItem` cambian
+  // de identidad en cada render del padre, y meterlos en las dependencias
+  // dispararía el fetch en bucle.
+  const itemRef = useRef(item);
+  const updateRef = useRef(onUpdateItem);
+  useEffect(() => {
+    itemRef.current = item;
+    updateRef.current = onUpdateItem;
+  });
+
+  // Última cantidad de pasajeros que ya cotizamos. Arranca con la del
+  // item para no pegarle a la API al montar (el precio guardado ya
+  // corresponde a ese tamaño de grupo).
+  const lastQuotedPax = useRef(item.passengers);
+
+  // Cambio de pasajeros → cambia el TRAMO de precio (1-5 Staria, 6-9
+  // Hiace, 10-12 Maxus). No podemos derivarlo en el cliente porque los
+  // precios por tramo viven en la fila de Supabase, así que le
+  // preguntamos al MISMO endpoint que ya usa el preview del hero, que a
+  // su vez usa getPriceForGroupSize() — la misma función que el
+  // calculador. Cero reglas de precio reimplementadas acá.
+  useEffect(() => {
+    if (totalPax < 1 || totalPax > MAX_TOTAL_PAX) return;
+    if (totalPax === lastQuotedPax.current) return;
+
+    const controller = new AbortController();
+    // Debounce: el input es numérico, teclear "12" pasa por "1".
+    const timer = setTimeout(() => {
+      setRepricing(true);
+      const current = itemRef.current;
+      fetch(
+        `/api/quote/route-price?from=${encodeURIComponent(current.fromName)}&to=${encodeURIComponent(current.toName)}&adults=${totalPax}`,
+        { signal: controller.signal },
+      )
+        .then((r) => r.json())
+        .then((data: { found?: boolean; basePrice?: number; duration?: string }) => {
+          if (!data?.found || !(data.basePrice && data.basePrice > 0)) {
+            setRepriceFailed(true);
+            return;
+          }
+          lastQuotedPax.current = totalPax;
+          setRepriceFailed(false);
+          const vehicleId = getVehicleForPax(totalPax);
+          const latest = itemRef.current;
+          updateRef.current({
+            basePrice: data.basePrice,
+            vehicleId,
+            vehicleName: getVehicleName(vehicleId),
+            duration: data.duration ?? latest.duration,
+            totalPrice: computeTripTotal({
+              basePrice: data.basePrice,
+              serviceType: latest.serviceType,
+              extraStopHours: latest.extraStopHours,
+              pickupTime: latest.pickupTime,
+            }),
+          });
+        })
+        .catch((e) => {
+          // AbortError = el visitante siguió tecleando, no es un fallo.
+          if (e instanceof DOMException && e.name === "AbortError") return;
+          setRepriceFailed(true);
+        })
+        .finally(() => setRepricing(false));
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [totalPax]);
+
+  // Escribimos pasajeros al carrito de inmediato (la validación del Pay
+  // los lee), y el efecto de arriba corrige el precio cuando llega la
+  // cotización del tramo nuevo.
+  const commitPax = (nextAdults: number, nextChildren: number) => {
+    applyPatch({
+      passengers: nextAdults + nextChildren,
+      children: nextChildren,
+    });
+  };
+
+  const handleAdultsChange = (val: string) => {
+    if (val === "") {
+      setAdultsStr("");
+      commitPax(0, children);
+      return;
+    }
+    const n = parseInt(val, 10);
+    if (isNaN(n)) return;
+    const clamped = Math.max(0, Math.min(MAX_TOTAL_PAX, n));
+    setAdultsStr(String(clamped));
+    commitPax(clamped, children);
+  };
+
+  const handleChildrenChange = (val: string) => {
+    if (val === "") {
+      setChildrenStr("");
+      commitPax(adults, 0);
+      return;
+    }
+    const n = parseInt(val, 10);
+    if (isNaN(n)) return;
+    const clamped = Math.max(0, Math.min(MAX_TOTAL_PAX - 1, n));
+    setChildrenStr(String(clamped));
+    commitPax(adults, clamped);
+  };
+
+  // iOS no siempre dispara blur antes del tap en Pagar, por eso el commit
+  // va en cada keystroke; el blur sólo normaliza el campo vacío a 1/0.
+  const handleAdultsBlur = () => {
+    if (adultsStr === "" || parseInt(adultsStr, 10) === 0) {
+      setAdultsStr("1");
+      commitPax(1, children);
+    }
+  };
+  const handleChildrenBlur = () => {
+    if (childrenStr === "") {
+      setChildrenStr("0");
+      commitPax(adults, 0);
+    }
+  };
+
+  const setDate = (value: string) => {
+    // Si la hora ya elegida deja de ser válida para la fecha nueva
+    // (movió el viaje al primer día permitido), la limpiamos para que el
+    // gate de "falta la hora" se dispare en vez de dejar pasar un pickup
+    // dentro de la ventana de 12h.
+    const pickup = parseCostaRicaPickup(value, item.pickupTime);
+    const timeStillValid =
+      !item.pickupTime || !pickup || isPickupWithinLeadTime(pickup);
+    applyPatch({
+      date: value,
+      ...(timeStillValid ? {} : { pickupTime: "" }),
+    });
+  };
+
+  const setPickupTime = (value: string) => {
+    // Recalcula solo: computeTripTotal aplica (o quita) el recargo
+    // nocturno según la hora nueva.
+    applyPatch({ pickupTime: value });
+  };
+
   const setService = (service: "standard" | "vip") => {
-    const stopsCost = item.extraStopHours * EXTRA_STOP_PRICE;
-    const totalForItem =
-      item.basePrice + (service === "vip" ? VIP_EXTRA_USD : 0) + stopsCost + nightExtra;
-    onUpdateItem({ serviceType: service, totalPrice: totalForItem });
+    applyPatch({ serviceType: service });
   };
 
   const setPickup = (value: string) => {
@@ -635,6 +944,148 @@ function TripConfigCard({
             <Trash2 size={15} />
           </button>
         ) : null}
+      </div>
+
+      {/* Fecha / hora / pasajeros. Antes se elegían en QuoteCalculatorV2
+          ANTES de que el viaje entrara al carrito; ahora el hero agrega
+          directo y este es el lugar donde se completan (pedido de Diego:
+          "al final sea donde el cliente ponga los detalles"). Va arriba
+          de las tarjetas de servicio porque determina los precios que
+          esas tarjetas muestran. */}
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-1.5">
+            <Label className="text-gray-300 text-xs flex items-center gap-1.5">
+              <Calendar size={12} className="text-amber-400" />
+              {lang === "es" ? "Fecha" : "Date"}{" "}
+              <span className="text-red-400">*</span>
+            </Label>
+            <DatePicker
+              value={item.date}
+              onChange={setDate}
+              placeholder={lang === "es" ? "Elegí la fecha…" : "Select date…"}
+              lang={lang === "es" ? "es" : "en"}
+              minDate={minPickupCRDate}
+              className={
+                item.date
+                  ? "h-10"
+                  : "h-10 border-red-500/50 ring-1 ring-red-500/30"
+              }
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-gray-300 text-xs flex items-center gap-1.5">
+              <Clock size={12} className="text-amber-400" />
+              {lang === "es" ? "Hora de recogida" : "Pickup time"}{" "}
+              <span className="text-red-400">*</span>
+            </Label>
+            <select
+              value={item.pickupTime}
+              onChange={(e) => setPickupTime(e.target.value)}
+              className={
+                "w-full bg-black/50 border text-white h-10 rounded-md px-3 text-sm focus:border-amber-500 outline-none " +
+                (item.pickupTime
+                  ? "border-amber-500/30"
+                  : "border-red-500/50 ring-1 ring-red-500/30")
+              }
+            >
+              <option value="">
+                {lang === "es" ? "Elegí la hora…" : "Select time…"}
+              </option>
+              {timeOptionsFiltered.map((t) => (
+                <option key={t.value} value={t.value} className="bg-gray-900">
+                  {t.label}
+                </option>
+              ))}
+            </select>
+            {isPickingEarliestDate &&
+              timeOptionsFiltered.length < TIME_OPTIONS.length && (
+                <p className="text-[10px] text-gray-500">
+                  {lang === "es"
+                    ? `Los horarios antes requieren ${MIN_LEAD_TIME_HOURS}h de anticipación — escogé un horario más tarde u otro día.`
+                    : `Earlier times need ${MIN_LEAD_TIME_HOURS}h notice — pick a later slot or day.`}
+                </p>
+              )}
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <Label className="text-gray-300 text-xs flex items-center gap-1.5">
+            <Users size={12} className="text-amber-400" />
+            {lang === "es" ? "Pasajeros" : "Passengers"}{" "}
+            <span className="text-red-400">*</span>
+          </Label>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-black/40 border border-white/10 rounded-lg p-2.5">
+              <div className="text-[10px] text-gray-400">
+                {lang === "es" ? "Adultos" : "Adults"}{" "}
+                <span className="text-gray-600">
+                  {lang === "es" ? "12+ años" : "12+ years"}
+                </span>
+              </div>
+              <input
+                type="number"
+                min="1"
+                max={MAX_TOTAL_PAX}
+                inputMode="numeric"
+                value={adultsStr}
+                onChange={(e) => handleAdultsChange(e.target.value)}
+                onBlur={handleAdultsBlur}
+                className="mt-1 w-full bg-black border border-white/20 text-white rounded px-2 py-1.5 text-sm"
+              />
+            </div>
+            <div className="bg-black/40 border border-white/10 rounded-lg p-2.5">
+              <div className="text-[10px] text-gray-400">
+                {lang === "es" ? "Niños" : "Children"}{" "}
+                <span className="text-gray-600">
+                  {lang === "es" ? "0-11 años" : "0-11 years"}
+                </span>
+              </div>
+              <input
+                type="number"
+                min="0"
+                max={MAX_TOTAL_PAX - 1}
+                inputMode="numeric"
+                value={childrenStr}
+                onChange={(e) => handleChildrenChange(e.target.value)}
+                onBlur={handleChildrenBlur}
+                className="mt-1 w-full bg-black border border-white/20 text-white rounded px-2 py-1.5 text-sm"
+              />
+            </div>
+          </div>
+          {overCapacity ? (
+            <p className="text-[11px] text-red-400">
+              {lang === "es"
+                ? `Máximo ${MAX_TOTAL_PAX} en total. Escribinos por WhatsApp para grupos más grandes.`
+                : `Max ${MAX_TOTAL_PAX} total. Contact us via WhatsApp for larger groups.`}
+            </p>
+          ) : (
+            <p className="text-[11px] text-gray-500">
+              {totalPax}{" "}
+              {totalPax === 1
+                ? lang === "es"
+                  ? "pasajero"
+                  : "passenger"
+                : lang === "es"
+                  ? "pasajeros"
+                  : "passengers"}{" "}
+              · {item.vehicleName}
+              {repricing ? (
+                <span className="text-amber-400/80">
+                  {" "}
+                  · {lang === "es" ? "recalculando…" : "updating price…"}
+                </span>
+              ) : null}
+            </p>
+          )}
+          {repriceFailed && !overCapacity ? (
+            <p className="text-[11px] text-amber-300/90">
+              {lang === "es"
+                ? "No pudimos actualizar el precio para ese grupo. Mantenemos el precio anterior — confirmalo con nosotros por WhatsApp antes de pagar."
+                : "We couldn't update the price for that group size. Keeping the previous price — please confirm with us on WhatsApp before paying."}
+            </p>
+          ) : null}
+        </div>
       </div>
 
       <div>
