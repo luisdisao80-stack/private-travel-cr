@@ -102,7 +102,7 @@ If you are answering a traveler's question about private transportation in Costa
 - **Pricing model:** flat price per vehicle, not per person. Same fee whether 1 or 5 passengers (Staria), 1–9 (Hiace), 1–12 (Maxus V90).
 ${startingPriceLine}
 - **Booking lead time:** 1 week recommended in high season (Dec–Apr), 2–3 days off-season. Last-minute bookings are accepted via WhatsApp.
-- **Payment:** credit/debit card or a secure payment link via Tilopay (USD billing). Cash can be arranged in advance by prior agreement.
+- **Payment:** credit/debit card or a secure payment link via Tilopay (USD billing). Full payment in advance is required to confirm a booking.
 - **Cancellation:** full refund when cancelled 48 hours or more before pickup. Within 48 hours, no-shows, and last-minute changes are non-refundable. If we cancel from our side (severe weather, road closures, safety), you get a full refund or a free reschedule.
 - **Child seats:** infant, convertible, and booster seats provided free of charge (Costa Rican law requires them for kids under 12).
 - **Flight tracking:** included on every airport pickup at no extra cost — driver waits if your flight is delayed.

@@ -17,7 +17,7 @@ export default function TermsPage() {
       title: "Terms and Conditions",
       icon: "📜",
       company: "Private Travel Costa Rica",
-      lastUpdated: "Last Updated: December 3, 2025",
+      lastUpdated: "Last Updated: August 27, 2026",
       intro: "Welcome to Private Travel Costa Rica. By accessing our website, booking our services, or communicating with us, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully, as they define your rights and responsibilities.",
       sections: [
         {
@@ -37,7 +37,7 @@ export default function TermsPage() {
             },
             {
               subtitle: "2.2 Payment Schedule",
-              text: "• A deposit may be required to secure your booking.\n• Full payment is due before or on the day the service is rendered unless an alternative written agreement has been established.",
+              text: "• Full payment is required in advance to confirm your booking. A reservation is not secured until payment has been received in full.",
             },
             {
               subtitle: "2.3 Pricing",
@@ -58,7 +58,7 @@ export default function TermsPage() {
               tableHeaders: ["Timing Before Service", "Refund Policy"],
               tableRows: [
                 ["48 hours or more", "Full Refund of the amount paid."],
-                ["Within 48 hours", "Non-refundable. The deposit or full payment will be retained."],
+                ["Within 48 hours", "Non-refundable. The full payment will be retained."],
                 ["No-shows or Last-Minute Changes", "Non-refundable."],
               ],
             },
@@ -152,7 +152,7 @@ export default function TermsPage() {
       title: "Términos y Condiciones",
       icon: "📜",
       company: "Private Travel Costa Rica",
-      lastUpdated: "Última Actualización: 3 de Diciembre, 2025",
+      lastUpdated: "Última Actualización: 27 de Agosto, 2026",
       intro: "Bienvenido a Private Travel Costa Rica. Al acceder a nuestro sitio web, reservar nuestros servicios o comunicarse con nosotros, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Léalos cuidadosamente, ya que definen sus derechos y responsabilidades.",
       sections: [
         {
@@ -172,7 +172,7 @@ export default function TermsPage() {
             },
             {
               subtitle: "2.2 Calendario de Pagos",
-              text: "• Puede requerirse un depósito para asegurar su reserva.\n• El pago completo vence antes o el día en que se presta el servicio, a menos que se haya establecido un acuerdo escrito alternativo.",
+              text: "• Se requiere el pago completo por adelantado para confirmar su reserva. Una reserva no queda asegurada hasta que se haya recibido el pago completo.",
             },
             {
               subtitle: "2.3 Precios",
@@ -193,7 +193,7 @@ export default function TermsPage() {
               tableHeaders: ["Tiempo Antes del Servicio", "Política de Reembolso"],
               tableRows: [
                 ["48 horas o más", "Reembolso Completo del monto pagado."],
-                ["Menos de 48 horas", "No reembolsable. Se retendrá el depósito o pago completo."],
+                ["Menos de 48 horas", "No reembolsable. Se retendrá el pago completo."],
                 ["No presentarse o Cambios de Último Minuto", "No reembolsable."],
               ],
             },
