@@ -44,6 +44,20 @@ interface Props {
 export default function RoutesPageClient({ routes, hotels = [] }: Props) {
   const { lang } = useLanguage();
   const { items: cartItems, addItem } = useCart();
+  // Un doble clic en una tarjeta metía el viaje DOS veces: cada addItem
+  // genera un id nuevo, así que el carrito no los deduplica y el cliente
+  // terminaba pagando el mismo traslado repetido. A diferencia del hero,
+  // estas tarjetas no abren el drawer al agregar, así que el clic parecía
+  // no hacer nada y invitaba a repetirlo. El "Agregado ✓" mata los dos
+  // problemas: bloquea el re-clic y confirma que sí pasó algo.
+  const [addedKey, setAddedKey] = useState<string | null>(null);
+  const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (addedTimer.current) clearTimeout(addedTimer.current);
+    },
+    [],
+  );
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   // Remember the hotel object the customer picked (if any) so the checkout
@@ -301,7 +315,18 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                         acá — fecha, hora y pasajeros se piden al final,
                         en el checkout. */}
                     {(() => {
-                      const addTier = (adults: number, price: number) => {
+                      const tierKey = (tier: string) =>
+                        `${route.slug ?? `${route.origen}>${route.destino}`}-${tier}`;
+                      const addTier = (
+                        adults: number,
+                        price: number,
+                        tier: string,
+                      ) => {
+                        const key = tierKey(tier);
+                        // Guard de re-entrada: el segundo clic del doble
+                        // clic llega antes de que React repinte el botón
+                        // deshabilitado, así que no alcanza con `disabled`.
+                        if (addedKey === key) return;
                         const vehicleId = getVehicleForPax(adults);
                         addItem({
                           fromName: route.origen,
@@ -332,17 +357,27 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                           totalPrice: price,
                           duration: formatDuration(route.duracion),
                         });
+                        setAddedKey(key);
+                        if (addedTimer.current) clearTimeout(addedTimer.current);
+                        addedTimer.current = setTimeout(
+                          () => setAddedKey(null),
+                          1800,
+                        );
                       };
                       const tierClass =
                         "rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors";
                       const addLabel =
                         lang === "en" ? "Add to cart" : "Agregar al carrito";
+                      const addedLabel =
+                        lang === "en" ? "Added ✓" : "Agregado ✓";
+                      const labelFor = (tier: string) =>
+                        addedKey === tierKey(tier) ? addedLabel : addLabel;
                       return (
                         <div className="mt-5 pt-5 border-t border-white/5 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                           <button
                             type="button"
-                            onClick={() => addTier(2, route.precio1a6 ?? 0)}
-                            disabled={!route.precio1a6}
+                            onClick={() => addTier(2, route.precio1a6 ?? 0, "staria")}
+                            disabled={!route.precio1a6 || addedKey === tierKey("staria")}
                             className={tierClass + " disabled:opacity-40 disabled:cursor-not-allowed"}
                           >
                             <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
@@ -360,13 +395,14 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                             <div className="text-lg font-bold text-amber-400 mt-0.5">
                               <Price usd={route.precio1a6 ?? 0} />
                             </div>
-                            <div className="text-[10px] text-amber-300/80 mt-1">{addLabel}</div>
+                            <div className="text-[10px] text-amber-300/80 mt-1">{labelFor("staria")}</div>
                           </button>
                           {route.precio7a9 ? (
                             <button
                               type="button"
-                              onClick={() => addTier(6, route.precio7a9 ?? 0)}
-                              className={tierClass}
+                              onClick={() => addTier(6, route.precio7a9 ?? 0, "hiace")}
+                              disabled={addedKey === tierKey("hiace")}
+                              className={tierClass + " disabled:opacity-40 disabled:cursor-not-allowed"}
                             >
                               <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
                                 <img
@@ -383,14 +419,15 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                               <div className="text-lg font-bold text-amber-400 mt-0.5">
                                 <Price usd={route.precio7a9 ?? 0} />
                               </div>
-                              <div className="text-[10px] text-amber-300/80 mt-1">{addLabel}</div>
+                              <div className="text-[10px] text-amber-300/80 mt-1">{labelFor("hiace")}</div>
                             </button>
                           ) : null}
                           {route.precio10a12 ? (
                             <button
                               type="button"
-                              onClick={() => addTier(10, route.precio10a12 ?? 0)}
-                              className={tierClass}
+                              onClick={() => addTier(10, route.precio10a12 ?? 0, "maxus")}
+                              disabled={addedKey === tierKey("maxus")}
+                              className={tierClass + " disabled:opacity-40 disabled:cursor-not-allowed"}
                             >
                               <div className="bg-white rounded-md p-1.5 mb-2 h-20 flex items-center justify-center">
                                 <img
@@ -407,7 +444,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                               <div className="text-lg font-bold text-amber-400 mt-0.5">
                                 <Price usd={route.precio10a12 ?? 0} />
                               </div>
-                              <div className="text-[10px] text-amber-300/80 mt-1">{addLabel}</div>
+                              <div className="text-[10px] text-amber-300/80 mt-1">{labelFor("maxus")}</div>
                             </button>
                           ) : null}
                         </div>
