@@ -29,15 +29,29 @@ export function hasAnalyticsConsent(): boolean {
  * accept, no events fired before decline).
  */
 export default function CookieBanner() {
-  const [visible, setVisible] = useState(false);
+  // Arranca VISIBLE a propósito. Aunque el componente sea "use client",
+  // Next igual lo renderiza a HTML en el servidor, así que con el estado
+  // inicial en true el banner viaja en el HTML y pinta junto con el
+  // primer paint.
+  //
+  // Antes arrancaba en false y se mostraba con un setTimeout de 600 ms
+  // "para no pelear con el primer paint". El efecto fue el opuesto: el
+  // banner recién pintaba ~600 ms DESPUÉS de la hidratación (~4.1 s en
+  // móvil con throttling) y Chrome lo elegía como elemento del LCP,
+  // porque la foto del hero queda excluida por ser de muy baja entropía
+  // (AVIF q=40 a pantalla completa: Chrome la trata como fondo). Ese
+  // único banner tardío costaba 13 de los 14 puntos que le faltaban al
+  // score de rendimiento.
+  //
+  // Para quien ya eligió, el script inline de app/layout.tsx marca
+  // <html data-consent> antes de pintar y el CSS lo esconde, así que no
+  // hay parpadeo: nunca llega a verse.
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const existing = getCookieConsent();
-    if (existing == null) {
-      // Tiny delay so the banner doesn't fight the first paint.
-      const t = setTimeout(() => setVisible(true), 600);
-      return () => clearTimeout(t);
-    }
+    // Ya eligió en una visita anterior: lo sacamos del DOM. El CSS ya lo
+    // tenía oculto, esto sólo limpia.
+    if (getCookieConsent() != null) setVisible(false);
   }, []);
 
   const choose = (value: Consent) => {
@@ -57,6 +71,9 @@ export default function CookieBanner() {
       role="dialog"
       aria-live="polite"
       aria-label="Cookie preferences"
+      // Gancho para el CSS que lo esconde antes de pintar cuando el
+      // visitante ya eligió (ver el script inline en app/layout.tsx).
+      data-cookie-banner=""
       className="fixed bottom-4 left-4 right-4 md:left-6 md:right-auto md:bottom-6 md:max-w-md z-[80]"
     >
       <div className="rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-amber-500/30 shadow-2xl shadow-black/60 p-5">

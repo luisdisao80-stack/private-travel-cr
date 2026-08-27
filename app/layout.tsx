@@ -116,6 +116,27 @@ export default function RootLayout({
         <link rel="preconnect" href="https://privatecr2.imgix.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://privatecr2.imgix.net" />
+        {/* El banner de cookies ahora viaja en el HTML para que pinte con
+            el primer paint (antes pintaba a los ~4 s y se llevaba el LCP).
+            Como contrapartida, a quien YA eligió le aparecería un instante
+            hasta que hidrate y lo saque. Este script corre antes de pintar
+            y marca <html data-consent>, con lo que el CSS de abajo lo
+            esconde de entrada: ese visitante nunca lo ve.
+
+            No se puede resolver leyendo cookies() en el server: el layout
+            raíz pasaría a render dinámico y perderíamos el prerender
+            estático de las ~590 páginas de rutas. */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: "html[data-consent] [data-cookie-banner]{display:none}",
+          }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('ptcr_cookie_consent'))document.documentElement.setAttribute('data-consent','')}catch(e){}",
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         <SchemaOrg />
