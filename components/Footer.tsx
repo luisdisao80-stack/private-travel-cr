@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle, Star } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   const { t, lang } = useLanguage();
@@ -95,12 +96,17 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo-ptcr.svg"
+            {/* Mismo cambio que en el Navbar: el .svg pesa 183 KB (61 KB
+                comprimido) por ser un trazado automatico de un raster.
+                Servimos el PNG por next/image, que lo saca en AVIF a 12-18 KB.
+                Ver el comentario largo en components/Navbar.tsx. */}
+            <Image
+              src="/logo-ptcr.png"
               alt="Private Travel CR"
-              width={146}
-              height={64}
+              /* Igual que en el Navbar: declaramos el doble del tamano real
+                 para que el srcset tenga una variante nitida en pantallas 3x. */
+              width={292}
+              height={128}
               className="h-16 w-auto mb-4"
               loading="lazy"
             />

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Users, ArrowRight, MessageCircle, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -85,10 +86,28 @@ export default function FleetPreview() {
                 <div className="relative bg-gradient-to-br from-gray-900 to-black border border-amber-500/20 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-500">
 
                   <div className="relative h-48 md:h-56 overflow-hidden bg-white p-4">
-                    <img
+                    {/* LCP perf: esta seccion vive muy por debajo del fold,
+                        pero las tres fotos se descargaban de una (141 KB:
+                        hiace.png 68 KB, maxus-v90.webp 52 KB, staria.webp
+                        22 KB) y le robaban ancho de banda al CSS que bloquea
+                        el primer render. Lighthouse las marcaba en
+                        "offscreen-images", y hiace.png ademas en
+                        "modern-image-formats" (59 KB de ahorro por ser PNG).
+
+                        next/image arregla las dos cosas: lazy por defecto
+                        (no arrancan hasta acercarse al viewport) y AVIF en
+                        lugar de PNG. `sizes` evita que en movil se baje la
+                        variante de escritorio. */}
+                    <Image
                       src={vehicle.image}
                       alt={vehicle.name}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      /* El p-4 va aqui y no solo en el contenedor: `fill`
+                         se posiciona sobre el padding box, no sobre el
+                         content box, asi que sin esto la foto crecia 32 px
+                         respecto al <img> que habia antes. */
+                      className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                     />
 
                     {vehicle.badge && (

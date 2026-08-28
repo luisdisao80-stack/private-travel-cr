@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Menu, Phone } from "lucide-react";
@@ -47,12 +48,33 @@ export default function Navbar() {
             href="/"
             className="flex items-center gap-3 group"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo-ptcr.svg"
+            {/* LCP perf: el logo se pinta a 128x56 pero /logo-ptcr.svg pesa
+                183 KB (61 KB comprimido). No es un SVG "de verdad": es un
+                trazado automatico de un raster, con miles de <path>, asi que
+                SVGO no le baja ni un byte (ya viene con precision 1). Peor
+                aun, se descargaba en la ventana critica del FCP compitiendo
+                con el CSS que bloquea el render.
+
+                /logo-ptcr.png es el mismo arte a 400x175 (comprobado que se
+                ven identicos); servido por next/image sale en AVIF a 12-18 KB
+                segun la densidad de pantalla, contra 61 KB del SVG.
+
+                Se queda en eager porque esta sobre el fold, pero sin
+                `priority`: no queremos meterlo en la cola de preload por
+                delante del CSS, que es lo que bloquea el render.
+
+                El .svg sigue en /public porque los emails, el schema.org y
+                el PDF lo referencian por URL absoluta. */}
+            <Image
+              src="/logo-ptcr.png"
               alt="Private Travel Costa Rica"
-              width={128}
-              height={56}
+              /* Se pinta a 128x56 (lo manda el `h-14 w-auto` de abajo), pero
+                 declaramos el doble: next/image arma el srcset a partir de
+                 estos numeros, y con 128 la variante 2x se quedaba corta en
+                 pantallas de 3x — el logo salia visiblemente suavizado. */
+              width={256}
+              height={112}
+              loading="eager"
               className="h-14 w-auto group-hover:scale-105 transition-transform"
             />
           </Link>
