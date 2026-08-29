@@ -711,21 +711,33 @@ export default function QuoteCalculatorV2({
               </div>
             ) : null}
           </div>
-          {/* Validation gate: date AND time are required before Add to
-              Cart. Without this, visitors could leave both blank, hit
-              Continue, and Diego received bookings with no travel date
-              — a customer-service back-and-forth he had to chase down
-              every time. Now we both disable the button and surface
-              inline hints when a required field is missing.
+          {/* Fecha y hora YA NO bloquean el add-to-cart (Diego, 2026-08-28:
+              "a la hora de querer agregar un segundo viaje me está pidiendo
+              igual llenar todos los datos").
 
-              Passengers > 0 is also enforced; the numeric inputs allow
-              empty strings on mobile (iOS doesn't fire blur before tap),
-              so a visitor could accidentally book "0 passengers". */}
+              El candado original existía porque llegaban reservas sin fecha
+              y Diego tenía que perseguir al cliente. Eso ahora lo cubre el
+              checkout: BookingForm.tripGap() exige fecha, hora y pasajeros
+              de CADA viaje y desactiva el botón de pago hasta tenerlos, así
+              que sigue siendo imposible pagar sin fecha — sólo que se pide
+              una vez al final en vez de en cada pierna.
+
+              Sin este cambio el flujo quedaba asimétrico: el primer viaje
+              entraba al carrito desde el hero sin pedir nada, pero "Add
+              another trip" caía acá y volvía a exigirlo todo.
+
+              El recargo nocturno tampoco se escapa: el checkout recalcula
+              el total con nightSurchargeFor(pickupTime) cuando el cliente
+              elige la hora.
+
+              Pasajeros > 0 sí se sigue exigiendo: los inputs numéricos
+              admiten string vacío en móvil (iOS no dispara blur antes del
+              tap) y tanto el precio como el vehículo dependen del número. */}
           {(() => {
             const missingDate = !travelDate;
             const missingTime = !travelTime;
             const missingPax = totalPax < 1;
-            const canAdd = !missingDate && !missingTime && !missingPax && !pickupTooSoon;
+            const canAdd = !missingPax && !pickupTooSoon;
             return (
               <>
                 {pickupTooSoon && (
@@ -743,13 +755,22 @@ export default function QuoteCalculatorV2({
                     </a>
                   </div>
                 )}
-                {!pickupTooSoon && (missingDate || missingTime || missingPax) && (
+                {/* Pasajeros sigue siendo error bloqueante. */}
+                {!pickupTooSoon && missingPax && (
                   <div className="text-xs text-amber-300/80 mb-2 text-center">
-                    {missingDate
-                      ? "Pick a travel date to continue."
-                      : missingTime
-                        ? "Pick a pickup time to continue."
-                        : "Add at least one passenger to continue."}
+                    {lang === "es"
+                      ? "Agregá al menos un pasajero para continuar."
+                      : "Add at least one passenger to continue."}
+                  </div>
+                )}
+                {/* Fecha/hora: aviso informativo, no bloquea. Le decimos al
+                    visitante dónde se piden para que no sienta que se le
+                    olvidó algo. */}
+                {!pickupTooSoon && !missingPax && (missingDate || missingTime) && (
+                  <div className="text-xs text-gray-400 mb-2 text-center">
+                    {lang === "es"
+                      ? "La fecha y la hora las podés poner al final, en el checkout."
+                      : "You can set the date and time at checkout."}
                   </div>
                 )}
                 <button
