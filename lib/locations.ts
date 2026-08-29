@@ -188,6 +188,27 @@ export function matchScore(dbName: string, query: string): number {
   return 0;
 }
 
+// El visitante puede escribir libremente sin tocar una sugerencia
+// ("la fortuna", "fortuna", "SJO"...). Esto lleva ese texto al nombre
+// canónico de la base usando el mismo match con alias que usa el
+// dropdown, para que el flujo de reserva reciba siempre un nombre que
+// exista en `routes`. Si no matchea nada devolvemos el texto tal cual y
+// que el llamador decida (normalmente: mostrar "no reconocemos ese
+// lugar").
+//
+// Vivía duplicado dentro de Hero.tsx; se movió acá cuando BookWizard
+// necesitó el mismo quick-add y dos copias habrían quedado a la deriva.
+export function resolveLocation(input: string, locations: string[]): string {
+  const trimmed = input.trim();
+  if (!trimmed) return "";
+  if (locations.includes(trimmed)) return trimmed;
+  const best = locations
+    .map((l) => ({ l, s: matchScore(l, trimmed) }))
+    .filter((x) => x.s > 0)
+    .sort((a, b) => b.s - a.s)[0];
+  return best?.l ?? trimmed;
+}
+
 // Boost score para que aeropuertos siempre queden arriba ante empates.
 export function priorityScore(dbName: string): number {
   return isAirport(dbName) ? 50 : 0;
