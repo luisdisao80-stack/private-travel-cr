@@ -7,7 +7,7 @@ import { ArrowRight, ArrowLeftRight, Star, ExternalLink, Shield, Zap, CheckCircl
 import { useLanguage } from "@/lib/LanguageContext";
 import { useCart } from "@/lib/CartContext";
 import { reviewStats } from "@/lib/reviews-data";
-import { matchScore } from "@/lib/locations";
+import { resolveLocation } from "@/lib/locations";
 import { popularDirectUrl } from "@/lib/popular-route-slugs";
 import { getVehicleForPax, getVehicleName } from "@/lib/quote-helpers";
 import GoogleGLogo from "@/components/GoogleGLogo";
@@ -22,20 +22,6 @@ import RoutePricePreview, { type RouteQuote } from "@/components/RoutePricePrevi
 // is exactly the price that lands in the cart.
 const DEFAULT_ADULTS = 2;
 const DEFAULT_CHILDREN = 0;
-
-// User may type free-text without clicking a suggestion ("la fortuna" lowercase,
-// "fortuna", etc.). Resolve to the best DB name via the same alias-aware match
-// the dropdown uses, so the booking flow always gets a canonical location.
-function resolveLocation(input: string, locations: string[]): string {
-  const trimmed = input.trim();
-  if (!trimmed) return "";
-  if (locations.includes(trimmed)) return trimmed;
-  const best = locations
-    .map((l) => ({ l, s: matchScore(l, trimmed) }))
-    .filter((x) => x.s > 0)
-    .sort((a, b) => b.s - a.s)[0];
-  return best?.l ?? trimmed;
-}
 
 type Props = {
   locations: string[];

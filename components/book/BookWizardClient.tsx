@@ -1,23 +1,31 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import NextImage from "next/image";
-import { ArrowRight, ArrowLeftRight, CheckCircle2, Shield, Zap } from "lucide-react";
+import { ArrowLeftRight, CheckCircle2, Shield, Zap, ShoppingCart } from "lucide-react";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
 import OrderSummarySidebar from "@/components/book/OrderSummarySidebar";
 import LocationInput from "@/components/LocationInput";
-import RoutePricePreview from "@/components/RoutePricePreview";
+import RoutePricePreview, { type RouteQuote } from "@/components/RoutePricePreview";
 import { useCart } from "@/lib/CartContext";
+import { resolveLocation } from "@/lib/locations";
+import { getVehicleForPax, getVehicleName } from "@/lib/quote-helpers";
 import type { Hotel } from "@/lib/types";
 
 type Props = { locations: string[]; hotels?: Hotel[] };
 type View = "configuring" | "checkout";
 
+// Mismos defaults que el quick-add del hero en la home, para que agregar
+// el segundo viaje se sienta idéntico a agregar el primero.
+const DEFAULT_ADULTS = 2;
+const DEFAULT_CHILDREN = 0;
+
 export default function BookWizardClient({ locations, hotels = [] }: Props) {
-  const { items, isCartOpen, setCartOpen, hydrated, totalPrice } = useCart();
+  const { items, isCartOpen, setCartOpen, hydrated, totalPrice, addItem } =
+    useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
   const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
@@ -108,6 +116,79 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   };
   const handleDropoffHotel = (hotel: Hotel | null) => {
     setHeroDropoffHotel(hotel);
+  };
+
+  // ---- Quick-add del buscador de /book -------------------------------
+  //
+  // Diego, 2026-08-29, con captura: "me sigue pidiendo la informacion en
+  // el segundo viaje". El primer viaje se agrega desde el hero de la home
+  // con un click; el segundo caía acá, donde este mismo buscador SÓLO
+  // mostraba el precio y obligaba a bajar al formulario largo de Trip
+  // Details. Mismo buscador, misma cotización, pero sin botón: por eso
+  // se sentía que le pedíamos todo de nuevo.
+  //
+  // Le damos el mismo botón que el hero. El formulario de abajo sigue
+  // existiendo para quien quiera configurar el viaje en detalle (VIP,
+  // paradas extra, sillas de bebé) — pero ya no es el único camino.
+  const [heroQuote, setHeroQuote] = useState<RouteQuote | null>(null);
+  // Ref-estable: RoutePricePreview mete onQuote en un ref, pero pasarle
+  // una arrow inline igual re-renderiza de más.
+  const handleHeroQuote = useCallback((q: RouteQuote | null) => setHeroQuote(q), []);
+  const [addError, setAddError] = useState<"same" | null>(null);
+
+  const rawSameLocation =
+    heroFrom.trim().length > 0 &&
+    heroTo.trim().length > 0 &&
+    heroFrom.trim().toLowerCase() === heroTo.trim().toLowerCase();
+
+  // Sin precio no agregamos: un item con basePrice 0 llega al checkout
+  // como "Pay $0.00" y Tilopay lo rechaza.
+  const canQuickAdd =
+    heroFrom.trim().length > 0 &&
+    heroTo.trim().length > 0 &&
+    !rawSameLocation &&
+    !!heroQuote &&
+    heroQuote.basePrice > 0;
+
+  const handleQuickAdd = () => {
+    if (!canQuickAdd || !heroQuote) return;
+    const from = resolveLocation(heroFrom, locations);
+    const to = resolveLocation(heroTo, locations);
+    // El guard de igualdad se repite sobre los nombres YA resueltos:
+    // "fortuna" y "La Fortuna" son textos distintos pero la misma fila.
+    if (!from || !to || from.toLowerCase() === to.toLowerCase()) {
+      setAddError("same");
+      return;
+    }
+    setAddError(null);
+    const vehicleId = getVehicleForPax(DEFAULT_ADULTS + DEFAULT_CHILDREN);
+    addItem({
+      fromName: from,
+      toName: to,
+      // Vacíos a propósito — se completan en el checkout.
+      date: "",
+      pickupTime: "",
+      passengers: DEFAULT_ADULTS + DEFAULT_CHILDREN,
+      children: DEFAULT_CHILDREN,
+      pickupPlace: heroPickupHotel?.name,
+      dropoffPlace: heroDropoffHotel?.name,
+      vehicleId,
+      vehicleName: getVehicleName(vehicleId),
+      serviceType: "standard",
+      extraStopHours: 0,
+      basePrice: heroQuote.basePrice,
+      // Sin VIP, sin paradas y sin hora todavía, el total ES el base.
+      totalPrice: heroQuote.basePrice,
+      duration: heroQuote.duration ?? "",
+    });
+    // Limpiamos el buscador para que un segundo click no duplique el
+    // mismo viaje. El efecto de items.length se encarga de llevar la
+    // vista al checkout.
+    setHeroFrom("");
+    setHeroTo("");
+    setHeroPickupHotel(null);
+    setHeroDropoffHotel(null);
+    setHeroQuote(null);
   };
 
   // URL → view sync. The `view` state was initialised from the URL on
@@ -274,7 +355,31 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     onHotelPick={handleDropoffHotel}
                   />
                 </div>
-                <RoutePricePreview from={heroFrom} to={heroTo} adults={heroAdults} />
+                <RoutePricePreview
+                  from={heroFrom}
+                  to={heroTo}
+                  adults={heroAdults}
+                  onQuote={handleHeroQuote}
+                />
+                {rawSameLocation || addError === "same" ? (
+                  <p className="mt-3 text-xs text-amber-300/90 text-center">
+                    Pickup and drop-off can&apos;t be the same place.
+                  </p>
+                ) : null}
+                {/* Mismo quick-add que el hero de la home: con precio en
+                    mano, un click y al carrito. Sin precio no mostramos
+                    el botón — el formulario de abajo tiene el CTA de
+                    cotizar por WhatsApp para los pares sin tarifa. */}
+                {canQuickAdd ? (
+                  <button
+                    type="button"
+                    onClick={handleQuickAdd}
+                    className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-black font-bold py-4 rounded-xl transition-colors"
+                  >
+                    <ShoppingCart size={18} />
+                    {items.length > 0 ? "Add another trip to cart" : "Add to cart"}
+                  </button>
+                ) : null}
                 <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
                   <span className="flex items-center gap-1.5">
                     <Zap size={12} className="text-amber-400" />
