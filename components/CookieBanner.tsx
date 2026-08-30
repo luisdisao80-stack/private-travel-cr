@@ -87,7 +87,12 @@ export default function CookieBanner() {
               Essential cookies make the site work (cart, language). Analytics cookies help us
               understand which routes you search and where the booking flow needs work. You can
               decline analytics and the rest still works.{" "}
-              <Link href="/privacy" className="text-amber-400 hover:text-amber-300 underline underline-offset-2">
+              {/* LCP perf: sin prefetch. El banner se pinta en la primera
+                  visita, o sea que este link entra en pantalla justo en la
+                  ventana critica y Next se traia /privacy entera sin que
+                  nadie la pida. Casi nadie hace clic; el que lo haga espera
+                  una navegacion normal. */}
+              <Link href="/privacy" prefetch={false} className="text-amber-400 hover:text-amber-300 underline underline-offset-2">
                 Read our privacy policy
               </Link>
               .

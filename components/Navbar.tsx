@@ -43,8 +43,17 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
+          {/* LCP perf: `prefetch={false}` a proposito. El logo esta SIEMPRE
+              en pantalla, asi que Next disparaba el prefetch de "/" apenas
+              cargaba la pagina — incluso estando ya EN "/". En el home eso
+              eran 24 KB de payload RSC bajando en plena ventana critica,
+              compitiendo con el JS que si hace falta, solo para precargar la
+              pagina en la que el visitante ya esta.
+              No se pierde nada: volver al home desde otra pagina sigue siendo
+              una navegacion de cliente normal. */}
           <Link
             href="/"
+            prefetch={false}
             className="flex items-center gap-3 group"
           >
             {/* LCP perf: el logo se pinta a 128x56 pero /logo-ptcr.svg pesa
