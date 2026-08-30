@@ -28,6 +28,21 @@ export type CartItem = {
   vehicleName: string;
   serviceType: "standard" | "vip";
   extraStopHours: number;
+  /**
+   * Los lugares que se paran a ver, cuando la parada se eligió por
+   * nombre en la página de la ruta ("Poás Volcano National Park").
+   *
+   * `extraStopHours` sola dice cuánto se cobró pero no dice a dónde hay
+   * que llevarlos: al chofer le llegaba "Extra wait: 2h paid" y tenía
+   * que adivinar. Va aparte y no dentro de `notes` porque `notes` es el
+   * campo libre del cliente y es UNO por reserva, mientras que las
+   * paradas son de CADA tramo — un viaje de ida con Poás y una vuelta
+   * directa no se pueden contar en el mismo texto.
+   *
+   * Opcional a propósito: los items viejos del localStorage y los que
+   * entran por el desplegable genérico del cotizador no lo traen.
+   */
+  extraStopNames?: string[];
   basePrice: number;
   totalPrice: number;
   duration?: string;
