@@ -139,7 +139,23 @@ export const PRICE_TIER_LABELS_ES: Record<PriceTier, string> = {
   "13-18": "13-18 pax",
 };
 
-export function getPriceForGroupSize(route: Route, totalPax: number): number {
+// Sólo las cuatro columnas de precio de una fila de `routes`.
+//
+// Existe para que un componente de cliente pueda cotizar sin arrastrar la
+// fila entera. Las páginas de ruta son ~590 páginas estáticas, y todo lo
+// que se le pasa a un componente "use client" viaja serializado dentro
+// del HTML: mandar el `Route` completo metería en cada una el JSONB de
+// FAQs, las descripciones largas y los tips — kilobytes que ahí nadie
+// lee.
+//
+// Un `Route` entero sigue calzando acá (Pick es un supertipo), así que
+// las llamadas que ya existían no cambian.
+export type RoutePrices = Pick<
+  Route,
+  "precio1a6" | "precio7a9" | "precio10a12" | "precio13a18"
+>;
+
+export function getPriceForGroupSize(route: RoutePrices, totalPax: number): number {
   if (totalPax <= 5) {
     return route.precio1a6 || 0;
   }

@@ -13,6 +13,7 @@ import FAQSchema from "@/components/FAQSchema";
 import RelatedArticles from "@/components/RelatedArticles";
 import RouteReviews from "@/components/RouteReviews";
 import RouteTrust from "@/components/RouteTrust";
+import RouteBookingWidget from "@/components/routes/RouteBookingWidget";
 import Price from "@/components/Price";
 
 // Generic auto-FAQs that work for every route. Manual route.faqs land
@@ -199,6 +200,32 @@ export default function RouteDetail({
           <h2 className="text-2xl font-bold text-white mb-6">
             How much does a private shuttle from {originName} to {destName} cost?
           </h2>
+          {/* La reserva, acá mismo. Va ARRIBA de las tarjetas de tramo
+              porque contesta el título de la sección con el número que
+              al visitante le importa —el de SU grupo, en SU fecha— en
+              vez de hacerle buscar su tramo entre cuatro cajas.
+              Las tarjetas de abajo quedan como tabla de referencia.
+
+              Hasta el 2026-08-30 esta página no tenía ningún campo de
+              reserva: sólo un "Book Now" que mandaba a /book a re-elegir
+              el origen y el destino que ya están en el H1. */}
+          <RouteBookingWidget
+            origen={route.origen}
+            destino={route.destino}
+            originName={originName}
+            destName={destName}
+            prices={{
+              precio1a6: route.precio1a6,
+              precio7a9: route.precio7a9,
+              precio10a12: route.precio10a12,
+              precio13a18: route.precio13a18,
+            }}
+            duracion={route.duracion}
+          />
+
+          <p className="text-sm text-gray-400 mt-6 mb-3">
+            All prices for this route, by group size:
+          </p>
           {/* Vehicle/PAX tier cards. Clarity recordings (2026-06-03) showed
               25% of visitors clicking these cards expecting them to be
               interactive — they'd click 'Hyundai Staria', see nothing
@@ -260,12 +287,17 @@ export default function RouteDetail({
             ) : null}
           </div>
           <p className="text-xs text-gray-400 mb-6">Prices in USD per vehicle. All-inclusive: A/C, WiFi, water, child seats, door-to-door.</p>
+          {/* El "Book Now" grande se lo llevó el widget de arriba: acá
+              abajo quedan las dos salidas que el widget NO cubre —el
+              formulario largo (VIP, paradas extra, dirección exacta,
+              sillas de bebé) y WhatsApp— sin competirle en peso visual
+              al botón que sí cierra la venta. */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
-              className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-6 rounded-xl text-center transition"
+              className="flex-1 border border-amber-500/40 bg-black/30 hover:bg-amber-500/10 text-amber-300 font-bold py-3 px-6 rounded-xl text-center transition"
             >
-              Book Now
+              Customize this trip
             </Link>
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl text-center transition">
               WhatsApp
