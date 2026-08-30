@@ -31,6 +31,16 @@ export function nightSurchargeFor(pickupTime: string | null | undefined): number
 // UNA sola fuente de verdad o las dos pantallas se desincronizan.
 export const EXTRA_STOP_PRICE_USD = 35;
 
+// Grupo máximo que despachamos por la web. Arriba de eso Diego cotiza a
+// mano por WhatsApp (hacen falta 2+ vehículos).
+//
+// Vivía como const local en BookingForm, pero desde que el Hero también
+// pregunta los pasajeros hay DOS pantallas validando el mismo tope. Si se
+// separan, el buscador deja meter un grupo de 14 al carrito y el checkout
+// lo rechaza después: el visitante llega hasta el final para que le digan
+// que no. Una sola fuente de verdad.
+export const MAX_TOTAL_PAX = 12;
+
 export type ServiceType = "standard" | "vip";
 export type VehicleType = "staria" | "hiace" | "maxus";
 
