@@ -3,41 +3,21 @@
 import { useCallback, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ArrowRight, ArrowLeftRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2, ShoppingCart, Users, Minus, Plus } from "lucide-react";
+import { ArrowRight, ArrowLeftRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2, ShoppingCart } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useCart } from "@/lib/CartContext";
 import { reviewStats } from "@/lib/reviews-data";
 import { resolveLocation } from "@/lib/locations";
 import { popularDirectUrl } from "@/lib/popular-route-slugs";
 import { getVehicleForPax, getVehicleName, MAX_TOTAL_PAX } from "@/lib/quote-helpers";
-import { WHATSAPP_URGENT_URL } from "@/lib/booking-rules";
 import GoogleGLogo from "@/components/GoogleGLogo";
 import LocationInput from "@/components/LocationInput";
 import RoutePricePreview, { type RouteQuote } from "@/components/RoutePricePreview";
-
-// Punto de partida del buscador. Antes eran constantes fijas: el hero
-// cotizaba SIEMPRE a 2 pasajeros y los pax reales se pedían hasta el
-// checkout. Diego lo pidió al revés (2026-08-30): "que el buscador
-// pregunte cuántos pax son para que tire el precio de una vez de acuerdo
-// a los pax".
-//
-// Importa porque el precio NO es por persona: es por vehículo, y el
-// vehículo cambia por tramos (<=5 Staria, 6-9 Hiace, 10-12 Maxus). Un
-// grupo de 7 que veía "$220" arriba se topaba con otro número en el
-// checkout — el peor momento para sorprender a alguien con un precio.
-const DEFAULT_ADULTS = 2;
-const DEFAULT_CHILDREN = 0;
-
-// Hasta dónde deja subir el contador. OJO: es a propósito MÁS alto que
-// MAX_TOTAL_PAX (12), que es lo máximo que se puede comprar por la web.
-//
-// La primera versión frenaba el "+" justo en 12. Un grupo de 14 llegaba,
-// el botón dejaba de responder y nadie le explicaba por qué: se iba
-// pensando que no los podemos llevar. Sí los podemos llevar — sólo que
-// hacen falta dos vehículos y Diego lo cotiza a mano. Así que los dejamos
-// pasar de 12 y ahí les mostramos el WhatsApp: en vez de una pared muda,
-// un contacto.
-const HERO_PAX_CEILING = 18;
+import PaxSelector, {
+  BigGroupNotice,
+  DEFAULT_ADULTS,
+  DEFAULT_CHILDREN,
+} from "@/components/PaxSelector";
 
 type Props = {
   locations: string[];
@@ -50,67 +30,6 @@ type Props = {
   liveGoogleCount?: number;
   liveGoogleRating?: number;
 };
-
-/**
- * Un contador -/N/+ para adultos o niños.
- *
- * Los botones se deshabilitan en vez de esconderse: un botón que
- * desaparece hace saltar el layout y el dedo termina tocando otra cosa.
- *
- * `aria-live="polite"` en el número para que quien usa lector de pantalla
- * escuche el conteo nuevo — si no, el botón dice "un adulto más" y no hay
- * forma de saber en cuánto quedó.
- */
-function PaxStepper({
-  label,
-  hint,
-  value,
-  onDec,
-  onInc,
-  canDec,
-  canInc,
-  decLabel,
-  incLabel,
-}: {
-  label: string;
-  hint: string;
-  value: number;
-  onDec: () => void;
-  onInc: () => void;
-  canDec: boolean;
-  canInc: boolean;
-  decLabel: string;
-  incLabel: string;
-}) {
-  const btn =
-    "inline-flex items-center justify-center w-8 h-8 rounded-full border border-amber-500/30 bg-black/60 text-amber-400 transition-colors hover:bg-amber-500/20 hover:border-amber-500/60 disabled:opacity-25 disabled:cursor-not-allowed disabled:hover:bg-black/60 disabled:hover:border-amber-500/30";
-  return (
-    // En celular cada contador ocupa su propia fila con la etiqueta a la
-    // izquierda y los botones a la derecha (`justify-between`): los dos
-    // lado a lado no caben en 375 px y el "+" de Niños quedaba cortado
-    // fuera de la pantalla. Desde `sm` sí caben en una sola línea.
-    <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start sm:gap-2">
-      <div className="leading-tight">
-        <div className="text-xs font-medium text-gray-300">{label}</div>
-        <div className="text-[10px] text-gray-500">{hint}</div>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <button type="button" onClick={onDec} disabled={!canDec} aria-label={decLabel} className={btn}>
-          <Minus size={14} />
-        </button>
-        <span
-          aria-live="polite"
-          className="w-5 text-center text-sm font-bold text-white tabular-nums"
-        >
-          {value}
-        </span>
-        <button type="button" onClick={onInc} disabled={!canInc} aria-label={incLabel} className={btn}>
-          <Plus size={14} />
-        </button>
-      </div>
-    </div>
-  );
-}
 
 export default function Hero({
   locations,
@@ -167,22 +86,6 @@ export default function Hero({
   // atajamos acá, en el buscador, en vez de dejarlos llenar todo el
   // checkout para recién ahí decirles que no.
   const overCapacity = totalPax > MAX_TOTAL_PAX;
-
-  // Mensaje de WhatsApp pre-escrito para grupos grandes. Metemos la ruta
-  // sólo si ya la eligieron: un texto que diga "de  a " se ve roto.
-  const bigGroupWhatsAppUrl = (() => {
-    const route =
-      pickup.trim() && dropoff.trim()
-        ? lang === "en"
-          ? ` from ${pickup.trim()} to ${dropoff.trim()}`
-          : ` de ${pickup.trim()} a ${dropoff.trim()}`
-        : "";
-    const msg =
-      lang === "en"
-        ? `Hi! I need a private transfer${route} for ${totalPax} passengers. Could you quote it?`
-        : `¡Hola! Necesito un traslado privado${route} para ${totalPax} pasajeros. ¿Me lo pueden cotizar?`;
-    return `${WHATSAPP_URGENT_URL}?text=${encodeURIComponent(msg)}`;
-  })();
 
   const canContinue =
     pickup.trim().length > 0 &&
@@ -488,68 +391,23 @@ export default function Hero({
               />
             </div>
 
-            {/* Contador de pasajeros. Va ANTES del precio a propósito: el
-                precio de abajo cambia según este número, así que el orden
-                de lectura tiene que ser "cuántos somos" → "cuánto cuesta".
-                Botones +/- en vez de un campo de número porque en celular
-                escribir un dígito abre el teclado y tapa media pantalla. */}
-            <div className="mt-3 rounded-xl border border-white/10 bg-black/40 px-4 py-3">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="flex items-center gap-2 text-sm font-medium text-gray-200">
-                  <Users size={15} className="text-amber-400" />
-                  {lang === "en" ? "How many passengers?" : "¿Cuántos pasajeros?"}
-                </div>
-                <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-4">
-                  <PaxStepper
-                    label={lang === "en" ? "Adults" : "Adultos"}
-                    hint="12+"
-                    value={adults}
-                    // Nunca menos de 1 adulto: un viaje de puros niños no
-                    // existe, y con 0 pasajeros el precio no tiene sentido.
-                    onDec={() => setAdults((n) => Math.max(1, n - 1))}
-                    onInc={() => setAdults((n) => n + 1)}
-                    canDec={adults > 1}
-                    canInc={totalPax < HERO_PAX_CEILING}
-                    decLabel={lang === "en" ? "One adult less" : "Un adulto menos"}
-                    incLabel={lang === "en" ? "One adult more" : "Un adulto más"}
-                  />
-                  <PaxStepper
-                    label={lang === "en" ? "Children" : "Niños"}
-                    hint="0-11"
-                    value={children}
-                    onDec={() => setChildren((n) => Math.max(0, n - 1))}
-                    onInc={() => setChildren((n) => n + 1)}
-                    canDec={children > 0}
-                    canInc={totalPax < HERO_PAX_CEILING}
-                    decLabel={lang === "en" ? "One child less" : "Un niño menos"}
-                    incLabel={lang === "en" ? "One child more" : "Un niño más"}
-                  />
-                </div>
-              </div>
-            </div>
+            <PaxSelector
+              adults={adults}
+              childrenCount={children}
+              onAdultsChange={setAdults}
+              onChildrenCountChange={setChildren}
+              lang={lang}
+              className="mt-3"
+            />
 
-            {/* Grupo grande: no es un error, es una venta que va por otro
-                canal. El mensaje llega a WhatsApp ya escrito con la ruta y
-                la cantidad de gente para que Diego no tenga que
-                preguntarlo todo de nuevo. */}
             {overCapacity && (
-              <div className="mt-3 rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-center text-xs text-amber-200">
-                <p>
-                  {lang === "en"
-                    ? `Groups over ${MAX_TOTAL_PAX} travel in more than one vehicle, so we quote those by hand.`
-                    : `Los grupos de más de ${MAX_TOTAL_PAX} viajan en más de un vehículo, así que esos los cotizamos a mano.`}
-                </p>
-                <a
-                  href={bigGroupWhatsAppUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center gap-2 rounded-lg bg-green-600 hover:bg-green-700 px-4 py-2 font-bold text-white transition-colors"
-                >
-                  {lang === "en"
-                    ? `WhatsApp us for a ${totalPax}-passenger quote`
-                    : `Cotizar ${totalPax} pasajeros por WhatsApp`}
-                </a>
-              </div>
+              <BigGroupNotice
+                totalPax={totalPax}
+                from={pickup}
+                to={dropoff}
+                lang={lang}
+                className="mt-3"
+              />
             )}
 
             {/* onQuote nos devuelve el precio que este componente ya
