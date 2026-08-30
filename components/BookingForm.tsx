@@ -31,6 +31,7 @@ import {
   computeTripTotal,
   getVehicleForPax,
   getVehicleName,
+  MAX_TOTAL_PAX,
 } from "@/lib/quote-helpers";
 import { events } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
@@ -50,10 +51,6 @@ import {
   WHATSAPP_URGENT_URL_ES,
 } from "@/lib/booking-rules";
 import Price from "@/components/Price";
-
-// Grupo máximo que despachamos por la web — mismo tope que QuoteCalculatorV2.
-// Arriba de eso Diego cotiza a mano por WhatsApp (necesita 2+ vehículos).
-const MAX_TOTAL_PAX = 12;
 
 function generateTimeOptions(): { value: string; label: string }[] {
   const times: { value: string; label: string }[] = [];
