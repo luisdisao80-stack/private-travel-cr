@@ -296,21 +296,21 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-amber-400 transition-colors"
         >
           <ArrowLeft size={14} />
-          Back
+          {lang === "es" ? "Volver" : "Back"}
         </button>
         <button
           onClick={onBack}
           className="lg:hidden inline-flex items-center gap-1.5 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-3 py-1.5 text-xs text-amber-300 hover:text-amber-200 transition-colors"
         >
           <span className="text-base leading-none">+</span>
-          Add another trip
+          {lang === "es" ? "Agregar otro viaje" : "Add another trip"}
         </button>
       </div>
 
       {/* One card per cart item — addresses, service type, flight all per-trip. */}
       <section className="space-y-4">
         <div className="text-amber-400 text-xs font-bold tracking-[0.18em] uppercase">
-          Your trips
+          {lang === "es" ? "Tus viajes" : "Your trips"}
         </div>
         {items.map((item, idx) => (
           <TripConfigCard

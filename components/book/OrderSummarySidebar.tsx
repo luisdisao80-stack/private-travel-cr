@@ -21,6 +21,7 @@ import {
 import type { CartItem } from "@/lib/CartContext";
 import Price from "@/components/Price";
 import { useCurrency } from "@/lib/CurrencyContext";
+import { useLanguage } from "@/lib/LanguageContext";
 import { formatPrice } from "@/lib/currency";
 
 type Props = {
@@ -36,11 +37,17 @@ function vehicleImage(id?: CartItem["vehicleId"]): string | null {
   return null;
 }
 
-function formatDateShort(iso?: string): string {
+function formatDateShort(iso: string | undefined, es: boolean): string {
   if (!iso) return "—";
   const d = new Date(iso + "T00:00:00");
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  // "Sep 4" en inglés, "4 sept" en español: el locale se encarga del
+  // orden. Estaba fijo en en-US, así que la fecha del viaje salía en
+  // inglés dentro del resumen en español.
+  return d.toLocaleDateString(es ? "es-CR" : "en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
 
 function format12h(time?: string): string {
@@ -53,7 +60,7 @@ function format12h(time?: string): string {
   return `${h12}:${mStr} ${period}`;
 }
 
-const INCLUDED = [
+const INCLUDED_EN = [
   { icon: Shield, label: "Licensed & insured" },
   { icon: Wifi, label: "Free WiFi" },
   { icon: Baby, label: "Free child seats" },
@@ -62,8 +69,19 @@ const INCLUDED = [
   { icon: CheckCircle2, label: "No hidden fees" },
 ];
 
+const INCLUDED_ES = [
+  { icon: Shield, label: "Con licencia y seguro" },
+  { icon: Wifi, label: "WiFi gratis" },
+  { icon: Baby, label: "Sillas para niños sin costo" },
+  { icon: Briefcase, label: "Equipaje incluido" },
+  { icon: Coffee, label: "Agua de cortesía" },
+  { icon: CheckCircle2, label: "Sin cargos ocultos" },
+];
+
 export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTrip }: Props) {
   const [openIncluded, setOpenIncluded] = useState(false);
+  const { lang } = useLanguage();
+  const es = lang === "es";
   const { currency, hydrated } = useCurrency();
   const showCurrencyHint = hydrated && currency !== "USD";
   const convertedTotal = formatPrice(totalPrice, currency);
@@ -72,9 +90,13 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
     <aside className="hidden lg:block lg:sticky lg:top-24">
       <div className="rounded-2xl overflow-hidden border border-amber-500/20 bg-gradient-to-br from-gray-900 to-black shadow-2xl shadow-black/40">
         <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 border-b border-amber-500/20 px-6 py-5">
-          <h2 className="text-xl md:text-2xl font-bold text-white">Order Summary</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-white">
+            {es ? "Resumen de tu compra" : "Order Summary"}
+          </h2>
           <p className="text-sm text-amber-200/80 mt-1">
-            {items.length} {items.length === 1 ? "trip" : "trips"} in cart
+            {es
+              ? `${items.length} ${items.length === 1 ? "viaje" : "viajes"} en el carrito`
+              : `${items.length} ${items.length === 1 ? "trip" : "trips"} in cart`}
           </p>
         </div>
 
@@ -93,7 +115,8 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
                         #{idx + 1}
                       </span>
                       <span className="text-xs uppercase tracking-wider text-gray-400">
-                        {it.serviceType === "vip" ? "VIP" : "Standard"} · {it.vehicleName}
+                        {it.serviceType === "vip" ? "VIP" : es ? "Estándar" : "Standard"} ·{" "}
+                        {it.vehicleName}
                       </span>
                     </span>
                     <span className="text-base font-bold text-white"><Price usd={it.totalPrice} /></span>
@@ -120,7 +143,7 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
                       <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-400">
                         <span className="inline-flex items-center gap-1">
                           <Calendar size={11} className="text-amber-400" />
-                          {formatDateShort(it.date)}
+                          {formatDateShort(it.date, es)}
                         </span>
                         <span className="inline-flex items-center gap-1">
                           <Clock size={11} className="text-amber-400" />
@@ -156,7 +179,7 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
               className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
             >
               <Plus size={16} />
-              <span>Add another trip</span>
+              <span>{es ? "Agregar otro viaje" : "Add another trip"}</span>
             </button>
           ) : (
             <Link
@@ -164,7 +187,7 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
               className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
             >
               <Plus size={16} />
-              <span>Add another trip</span>
+              <span>{es ? "Agregar otro viaje" : "Add another trip"}</span>
             </Link>
           )}
 
@@ -178,8 +201,14 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
                     ≈ {convertedTotal} {currency}
                   </div>
                 ) : null}
-                <div className="text-xs text-green-400 mt-1.5">Final price · All taxes included</div>
-                <div className="text-[10px] text-gray-500 mt-0.5">Charges in USD via Tilopay</div>
+                <div className="text-xs text-green-400 mt-1.5">
+                  {es
+                    ? "Precio final · Impuestos incluidos"
+                    : "Final price · All taxes included"}
+                </div>
+                <div className="text-[10px] text-gray-500 mt-0.5">
+                  {es ? "El cobro se hace en USD por Tilopay" : "Charges in USD via Tilopay"}
+                </div>
               </div>
             </div>
           </div>
@@ -189,12 +218,12 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
             onClick={() => setOpenIncluded((v) => !v)}
             className="w-full flex items-center justify-between rounded-lg bg-gray-800/40 border border-white/5 hover:border-amber-500/30 transition-colors px-4 py-3.5 text-sm text-white"
           >
-            <span>What&apos;s included?</span>
+            <span>{es ? "¿Qué incluye?" : "What's included?"}</span>
             {openIncluded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </button>
           {openIncluded ? (
             <div className="grid grid-cols-1 gap-2.5 -mt-2">
-              {INCLUDED.map(({ icon: Icon, label }) => (
+              {(es ? INCLUDED_ES : INCLUDED_EN).map(({ icon: Icon, label }) => (
                 <div key={label} className="flex items-center gap-2 text-sm text-gray-300">
                   <Icon size={15} className="text-amber-400" />
                   {label}

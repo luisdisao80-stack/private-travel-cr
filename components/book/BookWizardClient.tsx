@@ -366,23 +366,29 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
           {view === "checkout" ? (
             <div className="text-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-3">
-                Confirm your booking
+                {lang === "en" ? "Confirm your booking" : "Confirmá tu reserva"}
               </h1>
               <p className="text-gray-300 text-sm md:text-base max-w-xl mx-auto">
-                Enter your details and we&apos;ll handle the rest
+                {lang === "en"
+                  ? "Enter your details and we'll handle the rest"
+                  : "Poné tus datos y del resto nos encargamos nosotros"}
               </p>
             </div>
           ) : (
             <div className="max-w-3xl mx-auto">
+              {/* Mismos textos EXACTOS que el buscador de la home. Este
+                  buscador estaba entero en inglés dentro del sitio en
+                  español — la copia a mano se llevó el maquetado pero no
+                  las traducciones. */}
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-5 text-center">
-                Where are you headed?
+                {lang === "en" ? "Where are you headed?" : "¿A dónde vas?"}
               </h1>
               <div className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible">
                 <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-2">
                   <LocationInput
                     value={heroFrom}
                     onChange={handleHeroFrom}
-                    placeholder="Where from?"
+                    placeholder={lang === "en" ? "Where from?" : "¿De dónde?"}
                     locations={locations}
                     hotels={hotels}
                     onHotelPick={handlePickupHotel}
@@ -402,8 +408,16 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                       setHeroPickupHotel(nextPickupHotel);
                       setHeroDropoffHotel(nextDropoffHotel);
                     }}
-                    aria-label="Swap pickup and drop-off"
-                    title="Swap pickup and drop-off"
+                    aria-label={
+                      lang === "en"
+                        ? "Swap pickup and drop-off"
+                        : "Intercambiar origen y destino"
+                    }
+                    title={
+                      lang === "en"
+                        ? "Swap pickup and drop-off"
+                        : "Intercambiar origen y destino"
+                    }
                     className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-amber-500/30 bg-black/60 hover:bg-amber-500/20 hover:border-amber-500/60 text-amber-400 transition-colors"
                   >
                     <ArrowLeftRight size={16} className="hidden md:block" />
@@ -412,7 +426,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   <LocationInput
                     value={heroTo}
                     onChange={handleHeroTo}
-                    placeholder="Where to?"
+                    placeholder={lang === "en" ? "Where to?" : "¿A dónde?"}
                     locations={locations}
                     hotels={hotels}
                     onHotelPick={handleDropoffHotel}
@@ -450,7 +464,9 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                 ) : null}
                 {rawSameLocation || addError === "same" ? (
                   <p className="mt-3 text-xs text-amber-300/90 text-center">
-                    Pickup and drop-off can&apos;t be the same place.
+                    {lang === "en"
+                      ? "Pickup and drop-off can't be the same place. Please pick a different drop-off location."
+                      : "El origen y el destino no pueden ser iguales. Elegí un destino diferente."}
                   </p>
                 ) : null}
                 {/* Mismo quick-add que el hero de la home: con precio en
@@ -464,7 +480,13 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-black font-bold py-4 rounded-xl transition-colors"
                   >
                     <ShoppingCart size={18} />
-                    {items.length > 0 ? "Add another trip to cart" : "Add to cart"}
+                    {items.length > 0
+                      ? lang === "en"
+                        ? "Add another trip to cart"
+                        : "Agregar otro viaje al carrito"
+                      : lang === "en"
+                        ? "Add to cart"
+                        : "Agregar al carrito"}
                   </button>
                 ) : null}
                 {/* La confirmación reemplaza el salto al checkout. Sin
@@ -503,15 +525,15 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                 <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
                   <span className="flex items-center gap-1.5">
                     <Zap size={12} className="text-amber-400" />
-                    Instant pricing
+                    {lang === "en" ? "Instant pricing" : "Precio al instante"}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Shield size={12} className="text-amber-400" />
-                    Free cancellation
+                    {lang === "en" ? "Free cancellation" : "Cancelación gratis"}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <CheckCircle2 size={12} className="text-amber-400" />
-                    No hidden fees
+                    {lang === "en" ? "No hidden fees" : "Sin cargos ocultos"}
                   </span>
                 </div>
               </div>
