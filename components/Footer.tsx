@@ -157,10 +157,14 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
-              {/* Link a Terms */}
+              {/* Link a Terms. Sin prefetch: son paginas legales largas que
+                  casi nadie abre, y el footer entra en pantalla en cuanto el
+                  visitante hace scroll — no vale gastar ancho de banda movil
+                  precargandolas enteras. */}
               <li>
                 <Link
                   href="/terms"
+                  prefetch={false}
                   className="text-gray-400 hover:text-amber-400 transition-colors text-sm flex items-center gap-1.5 group"
                 >
                   <span className="text-amber-500/0 group-hover:text-amber-500 transition-colors">
@@ -173,6 +177,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/privacy"
+                  prefetch={false}
                   className="text-gray-400 hover:text-amber-400 transition-colors text-sm flex items-center gap-1.5 group"
                 >
                   <span className="text-amber-500/0 group-hover:text-amber-500 transition-colors">
@@ -414,8 +419,10 @@ export default function Footer() {
                 ICT #3205-2022
               </span>
               <span className="hidden md:inline text-gray-700">·</span>
+              {/* Sin prefetch, igual que los del bloque de arriba. */}
               <Link
                 href="/terms"
+                prefetch={false}
                 className="hover:text-amber-400 transition-colors underline-offset-4 hover:underline"
               >
                 {termsLabel}
@@ -423,6 +430,7 @@ export default function Footer() {
               <span className="hidden md:inline text-gray-700">·</span>
               <Link
                 href="/privacy"
+                prefetch={false}
                 className="hover:text-amber-400 transition-colors underline-offset-4 hover:underline"
               >
                 {privacyLabel}
