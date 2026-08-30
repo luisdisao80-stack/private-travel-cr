@@ -131,6 +131,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
   const { items, updateItem, removeItem, totalPrice } = useCart();
   const { currency, hydrated } = useCurrency();
   const { lang } = useLanguage();
+  const es = lang === "es";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -267,7 +268,9 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
       // them what to do and offer WhatsApp as a fallback path so a
       // technical glitch never costs Diego the booking.
       setError(
-        "We couldn't start your payment. Please try again, or message us on WhatsApp at +506 8633-4133 and we'll book you manually.",
+        es
+          ? "No pudimos iniciar el pago. Intentá de nuevo, o escribinos por WhatsApp al +506 8633-4133 y te hacemos la reserva a mano."
+          : "We couldn't start your payment. Please try again, or message us on WhatsApp at +506 8633-4133 and we'll book you manually.",
       );
       setLoading(false);
     }
@@ -276,9 +279,9 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
   if (items.length === 0) {
     return (
       <div className="p-6 text-center text-gray-400">
-        <p>Your cart is empty.</p>
+        <p>{es ? "Tu carrito está vacío." : "Your cart is empty."}</p>
         <button onClick={onBack} className="mt-3 text-amber-400 hover:text-amber-300 text-sm">
-          ← Back
+          ← {es ? "Volver" : "Back"}
         </button>
       </div>
     );
@@ -330,39 +333,44 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
 
       <section className="space-y-4">
         <div className="text-amber-400 text-xs font-bold tracking-[0.18em] uppercase">
-          Your information
+          {es ? "Tus datos" : "Your information"}
         </div>
 
         <div className="grid md:grid-cols-2 gap-3">
           <div className="space-y-1.5">
             <Label className="text-gray-300 text-sm">
-              Full name <span className="text-red-400">*</span>
+              {es ? "Nombre completo" : "Full name"}{" "}
+              <span className="text-red-400">*</span>
             </Label>
             <Input
               value={form.name}
               onChange={handleChange("name")}
-              placeholder="John Doe"
+              placeholder={es ? "Juan Pérez" : "John Doe"}
               className="bg-black/50 border-amber-500/30 text-white h-11"
             />
           </div>
           <div className="space-y-1.5">
             <Label className="text-gray-300 text-sm">
-              Email <span className="text-red-400">*</span>
+              {es ? "Correo" : "Email"} <span className="text-red-400">*</span>
             </Label>
             <Input
               type="email"
               value={form.email}
               onChange={handleChange("email")}
-              placeholder="you@example.com"
+              placeholder={es ? "vos@ejemplo.com" : "you@example.com"}
               className="bg-black/50 border-amber-500/30 text-white h-11"
             />
-            <p className="text-[10px] text-gray-500">We&apos;ll send your confirmation here.</p>
+            <p className="text-[10px] text-gray-500">
+              {es
+                ? "Ahí te mandamos la confirmación."
+                : "We'll send your confirmation here."}
+            </p>
           </div>
         </div>
 
         <div className="space-y-1.5">
           <Label className="text-gray-300 text-sm">
-            Phone <span className="text-red-400">*</span>
+            {es ? "Teléfono" : "Phone"} <span className="text-red-400">*</span>
           </Label>
           <div className="flex gap-2">
             <select
@@ -372,7 +380,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
                 if (next) setCountry(next);
               }}
               className="w-24 sm:w-28 md:w-32 bg-black/50 border border-amber-500/30 text-white h-11 rounded-md px-2 text-sm focus:border-amber-500 outline-none shrink-0"
-              aria-label="Country code"
+              aria-label={es ? "Código de país" : "Country code"}
             >
               {COUNTRY_CODES.map((c) => (
                 <option key={c.iso2} value={c.iso2} className="bg-gray-900">
@@ -390,16 +398,23 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
             />
           </div>
           <p className="text-[10px] text-gray-500">
-            Selected: <span className="text-amber-400">{country.flag} {country.name} ({country.dial})</span>
+            {es ? "Seleccionado:" : "Selected:"}{" "}
+            <span className="text-amber-400">{country.flag} {country.name} ({country.dial})</span>
           </p>
         </div>
 
         <div className="space-y-1.5">
-          <Label className="text-gray-300 text-sm">Special requests (optional)</Label>
+          <Label className="text-gray-300 text-sm">
+            {es ? "Solicitudes especiales (opcional)" : "Special requests (optional)"}
+          </Label>
           <textarea
             value={form.notes}
             onChange={handleChange("notes")}
-            placeholder="Anything we should know? Child seats, late arrival, etc."
+            placeholder={
+              es
+                ? "¿Algo que debamos saber? Sillas para niños, llegada tarde, etc."
+                : "Anything we should know? Child seats, late arrival, etc."
+            }
             rows={3}
             className="w-full rounded-md bg-black/50 border border-amber-500/30 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40 resize-none"
           />
@@ -420,14 +435,14 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           className="mt-0.5 h-4 w-4 rounded border-amber-500/40 bg-black/50 accent-amber-500 shrink-0"
         />
         <span className="text-xs text-gray-300 leading-snug">
-          I have read and accept the{" "}
+          {es ? "Leí y acepto los " : "I have read and accept the "}
           <a
             href="/terms"
             target="_blank"
             rel="noopener noreferrer"
             className="text-amber-400 hover:text-amber-300 underline underline-offset-2"
           >
-            Terms &amp; Conditions
+            {es ? "Términos y Condiciones" : "Terms & Conditions"}
           </a>
           .
         </span>
@@ -442,11 +457,28 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
       {airportTripsMissingFlight.length > 0 && (
         <div className="rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
           {airportTripsMissingFlight.length === 1 ? (
+            es ? (
+              <>
+                El viaje #{airportTripsMissingFlight[0].idx + 1} (
+                {airportTripsMissingFlight[0].it.fromName}) todavía no tiene
+                número de vuelo. Es opcional, pero nos ayuda a seguir tu vuelo
+                por si hay atrasos — también nos lo podés mandar después.
+              </>
+            ) : (
+              <>
+                Trip #{airportTripsMissingFlight[0].idx + 1} (
+                {airportTripsMissingFlight[0].it.fromName}) has no flight
+                number yet. Optional, but it helps us track your flight for
+                delays — you can add it later too.
+              </>
+            )
+          ) : es ? (
             <>
-              Trip #{airportTripsMissingFlight[0].idx + 1} (
-              {airportTripsMissingFlight[0].it.fromName}) has no flight
-              number yet. Optional, but it helps us track your flight for
-              delays — you can add it later too.
+              {airportTripsMissingFlight.length} viajes de aeropuerto todavía
+              no tienen número de vuelo (#
+              {airportTripsMissingFlight.map((t) => t.idx + 1).join(", #")}).
+              Es opcional, pero nos ayuda a seguir tus vuelos por si hay
+              atrasos — también nos los podés mandar después.
             </>
           ) : (
             <>
@@ -519,25 +551,33 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           up" not "error". */}
       <div className="rounded-lg border border-amber-500/40 bg-amber-500/5 px-4 py-3 text-xs text-amber-100/90 leading-relaxed">
         <p className="font-semibold text-amber-300 mb-1">
-          💳 Heads up — international cards
+          {es
+            ? "💳 Ojo — tarjetas internacionales"
+            : "💳 Heads up — international cards"}
         </p>
         <p>
-          Some US, Canada and EU banks auto-decline charges from Costa
-          Rica as a fraud check. If your card is declined, call your bank
-          and authorize the charge to{" "}
+          {es
+            ? "Algunos bancos de Estados Unidos, Canadá y Europa rechazan automáticamente los cobros desde Costa Rica como control de fraude. Si te rechazan la tarjeta, llamá a tu banco y autorizá el cobro a "
+            : "Some US, Canada and EU banks auto-decline charges from Costa Rica as a fraud check. If your card is declined, call your bank and authorize the charge to "}
           <span className="font-semibold text-amber-200">
             &ldquo;Private Travel CR&rdquo;
           </span>{" "}
-          — or{" "}
+          {es ? "— o " : "— or "}
           <a
-            href="https://wa.me/50686334133?text=Hi%20Diego%2C%20my%20card%20was%20declined%20on%20your%20site.%20Can%20you%20send%20me%20an%20alternative%20payment%20link%3F"
+            href={
+              es
+                ? "https://wa.me/50686334133?text=Hola%20Diego%2C%20me%20rechazaron%20la%20tarjeta%20en%20el%20sitio.%20%C2%BFMe%20pod%C3%A9s%20enviar%20un%20enlace%20de%20pago%20alternativo%3F"
+                : "https://wa.me/50686334133?text=Hi%20Diego%2C%20my%20card%20was%20declined%20on%20your%20site.%20Can%20you%20send%20me%20an%20alternative%20payment%20link%3F"
+            }
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold text-green-400 hover:text-green-300 underline underline-offset-2"
           >
-            WhatsApp us
+            {es ? "escribinos por WhatsApp" : "WhatsApp us"}
           </a>{" "}
-          for an alternative payment link.
+          {es
+            ? "y te mandamos un enlace de pago alternativo."
+            : "for an alternative payment link."}
         </p>
       </div>
 
@@ -548,8 +588,9 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           a dead-end mid-checkout. */}
       {items.length > 0 && totalPrice <= 0 ? (
         <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200">
-          Your cart looks empty or invalid — please refresh the page and
-          re-add your trips to continue.
+          {es
+            ? "Tu carrito se ve vacío o dañado — recargá la página y volvé a agregar tus viajes para continuar."
+            : "Your cart looks empty or invalid — please refresh the page and re-add your trips to continue."}
         </div>
       ) : null}
 
@@ -604,22 +645,26 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
         ) : (
           <>
             <CreditCard size={18} className="mr-2" />
-            Pay ${totalPrice.toFixed(2)} USD
+            {es ? "Pagar" : "Pay"} ${totalPrice.toFixed(2)} USD
           </>
         )}
       </Button>
 
       {showCurrencyHint ? (
         <p className="text-[11px] text-center text-amber-300">
-          ≈ {convertedTotal} {currency} at today&apos;s rate
+          ≈ {convertedTotal} {currency}{" "}
+          {es ? "al tipo de cambio de hoy" : "at today's rate"}
         </p>
       ) : null}
       <p className="text-[11px] text-center text-green-400">
-        Taxes included · Final price
+        {es
+          ? "Impuestos incluidos · Precio final"
+          : "Taxes included · Final price"}
       </p>
       <p className="text-[10px] text-center text-gray-500">
-        Charges in USD via Tilopay. Your card issuer applies the live
-        conversion rate. Card details never touch our servers.
+        {es
+          ? "El cobro se hace en USD por Tilopay. Tu banco aplica el tipo de cambio del día. Los datos de tu tarjeta nunca pasan por nuestros servidores."
+          : "Charges in USD via Tilopay. Your card issuer applies the live conversion rate. Card details never touch our servers."}
       </p>
       {/* Foreign-transaction-fee disclaimer. Diego flagged 2026-06-22:
           a US customer (Nicole Gitto, PTCR-1515/1516) saw a ~$13 extra
@@ -632,11 +677,9 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           notices it, but anyone confused at their bank statement gets
           the answer here first. */}
       <p className="text-[10px] text-center text-gray-500 italic mt-2 px-2">
-        💳 Heads-up: some banks (especially in the US / Canada / EU)
-        charge a small foreign transaction fee (~3%) on top when you
-        pay a Costa Rica-based merchant. That fee is NOT ours — it&apos;s
-        your bank&apos;s. Travel-friendly cards (Chase Sapphire, Capital
-        One Venture, Amex Platinum, etc.) usually waive it.
+        {es
+          ? "💳 Ojo: algunos bancos (sobre todo de Estados Unidos, Canadá y Europa) cobran aparte una pequeña comisión por transacción internacional (~3%) cuando pagás a un comercio de Costa Rica. Esa comisión NO es nuestra, es de tu banco. Las tarjetas pensadas para viajar (Chase Sapphire, Capital One Venture, Amex Platinum, etc.) normalmente no la cobran."
+          : "💳 Heads-up: some banks (especially in the US / Canada / EU) charge a small foreign transaction fee (~3%) on top when you pay a Costa Rica-based merchant. That fee is NOT ours — it's your bank's. Travel-friendly cards (Chase Sapphire, Capital One Venture, Amex Platinum, etc.) usually waive it."}
       </p>
     </div>
   );
@@ -662,6 +705,7 @@ function TripConfigCard({
   onRemove,
 }: TripConfigCardProps) {
   const { lang } = useLanguage();
+  const es = lang === "es";
   const showFlight = isAirport(item.fromName);
 
   // Late-night pickup surcharge (11 PM–5 AM) is part of both service tiers,
@@ -931,7 +975,7 @@ function TripConfigCard({
             type="button"
             onClick={onRemove}
             className="text-gray-500 hover:text-red-400 transition-colors p-1"
-            aria-label="Remove trip"
+            aria-label={es ? "Quitar viaje" : "Remove trip"}
           >
             <Trash2 size={15} />
           </button>
@@ -1082,46 +1126,89 @@ function TripConfigCard({
 
       <div>
         <div className="text-[10px] text-amber-300 font-bold tracking-[0.18em] uppercase mb-2">
-          Service
+          {es ? "Servicio" : "Service"}
         </div>
         <div className="grid sm:grid-cols-2 gap-2">
           <ServiceCard
-            label="Standard"
-            tagline="Fast & efficient"
-            description="Private direct ride — no stops, no waiting"
+            label={es ? "Estándar" : "Standard"}
+            tagline={es ? "Rápido y eficiente" : "Fast & efficient"}
+            description={
+              es
+                ? "Viaje privado directo — sin paradas, sin esperas"
+                : "Private direct ride — no stops, no waiting"
+            }
             priceUsd={standardPrice}
             selected={item.serviceType === "standard"}
             onClick={() => setService("standard")}
-            features={[
-              "Direct route, no detours",
-              "Door-to-door service",
-              "Bilingual professional driver",
-              "Onboard WiFi & bottled water",
-              "Free child seats on request",
-              "Flight tracking & full insurance",
-            ]}
-            ideal="Ideal for airport transfers and tight schedules"
+            features={
+              es
+                ? [
+                    "Ruta directa, sin desvíos",
+                    "Servicio puerta a puerta",
+                    "Chofer profesional bilingüe",
+                    "WiFi a bordo y agua embotellada",
+                    "Sillas para niños gratis a pedido",
+                    "Seguimiento de vuelo y seguro completo",
+                  ]
+                : [
+                    "Direct route, no detours",
+                    "Door-to-door service",
+                    "Bilingual professional driver",
+                    "Onboard WiFi & bottled water",
+                    "Free child seats on request",
+                    "Flight tracking & full insurance",
+                  ]
+            }
+            ideal={
+              es
+                ? "Ideal para traslados de aeropuerto y horarios ajustados"
+                : "Ideal for airport transfers and tight schedules"
+            }
           />
           <ServiceCard
             label="VIP"
-            tagline="Premium experience"
-            description="Tourist stops, welcome kit, driver who guides you"
+            tagline={es ? "Experiencia premium" : "Premium experience"}
+            description={
+              es
+                ? "Paradas turísticas, welcome kit, chofer que te guía"
+                : "Tourist stops, welcome kit, driver who guides you"
+            }
             priceUsd={vipPrice}
-            priceNote={`+$${VIP_EXTRA_USD} over Standard`}
+            priceNote={
+              es
+                ? `+$${VIP_EXTRA_USD} sobre el Estándar`
+                : `+$${VIP_EXTRA_USD} over Standard`
+            }
             selected={item.serviceType === "vip"}
             onClick={() => setService("vip")}
             crown
-            badge="MOST POPULAR"
-            features={[
-              "1–2h flexible tourist stop",
-              "Welcome Kit: local beers, sodas, snacks",
-              "San Pellegrino sparkling water",
-              "Concierge driver — personalized tips",
-              "USB chargers & onboard WiFi",
-              "Recommended for honeymoons",
-              "Everything in Standard, plus more",
-            ]}
-            ideal="Perfect for honeymoons and unforgettable trips"
+            badge={es ? "EL MÁS POPULAR" : "MOST POPULAR"}
+            features={
+              es
+                ? [
+                    "Parada turística flexible de 1–2h",
+                    "Welcome Kit: cervezas locales, gaseosas, snacks",
+                    "Agua con gas San Pellegrino",
+                    "Chofer concierge — recomendaciones personalizadas",
+                    "Cargadores USB y WiFi a bordo",
+                    "Recomendado para lunas de miel",
+                    "Todo lo del Estándar, y más",
+                  ]
+                : [
+                    "1–2h flexible tourist stop",
+                    "Welcome Kit: local beers, sodas, snacks",
+                    "San Pellegrino sparkling water",
+                    "Concierge driver — personalized tips",
+                    "USB chargers & onboard WiFi",
+                    "Recommended for honeymoons",
+                    "Everything in Standard, plus more",
+                  ]
+            }
+            ideal={
+              es
+                ? "Perfecto para lunas de miel y viajes inolvidables"
+                : "Perfect for honeymoons and unforgettable trips"
+            }
           />
         </div>
       </div>
@@ -1130,14 +1217,18 @@ function TripConfigCard({
         <div className="space-y-1.5">
           <Label className="text-gray-300 text-xs flex items-center gap-1.5">
             <MapPin size={12} className="text-amber-400" />
-            Pickup address
+            {es ? "Dirección de recogida" : "Pickup address"}
           </Label>
           <HotelAddressAutocomplete
             value={pickupValue}
             onChange={setPickup}
             hotels={hotels}
             contextArea={item.fromName}
-            placeholder={`Hotel, Airbnb or address in ${item.fromName}`}
+            placeholder={
+              es
+                ? `Hotel, Airbnb o dirección en ${item.fromName}`
+                : `Hotel, Airbnb or address in ${item.fromName}`
+            }
             inputClassName="w-full bg-black/50 border border-amber-500/30 text-white rounded-md h-10 px-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
           />
         </div>
@@ -1145,14 +1236,18 @@ function TripConfigCard({
         <div className="space-y-1.5">
           <Label className="text-gray-300 text-xs flex items-center gap-1.5">
             <MapPin size={12} className="text-amber-400" />
-            Drop-off address
+            {es ? "Dirección de destino" : "Drop-off address"}
           </Label>
           <HotelAddressAutocomplete
             value={dropoffValue}
             onChange={setDropoff}
             hotels={hotels}
             contextArea={item.toName}
-            placeholder={`Hotel, Airbnb or address in ${item.toName}`}
+            placeholder={
+              es
+                ? `Hotel, Airbnb o dirección en ${item.toName}`
+                : `Hotel, Airbnb or address in ${item.toName}`
+            }
             inputClassName="w-full bg-black/50 border border-amber-500/30 text-white rounded-md h-10 px-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
           />
         </div>
@@ -1162,33 +1257,36 @@ function TripConfigCard({
             <div className="space-y-1.5">
               <Label className="text-gray-300 text-xs flex items-center gap-1.5">
                 <Plane size={12} className="text-amber-400" />
-                Flight number{" "}
-                <span className="text-gray-500 font-normal">(optional)</span>
+                {es ? "Número de vuelo" : "Flight number"}{" "}
+                <span className="text-gray-500 font-normal">
+                  {es ? "(opcional)" : "(optional)"}
+                </span>
               </Label>
               <Input
                 value={flightNumberValue}
                 onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
-                placeholder="e.g. UA1234"
+                placeholder={es ? "ej. UA1234" : "e.g. UA1234"}
                 className="bg-black/50 text-white h-10 uppercase border-amber-500/30"
               />
               {flightNumberValue.trim().length === 0 && (
                 <p className="text-[10px] text-gray-500 mt-1">
-                  Optional — helps us track your flight for delays. You can
-                  also send it later on WhatsApp.
+                  {es
+                    ? "Opcional — nos ayuda a seguir tu vuelo por si hay atrasos. También nos lo podés mandar después por WhatsApp."
+                    : "Optional — helps us track your flight for delays. You can also send it later on WhatsApp."}
                 </p>
               )}
             </div>
             <div className="space-y-1.5">
               <Label className="text-gray-300 text-xs flex items-center gap-1.5">
                 <Clock size={12} className="text-amber-400" />
-                Flight time
+                {es ? "Hora del vuelo" : "Flight time"}
               </Label>
               <select
                 value={flight.time}
                 onChange={(e) => onFlightChange({ ...flight, time: e.target.value })}
                 className="w-full bg-black/50 border border-amber-500/30 text-white h-10 rounded-md px-3 text-sm focus:border-amber-500 outline-none"
               >
-                <option value="">Select time…</option>
+                <option value="">{es ? "Elegí la hora…" : "Select time…"}</option>
                 {TIME_OPTIONS.map((t) => (
                   <option key={t.value} value={t.value} className="bg-gray-900">
                     {t.label}
@@ -1212,7 +1310,9 @@ function TripConfigCard({
       ) : null}
 
       <div className="flex items-center justify-between pt-2 border-t border-white/5">
-        <span className="text-xs text-gray-400">Trip total</span>
+        <span className="text-xs text-gray-400">
+          {es ? "Total del viaje" : "Trip total"}
+        </span>
         <span className="text-lg font-bold text-white"><Price usd={item.totalPrice} /></span>
       </div>
     </div>
