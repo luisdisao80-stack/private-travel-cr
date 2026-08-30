@@ -1,14 +1,25 @@
 "use client";
 
 import { Check } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export type WizardStep = "search" | "trip" | "checkout" | "done";
 
-const STEPS: { id: WizardStep; label: string; shortLabel: string }[] = [
+// `shortLabel` es lo que se ve en celular, donde cuatro pasos tienen que
+// caber en 375 px. Por eso "Checkout" se acorta a "Pay" / "Pagar" en vez
+// de dejar que el texto se parta en dos líneas.
+const STEPS_EN: { id: WizardStep; label: string; shortLabel: string }[] = [
   { id: "search", label: "Search", shortLabel: "Search" },
   { id: "trip", label: "Trip Details", shortLabel: "Trip" },
   { id: "checkout", label: "Checkout", shortLabel: "Pay" },
   { id: "done", label: "Done", shortLabel: "Done" },
+];
+
+const STEPS_ES: { id: WizardStep; label: string; shortLabel: string }[] = [
+  { id: "search", label: "Buscar", shortLabel: "Buscar" },
+  { id: "trip", label: "Datos del viaje", shortLabel: "Viaje" },
+  { id: "checkout", label: "Pago", shortLabel: "Pago" },
+  { id: "done", label: "Listo", shortLabel: "Listo" },
 ];
 
 type Props = {
@@ -24,6 +35,8 @@ function statusOf(idx: number, currentIdx: number): "done" | "current" | "todo" 
 }
 
 export default function WizardProgress({ current, onStepClick }: Props) {
+  const { lang } = useLanguage();
+  const STEPS = lang === "es" ? STEPS_ES : STEPS_EN;
   const currentIdx = STEPS.findIndex((s) => s.id === current);
 
   return (

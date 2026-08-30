@@ -122,9 +122,18 @@ export function getPriceTier(totalPax: number): PriceTier {
   return "13-18";
 }
 
-// Cómo se le muestra el tramo al visitante ("Standard · 6-9 pax").
+// Cómo se le muestra el tramo al visitante ("Estándar · 6-9 pax").
+// Sólo el primero cambia de idioma; los otros tres son rangos de números
+// y "6-9 pax" se lee igual en los dos.
 export const PRICE_TIER_LABELS: Record<PriceTier, string> = {
   "1-5": "up to 5 pax",
+  "6-9": "6-9 pax",
+  "10-12": "10-12 pax",
+  "13-18": "13-18 pax",
+};
+
+export const PRICE_TIER_LABELS_ES: Record<PriceTier, string> = {
+  "1-5": "hasta 5 pax",
   "6-9": "6-9 pax",
   "10-12": "10-12 pax",
   "13-18": "13-18 pax",

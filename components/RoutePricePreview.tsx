@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock, Loader2 } from "lucide-react";
 import Price from "@/components/Price";
-import { getPriceTier, PRICE_TIER_LABELS } from "@/lib/quote-helpers";
+import { useLanguage } from "@/lib/LanguageContext";
+import {
+  getPriceTier,
+  PRICE_TIER_LABELS,
+  PRICE_TIER_LABELS_ES,
+} from "@/lib/quote-helpers";
 
 export type RouteQuote = { basePrice: number; duration?: string };
 
@@ -28,6 +33,14 @@ type ApiResponse =
   | { error: string };
 
 export default function RoutePricePreview({ from, to, adults, onQuote }: Props) {
+  // El idioma se lee acá adentro en vez de recibirse como prop. Toda esta
+  // tarjeta se quedó en inglés dentro del sitio en español justamente
+  // porque los dos buscadores que la usan tendrían que acordarse de
+  // pasarle `lang`, y ninguno lo hizo. Leyéndolo del contexto no hay nada
+  // que un tercer buscador pueda olvidar.
+  const { lang } = useLanguage();
+  const es = lang === "es";
+
   // Callback held in a ref on purpose: parents pass an inline arrow, so
   // putting `onQuote` in the effect's dependency array would re-run the
   // fetch on every parent render (infinite request loop).
@@ -176,17 +189,17 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
               un div vacío colapsa a 0 y volvería a descuadrar el alto. */}
           <div>
             <div className="text-[10px] uppercase tracking-wider text-amber-300 font-bold">
-              From
+              {es ? "Desde" : "From"}
             </div>
             <div className="text-2xl font-bold leading-none">
               <span className="inline-block h-6 w-20 animate-pulse rounded bg-white/15 align-middle" />
             </div>
             <div className="mt-1 flex items-center gap-1.5 text-[10px] text-gray-400">
               <Loader2 size={11} className="animate-spin text-amber-400" />
-              Checking price…
+              {es ? "Buscando precio…" : "Checking price…"}
             </div>
             <div className="text-[10px] text-transparent select-none" aria-hidden>
-              Standard
+              {es ? "Estándar" : "Standard"}
             </div>
           </div>
           <div className="text-right">
@@ -194,18 +207,22 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
               <Clock size={12} className="text-amber-400/40" />
               <span className="inline-block h-3 w-6 animate-pulse rounded bg-white/15" />
             </div>
-            <div className="text-[10px] text-gray-500 mt-1">Approx. travel time</div>
+            <div className="text-[10px] text-gray-500 mt-1">
+              {es ? "Tiempo aprox. de viaje" : "Approx. travel time"}
+            </div>
           </div>
         </PriceCardShell>
       );
     }
-    return <PriceCard data={lastFound} stale />;
+    return <PriceCard data={lastFound} es={es} stale />;
   }
 
   if (state.status === "notFound") {
     return (
       <div className="mt-4 text-center text-xs text-amber-300/80">
-        We don&apos;t have a direct price for that pair yet — continue and we&apos;ll quote it.
+        {es
+          ? "Todavía no tenemos precio directo para ese par — seguí y te lo cotizamos."
+          : "We don't have a direct price for that pair yet — continue and we'll quote it."}
       </div>
     );
   }
@@ -213,12 +230,14 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
   if (state.status === "error") {
     return (
       <div className="mt-4 text-center text-xs text-red-300">
-        Couldn&apos;t reach the pricing server. Check your connection and try again.
+        {es
+          ? "No pudimos conectarnos para traer el precio. Revisá tu conexión e intentá de nuevo."
+          : "Couldn't reach the pricing server. Check your connection and try again."}
       </div>
     );
   }
 
-  return <PriceCard data={state} />;
+  return <PriceCard data={state} es={es} />;
 }
 
 /**
@@ -251,26 +270,32 @@ function PriceCardShell({
 
 function PriceCard({
   data,
+  es,
   stale = false,
 }: {
   data: { basePrice: number; duration: string; adults: number };
+  es: boolean;
   stale?: boolean;
 }) {
+  const tier = getPriceTier(data.adults);
   return (
     <PriceCardShell stale={stale}>
       <div>
         <div className="text-[10px] uppercase tracking-wider text-amber-300 font-bold">
-          From
+          {es ? "Desde" : "From"}
         </div>
         <div className="text-2xl font-bold text-white leading-none">
           <Price usd={data.basePrice} />
         </div>
-        <div className="text-[10px] text-green-400 mt-1">Taxes included</div>
+        <div className="text-[10px] text-green-400 mt-1">
+          {es ? "Impuestos incluidos" : "Taxes included"}
+        </div>
         <div className="text-[10px] text-gray-400">
           {/* El tramo sale de quote-helpers, la misma función que decide
               el precio. Antes estaba escrito acá con un ternario aparte y
               nada garantizaba que coincidiera con lo que cobrábamos. */}
-          Standard · {PRICE_TIER_LABELS[getPriceTier(data.adults)]}
+          {es ? "Estándar" : "Standard"} ·{" "}
+          {(es ? PRICE_TIER_LABELS_ES : PRICE_TIER_LABELS)[tier]}
         </div>
       </div>
       <div className="text-right">
@@ -278,7 +303,9 @@ function PriceCard({
           <Clock size={12} className="text-amber-400" />
           {data.duration}
         </div>
-        <div className="text-[10px] text-gray-500 mt-1">Approx. travel time</div>
+        <div className="text-[10px] text-gray-500 mt-1">
+          {es ? "Tiempo aprox. de viaje" : "Approx. travel time"}
+        </div>
       </div>
     </PriceCardShell>
   );

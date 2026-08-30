@@ -72,6 +72,10 @@ export default function QuoteCalculatorV2({
 }: Props) {
   const { addItem: cartAddItem, itemCount: cartItemCount } = useCart();
   const { lang } = useLanguage();
+  // Atajo para las decenas de etiquetas de este formulario. Estaba entero
+  // en inglés dentro del sitio en español; `lang === "en" ? ... : ...`
+  // repetido cuarenta veces se vuelve ilegible.
+  const es = lang === "es";
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [pickupAddress, setPickupAddress] = useState("");
@@ -373,7 +377,7 @@ export default function QuoteCalculatorV2({
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <div className="text-[10px] text-amber-400 font-bold tracking-[0.18em] uppercase mb-1">
-                Selected route
+                {es ? "Ruta elegida" : "Selected route"}
               </div>
               <div className="text-base md:text-lg font-bold text-white leading-tight break-words">
                 {from} <span className="text-amber-400">→</span> {to}
@@ -389,7 +393,7 @@ export default function QuoteCalculatorV2({
               }}
               className="text-xs text-gray-400 hover:text-amber-400 transition-colors shrink-0"
             >
-              Change
+              {es ? "Cambiar" : "Change"}
             </button>
           </div>
         </div>
@@ -398,12 +402,12 @@ export default function QuoteCalculatorV2({
           <div className="mb-2">
             <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
               <MapPin size={16} />
-              <span>Pickup Location</span>
+              <span>{es ? "Lugar de recogida" : "Pickup Location"}</span>
             </label>
             <LocationInput
               value={from}
               onChange={setFrom}
-              placeholder="Type or select pickup..."
+              placeholder={es ? "Escribí o elegí el origen..." : "Type or select pickup..."}
               locations={locations}
               hotels={hotels}
               onHotelPick={handlePickupHotel}
@@ -428,8 +432,8 @@ export default function QuoteCalculatorV2({
                 setPickupAddress(nextPickupAddr);
                 setDropoffAddress(nextDropoffAddr);
               }}
-              aria-label="Swap pickup and drop-off"
-              title="Swap pickup and drop-off"
+              aria-label={es ? "Intercambiar origen y destino" : "Swap pickup and drop-off"}
+              title={es ? "Intercambiar origen y destino" : "Swap pickup and drop-off"}
               className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-amber-500/40 bg-black hover:bg-amber-500/20 hover:border-amber-500/70 text-amber-400 transition-colors shadow-lg"
             >
               <ArrowLeftRight size={14} className="rotate-90" />
@@ -439,12 +443,12 @@ export default function QuoteCalculatorV2({
           <div className="mb-5 mt-2">
             <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
               <MapPin size={16} />
-              <span>Drop-off Location</span>
+              <span>{es ? "Lugar de destino" : "Drop-off Location"}</span>
             </label>
             <LocationInput
               value={to}
               onChange={setTo}
-              placeholder="Type or select destination..."
+              placeholder={es ? "Escribí o elegí el destino..." : "Type or select destination..."}
               locations={locations}
               hotels={hotels}
               onHotelPick={handleDropoffHotel}
@@ -460,7 +464,7 @@ export default function QuoteCalculatorV2({
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <MapPin size={16} />
-          <span>Pickup address</span>
+          <span>{es ? "Dirección de recogida" : "Pickup address"}</span>
         </label>
         <HotelAddressAutocomplete
           value={pickupAddress}
@@ -468,16 +472,20 @@ export default function QuoteCalculatorV2({
           onHotelPick={handlePickupHotel}
           hotels={hotels}
           contextArea={from}
-          placeholder="Hotel, Airbnb, or exact address..."
+          placeholder={
+            es ? "Hotel, Airbnb o dirección exacta..." : "Hotel, Airbnb, or exact address..."
+          }
         />
-        <p className="text-xs text-gray-500 mt-1">Where should the driver pick you up?</p>
+        <p className="text-xs text-gray-500 mt-1">
+          {es ? "¿Dónde te recoge el chofer?" : "Where should the driver pick you up?"}
+        </p>
       </div>
 
       {/* Specific drop-off address */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <MapPin size={16} />
-          <span>Drop-off address</span>
+          <span>{es ? "Dirección de destino" : "Drop-off address"}</span>
         </label>
         <HotelAddressAutocomplete
           value={dropoffAddress}
@@ -485,21 +493,25 @@ export default function QuoteCalculatorV2({
           onHotelPick={handleDropoffHotel}
           hotels={hotels}
           contextArea={to}
-          placeholder="Hotel, Airbnb, or exact address..."
+          placeholder={
+            es ? "Hotel, Airbnb o dirección exacta..." : "Hotel, Airbnb, or exact address..."
+          }
         />
-        <p className="text-xs text-gray-500 mt-1">Where would you like to be dropped off?</p>
+        <p className="text-xs text-gray-500 mt-1">
+          {es ? "¿Dónde te dejamos?" : "Where would you like to be dropped off?"}
+        </p>
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3">
         <div>
           <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
             <Calendar size={16} />
-            <span>Date</span>
+            <span>{es ? "Fecha" : "Date"}</span>
           </label>
           <DatePicker
             value={travelDate}
             onChange={setTravelDate}
-            placeholder="Select date..."
+            placeholder={es ? "Elegí la fecha..." : "Select date..."}
             lang={lang}
             minDate={minPickupCRDate}
           />
@@ -507,10 +519,10 @@ export default function QuoteCalculatorV2({
         <div>
           <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
             <Clock size={16} />
-            <span>Pickup Time</span>
+            <span>{es ? "Hora de recogida" : "Pickup Time"}</span>
           </label>
           <select value={travelTime} onChange={(e) => setTravelTime(e.target.value)} className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none">
-            <option value="">Select time...</option>
+            <option value="">{es ? "Elegí la hora..." : "Select time..."}</option>
             {timeOptionsFiltered.map((t) => (<option key={t.value} value={t.value}>{t.label}</option>))}
           </select>
           {isPickingEarliestDate && timeOptionsFiltered.length < TIME_OPTIONS.length && (
@@ -527,22 +539,26 @@ export default function QuoteCalculatorV2({
         <div className="mb-5">
           <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
             <Plane size={16} />
-            <span>Flight Number (optional)</span>
+            <span>{es ? "Número de vuelo (opcional)" : "Flight Number (optional)"}</span>
           </label>
-          <input type="text" value={flightNumber} onChange={(e) => setFlightNumber(e.target.value.toUpperCase())} placeholder="e.g. UA1234, AV628" className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none" />
-          <p className="text-xs text-gray-500 mt-1">We track your flight to ensure on-time pickup</p>
+          <input type="text" value={flightNumber} onChange={(e) => setFlightNumber(e.target.value.toUpperCase())} placeholder={es ? "ej. UA1234, AV628" : "e.g. UA1234, AV628"} className="w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none" />
+          <p className="text-xs text-gray-500 mt-1">
+            {es
+              ? "Le damos seguimiento a tu vuelo para llegar a tiempo"
+              : "We track your flight to ensure on-time pickup"}
+          </p>
         </div>
       ) : null}
 
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <Users size={16} />
-          <span>Passengers</span>
+          <span>{es ? "Pasajeros" : "Passengers"}</span>
         </label>
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
-            <div className="text-xs text-gray-400 mb-1">Adults</div>
-            <div className="text-xs text-gray-500 mb-2">12+ years</div>
+            <div className="text-xs text-gray-400 mb-1">{es ? "Adultos" : "Adults"}</div>
+            <div className="text-xs text-gray-500 mb-2">{es ? "12+ años" : "12+ years"}</div>
             <input
               type="number"
               min="1"
@@ -554,8 +570,8 @@ export default function QuoteCalculatorV2({
             />
           </div>
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
-            <div className="text-xs text-gray-400 mb-1">Children</div>
-            <div className="text-xs text-gray-500 mb-2">0-11 years</div>
+            <div className="text-xs text-gray-400 mb-1">{es ? "Niños" : "Children"}</div>
+            <div className="text-xs text-gray-500 mb-2">{es ? "0-11 años" : "0-11 years"}</div>
             <input
               type="number"
               min="0"
@@ -569,11 +585,16 @@ export default function QuoteCalculatorV2({
         </div>
         {!overCapacity ? (
           <div className="text-xs text-gray-500 mt-2 text-center">
-            Total: {totalPax} {totalPax === 1 ? "passenger" : "passengers"} - {vehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace"}
+            {es
+              ? `Total: ${totalPax} ${totalPax === 1 ? "pasajero" : "pasajeros"} - `
+              : `Total: ${totalPax} ${totalPax === 1 ? "passenger" : "passengers"} - `}
+            {vehicle === "staria" ? "Hyundai Staria" : "Toyota Hiace"}
           </div>
         ) : (
           <div className="text-xs text-red-400 mt-2 text-center">
-            Max 12 total. Contact us via WhatsApp for larger groups.
+            {es
+              ? "Máximo 12 en total. Para grupos más grandes escribinos por WhatsApp."
+              : "Max 12 total. Contact us via WhatsApp for larger groups."}
           </div>
         )}
       </div>
@@ -581,44 +602,48 @@ export default function QuoteCalculatorV2({
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <MapPinned size={16} />
-          <span>Extra Stops (optional)</span>
+          <span>{es ? "Paradas extra (opcional)" : "Extra Stops (optional)"}</span>
         </label>
         <select
           value={extraStops}
           onChange={(e) => setExtraStops(parseInt(e.target.value))}
           className="w-full bg-black border border-white/20 text-white rounded-lg px-3 py-3 focus:border-amber-500 outline-none"
         >
-          <option value="0">No extra stops</option>
-          <option value="1">1 hour stop (+$35)</option>
-          <option value="2">2 hour stop (+$70)</option>
-          <option value="3">3 hour stop (+$105)</option>
+          <option value="0">{es ? "Sin paradas extra" : "No extra stops"}</option>
+          <option value="1">{es ? "Parada de 1 hora (+$35)" : "1 hour stop (+$35)"}</option>
+          <option value="2">{es ? "Parada de 2 horas (+$70)" : "2 hour stop (+$70)"}</option>
+          <option value="3">{es ? "Parada de 3 horas (+$105)" : "3 hour stop (+$105)"}</option>
         </select>
-        <p className="text-xs text-gray-500 mt-1">Add stops for restaurants, scenic viewpoints, photo opportunities, etc.</p>
+        <p className="text-xs text-gray-500 mt-1">
+          {es
+            ? "Agregá paradas para comer, ver un mirador, tomar fotos, etc."
+            : "Add stops for restaurants, scenic viewpoints, photo opportunities, etc."}
+        </p>
       </div>
 
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-amber-400 font-semibold mb-2">
           <Baby size={16} />
-          <span>Child Seats (FREE)</span>
+          <span>{es ? "Sillas para niños (GRATIS)" : "Child Seats (FREE)"}</span>
         </label>
         <div className="grid grid-cols-3 gap-2">
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
-            <div className="text-xs text-gray-400 mb-1">Infant</div>
-            <div className="text-xs text-gray-500 mb-2">0-12 months</div>
+            <div className="text-xs text-gray-400 mb-1">{es ? "Bebé" : "Infant"}</div>
+            <div className="text-xs text-gray-500 mb-2">{es ? "0-12 meses" : "0-12 months"}</div>
             <select value={infantSeats} onChange={(e) => setInfantSeats(parseInt(e.target.value))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-1 text-sm">
               <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
-            <div className="text-xs text-gray-400 mb-1">Convertible</div>
-            <div className="text-xs text-gray-500 mb-2">1-4 years</div>
+            <div className="text-xs text-gray-400 mb-1">{es ? "Convertible" : "Convertible"}</div>
+            <div className="text-xs text-gray-500 mb-2">{es ? "1-4 años" : "1-4 years"}</div>
             <select value={convertibleSeats} onChange={(e) => setConvertibleSeats(parseInt(e.target.value))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-1 text-sm">
               <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
           <div className="bg-black/50 border border-white/10 rounded-lg p-3">
-            <div className="text-xs text-gray-400 mb-1">Booster</div>
-            <div className="text-xs text-gray-500 mb-2">4-12 years</div>
+            <div className="text-xs text-gray-400 mb-1">{es ? "Butaca" : "Booster"}</div>
+            <div className="text-xs text-gray-500 mb-2">{es ? "4-12 años" : "4-12 years"}</div>
             <select value={boosterSeats} onChange={(e) => setBoosterSeats(parseInt(e.target.value))} className="w-full bg-black border border-white/20 text-white rounded px-2 py-1 text-sm">
               <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
@@ -627,11 +652,13 @@ export default function QuoteCalculatorV2({
       </div>
 
       <div className="mb-6">
-        <label className="text-sm text-amber-400 font-semibold mb-2 block">Service Type</label>
+        <label className="text-sm text-amber-400 font-semibold mb-2 block">
+          {es ? "Tipo de servicio" : "Service Type"}
+        </label>
         <div className="grid grid-cols-2 gap-3">
           <button onClick={() => setServiceType("standard")} className={standardBtnClass}>
-            <div className="font-bold text-sm">Standard</div>
-            <div className="text-xs mt-1">Comfortable</div>
+            <div className="font-bold text-sm">{es ? "Estándar" : "Standard"}</div>
+            <div className="text-xs mt-1">{es ? "Cómodo" : "Comfortable"}</div>
           </button>
           <button onClick={() => setServiceType("vip")} className={vipBtnClass}>
             <div className="font-bold text-sm flex items-center justify-center gap-1">
@@ -650,29 +677,65 @@ export default function QuoteCalculatorV2({
             <>
               <div className="text-xs text-amber-400 font-bold tracking-wider uppercase mb-2 flex items-center gap-1.5">
                 <Crown size={12} />
-                VIP includes everything above, plus:
+                {es
+                  ? "VIP incluye todo lo anterior, más:"
+                  : "VIP includes everything above, plus:"}
               </div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-gray-300">
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>1–2h flexible tourist stop</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Welcome Kit: local beers, sodas, snacks</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>San Pellegrino sparkling water</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Concierge driver with personalized tips</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>USB chargers &amp; onboard WiFi</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Ideal for honeymoons &amp; special trips</li>
+                {(es
+                  ? [
+                      "Parada turística flexible de 1–2h",
+                      "Kit de bienvenida: cervezas locales, gaseosas, snacks",
+                      "Agua con gas San Pellegrino",
+                      "Chofer concierge con recomendaciones a la medida",
+                      "Cargadores USB y WiFi a bordo",
+                      "Ideal para lunas de miel y viajes especiales",
+                    ]
+                  : [
+                      "1–2h flexible tourist stop",
+                      "Welcome Kit: local beers, sodas, snacks",
+                      "San Pellegrino sparkling water",
+                      "Concierge driver with personalized tips",
+                      "USB chargers & onboard WiFi",
+                      "Ideal for honeymoons & special trips",
+                    ]
+                ).map((line) => (
+                  <li key={line} className="flex items-start gap-1.5">
+                    <span className="text-amber-400 mt-0.5">✓</span>
+                    {line}
+                  </li>
+                ))}
               </ul>
             </>
           ) : (
             <>
               <div className="text-xs text-amber-400 font-bold tracking-wider uppercase mb-2">
-                Standard includes:
+                {es ? "El estándar incluye:" : "Standard includes:"}
               </div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-gray-300">
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Direct route, door-to-door</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Bilingual professional driver</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Onboard WiFi &amp; bottled water</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Free child seats on request</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>Flight tracking &amp; full insurance</li>
-                <li className="flex items-start gap-1.5"><span className="text-amber-400 mt-0.5">✓</span>No detours, no surprises</li>
+                {(es
+                  ? [
+                      "Ruta directa, puerta a puerta",
+                      "Chofer profesional bilingüe",
+                      "WiFi a bordo y agua embotellada",
+                      "Sillas para niños sin costo, si las pedís",
+                      "Seguimiento de vuelo y seguro completo",
+                      "Sin desvíos, sin sorpresas",
+                    ]
+                  : [
+                      "Direct route, door-to-door",
+                      "Bilingual professional driver",
+                      "Onboard WiFi & bottled water",
+                      "Free child seats on request",
+                      "Flight tracking & full insurance",
+                      "No detours, no surprises",
+                    ]
+                ).map((line) => (
+                  <li key={line} className="flex items-start gap-1.5">
+                    <span className="text-amber-400 mt-0.5">✓</span>
+                    {line}
+                  </li>
+                ))}
               </ul>
             </>
           )}
@@ -680,34 +743,51 @@ export default function QuoteCalculatorV2({
       </div>
 
       {loading ? (
-        <div className="bg-black/50 border border-white/10 rounded-lg p-6 text-center text-gray-400">Looking for route...</div>
+        <div className="bg-black/50 border border-white/10 rounded-lg p-6 text-center text-gray-400">
+          {es ? "Buscando la ruta..." : "Looking for route..."}
+        </div>
       ) : notFound ? (
         <div className="bg-amber-900/20 border border-amber-500/30 rounded-lg p-6 text-center">
-          <p className="text-amber-400 font-semibold mb-2">Custom route</p>
-          <p className="text-sm text-gray-400 mb-4">We don&apos;t have a fixed price. Contact us via WhatsApp for a custom quote.</p>
+          <p className="text-amber-400 font-semibold mb-2">
+            {es ? "Ruta a la medida" : "Custom route"}
+          </p>
+          <p className="text-sm text-gray-400 mb-4">
+            {es
+              ? "No tenemos un precio fijo para esta ruta. Escribinos por WhatsApp y te la cotizamos."
+              : "We don't have a fixed price. Contact us via WhatsApp for a custom quote."}
+          </p>
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
-            <span>Get Custom Quote on WhatsApp</span>
+            <span>{es ? "Cotizar por WhatsApp" : "Get Custom Quote on WhatsApp"}</span>
           </a>
         </div>
       ) : route ? (
         <div className="bg-black/50 border border-amber-500/30 rounded-lg p-6">
           <div className="flex items-center gap-2 text-sm text-gray-400 mb-3">
             <Clock size={14} />
-            <span>Duration: {formatDuration(route.duracion)}</span>
-            {requiresFlight ? (<><span>·</span><Plane size={14} /><span>Airport route</span></>) : null}
+            <span>
+              {es ? "Duración: " : "Duration: "}
+              {formatDuration(route.duracion)}
+            </span>
+            {requiresFlight ? (<><span>·</span><Plane size={14} /><span>{es ? "Ruta de aeropuerto" : "Airport route"}</span></>) : null}
           </div>
           <div className="flex items-baseline justify-between mb-4">
             <div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider">Total Price</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider">
+                {es ? "Precio total" : "Total Price"}
+              </div>
               <div className="text-4xl font-bold text-amber-400"><Price usd={totalPrice} /></div>
-              <div className="text-[11px] text-gray-500 mt-1">Taxes included · Charged in USD via Tilopay</div>
+              <div className="text-[11px] text-gray-500 mt-1">
+                {es
+                  ? "Impuestos incluidos · El cobro se hace en USD por Tilopay"
+                  : "Taxes included · Charged in USD via Tilopay"}
+              </div>
             </div>
             {(serviceType === "vip" || extraStops > 0 || nightExtra > 0) ? (
               <div className="text-right">
-                <div className="text-xs text-gray-500">Base: <Price usd={basePrice} /></div>
+                <div className="text-xs text-gray-500">{es ? "Base: " : "Base: "}<Price usd={basePrice} /></div>
                 {serviceType === "vip" ? (<div className="text-xs text-amber-400">+ VIP: <Price usd={VIP_EXTRA_USD} /></div>) : null}
-                {extraStops > 0 ? (<div className="text-xs text-amber-400">+ Stops: <Price usd={stopsExtra} /></div>) : null}
-                {nightExtra > 0 ? (<div className="text-xs text-amber-400">+ Night (11PM–5AM): <Price usd={nightExtra} /></div>) : null}
+                {extraStops > 0 ? (<div className="text-xs text-amber-400">+ {es ? "Paradas" : "Stops"}: <Price usd={stopsExtra} /></div>) : null}
+                {nightExtra > 0 ? (<div className="text-xs text-amber-400">+ {es ? "Nocturno" : "Night"} (11PM–5AM): <Price usd={nightExtra} /></div>) : null}
               </div>
             ) : null}
           </div>
@@ -808,7 +888,15 @@ export default function QuoteCalculatorV2({
                       cart state:
                         empty cart  → "Continue" (90% of bookings — one shuttle)
                         has items   → "Add another trip" (multi-leg planners) */}
-                  <span>{cartItemCount === 0 ? "Continue" : "Add another trip"}</span>
+                  <span>
+                    {cartItemCount === 0
+                      ? es
+                        ? "Continuar"
+                        : "Continue"
+                      : es
+                        ? "Agregar otro viaje"
+                        : "Add another trip"}
+                  </span>
                   <ArrowRight size={16} className="inline ml-1" />
                 </button>
               </>
