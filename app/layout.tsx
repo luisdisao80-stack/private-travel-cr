@@ -148,9 +148,15 @@ export default function RootLayout({
               <Cart />
             </CartProvider>
           </CurrencyProvider>
+          {/* Va DENTRO del LanguageProvider porque el banner ya se traduce
+              y `useLanguage()` tira excepción si no encuentra el provider
+              (con él afuera, el build entero fallaba al prerenderizar).
+              No cambia nada visual: los providers no emiten HTML y el
+              banner es `position: fixed`, así que ni el orden del DOM ni
+              el primer pintado se mueven. */}
+          <CookieBanner />
         </LanguageProvider>
         <Analytics />
-        <CookieBanner />
         <ConsentGatedAnalytics
           gaId={process.env.NEXT_PUBLIC_GA_ID}
           gtmId={process.env.NEXT_PUBLIC_GTM_ID}

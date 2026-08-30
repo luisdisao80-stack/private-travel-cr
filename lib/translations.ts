@@ -1261,7 +1261,7 @@ export const translations = {
       pickup: "Recogida",
       dropoff: "Destino",
       flight: "Vuelo",
-      standard: "Standard",
+      standard: "Estándar",
       total: "Total",
       continueBooking: "Reservar Ahora",
       bookingDetails: "Detalles de Reserva",

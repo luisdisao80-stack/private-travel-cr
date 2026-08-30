@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Cookie } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 const STORAGE_KEY = "ptcr_cookie_consent";
 
@@ -47,6 +48,13 @@ export default function CookieBanner() {
   // <html data-consent> antes de pintar y el CSS lo esconde, así que no
   // hay parpadeo: nunca llega a verse.
   const [visible, setVisible] = useState(true);
+  // El provider entrega "en" hasta que monta y lee localStorage, así que el
+  // HTML del servidor sale en inglés y el texto se cambia al hidratar —
+  // igual que el resto del sitio. El banner sigue estando en el HTML desde
+  // el primer paint, que es lo que importa para el LCP: acá sólo cambian
+  // las cadenas, nunca desaparece el elemento.
+  const { lang } = useLanguage();
+  const es = lang === "es";
 
   useEffect(() => {
     // Ya eligió en una visita anterior: lo sacamos del DOM. El CSS ya lo
@@ -70,7 +78,7 @@ export default function CookieBanner() {
     <div
       role="dialog"
       aria-live="polite"
-      aria-label="Cookie preferences"
+      aria-label={es ? "Preferencias de cookies" : "Cookie preferences"}
       // Gancho para el CSS que lo esconde antes de pintar cuando el
       // visitante ya eligió (ver el script inline en app/layout.tsx).
       data-cookie-banner=""
@@ -82,18 +90,20 @@ export default function CookieBanner() {
             <Cookie size={18} className="text-amber-400" />
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="text-sm font-bold text-white mb-1">We use cookies</h2>
+            <h2 className="text-sm font-bold text-white mb-1">
+              {es ? "Usamos cookies" : "We use cookies"}
+            </h2>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Essential cookies make the site work (cart, language). Analytics cookies help us
-              understand which routes you search and where the booking flow needs work. You can
-              decline analytics and the rest still works.{" "}
+              {es
+                ? "Las cookies esenciales hacen que el sitio funcione (carrito, idioma). Las de analítica nos ayudan a entender qué rutas buscás y dónde falla el proceso de reserva. Podés rechazar la analítica y todo lo demás sigue funcionando. "
+                : "Essential cookies make the site work (cart, language). Analytics cookies help us understand which routes you search and where the booking flow needs work. You can decline analytics and the rest still works. "}
               {/* LCP perf: sin prefetch. El banner se pinta en la primera
                   visita, o sea que este link entra en pantalla justo en la
                   ventana critica y Next se traia /privacy entera sin que
                   nadie la pida. Casi nadie hace clic; el que lo haga espera
                   una navegacion normal. */}
               <Link href="/privacy" prefetch={false} className="text-amber-400 hover:text-amber-300 underline underline-offset-2">
-                Read our privacy policy
+                {es ? "Leé nuestra política de privacidad" : "Read our privacy policy"}
               </Link>
               .
             </p>
@@ -103,14 +113,14 @@ export default function CookieBanner() {
                 onClick={() => choose("accepted")}
                 className="flex-1 h-9 px-4 rounded-lg bg-amber-500 hover:bg-amber-600 text-black text-xs font-bold transition"
               >
-                Accept all
+                {es ? "Aceptar todo" : "Accept all"}
               </button>
               <button
                 type="button"
                 onClick={() => choose("declined")}
                 className="flex-1 h-9 px-4 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-semibold transition"
               >
-                Essential only
+                {es ? "Sólo esenciales" : "Essential only"}
               </button>
             </div>
           </div>
