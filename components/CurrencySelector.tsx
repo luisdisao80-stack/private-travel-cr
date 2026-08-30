@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronDown } from "lucide-react";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { CURRENCIES, getCurrencyMeta } from "@/lib/currency";
@@ -70,16 +69,15 @@ export default function CurrencySelector() {
         />
       </button>
 
-      <AnimatePresence>
+      {/* La apertura del dropdown es CSS (`pop-in`); antes era
+          AnimatePresence + motion.div, y eso metia framer-motion en el
+          bundle inicial de todas las paginas por venir dentro del Navbar. */}
+      <>
         {open ? (
-          <motion.div
-            initial={{ opacity: 0, y: -4, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.98 }}
-            transition={{ duration: 0.15 }}
+          <div
+            className="pop-in absolute right-0 mt-2 w-56 rounded-2xl bg-black/95 border border-amber-500/30 backdrop-blur-xl shadow-2xl shadow-black/60 z-50 overflow-hidden"
             role="listbox"
             aria-label={heading}
-            className="absolute right-0 mt-2 w-56 rounded-2xl bg-black/95 border border-amber-500/30 backdrop-blur-xl shadow-2xl shadow-black/60 z-50 overflow-hidden"
           >
             <div className="px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-amber-400 font-bold border-b border-amber-500/15">
               {heading}
@@ -134,9 +132,9 @@ export default function CurrencySelector() {
             <div className="px-3 py-2 border-t border-amber-500/15 text-[10px] text-gray-500 leading-snug">
               {disclaimer}
             </div>
-          </motion.div>
+          </div>
         ) : null}
-      </AnimatePresence>
+      </>
     </div>
   );
 }

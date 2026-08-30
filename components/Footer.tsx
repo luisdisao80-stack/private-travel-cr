@@ -1,11 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle, Star } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import Link from "next/link";
 import Image from "next/image";
 
+// Sigue siendo client component por `useLanguage()` (todo el copy y los
+// enlaces cambian segun idioma), no por la animacion: el fade-up ahora es
+// CSS puro (clase `.reveal` en globals.css), asi que el footer ya no
+// arrastra framer-motion al bundle.
 export default function Footer() {
   const { t, lang } = useLanguage();
   const currentYear = new Date().getFullYear();
@@ -90,12 +93,7 @@ export default function Footer() {
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* COLUMNA 1: BRANDING */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className="reveal reveal-d1">
             {/* Mismo cambio que en el Navbar: el .svg pesa 183 KB (61 KB
                 comprimido) por ser un trazado automatico de un raster.
                 Servimos el PNG por next/image, que lo saca en AVIF a 12-18 KB.
@@ -133,15 +131,10 @@ export default function Footer() {
                 <div className="text-gray-400">{t.footer.reviewsCount}</div>
               </div>
             </a>
-          </motion.div>
+          </div>
 
           {/* COLUMNA 2: ENLACES RÁPIDOS */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          <div className="reveal reveal-d2">
             <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase">
               {t.footer.quickLinks}
             </h3>
@@ -189,15 +182,10 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </motion.div>
+          </div>
 
           {/* COLUMNA 3: CONTACTO */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          <div className="reveal reveal-d3">
             <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase">
               {t.footer.contact}
             </h3>
@@ -279,15 +267,10 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </motion.div>
+          </div>
 
           {/* COLUMNA 4: SÍGUENOS */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
+          <div className="reveal reveal-d4">
             <h3 className="text-white font-bold mb-4 text-sm tracking-wider uppercase">
               {t.footer.followUs}
             </h3>
@@ -378,7 +361,7 @@ export default function Footer() {
                 </div>
               </div>
             </a>
-          </motion.div>
+          </div>
         </div>
 
         {/* Top hotels — site-wide internal links to the 10 highest-priority

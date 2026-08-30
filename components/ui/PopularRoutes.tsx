@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Clock, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -40,13 +39,7 @@ export default function PopularRoutes() {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="reveal text-center mb-16">
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
               ✦ RUTAS POPULARES
@@ -63,7 +56,7 @@ export default function PopularRoutes() {
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             Tarifas fijas y transparentes para las rutas más solicitadas por nuestros viajeros.
           </p>
-        </motion.div>
+        </div>
 
         {/* Grid de rutas - forzado con style inline */}
         <div
@@ -74,14 +67,10 @@ export default function PopularRoutes() {
           }}
         >
           {popularRoutes.map((route, index) => (
-            <motion.button
+            <button
               key={`${route.from}-${route.to}`}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
               onClick={scrollToQuote}
-              className="group relative text-left"
+              className={`reveal reveal-d${Math.min(index + 1, 4)} group relative text-left`}
             >
               <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/0 to-amber-600/0 group-hover:from-amber-500/30 group-hover:to-amber-600/10 rounded-2xl blur-xl transition-all duration-500" />
 
@@ -186,18 +175,12 @@ export default function PopularRoutes() {
                   </span>
                 </div>
               </div>
-            </motion.button>
+            </button>
           ))}
         </div>
 
         {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 text-center"
-        >
+        <div className="reveal mt-12 text-center">
           <p className="text-gray-400 mb-5">
             ¿No ves tu destino? Tenemos{" "}
             <span className="text-amber-400 font-semibold">25+ rutas disponibles</span>{" "}
@@ -211,7 +194,7 @@ export default function PopularRoutes() {
             Ver todas las rutas y cotizar
             <ArrowRight className="ml-2" size={18} />
           </Button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

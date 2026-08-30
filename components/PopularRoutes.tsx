@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Clock, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -49,13 +48,7 @@ export default function PopularRoutes() {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="reveal text-center mb-16">
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
               {t.routes.badge}
@@ -72,16 +65,13 @@ export default function PopularRoutes() {
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             {t.routes.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
           {popularRoutes.map((route, index) => (
-            <motion.div
+            <div
               key={route.slug}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className={`reveal reveal-d${Math.min(index + 1, 4)}`}
             >
             <Link
               href={`/${route.hub}/${route.slug}`}
@@ -145,18 +135,12 @@ export default function PopularRoutes() {
                 </div>
               </div>
             </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 text-center"
-        >
+        <div className="reveal mt-12 text-center">
           <p className="text-gray-400 mb-5">
             {t.routes.noDestination}{" "}
             <span className="text-white font-semibold">{t.routes.routesAvailable}</span>{" "}
@@ -215,7 +199,7 @@ export default function PopularRoutes() {
               <ArrowRight className="ml-2" size={18} />
             </Button>
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

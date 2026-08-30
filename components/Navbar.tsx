@@ -6,7 +6,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Menu, Phone } from "lucide-react";
-import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import CurrencySelector from "@/components/CurrencySelector";
@@ -36,11 +35,11 @@ export default function Navbar() {
   ];
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-xl border-b border-amber-500/20 py-3" : "bg-transparent py-5"}`}
+    // `nav-in` es la bajada de entrada en CSS puro; antes era un
+    // `motion.nav` y por eso el navbar arrastraba framer-motion al
+    // bundle inicial de TODAS las páginas.
+    <nav
+      className={`nav-in fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-xl border-b border-amber-500/20 py-3" : "bg-transparent py-5"}`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
@@ -147,6 +146,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </motion.nav>
+    </nav>
   );
 }

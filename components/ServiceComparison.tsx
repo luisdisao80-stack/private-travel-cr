@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Check, Crown, ArrowRight, Sparkles, Clock, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -26,13 +25,7 @@ export default function ServiceComparison() {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="reveal text-center mb-16">
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
               {t.services.badge}
@@ -49,18 +42,12 @@ export default function ServiceComparison() {
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             {t.services.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         {/* Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch">
           {/* STANDARD CARD */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative flex"
-          >
+          <div className="reveal reveal-d1 relative flex">
             <div className="w-full flex flex-col bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all duration-300">
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6 self-start">
@@ -117,16 +104,10 @@ export default function ServiceComparison() {
                 {t.services.standard.ideal}
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* VIP CARD */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="relative flex"
-          >
+          <div className="reveal reveal-d2 relative flex">
             {/* Glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-amber-600 rounded-3xl opacity-30 blur-2xl" />
 
@@ -208,17 +189,11 @@ export default function ServiceComparison() {
                 {t.services.vip.ideal}
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Bottom info */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 text-center"
-        >
+        <div className="reveal reveal-d3 mt-12 text-center">
           <p className="text-gray-400 text-sm">
             {t.services.notSure}{" "}
             <a
@@ -230,7 +205,7 @@ export default function ServiceComparison() {
               {t.services.chatWhatsapp}
             </a>
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

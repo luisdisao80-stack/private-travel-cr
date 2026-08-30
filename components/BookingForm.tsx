@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import {
   ArrowLeft,
   CreditCard,
@@ -289,11 +288,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="p-5 md:p-6 space-y-6"
-    >
+    <div className="cart-item-in p-5 md:p-6 space-y-6">
       {/* Header row — explicit "+ Add another trip" on mobile (sidebar
           hidden) so multi-leg planners aren't stuck. The old "Back"
           label was ambiguous: easy to read as "abandon booking" rather
@@ -646,7 +641,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
         your bank&apos;s. Travel-friendly cards (Chase Sapphire, Capital
         One Venture, Amex Platinum, etc.) usually waive it.
       </p>
-    </motion.div>
+    </div>
   );
 }
 

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import NextImage from "next/image";
-import { motion } from "framer-motion";
 import { ArrowRight, BookOpen, Clock } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { BlogPostMeta } from "@/lib/blog";
@@ -40,50 +39,28 @@ export default function BlogHighlights({ posts }: Props) {
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-5"
-          >
+          <div className="reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-5">
             <BookOpen size={14} className="text-amber-400" />
             <span className="text-xs font-bold tracking-[0.18em] uppercase text-amber-400">
               {eyebrow}
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.05 }}
-            className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4"
-          >
+          <h2 className="reveal reveal-d2 text-3xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4">
             {heading}
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.1 }}
-            className="max-w-2xl mx-auto text-gray-400 text-sm md:text-base leading-relaxed"
-          >
+          <p className="reveal reveal-d3 max-w-2xl mx-auto text-gray-400 text-sm md:text-base leading-relaxed">
             {subhead}
-          </motion.p>
+          </p>
         </div>
 
         {/* Cards grid */}
         <div className="grid md:grid-cols-3 gap-5 md:gap-6">
           {top3.map((post, i) => (
-            <motion.article
+            <article
               key={post.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: 0.1 + i * 0.08 }}
-              className="group"
+              className={`reveal reveal-d${Math.min(i + 1, 4)} group`}
             >
               <Link
                 href={`/blog/${post.slug}`}
@@ -129,18 +106,12 @@ export default function BlogHighlights({ posts }: Props) {
                   </div>
                 </div>
               </Link>
-            </motion.article>
+            </article>
           ))}
         </div>
 
         {/* See all CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-          className="text-center mt-10 md:mt-12"
-        >
+        <div className="reveal text-center mt-10 md:mt-12">
           <Link
             href="/blog"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 hover:bg-amber-500/10 border border-white/10 hover:border-amber-500/40 text-white font-semibold text-sm transition-all"
@@ -148,7 +119,7 @@ export default function BlogHighlights({ posts }: Props) {
             {seeAll}
             <ArrowRight size={14} />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

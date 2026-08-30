@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { FAQS_EN, FAQS_ES } from "@/lib/faqs";
@@ -32,13 +31,7 @@ export default function FAQSection() {
 
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="reveal text-center mb-16">
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
               {t.faq.badge}
@@ -55,18 +48,14 @@ export default function FAQSection() {
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             {t.faq.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         {/* FAQ Accordion */}
         <div className="space-y-3">
           {faqs.map((faq, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="group"
+              className={`reveal reveal-d${Math.min(index + 1, 4)} group`}
             >
               <div
                 className={`bg-gradient-to-br from-gray-900/80 to-black border rounded-2xl transition-all duration-300 ${
@@ -106,10 +95,12 @@ export default function FAQSection() {
                     </h3>
                   </div>
 
-                  <motion.div
-                    animate={{ rotate: openIndex === index ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex-shrink-0"
+                  {/* El giro del chevron ahora es una clase CSS en vez de
+                      un motion.div animado. */}
+                  <div
+                    className={`flex-shrink-0 transition-transform duration-300 ${
+                      openIndex === index ? "rotate-180" : ""
+                    }`}
                   >
                     <ChevronDown
                       size={20}
@@ -117,7 +108,7 @@ export default function FAQSection() {
                         openIndex === index ? "text-amber-400" : "text-gray-500"
                       }
                     />
-                  </motion.div>
+                  </div>
                 </button>
 
                 {/* Answer stays in the DOM so Google indexes every Q&A,
@@ -143,18 +134,12 @@ export default function FAQSection() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 text-center"
-        >
+        <div className="reveal mt-12 text-center">
           <div className="inline-flex flex-col sm:flex-row items-center gap-4 px-6 py-4 rounded-2xl bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30">
             <MessageCircle size={24} className="text-amber-400 flex-shrink-0" />
             <p className="text-gray-300 text-sm">
@@ -169,7 +154,7 @@ export default function FAQSection() {
               </a>
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

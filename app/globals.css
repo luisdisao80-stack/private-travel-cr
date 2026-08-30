@@ -252,3 +252,97 @@
   border-color: rgba(245, 158, 11, 0.2);
   margin: 2rem 0;
 }
+
+/* ============================================================
+   Scroll reveal — reemplazo CSS de framer-motion `whileInView`
+   ============================================================
+   Las secciones de marketing usaban framer-motion sólo para un
+   fade-up al entrar en pantalla. Eso costaba ~77 KB transferidos
+   (~247 KB parseados) en el bundle inicial, y Lighthouse trata
+   TODO script que baja antes del primer pintado como bloqueante
+   del LCP. Sacarlo es la mayor ganancia de rendimiento del home.
+
+   Se usa `animation-timeline: view()` (scroll-driven animations,
+   nativo del navegador, 0 JS). Donde no existe soporte (Safari /
+   Firefox hoy) el bloque `@supports` simplemente no aplica y el
+   contenido queda visible de una — nunca invisible. Por eso el
+   estado por defecto es "visible" y la animación sólo se agrega
+   cuando el navegador la soporta.
+
+   Uso:  <div className="reveal">…</div>
+         <div className="reveal reveal-d2">…</div>   (delay escalonado)
+*/
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-fade-up linear both;
+      animation-timeline: view();
+      /* El rango SIEMPRE termina dentro de `entry`, nunca en `cover`.
+         Es la parte delicada de todo esto: con `cover 25%` la animación
+         terminaba recién después de que el bloque hubiera atravesado un
+         cuarto de la pantalla, y los bloques del final de la página no
+         alcanzan a scrollear tanto — 19 de 66 se quedaban congelados a
+         media opacidad ("View Full Fleet" quedaba al 25%). Cerrando el
+         rango en `entry` el bloque llega al 100% apenas termina de
+         entrar en pantalla, que siempre ocurre. */
+      animation-range: entry 0% entry 70%;
+    }
+    /* Escalonado para grillas (tarjetas 1,2,3,4…): con scroll-timeline
+       no existe `delay`, así que se corre el rango. Todos cierran en
+       `entry 100%` como máximo, por lo mismo de arriba. */
+    .reveal-d1 { animation-range: entry 4%  entry 78%; }
+    .reveal-d2 { animation-range: entry 8%  entry 86%; }
+    .reveal-d3 { animation-range: entry 12% entry 94%; }
+    .reveal-d4 { animation-range: entry 16% entry 100%; }
+  }
+}
+
+@keyframes reveal-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Pop del badge del carrito — reemplaza el `spring` de framer-motion.
+   Se dispara al montarse; CartIcon fuerza el re-montaje con `key`. */
+@keyframes badge-pop {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.badge-pop { animation: badge-pop 260ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* Entrada del panel/tooltip flotante (WhatsApp, selector de moneda).
+   Reemplaza los `initial/animate` de framer-motion. */
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+.pop-in { animation: pop-in 180ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .badge-pop, .pop-in { animation: none; }
+}
+
+/* Entrada del botón flotante de WhatsApp — reemplaza el spring
+   `scale: 0, rotate: -180` de framer-motion. */
+@keyframes wa-in {
+  from { opacity: 0; transform: scale(0) rotate(-180deg); }
+  to   { opacity: 1; transform: none; }
+}
+.wa-in { animation: wa-in 420ms cubic-bezier(0.34, 1.36, 0.64, 1) both; }
+@media (prefers-reduced-motion: reduce) { .wa-in { animation: none; } }
+
+/* Carrito lateral — reemplazo CSS de los motion.div de framer-motion.
+   Sin animación de salida: al cerrarse el drawer se desmonta de una,
+   igual que hacía React sin AnimatePresence. */
+@keyframes cart-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cart-slide-in { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes cart-item-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+.cart-fade-in  { animation: cart-fade-in 200ms ease-out both; }
+.cart-slide-in { animation: cart-slide-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.cart-item-in  { animation: cart-item-in 260ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-fade-in, .cart-slide-in, .cart-item-in { animation: none; }
+}

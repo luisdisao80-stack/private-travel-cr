@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   Check,
   X,
@@ -153,13 +152,7 @@ export default function WhyUsComparison() {
 
       <div className="relative z-10 max-w-5xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
+        <div className="reveal text-center mb-12">
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
               {lang === "en" ? "✦ COMPARE YOUR OPTIONS" : "✦ COMPARÁ TUS OPCIONES"}
@@ -181,16 +174,10 @@ export default function WhyUsComparison() {
               ? "Honest side-by-side with rental cars, Uber, and public bus — including the hidden costs travelers don't see when booking."
               : "Comparación honesta vs alquilar carro, Uber y bus público — incluyendo los costos ocultos que no se ven al reservar."}
           </p>
-        </motion.div>
+        </div>
 
         {/* Comparison table */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="overflow-x-auto"
-        >
+        <div className="reveal reveal-d2 overflow-x-auto">
           <div className="min-w-[640px] md:min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/80 to-black overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-amber-500/5 border-b border-amber-500/20">
@@ -258,30 +245,18 @@ export default function WhyUsComparison() {
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </div>
 
         {/* Closing note */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="text-center text-gray-500 text-xs mt-6 max-w-2xl mx-auto"
-        >
+        <p className="reveal reveal-d3 text-center text-gray-500 text-xs mt-6 max-w-2xl mx-auto">
           {lang === "en"
             ? "All-inclusive pricing means no surprises: insurance, fuel, tolls, water, WiFi and child seats are always included."
             : "Precio todo-incluido: seguro, combustible, peajes, agua, WiFi y sillas para niños siempre van incluidas."}
-        </motion.p>
+        </p>
 
         {/* Trust indicators (relocated from the removed BenefitsSection
             so the social-proof row survives the section merge). */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-12"
-        >
+        <div className="reveal reveal-d4 mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-12">
           {/* The two Google-sourced stats link out to the Google reviews
               page — both 5.0 ⭐ and the 190+ count are exactly what a
               skeptical visitor wants to verify, and they read clickable
@@ -335,7 +310,7 @@ export default function WhyUsComparison() {
               {lang === "en" ? "Costa Rican" : "Costarricense"}
             </span>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

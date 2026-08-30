@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Quote, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
@@ -76,13 +75,7 @@ export default function RedditTestimonials() {
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 md:mb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 mb-5"
-          >
+          <div className="reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 mb-5">
             {/* Reddit orange dot to anchor the source visually. */}
             <span
               aria-hidden="true"
@@ -91,27 +84,15 @@ export default function RedditTestimonials() {
             <span className="text-xs font-bold tracking-[0.18em] uppercase text-orange-300">
               {eyebrow}
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.05 }}
-            className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4"
-          >
+          <h2 className="reveal reveal-d2 text-3xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4">
             {heading}
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.1 }}
-            className="max-w-2xl mx-auto text-gray-400 text-sm md:text-base leading-relaxed"
-          >
+          <p className="reveal reveal-d3 max-w-2xl mx-auto text-gray-400 text-sm md:text-base leading-relaxed">
             {subhead}
-          </motion.p>
+          </p>
         </div>
 
         {/* Quote cards. The card has an amber hover-border that hints at
@@ -122,12 +103,8 @@ export default function RedditTestimonials() {
         <div className="grid md:grid-cols-2 gap-5 md:gap-6">
           {TESTIMONIALS.map((t, i) => {
             const card = (
-            <motion.article
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
-              className="relative h-full bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 md:p-8 hover:border-amber-500/40 transition-colors"
+            <article
+              className={`reveal reveal-d${Math.min(i + 1, 4)} relative h-full bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 md:p-8 hover:border-amber-500/40 transition-colors`}
             >
               {/* Decorative quote glyph */}
               <Quote
@@ -168,7 +145,7 @@ export default function RedditTestimonials() {
                   ) : null}
                 </div>
               </div>
-            </motion.article>
+            </article>
             );
             return t.url ? (
               <a

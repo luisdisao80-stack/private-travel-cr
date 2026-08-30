@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
@@ -88,13 +87,7 @@ export default function MeetDiego() {
               mobile (eye-candy), but Diego found that the headline lands
               the message faster — the photos then act as proof, not
               distraction. */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="order-1 lg:order-1"
-          >
+          <div className="reveal order-1 lg:order-1">
             <div className="text-xs font-bold text-amber-400 tracking-widest uppercase mb-4">
               {isEn ? "✦ MEET DIEGO" : "✦ CONOCÉ A DIEGO"}
             </div>
@@ -167,31 +160,23 @@ export default function MeetDiego() {
                 {isEn ? "Message Diego" : "Escribile a Diego"}
               </a>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right column — Polaroid photo collage.
               Mobile order: photos AFTER the story so they read as proof
               of the words above ("real customers, real trips") rather
               than as decoration the visitor has to scroll past to reach
               the message. */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="order-2 lg:order-2"
-          >
+          <div className="reveal order-2 lg:order-2">
             <div className="grid grid-cols-2 gap-4 md:gap-6">
               {PHOTOS.map((photo, idx) => (
-                <motion.div
+                <div
                   key={photo.src}
-                  initial={{ opacity: 0, y: 20, rotate: 0 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: photo.rotate }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: 0.15 + idx * 0.08 }}
-                  whileHover={{ rotate: 0, scale: 1.05, zIndex: 10 }}
-                  className="relative bg-white p-2 md:p-3 pb-6 md:pb-8 shadow-2xl shadow-black/50"
-                  style={{ willChange: "transform" }}
+                  className={`reveal reveal-d${Math.min(idx + 1, 4)} relative bg-white p-2 md:p-3 pb-6 md:pb-8 shadow-2xl shadow-black/50 transition-transform hover:scale-105 hover:z-10`}
+                  // La inclinación polaroid va con la propiedad CSS
+                  // independiente `rotate` (no `transform`) para que no
+                  // choque con el translateY del keyframe de `.reveal`.
+                  style={{ rotate: `${photo.rotate}deg`, willChange: "transform" }}
                 >
                   <div className="relative aspect-square overflow-hidden bg-gray-200">
                     <Image
@@ -208,7 +193,7 @@ export default function MeetDiego() {
                       loading="lazy"
                     />
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
@@ -218,7 +203,7 @@ export default function MeetDiego() {
                 ? "Real customers, real trips — La Fortuna, Río Celeste, and beyond."
                 : "Clientes reales, viajes reales — La Fortuna, Río Celeste y más."}
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
