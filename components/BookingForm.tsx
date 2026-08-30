@@ -1121,6 +1121,29 @@ function TripConfigCard({
                 : "We couldn't update the price for that group size. Keeping the previous price — please confirm with us on WhatsApp before paying."}
             </p>
           ) : null}
+          {/*
+            Las paradas se eligen en la página de la ruta, dos pantallas
+            antes de acá. Sin esta línea el cliente llega al checkout, ve
+            $290 en vez de $220 y no tiene NADA en pantalla que le diga
+            que los $70 son el Poás que él mismo marcó: parece un cobro
+            inventado y o escribe por WhatsApp o abandona el pago.
+            Va acá adentro y no en el bloque de precio porque pertenece
+            al tramo (cada viaje trae sus propias paradas), igual que en
+            el carrito y en el correo de confirmación.
+          */}
+          {item.extraStopNames?.length ? (
+            <p className="text-[11px] text-amber-300/90">
+              {es ? "Paradas: " : "Stops: "}
+              {item.extraStopNames.join(" · ")}
+              {item.extraStopHours > 0 ? (
+                <span className="text-gray-500">
+                  {" "}
+                  ({item.extraStopHours}h{" "}
+                  {es ? "de espera, ya incluidas" : "of waiting, already included"})
+                </span>
+              ) : null}
+            </p>
+          ) : null}
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import type { Route, RouteFAQ, Hotel } from "@/lib/types";
 import type { BlogPostMeta } from "@/lib/blog";
 import { routeHref } from "@/lib/popular-routes";
 import { isAirport } from "@/lib/quote-helpers";
+import { getStopsForRoute } from "@/lib/route-stops";
 import { getDestinationByDbName } from "@/lib/destinations";
 import { displayLocation } from "@/lib/locations";
 import { siteConfig } from "@/lib/site-config";
@@ -221,6 +222,8 @@ export default function RouteDetail({
               precio13a18: route.precio13a18,
             }}
             duracion={route.duracion}
+            // Casi siempre es `[]` y el bloque de paradas ni se dibuja.
+            stops={getStopsForRoute(route.origen, route.destino)}
           />
 
           <p className="text-sm text-gray-400 mt-6 mb-3">

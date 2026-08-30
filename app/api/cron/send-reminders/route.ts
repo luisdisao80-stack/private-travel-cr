@@ -137,6 +137,7 @@ function buildReminderHtml(opts: {
           <td style="text-align:right;font-weight:600;">${it.passengers}</td></tr>
       ${it.flightNumber ? `<tr><td style="color:#9ca3af;padding:4px 0;">Flight</td><td style="text-align:right;font-weight:600;">${escapeHtml(it.flightNumber)}</td></tr>` : ""}
       ${it.extraStopHours && it.extraStopHours > 0 ? `<tr><td style="color:#9ca3af;padding:4px 0;">Extra wait</td><td style="text-align:right;font-weight:600;color:#fbbf24;">${it.extraStopHours}h paid</td></tr>` : ""}
+      ${it.extraStopNames?.length ? `<tr><td style="color:#9ca3af;padding:4px 0;">Stops</td><td style="text-align:right;font-weight:600;color:#fbbf24;">${escapeHtml(it.extraStopNames.join(", "))}</td></tr>` : ""}
     </table>
     <p style="margin:18px 0 4px 0;font-size:13px;color:#d1d5db;line-height:1.5;">
       Please have your bags ready 5 minutes before pickup. Your driver will message you when they're a few minutes away.

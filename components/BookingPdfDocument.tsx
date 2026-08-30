@@ -641,6 +641,12 @@ export default function BookingPdfDocument({
               {it.extraStopHours && it.extraStopHours > 0 ? (
                 <Text style={styles.tripExtra}>
                   Extra wait: {it.extraStopHours}h paid
+                  {/* El voucher es lo que el chofer abre en el celular a
+                      la hora de recoger: si dice las horas pero no los
+                      lugares, la parada pagada no se cumple. */}
+                  {it.extraStopNames?.length
+                    ? ` — ${it.extraStopNames.join(", ")}`
+                    : ""}
                 </Text>
               ) : null}
               {/* Child-seat request line. Reuses tripExtra style (amber,

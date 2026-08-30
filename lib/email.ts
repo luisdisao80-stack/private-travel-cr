@@ -311,6 +311,11 @@ export function buildBookingIcs(
         it.extraStopHours && it.extraStopHours > 0
           ? `Extra wait: ${it.extraStopHours}h paid`
           : "",
+        // A dónde hay que llevarlos en esas horas. Con sólo "Extra wait:
+        // 2h paid" el chofer tenía que llamar a preguntar.
+        it.extraStopNames?.length
+          ? `Stops: ${it.extraStopNames.join(", ")}`
+          : "",
         "",
         "Questions? WhatsApp +506 8633-4133",
       ]
@@ -448,7 +453,15 @@ function shuttleRowHtml(it: CartItem, idx: number): string {
   // planning changes if there's paid wait time.
   const extraStops =
     it.extraStopHours && it.extraStopHours > 0
-      ? `<div style="font-size:12px;color:#c2410c;font-weight:700;margin-top:8px;background:#ffedd5;padding:6px 10px;border-radius:6px;display:inline-block;">⏱ Extra wait: ${it.extraStopHours}h paid</div>`
+      ? `<div style="font-size:12px;color:#c2410c;font-weight:700;margin-top:8px;background:#ffedd5;padding:6px 10px;border-radius:6px;display:inline-block;">⏱ Extra wait: ${it.extraStopHours}h paid${
+          // Los nombres van DENTRO de la misma píldora naranja y no en
+          // una línea aparte: las horas pagadas y el lugar al que hay
+          // que llevarlos son el mismo dato operativo, y separarlos
+          // hace que se lea una y se pase por alto la otra.
+          it.extraStopNames?.length
+            ? ` — ${escapeHtml(it.extraStopNames.join(", "))}`
+            : ""
+        }</div>`
       : "";
   // Highlighted child-seat line — orange pill matching Extra wait.
   const seatsLine = childSeatsSummary(it);
