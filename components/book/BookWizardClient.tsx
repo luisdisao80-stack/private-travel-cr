@@ -10,22 +10,25 @@ import WizardProgress from "@/components/book/WizardProgress";
 import OrderSummarySidebar from "@/components/book/OrderSummarySidebar";
 import LocationInput from "@/components/LocationInput";
 import RoutePricePreview, { type RouteQuote } from "@/components/RoutePricePreview";
+import PaxSelector, {
+  BigGroupNotice,
+  DEFAULT_ADULTS,
+  DEFAULT_CHILDREN,
+  PAX_CEILING,
+} from "@/components/PaxSelector";
 import { useCart } from "@/lib/CartContext";
+import { useLanguage } from "@/lib/LanguageContext";
 import { resolveLocation } from "@/lib/locations";
-import { getVehicleForPax, getVehicleName } from "@/lib/quote-helpers";
+import { getVehicleForPax, getVehicleName, MAX_TOTAL_PAX } from "@/lib/quote-helpers";
 import type { Hotel } from "@/lib/types";
 
 type Props = { locations: string[]; hotels?: Hotel[] };
 type View = "configuring" | "checkout";
 
-// Mismos defaults que el quick-add del hero en la home, para que agregar
-// el segundo viaje se sienta idéntico a agregar el primero.
-const DEFAULT_ADULTS = 2;
-const DEFAULT_CHILDREN = 0;
-
 export default function BookWizardClient({ locations, hotels = [] }: Props) {
   const { items, isCartOpen, setCartOpen, hydrated, totalPrice, addItem } =
     useCart();
+  const { lang } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
   const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
@@ -35,16 +38,15 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   // bounces the visitor right back to the checkout view they came from —
   // the very thing they were trying to leave to add a new leg.
   const wantsAdd = searchParams.get("add") === "1";
-  // `?adults=N` arrives when the visitor clicked a specific tier card on
-  // a route detail page. We mirror it into the hero RoutePricePreview so
-  // the top of the page quotes the tier they tapped (matches the
-  // calculator below, which already respects this param).
-  const heroAdultsRaw = searchParams.get("adults");
-  const heroAdultsParsed = heroAdultsRaw ? parseInt(heroAdultsRaw, 10) : undefined;
-  const heroAdults =
-    heroAdultsParsed && heroAdultsParsed >= 1 && heroAdultsParsed <= 18
-      ? heroAdultsParsed
-      : undefined;
+  // `?adults=N` llega cuando el visitante ya eligió el tamaño del grupo
+  // antes de caer acá: desde el buscador de la home, o al tocar una
+  // tarjeta de tramo en una página de ruta. Sólo SIEMBRA el contador —
+  // de ahí en adelante manda el contador, no la URL.
+  const seededAdults = (() => {
+    const raw = searchParams.get("adults");
+    const n = raw ? parseInt(raw, 10) : NaN;
+    return !Number.isNaN(n) && n >= 1 && n <= PAX_CEILING ? n : DEFAULT_ADULTS;
+  })();
 
   // Two views on /book:
   //   configuring – QuoteCalculator (pick a route, add to cart)
@@ -79,6 +81,15 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   // the URL via popstate and lose the hotel pre-fill.
   const [heroPickupHotel, setHeroPickupHotel] = useState<Hotel | null>(null);
   const [heroDropoffHotel, setHeroDropoffHotel] = useState<Hotel | null>(null);
+  // Pasajeros del buscador de /book. ANTES no existían: este buscador
+  // metía TODOS los viajes al carrito como 2 pasajeros fijos, aunque la
+  // tarjeta de precio de arriba estuviera cotizando otro tramo por el
+  // `?adults=` de la URL. O sea, el carrito guardaba el precio de 7
+  // personas con "2 pasajeros" adentro. Diego lo reportó el 2026-08-30
+  // con captura del segundo viaje.
+  const [heroAdults, setHeroAdults] = useState(seededAdults);
+  const [heroChildren, setHeroChildren] = useState(DEFAULT_CHILDREN);
+  const heroTotalPax = heroAdults + heroChildren;
 
   const pushRouteParams = (
     from: string,
@@ -131,6 +142,23 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   // existiendo para quien quiera configurar el viaje en detalle (VIP,
   // paradas extra, sillas de bebé) — pero ya no es el único camino.
   const [heroQuote, setHeroQuote] = useState<RouteQuote | null>(null);
+  // Bandera de un solo uso: la levantamos justo antes de meter el viaje
+  // al carrito desde ESTE buscador, y el efecto de `items.length` la lee
+  // para NO saltar al checkout.
+  //
+  // Diego, 2026-08-30: "haz que la persona agregue los viajes pero siga
+  // en el mismo buscador del inicio". Antes, cada viaje agregado tiraba
+  // al visitante al formulario de checkout; para meter el segundo tenía
+  // que devolverse a mano. Los agregados desde el carrito o desde el
+  // formulario de abajo SÍ siguen yendo al checkout — sólo cambia el
+  // camino que arranca acá arriba.
+  const addedFromSearchCard = useRef(false);
+  // Qué acabamos de agregar, para el aviso verde de abajo. Sin esto el
+  // visitante toca "Add another trip to cart", ve los campos vaciarse y
+  // no le queda ninguna señal de que el viaje entró.
+  const [justAdded, setJustAdded] = useState<{ from: string; to: string } | null>(
+    null,
+  );
   // Ref-estable: RoutePricePreview mete onQuote en un ref, pero pasarle
   // una arrow inline igual re-renderiza de más.
   const handleHeroQuote = useCallback((q: RouteQuote | null) => setHeroQuote(q), []);
@@ -141,12 +169,17 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
     heroTo.trim().length > 0 &&
     heroFrom.trim().toLowerCase() === heroTo.trim().toLowerCase();
 
+  // Arriba de 12 hacen falta 2+ vehículos y se cotiza a mano — mismo
+  // tope que el buscador de la home.
+  const heroOverCapacity = heroTotalPax > MAX_TOTAL_PAX;
+
   // Sin precio no agregamos: un item con basePrice 0 llega al checkout
   // como "Pay $0.00" y Tilopay lo rechaza.
   const canQuickAdd =
     heroFrom.trim().length > 0 &&
     heroTo.trim().length > 0 &&
     !rawSameLocation &&
+    !heroOverCapacity &&
     !!heroQuote &&
     heroQuote.basePrice > 0;
 
@@ -161,15 +194,18 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       return;
     }
     setAddError(null);
-    const vehicleId = getVehicleForPax(DEFAULT_ADULTS + DEFAULT_CHILDREN);
+    const vehicleId = getVehicleForPax(heroTotalPax);
+    // Se levanta ANTES del addItem: el efecto que reacciona a
+    // items.length corre en el mismo commit que este handler.
+    addedFromSearchCard.current = true;
     addItem({
       fromName: from,
       toName: to,
       // Vacíos a propósito — se completan en el checkout.
       date: "",
       pickupTime: "",
-      passengers: DEFAULT_ADULTS + DEFAULT_CHILDREN,
-      children: DEFAULT_CHILDREN,
+      passengers: heroTotalPax,
+      children: heroChildren,
       pickupPlace: heroPickupHotel?.name,
       dropoffPlace: heroDropoffHotel?.name,
       vehicleId,
@@ -181,14 +217,30 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       totalPrice: heroQuote.basePrice,
       duration: heroQuote.duration ?? "",
     });
+    // addItem abre el drawer del carrito. Acá lo cerramos: el visitante
+    // se queda en el buscador y la confirmación se la damos abajo, en la
+    // misma tarjeta. Un panel que se abre encima es justamente sacarlo
+    // del buscador.
+    setCartOpen(false);
+    setJustAdded({ from, to });
     // Limpiamos el buscador para que un segundo click no duplique el
-    // mismo viaje. El efecto de items.length se encarga de llevar la
-    // vista al checkout.
+    // mismo viaje y para que quede listo para la siguiente pierna.
     setHeroFrom("");
     setHeroTo("");
     setHeroPickupHotel(null);
     setHeroDropoffHotel(null);
     setHeroQuote(null);
+    // Los pasajeros NO se reinician a propósito: el caso normal de un
+    // segundo viaje es la misma gente volviéndose (aeropuerto → hotel,
+    // hotel → aeropuerto). Obligarlos a poner "6" otra vez es fricción.
+  };
+
+  // Único camino explícito al checkout desde el buscador. Antes era
+  // automático después de cada "add"; ahora lo decide el visitante.
+  const goToCheckout = () => {
+    setJustAdded(null);
+    setView("checkout");
+    router.push("/book?checkout=1");
   };
 
   // URL → view sync. The `view` state was initialised from the URL on
@@ -228,22 +280,30 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       }
       return;
     }
-    // After Add to Cart: ALWAYS go to checkout. Used to branch — first
-    // trip → checkout, subsequent → /routes (a browsing surface for
-    // building multi-leg trips). But Diego reported on production that
-    // the second-trip branch caused a bouncy redirect where the visitor
-    // landed at checkout still seeing only the previous trip (cart
-    // localStorage race when navigating away and back). Simpler win:
-    // every add goes straight to checkout. Multi-leg planners still
-    // get there via the explicit "+ Add another trip" button in the
-    // OrderSummarySidebar — they don't need the /routes detour.
+    // Después de agregar al carrito: al checkout, EXCEPTO cuando el
+    // viaje entró por el buscador de esta misma página.
+    //
+    // Ese "excepto" es el pedido de Diego del 2026-08-30. Armar un
+    // ida-y-vuelta requería: buscar → agregar → el sitio te tiraba al
+    // formulario → "Add another trip" → volver arriba → buscar otra vez.
+    // Cuatro pasos de los cuales dos eran sólo deshacer lo que el sitio
+    // acababa de hacer. Ahora el buscador se queda donde está, muestra
+    // la confirmación y el visitante decide cuándo pasar a pagar.
+    //
+    // El resto de los caminos (formulario de Trip Details abajo) siguen
+    // yendo al checkout: ahí el visitante ya llenó fecha, hora y
+    // direcciones, así que lo que sigue es pagar.
     //
     // Order matters: setView before any router.push so the calculator
     // view doesn't flicker if Next.js skips the navigation (e.g. when
     // URL is already /book?checkout=1 from a prior session leg).
     if (items.length > prevItemsCount.current) {
-      setView("checkout");
       prevItemsCount.current = items.length;
+      if (addedFromSearchCard.current) {
+        addedFromSearchCard.current = false;
+        return;
+      }
+      setView("checkout");
       if (!wantsCheckout) {
         router.push("/book?checkout=1");
       }
@@ -262,6 +322,9 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       setHeroTo("");
       setHeroPickupHotel(null);
       setHeroDropoffHotel(null);
+      // El aviso decía "1 viaje en el carrito" y el carrito ya está
+      // vacío: se va con él.
+      setJustAdded(null);
       resetCalculator();
       setView("configuring");
       prevItemsCount.current = 0;
@@ -355,12 +418,36 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     onHotelPick={handleDropoffHotel}
                   />
                 </div>
+                {/* El mismo contador que el buscador de la home, no una
+                    copia: ver el comentario de PaxSelector. Va antes del
+                    precio porque el precio depende de él. */}
+                <PaxSelector
+                  adults={heroAdults}
+                  childrenCount={heroChildren}
+                  onAdultsChange={setHeroAdults}
+                  onChildrenCountChange={setHeroChildren}
+                  lang={lang}
+                  className="mt-3"
+                />
+                {/* `heroTotalPax`, NO `heroAdults`: el precio es por
+                    vehículo y los niños también ocupan asiento. Con
+                    adultos sueltos, 4 adultos + 3 niños cotizaba como
+                    Staria y llegaban 7 personas a un carro de 5. */}
                 <RoutePricePreview
                   from={heroFrom}
                   to={heroTo}
-                  adults={heroAdults}
+                  adults={heroTotalPax}
                   onQuote={handleHeroQuote}
                 />
+                {heroOverCapacity ? (
+                  <BigGroupNotice
+                    totalPax={heroTotalPax}
+                    from={heroFrom}
+                    to={heroTo}
+                    lang={lang}
+                    className="mt-3"
+                  />
+                ) : null}
                 {rawSameLocation || addError === "same" ? (
                   <p className="mt-3 text-xs text-amber-300/90 text-center">
                     Pickup and drop-off can&apos;t be the same place.
@@ -379,6 +466,39 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     <ShoppingCart size={18} />
                     {items.length > 0 ? "Add another trip to cart" : "Add to cart"}
                   </button>
+                ) : null}
+                {/* La confirmación reemplaza el salto al checkout. Sin
+                    ella el visitante toca el botón, ve los campos
+                    vaciarse y no sabe si el viaje entró o si se perdió
+                    lo que había escrito.
+                    Lleva también el conteo y el total del carrito para
+                    que no tenga que abrir el panel a revisar, y el botón
+                    de pagar — que ahora es el único camino al checkout
+                    desde acá. */}
+                {justAdded && items.length > 0 ? (
+                  <div className="mt-4 rounded-xl border border-green-500/40 bg-green-500/10 px-4 py-3">
+                    <p className="flex items-center justify-center gap-2 text-center text-sm font-semibold text-green-300">
+                      <CheckCircle2 size={16} className="shrink-0" />
+                      <span>
+                        {justAdded.from} → {justAdded.to}
+                        {lang === "en" ? " added to your cart" : " agregado al carrito"}
+                      </span>
+                    </p>
+                    <p className="mt-1 text-center text-xs text-gray-300">
+                      {lang === "en"
+                        ? `${items.length} ${items.length === 1 ? "trip" : "trips"} · $${totalPrice.toLocaleString("en-US")} total. Search another trip above, or:`
+                        : `${items.length} ${items.length === 1 ? "viaje" : "viajes"} · $${totalPrice.toLocaleString("en-US")} en total. Buscá otro viaje arriba, o:`}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={goToCheckout}
+                      className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/40 bg-black/40 py-3 font-bold text-amber-300 transition-colors hover:bg-amber-500/20"
+                    >
+                      {lang === "en"
+                        ? "Continue to checkout"
+                        : "Continuar al pago"}
+                    </button>
+                  </div>
                 ) : null}
                 <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
                   <span className="flex items-center gap-1.5">
