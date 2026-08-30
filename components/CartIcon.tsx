@@ -1,7 +1,6 @@
 "use client";
 
 import { ShoppingCart } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
 
@@ -17,19 +16,18 @@ export default function CartIcon() {
     >
       <ShoppingCart size={20} />
 
-      <AnimatePresence>
-        {itemCount > 0 && (
-          <motion.span
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 25 }}
-            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-black text-[10px] font-bold flex items-center justify-center border-2 border-black"
-          >
-            {itemCount}
-          </motion.span>
-        )}
-      </AnimatePresence>
+      {/* El `key={itemCount}` hace que el badge se re-monte cada vez que
+          cambia la cantidad, así la animación CSS `badge-pop` se vuelve a
+          disparar en cada "add to cart" — el mismo feedback que daba el
+          spring de framer-motion, pero sin bajar la librería. */}
+      {itemCount > 0 && (
+        <span
+          key={itemCount}
+          className="badge-pop absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-black text-[10px] font-bold flex items-center justify-center border-2 border-black"
+        >
+          {itemCount}
+        </span>
+      )}
     </button>
   );
 }

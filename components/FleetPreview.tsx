@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Users, ArrowRight, MessageCircle, Mail } from "lucide-react";
@@ -50,13 +49,7 @@ export default function FleetPreview() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.1),transparent_60%)]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
+        <div className="reveal text-center mb-12">
           <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
             <span className="text-amber-400 text-sm font-medium tracking-wider">
               {t.fleet.badge}
@@ -71,16 +64,13 @@ export default function FleetPreview() {
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             {t.fleet.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {vehicles.map((vehicle, index) => (
-            <motion.div
+            <div
               key={vehicle.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`reveal reveal-d${Math.min(index + 1, 4)}`}
             >
               <Link href="/fleet" className="group block">
                 <div className="relative bg-gradient-to-br from-gray-900 to-black border border-amber-500/20 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-500">
@@ -151,17 +141,11 @@ export default function FleetPreview() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mb-8 mx-auto max-w-3xl rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 text-center"
-        >
+        <div className="reveal mb-8 mx-auto max-w-3xl rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 text-center">
           <p className="text-sm md:text-base text-gray-300">
             {lang === "en"
               ? "Traveling with more than 12 passengers? Contact us for a custom quote:"
@@ -185,22 +169,16 @@ export default function FleetPreview() {
               info@privatetravelcr.com
             </a>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="text-center"
-        >
+        <div className="reveal reveal-d2 text-center">
           <Link href="/fleet">
             <Button className="bg-amber-500 hover:bg-amber-600 text-black font-bold h-12 px-8">
               {lang === "en" ? "View Full Fleet" : "Ver Toda la Flota"}
               <ArrowRight size={18} className="ml-2" />
             </Button>
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

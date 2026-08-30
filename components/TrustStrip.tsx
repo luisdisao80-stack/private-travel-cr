@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Award, Clock, ShieldCheck, Heart } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
@@ -16,8 +15,9 @@ import { useLanguage } from "@/lib/LanguageContext";
 //   3. Are you a legit operator?                     → Licensed + insured
 //   4. Am I supporting a local family business?      → 100% Costa Rican
 //
-// Kept as a client component because of the framer-motion fade-up.
-// Below-the-fold so the JS chunk is dynamically imported from app/page.tsx.
+// Sigue siendo client component por `useLanguage()`, no por la animación:
+// el fade-up ahora es CSS puro (clase `.reveal` en globals.css), así que
+// esta sección ya no arrastra framer-motion al bundle del home.
 
 type Badge = {
   Icon: React.ComponentType<{ size?: number; className?: string }>;
@@ -70,13 +70,9 @@ export default function TrustStrip() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {BADGES.map(({ Icon, titleEn, titleEs, subEn, subEs }, i) => (
-            <motion.div
+            <div
               key={titleEn}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="flex flex-col items-center text-center gap-2 md:gap-3"
+              className={`reveal reveal-d${i + 1} flex flex-col items-center text-center gap-2 md:gap-3`}
             >
               <div
                 style={{ width: "56px", height: "56px" }}
@@ -92,7 +88,7 @@ export default function TrustStrip() {
                   {isEn ? subEn : subEs}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
   Trash2,
@@ -28,8 +28,29 @@ import {
   WHATSAPP_URGENT_URL_EN,
   WHATSAPP_URGENT_URL_ES,
 } from "@/lib/booking-rules";
-import BookingForm from "@/components/BookingForm";
 import Price from "@/components/Price";
+
+// BookingForm se carga bajo demanda, no con el resto de la página.
+//
+// El carrito vive en el layout raíz, o sea que se monta en TODAS las
+// páginas. Con el import estático, BookingForm — y con él el calendario
+// (react-day-picker + date-fns + radix, ~35 KB de los cuales el 80% no
+// se usaba) — viajaba en el bundle inicial del home aunque el carrito
+// estuviera cerrado y el visitante nunca llegara al checkout.
+//
+// Lighthouse trata como bloqueante del LCP todo script que termine de
+// bajar antes del primer pintado, así que ese peso muerto se pagaba
+// directo en el score. Con `ssr: false` el chunk recién se pide cuando
+// el visitante abre el carrito y toca "checkout", que es el único
+// momento en que el formulario existe en pantalla.
+const BookingForm = dynamic(() => import("@/components/BookingForm"), {
+  ssr: false,
+  loading: () => (
+    <div className="p-8 flex justify-center">
+      <div className="h-6 w-6 rounded-full border-2 border-amber-500/30 border-t-amber-400 animate-spin" />
+    </div>
+  ),
+});
 
 export default function Cart() {
   const { items, removeItem, clearCart, totalPrice, isCartOpen, setCartOpen } = useCart();
@@ -163,25 +184,23 @@ export default function Cart() {
   };
 
   return (
-    <AnimatePresence>
+    // El carrito se monta en el layout raiz, o sea en TODAS las paginas.
+    // Mientras usaba framer-motion, la libreria (77 KB transferidos /
+    // 247 KB parseados) entraba al bundle inicial del home aunque el
+    // carrito estuviera cerrado. Ahora la entrada del drawer y el fade
+    // del backdrop son animaciones CSS (`cart-fade-in` / `cart-slide-in`).
+    <>
       {isCartOpen && (
         <>
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             onClick={handleClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60]"
+            className="cart-fade-in fixed inset-0 bg-black/70 backdrop-blur-sm z-[60]"
           />
 
           {/* Drawer */}
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed top-0 right-0 bottom-0 w-full sm:w-[480px] bg-black border-l border-amber-500/20 z-[70] flex flex-col"
+          <div
+            className="cart-slide-in fixed top-0 right-0 bottom-0 w-full sm:w-[480px] bg-black border-l border-amber-500/20 z-[70] flex flex-col"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-amber-500/10 bg-gradient-to-b from-amber-500/5 to-transparent">
@@ -228,13 +247,9 @@ export default function Cart() {
                   /* Cart items */
                   <div className="p-5 space-y-3">
                     {items.map((item, idx) => (
-                      <motion.div
+                      <div
                         key={item.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, x: 100 }}
-                        layout
-                        className="relative p-4 rounded-xl border border-amber-500/20 bg-gradient-to-br from-white/[0.04] to-transparent"
+                        className="cart-item-in relative p-4 rounded-xl border border-amber-500/20 bg-gradient-to-br from-white/[0.04] to-transparent"
                       >
                         {/* Number badge */}
                         <div className="absolute -top-2.5 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black text-xs font-bold px-2.5 py-0.5 rounded-full">
@@ -383,7 +398,7 @@ export default function Cart() {
                           </div>
                           <div className="text-amber-400 font-bold"><Price usd={item.totalPrice} /></div>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
 
                     {/* Clear cart button */}
@@ -514,9 +529,9 @@ export default function Cart() {
                 </button>
               </div>
             )}
-          </motion.div>
+          </div>
         </>
       )}
-    </AnimatePresence>
+    </>
   );
 }
