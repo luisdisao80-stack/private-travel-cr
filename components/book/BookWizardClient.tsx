@@ -163,6 +163,21 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   // una arrow inline igual re-renderiza de más.
   const handleHeroQuote = useCallback((q: RouteQuote | null) => setHeroQuote(q), []);
   const [addError, setAddError] = useState<"same" | null>(null);
+  // Formulario largo de Trip Details: abierto o plegado.
+  //
+  // Diego, 2026-08-30, con captura del segundo viaje: agregás un tramo,
+  // te sale el aviso verde… y justo debajo reaparece el formulario
+  // entero (origen, destino, dirección, fecha, hora, pasajeros, paradas,
+  // sillas, tipo de servicio) en blanco. Se lee como "llenálo todo otra
+  // vez", que es literalmente la queja que trajo el 2026-08-29.
+  //
+  // Con el carrito vacío el formulario sigue abierto: ahí SÍ es el
+  // camino principal (es lo que se pre-llena cuando entrás desde una
+  // página de ruta con ?from=&to=). Con viajes ya adentro se pliega
+  // detrás de una línea, porque a esa altura el buscador de arriba ya
+  // hace el trabajo en un click y esto pasa a ser el caso raro: VIP,
+  // paradas extra, sillas de bebé.
+  const [showDetailedForm, setShowDetailedForm] = useState(false);
 
   const rawSameLocation =
     heroFrom.trim().length > 0 &&
@@ -230,6 +245,10 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
     setHeroPickupHotel(null);
     setHeroDropoffHotel(null);
     setHeroQuote(null);
+    // Si lo tenía abierto, se pliega: acaba de agregar por el camino
+    // corto, dejarle el formulario largo abierto y en blanco debajo es
+    // exactamente el "me lo pide todo de nuevo" que estamos quitando.
+    setShowDetailedForm(false);
     // Los pasajeros NO se reinician a propósito: el caso normal de un
     // segundo viaje es la misma gente volviéndose (aeropuerto → hotel,
     // hotel → aeropuerto). Obligarlos a poner "6" otra vez es fricción.
@@ -639,18 +658,34 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
           </div>
         ) : (
           <div className="max-w-2xl mx-auto">
-            {/* heroFrom / heroTo flow down so the calculator stays in
-                sync with the "Where are you headed?" search card above.
-                We used to mirror that through the URL but the URL
-                bounce caused the multi-trip flow to break. Direct prop
-                wiring is simpler and avoids that whole problem. */}
-            <QuoteCalculatorV2
-              key={calcResetKey}
-              locations={locations}
-              hotels={hotels}
-              heroFrom={heroFrom}
-              heroTo={heroTo}
-            />
+            {/* Con viajes ya en el carrito el formulario largo arranca
+                plegado — ver el comentario de `showDetailedForm`. Sin
+                viajes queda abierto, que es el caso de quien llega desde
+                una página de ruta y lo encuentra pre-llenado. */}
+            {items.length > 0 && !showDetailedForm ? (
+              <button
+                type="button"
+                onClick={() => setShowDetailedForm(true)}
+                className="w-full rounded-xl border border-white/10 bg-white/[0.02] px-4 py-4 text-center text-sm text-gray-400 transition-colors hover:border-amber-500/40 hover:text-amber-300"
+              >
+                {lang === "en"
+                  ? "Need to customize a trip? VIP, extra stops, child seats"
+                  : "¿Querés configurar un viaje en detalle? VIP, paradas extra, sillas de bebé"}
+              </button>
+            ) : (
+              /* heroFrom / heroTo flow down so the calculator stays in
+                 sync with the "Where are you headed?" search card above.
+                 We used to mirror that through the URL but the URL
+                 bounce caused the multi-trip flow to break. Direct prop
+                 wiring is simpler and avoids that whole problem. */
+              <QuoteCalculatorV2
+                key={calcResetKey}
+                locations={locations}
+                hotels={hotels}
+                heroFrom={heroFrom}
+                heroTo={heroTo}
+              />
+            )}
           </div>
         )}
       </section>
