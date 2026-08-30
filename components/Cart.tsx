@@ -396,18 +396,24 @@ export default function Cart() {
                               </>
                             )}
                           </div>
-                          {/* Los nombres de las paradas, si las eligió por
-                              nombre en la página de la ruta. El "+2h" de
-                              arriba dice cuánto se cobra; esto dice qué
-                              se compró — que es lo que revisa antes de
-                              pagar. */}
-                          {item.extraStopNames?.length ? (
-                            <div className="mt-1 text-xs text-gray-400">
-                              {item.extraStopNames.join(" · ")}
-                            </div>
-                          ) : null}
                           <div className="text-amber-400 font-bold"><Price usd={item.totalPrice} /></div>
                         </div>
+
+                        {/* Los nombres de las paradas, si las eligió por
+                            nombre en la página de la ruta. El "+2h" de
+                            arriba dice cuánto se cobra; esto dice qué
+                            se compró — que es lo que revisa antes de
+                            pagar.
+                            Va FUERA de la fila de arriba: ahí adentro era
+                            una tercera columna de un flex, y dos paradas
+                            ("Poás Volcano National Park · La Paz
+                            Waterfall Gardens") le comían el espacio al
+                            precio. Acá abajo tiene el ancho entero. */}
+                        {item.extraStopNames?.length ? (
+                          <div className="mt-1.5 text-xs text-gray-400 break-words">
+                            {item.extraStopNames.join(" · ")}
+                          </div>
+                        ) : null}
                       </div>
                     ))}
 

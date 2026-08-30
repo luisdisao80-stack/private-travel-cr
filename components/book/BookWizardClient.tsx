@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import NextImage from "next/image";
-import { ArrowLeftRight, CheckCircle2, Shield, Zap, ShoppingCart } from "lucide-react";
+import { ArrowLeftRight, CheckCircle2, Shield, X, Zap, ShoppingCart } from "lucide-react";
 import QuoteCalculatorV2 from "@/components/QuoteCalculatorV2";
 import BookingForm from "@/components/BookingForm";
 import WizardProgress from "@/components/book/WizardProgress";
@@ -26,9 +26,23 @@ type Props = { locations: string[]; hotels?: Hotel[] };
 type View = "configuring" | "checkout";
 
 export default function BookWizardClient({ locations, hotels = [] }: Props) {
-  const { items, isCartOpen, setCartOpen, hydrated, totalPrice, addItem } =
+  const { items, isCartOpen, setCartOpen, hydrated, totalPrice, addItem, removeItem } =
     useCart();
   const { lang } = useLanguage();
+
+  // "2026-09-03" → "Sep 3, 2026" / "3 sept 2026". Mismo formato corto que
+  // usa el panel del carrito, para que el mismo viaje no se lea distinto
+  // en dos pantallas. El "T00:00:00" es obligatorio: sin él, `new Date`
+  // interpreta la fecha suelta como UTC y en Costa Rica (UTC-6) la
+  // muestra un día antes.
+  const formatTripDate = useCallback(
+    (iso: string) =>
+      new Date(iso + "T00:00:00").toLocaleDateString(
+        lang === "en" ? "en-US" : "es-ES",
+        { year: "numeric", month: "short", day: "numeric" }
+      ),
+    [lang]
+  );
   const router = useRouter();
   const searchParams = useSearchParams();
   const hasUrlRoute = !!searchParams.get("from") || !!searchParams.get("to");
@@ -521,61 +535,150 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                         : "Agregar al carrito"}
                   </button>
                 ) : null}
-                {/* La confirmación reemplaza el salto al checkout. Sin
-                    ella el visitante toca el botón, ve los campos
-                    vaciarse y no sabe si el viaje entró o si se perdió
-                    lo que había escrito.
-                    Lleva también el conteo y el total del carrito para
-                    que no tenga que abrir el panel a revisar, y el botón
-                    de pagar — que ahora es el único camino al checkout
-                    desde acá. */}
+                {/* El itinerario que se va armando, acá mismo debajo del
+                    buscador.
+                    Antes esta caja decía sólo "3 viajes · $670 en total":
+                    el visitante que arma un circuito de varios tramos no
+                    tenía cómo ver QUÉ llevaba sin abrir el panel lateral,
+                    y en el panel ya no puede seguir buscando. Al listarlos
+                    acá, cada viaje que agrega se apila a la vista y el
+                    buscador de arriba sigue disponible — que es justo el
+                    ir y venir que hace quien reserva 3 o 4 traslados.
+                    El total y el botón de pagar cierran la lista, como en
+                    cualquier carrito. */}
                 {items.length > 0 ? (
-                  <div
-                    className={
-                      justAdded
-                        ? "mt-4 rounded-xl border border-green-500/40 bg-green-500/10 px-4 py-3"
-                        : "mt-4 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3"
-                    }
-                  >
-                    {/* Dos avisos en la misma caja porque cumplen el mismo
-                        rol —decirle qué hay en el carrito y darle el botón
-                        de pagar— pero por motivos distintos: verde =
-                        "acabás de agregar esto"; ámbar = "llegaste acá con
-                        el carrito ya lleno". Este segundo caso antes no
-                        existía: el sitio directamente te saltaba al
-                        formulario de pago (ver el efecto de arriba). */}
-                    {justAdded ? (
-                      <p className="flex items-center justify-center gap-2 text-center text-sm font-semibold text-green-300">
-                        <CheckCircle2 size={16} className="shrink-0" />
-                        <span>
-                          {justAdded.from} → {justAdded.to}
-                          {lang === "en" ? " added to your cart" : " agregado al carrito"}
+                  <div className="mt-4 overflow-hidden rounded-xl border border-amber-500/30 bg-black/40">
+                    <div className="flex items-center justify-between border-b border-amber-500/20 bg-amber-500/10 px-4 py-2.5">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-300">
+                          {lang === "en" ? "My trip" : "Mi viaje"}
+                        </div>
+                        <div className="text-sm font-bold text-white">
+                          {items.length}{" "}
+                          {items.length === 1
+                            ? lang === "en"
+                              ? "shuttle"
+                              : "traslado"
+                            : lang === "en"
+                              ? "shuttles"
+                              : "traslados"}
+                        </div>
+                      </div>
+                      {/* Sólo cuando acaba de agregar: confirma que el
+                          click hizo algo, sin robarle el lugar al
+                          itinerario. */}
+                      {justAdded ? (
+                        <span className="flex items-center gap-1.5 text-xs font-semibold text-green-300">
+                          <CheckCircle2 size={14} className="shrink-0" />
+                          {lang === "en" ? "Added" : "Agregado"}
                         </span>
+                      ) : null}
+                    </div>
+
+                    <ul className="divide-y divide-white/10">
+                      {items.map((it, i) => (
+                        <li
+                          key={it.id}
+                          className="flex items-start gap-3 px-4 py-3 text-left"
+                        >
+                          <span className="mt-0.5 shrink-0 text-xs font-bold text-amber-400/70">
+                            #{i + 1}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-sm font-semibold text-white break-words">
+                              {it.fromName} → {it.toName}
+                            </div>
+                            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-gray-400">
+                              <span>
+                                {it.passengers}{" "}
+                                {it.passengers === 1
+                                  ? lang === "en"
+                                    ? "traveler"
+                                    : "pasajero"
+                                  : lang === "en"
+                                    ? "travelers"
+                                    : "pasajeros"}
+                              </span>
+                              <span>·</span>
+                              <span>{it.vehicleName}</span>
+                              {it.duration ? (
+                                <>
+                                  <span>·</span>
+                                  <span>{it.duration}</span>
+                                </>
+                              ) : null}
+                            </div>
+                            {/* La fecha puede venir vacía a propósito: el
+                                quick-add del hero mete el viaje al carrito
+                                sin pedirla y el checkout la exige después.
+                                Decirlo acá evita que crea que se le perdió
+                                un dato que nunca escribió. */}
+                            <div className="mt-0.5 text-xs">
+                              {it.date ? (
+                                <span className="text-gray-400">
+                                  {formatTripDate(it.date)}
+                                </span>
+                              ) : (
+                                <span className="text-amber-300/80">
+                                  {lang === "en"
+                                    ? "Date at checkout"
+                                    : "Fecha en el pago"}
+                                </span>
+                              )}
+                              {it.extraStopNames?.length ? (
+                                <span className="text-amber-300/80">
+                                  {" · "}
+                                  {it.extraStopNames.join(" · ")}
+                                </span>
+                              ) : null}
+                            </div>
+                          </div>
+                          <div className="flex shrink-0 items-center gap-2">
+                            <span className="text-sm font-bold text-amber-400">
+                              ${it.totalPrice.toLocaleString("en-US")}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => removeItem(it.id)}
+                              aria-label={
+                                lang === "en"
+                                  ? `Remove ${it.fromName} to ${it.toName}`
+                                  : `Quitar ${it.fromName} a ${it.toName}`
+                              }
+                              className="rounded p-1 text-gray-500 transition-colors hover:bg-white/5 hover:text-red-400"
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="flex items-center justify-between border-t border-amber-500/20 bg-amber-500/5 px-4 py-3">
+                      <span className="text-sm font-bold text-white">
+                        {lang === "en" ? "Total" : "Total"}
+                      </span>
+                      <span className="text-lg font-extrabold text-amber-400">
+                        ${totalPrice.toLocaleString("en-US")}
+                      </span>
+                    </div>
+
+                    <div className="px-4 pb-4">
+                      <button
+                        type="button"
+                        onClick={goToCheckout}
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 font-bold text-black transition-colors hover:bg-amber-600"
+                      >
+                        {lang === "en"
+                          ? "Finish details & check out"
+                          : "Completar datos y pagar"}
+                      </button>
+                      <p className="mt-2 text-center text-[11px] text-gray-500">
+                        {lang === "en"
+                          ? "Or search another trip above to keep adding."
+                          : "O buscá otro viaje arriba para seguir agregando."}
                       </p>
-                    ) : (
-                      <p className="flex items-center justify-center gap-2 text-center text-sm font-semibold text-amber-300">
-                        <ShoppingCart size={16} className="shrink-0" />
-                        <span>
-                          {lang === "en"
-                            ? `You already have ${items.length} ${items.length === 1 ? "trip" : "trips"} in your cart`
-                            : `Ya tenés ${items.length} ${items.length === 1 ? "viaje" : "viajes"} en el carrito`}
-                        </span>
-                      </p>
-                    )}
-                    <p className="mt-1 text-center text-xs text-gray-300">
-                      {lang === "en"
-                        ? `${items.length} ${items.length === 1 ? "trip" : "trips"} · $${totalPrice.toLocaleString("en-US")} total. Search another trip above, or:`
-                        : `${items.length} ${items.length === 1 ? "viaje" : "viajes"} · $${totalPrice.toLocaleString("en-US")} en total. Buscá otro viaje arriba, o:`}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={goToCheckout}
-                      className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/40 bg-black/40 py-3 font-bold text-amber-300 transition-colors hover:bg-amber-500/20"
-                    >
-                      {lang === "en"
-                        ? "Continue to checkout"
-                        : "Continuar al pago"}
-                    </button>
+                    </div>
                   </div>
                 ) : null}
                 <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
