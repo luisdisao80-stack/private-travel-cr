@@ -103,6 +103,33 @@ export function computeTripTotal(input: {
   return basePrice + vipExtra + stopsExtra + nightExtra;
 }
 
+// Tramo de precio al que cae un grupo. Los mismos cortes que usa
+// getPriceForGroupSize acá abajo — y ese es justamente el punto: los
+// cortes ya estaban escritos a mano en getPriceForGroupSize, en
+// getVehicleForPax y otra vez en la etiqueta de RoutePricePreview. Tres
+// copias de la misma regla.
+//
+// OJO: NO sirve getVehicleForPax como clave de precio. Ese devuelve
+// "maxus" tanto para 12 como para 13, pero 12 paga precio10a12 y 13 paga
+// precio13a18: usarlo para decidir si hay que recotizar dejaría a un
+// grupo de 13 viendo el precio de 12.
+export type PriceTier = "1-5" | "6-9" | "10-12" | "13-18";
+
+export function getPriceTier(totalPax: number): PriceTier {
+  if (totalPax <= 5) return "1-5";
+  if (totalPax <= 9) return "6-9";
+  if (totalPax <= 12) return "10-12";
+  return "13-18";
+}
+
+// Cómo se le muestra el tramo al visitante ("Standard · 6-9 pax").
+export const PRICE_TIER_LABELS: Record<PriceTier, string> = {
+  "1-5": "up to 5 pax",
+  "6-9": "6-9 pax",
+  "10-12": "10-12 pax",
+  "13-18": "13-18 pax",
+};
+
 export function getPriceForGroupSize(route: Route, totalPax: number): number {
   if (totalPax <= 5) {
     return route.precio1a6 || 0;
