@@ -268,16 +268,27 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
     if (!settledFromHydration.current) {
       settledFromHydration.current = true;
       prevItemsCount.current = items.length;
-      // First settle:
-      //   - ?add=1 → configuring (visitor wants to add another trip,
-      //              overrides the cart-has-items → checkout rule below)
-      //   - ?from=&to= → configuring (visitor explicitly picked a new route)
-      //   - ?checkout=1 → checkout (initial state already set this)
-      //   - no params + cart has items → checkout (returning to finalize)
-      //   - no params + empty cart → configuring (default)
-      if (!wantsAdd && !hasUrlRoute && !wantsCheckout && items.length > 0) {
-        setView("checkout");
-      }
+      // First settle: el buscador, SIEMPRE. Sólo `?checkout=1` abre el
+      // formulario de pago (y eso ya lo hizo el useState inicial).
+      //
+      // Acá había una regla de más: "sin parámetros + carrito con viajes
+      // → checkout". La idea era que quien se fue a media compra volviera
+      // directo a pagar. En la práctica hacía otra cosa: `/book` a secas
+      // es el destino de ~15 botones de "Cotizar / Reservar" repartidos
+      // por todo el sitio (footer, flota, nosotros, blog, páginas de
+      // aeropuerto, 404). Con dos viajes ya en el carrito, tocar
+      // cualquiera de esos botones para armar el tercero te tiraba al
+      // formulario de pago, sin buscador a la vista y sin forma de
+      // volver salvo adivinando la URL `?add=1`.
+      //
+      // Diego, 2026-08-30: "solo me deja agregar 2 viajes y despues me
+      // manda al checkout". No había tope de 2 — había un rebote.
+      //
+      // Nadie pierde el camino a pagar: los botones que SÍ significan
+      // "ya terminé" (el carrito, la barra del checkout, el CTA de
+      // /routes) navegan a `/book?checkout=1`, un refresh conserva ese
+      // parámetro, y el aviso de abajo le deja el botón "Continuar al
+      // pago" a la vista a quien llega con el carrito lleno.
       return;
     }
     // Después de agregar al carrito: al checkout, EXCEPTO cuando el
@@ -331,7 +342,9 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       return;
     }
     prevItemsCount.current = items.length;
-  }, [items.length, hydrated, hasUrlRoute, wantsCheckout, wantsAdd, router]);
+    // `hasUrlRoute` y `wantsAdd` salieron de las dependencias junto con la
+    // regla del primer asentamiento: ya no se leen adentro del efecto.
+  }, [items.length, hydrated, wantsCheckout, router]);
 
   // The cart drawer auto-opens on addItem; on /book the cart is reachable
   // through the navbar icon, so close the drawer to keep the page calm.
@@ -497,15 +510,39 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     que no tenga que abrir el panel a revisar, y el botón
                     de pagar — que ahora es el único camino al checkout
                     desde acá. */}
-                {justAdded && items.length > 0 ? (
-                  <div className="mt-4 rounded-xl border border-green-500/40 bg-green-500/10 px-4 py-3">
-                    <p className="flex items-center justify-center gap-2 text-center text-sm font-semibold text-green-300">
-                      <CheckCircle2 size={16} className="shrink-0" />
-                      <span>
-                        {justAdded.from} → {justAdded.to}
-                        {lang === "en" ? " added to your cart" : " agregado al carrito"}
-                      </span>
-                    </p>
+                {items.length > 0 ? (
+                  <div
+                    className={
+                      justAdded
+                        ? "mt-4 rounded-xl border border-green-500/40 bg-green-500/10 px-4 py-3"
+                        : "mt-4 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3"
+                    }
+                  >
+                    {/* Dos avisos en la misma caja porque cumplen el mismo
+                        rol —decirle qué hay en el carrito y darle el botón
+                        de pagar— pero por motivos distintos: verde =
+                        "acabás de agregar esto"; ámbar = "llegaste acá con
+                        el carrito ya lleno". Este segundo caso antes no
+                        existía: el sitio directamente te saltaba al
+                        formulario de pago (ver el efecto de arriba). */}
+                    {justAdded ? (
+                      <p className="flex items-center justify-center gap-2 text-center text-sm font-semibold text-green-300">
+                        <CheckCircle2 size={16} className="shrink-0" />
+                        <span>
+                          {justAdded.from} → {justAdded.to}
+                          {lang === "en" ? " added to your cart" : " agregado al carrito"}
+                        </span>
+                      </p>
+                    ) : (
+                      <p className="flex items-center justify-center gap-2 text-center text-sm font-semibold text-amber-300">
+                        <ShoppingCart size={16} className="shrink-0" />
+                        <span>
+                          {lang === "en"
+                            ? `You already have ${items.length} ${items.length === 1 ? "trip" : "trips"} in your cart`
+                            : `Ya tenés ${items.length} ${items.length === 1 ? "viaje" : "viajes"} en el carrito`}
+                        </span>
+                      </p>
+                    )}
                     <p className="mt-1 text-center text-xs text-gray-300">
                       {lang === "en"
                         ? `${items.length} ${items.length === 1 ? "trip" : "trips"} · $${totalPrice.toLocaleString("en-US")} total. Search another trip above, or:`
