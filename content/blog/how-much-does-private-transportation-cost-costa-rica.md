@@ -29,6 +29,7 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 | [Santa Teresa](/private-shuttle/sjo-juan-santamaria-int-airport-to-santa-teresa) | **$375** | $420 | 5 h |
 | [Puerto Viejo (Caribbean)](/private-shuttle/sjo-to-puerto-viejo) | **$320** | $365 | 4 h 30 min |
 | [Papagayo Peninsula](/private-shuttle/sjo-juan-santamaria-int-airport-to-papagayo-peninsula-guanacaste) | **$340** | $385 | 5 h |
+| [Playa Conchal](/private-shuttle/sjo-juan-santamaria-int-airport-to-conchal) | **$345** | $390 | 5 h |
 | Nosara | **$370** | $415 | 5 h |
 | Drake Bay | **$390** | $440 | 6 h |
 

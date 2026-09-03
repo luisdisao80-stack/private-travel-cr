@@ -27,7 +27,7 @@ The famous "shell beach" — the sand is literally crushed seashells instead of 
 - **Swim safety:** Good. Gentle waves, no major rip currents on the south end. Snorkeling is decent at the north rocks.
 - **Kid-friendly:** Yes — one of the best in Costa Rica for small kids.
 - **Best time:** December–April for guaranteed sun, July for a green-season window.
-- **How to get there:** ~1h from Liberia airport. We have direct [shuttles from LIR to Conchal](/private-shuttle/lir-liberia-int-airport-to-conchal) for around $185.
+- **How to get there:** ~1h from Liberia airport. We have direct [shuttles from LIR to Conchal](/private-shuttle/lir-liberia-int-airport-to-conchal) for $135 per vehicle. Coming from San José instead is a much longer day — [SJO to Conchal](/private-shuttle/sjo-juan-santamaria-int-airport-to-conchal) is about 5 hours — so fly into LIR if Conchal is your main stop.
 
 ### 2. Playa Tamarindo
 
@@ -37,7 +37,7 @@ The most famous beach town in Costa Rica. Wide golden sand, reliable surf, walka
 - **Swim safety:** Good in the middle of the bay, **riptides at the north end** near the river mouth. Don't swim there.
 - **Kid-friendly:** Yes — surf schools take kids as young as 6.
 - **Best time:** December–April (dry, busy), or May–June for the same weather minus 30% on hotels.
-- **How to get there:** 1h 15min from LIR. See our full [Liberia airport to Tamarindo guide](/blog/liberia-airport-to-tamarindo) for all the options.
+- **How to get there:** 1h 15min from LIR — [LIR to Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) is $135, or [SJO to Tamarindo](/private-shuttle/sjo-to-tamarindo) is $345 and a 5-hour day. See our full [Liberia airport to Tamarindo guide](/blog/liberia-airport-to-tamarindo) for all the options.
 
 ### 3. Playa Hermosa (Guanacaste)
 
@@ -71,7 +71,7 @@ Surfers, yoga retreats, beach bars at sunset. The road in is famously bad (still
 - **Swim safety:** **Strong surf year-round.** Fine for confident swimmers and surfers; not great for unsteady kids. Riptides exist.
 - **Kid-friendly:** Older kids yes, toddlers no.
 - **Best time:** December–April for clearest weather, but Santa Teresa is great year-round.
-- **How to get there:** 5h drive from SJO or via ferry. We run [direct shuttles to Santa Teresa](/private-shuttle/sjo-juan-santamaria-int-airport-to-santa-teresa) — most people overestimate the difficulty of getting there.
+- **How to get there:** 5h drive from SJO or via ferry. We run [direct shuttles to Santa Teresa](/private-shuttle/sjo-juan-santamaria-int-airport-to-santa-teresa) — most people overestimate the difficulty of getting there. From Liberia it's [LIR to Santa Teresa](/private-shuttle/lir-liberia-int-airport-to-santa-teresa), $350 and about 5 hours entirely overland down the Nicoya Peninsula, no ferry involved.
 
 ### 6. Playa Guiones, Nosara
 
