@@ -506,7 +506,14 @@ export default function RouteDetail({
 
         {linkedRelated.length > 0 ? (
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">Other routes from {originName}</h2>
+            {/* El título decía "Other routes from <origen>" y la tarjeta mostraba
+                solo el destino, porque antes el bloque traía únicamente rutas
+                con el mismo origen. Ahora trae la vuelta de este mismo viaje y
+                las que más se venden, así que ninguna de las dos cosas seguía
+                siendo cierta: en sjo-to-la-fortuna las tarjetas habrían dicho
+                "San Jose Airport" y "La Fortuna" sueltos, sin decir de dónde a
+                dónde. Va el par completo. */}
+            <h2 className="text-2xl font-bold text-white mb-6">Popular routes</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {linkedRelated.map(({ route: r, href }) => (
                 <Link
@@ -516,7 +523,9 @@ export default function RouteDetail({
                 >
                   <div>
                     <div className="text-xs text-amber-400 mb-1">{r.duracion}</div>
-                    <div className="text-white font-medium">{displayLocation(r.destino)}</div>
+                    <div className="text-white font-medium">
+                      {displayLocation(r.origen)} <span className="text-gray-500">→</span> {displayLocation(r.destino)}
+                    </div>
                   </div>
                   <div className="text-right">
                     <div className="text-amber-400 font-bold"><Price usd={r.precio1a6 ?? 0} /></div>

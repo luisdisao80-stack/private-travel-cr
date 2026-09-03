@@ -6,6 +6,12 @@ type Props = {
   url: string;
   image?: string;
   datePublished: string;
+  /**
+   * Cuándo se corrigió el artículo por última vez. Antes esto no existía y el
+   * schema mandaba dateModified = datePublished siempre, o sea que un artículo
+   * corregido ayer le decía a Google que no se toca desde mayo.
+   */
+  dateModified?: string;
   authorName: string;
 };
 
@@ -15,6 +21,7 @@ export default function ArticleSchema({
   url,
   image,
   datePublished,
+  dateModified,
   authorName,
 }: Props) {
   const schema = {
@@ -28,7 +35,7 @@ export default function ArticleSchema({
         : `${siteConfig.siteUrl}${image}`
       : siteConfig.ogImage,
     datePublished,
-    dateModified: datePublished,
+    dateModified: dateModified || datePublished,
     author: {
       "@type": "Person",
       name: authorName,

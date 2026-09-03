@@ -2,6 +2,7 @@
 title: "Monteverde Costa Rica Travel Guide 2026 — A Local's Complete Plan"
 description: "Everything you need to plan a Monteverde trip in 2026 — where the cloud forest is, how to get there, when quetzals are visible, how many days you need, where to stay, and which reserve to visit (Monteverde vs Santa Elena vs Curi-Cancha). From a driver who lives in CR."
 date: "2026-05-21"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Travel Guides"
 readTime: 14

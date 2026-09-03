@@ -2,6 +2,7 @@
 title: "Costa Rica Transportation Guide 2026: Private Shuttle vs Rental Car vs Bus vs Uber"
 description: "Honest 2026 comparison of every way to get around Costa Rica — private shuttle, rental car, public bus, shared shuttle, Uber, taxi. Real prices, what each one is actually like, and how to pick."
 date: "2026-06-22"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 9

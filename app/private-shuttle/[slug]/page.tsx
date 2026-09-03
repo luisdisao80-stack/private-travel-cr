@@ -117,7 +117,7 @@ export default async function PrivateShuttleRoutePage({ params }: Props) {
   if (!isPopularRoute(route.origen, route.destino)) notFound();
 
   const [related, destinationHotels] = await Promise.all([
-    getRelatedRoutes(route.origen, slug, 4),
+    getRelatedRoutes(route, 4),
     getHotelsByArea(route.destino, 6),
   ]);
   // Blog cards under "Plan your trip" — read off-disk synchronously, no

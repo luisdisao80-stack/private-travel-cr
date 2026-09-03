@@ -2,6 +2,7 @@
 title: "La Fortuna Costa Rica Travel Guide 2026 — A Local's Complete Plan"
 description: "Everything you need to plan a La Fortuna trip in 2026 — where it is, how to get there from SJO or LIR, how many days you need, where to stay, what to do, and how to leave. From a driver who lives here."
 date: "2026-05-19"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Travel Guides"
 readTime: 14

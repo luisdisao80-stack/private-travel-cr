@@ -2,6 +2,7 @@
 title: "Costa Rica vs Mexico in 2026: Safer, But Not Cheaper"
 description: "Costa Rica's homicide rate is a fifth of Mexico's — but hotels run $120–180 vs $70–130. A Costa Rican operator scores both on safety, cost, food, beaches."
 date: "2026-06-03"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 13
