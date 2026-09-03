@@ -110,7 +110,9 @@ Costa Rica isn't a budget destination, but the experiences are top-tier. This it
 
 ## What we'd change for different traveler types
 
-**With kids:** Replace the Monteverde stretch with 2 more nights in La Fortuna (less driving, kid-friendly hot springs). Or skip Monteverde and go directly to Manuel Antonio for more beach time.
+**With kids:** Replace the Monteverde stretch with 2 more nights in La Fortuna (less driving, kid-friendly hot springs). Or skip Monteverde and go directly to [Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) for more beach time. Either way you finish with [La Fortuna → SJO](/private-shuttle/la-fortuna-to-sjo) or [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport), both $220 and 3 hours.
+
+**Flying out of Liberia instead:** swap the last two days for Guanacaste — [La Fortuna → Tamarindo](/private-shuttle/la-fortuna-to-tamarindo) or [La Fortuna → Papagayo](/private-shuttle/la-fortuna-to-papagayo), then a short hop to the airport ([Tamarindo → LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) $135, [Papagayo → LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) $110). It turns the departure day from a 3-hour drive into a 30–75 minute one.
 
 **On a budget:** Use shared shuttles instead of private (saves ~$300), stay in mid-range hotels ($120–180/night range), skip the catamaran. Doable for $1,800–2,200 per couple.
 

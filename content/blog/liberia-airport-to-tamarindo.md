@@ -72,4 +72,10 @@ Most travelers who land in Liberia don't stop at Tamarindo — they pair beach d
 
 Either way you skip the rental-car paperwork on arrival day and travel door-to-door.
 
+## And the ride back to LIR
+
+[Tamarindo → LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) is the same $135 and the same 1h15. Book it with your arrival transfer — the taxi rank in Tamarindo thins out badly before 6 a.m., which is exactly when you need it for a morning flight home.
+
+The other Guanacaste beach towns run the same short hop: [Papagayo → LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) ($110, 30 min), [Conchal → LIR](/private-shuttle/conchal-to-lir-liberia-int-airport) ($135, 1 h), [Flamingo → LIR](/private-shuttle/flamingo-to-lir-liberia-int-airport) ($135, 1 h). Coming from the volcano instead, [La Fortuna → LIR](/private-shuttle/la-fortuna-to-lir) is $225 and 3 hours.
+
 [Book your LIR to Tamarindo shuttle →](/private-shuttle/lir-liberia-int-airport-to-tamarindo)

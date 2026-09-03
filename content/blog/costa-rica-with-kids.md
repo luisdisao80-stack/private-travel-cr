@@ -113,6 +113,8 @@ Where to stay:
 
 How to get there: **[LIR to Tamarindo $135](/private-shuttle/lir-liberia-int-airport-to-tamarindo)**, [LIR to Papagayo $110](/private-shuttle/lir-to-papagayo), [LIR to Conchal $135](/private-shuttle/lir-liberia-int-airport-to-conchal). This is where flying into LIR instead of SJO saves you a lot of driving time.
 
+Going home is the same price in reverse — [Papagayo to LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) ($110, 30 min), [Tamarindo to LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) ($135, 1h15), [Conchal to LIR](/private-shuttle/conchal-to-lir-liberia-int-airport) ($135, 1 h). With kids, book the departure transfer when you book the arrival one. Nobody wants to be arranging a ride at 9 p.m. the night before a 6 a.m. flight.
+
 ## The classic 7-day family itinerary (works for most)
 
 If you want a proven route that isn't over-touristed and doesn't burn out the kids:

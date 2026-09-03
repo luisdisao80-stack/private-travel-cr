@@ -59,7 +59,38 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 | [Monteverde ↔ Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) | **$310** | $355 | 4 h |
 | [Monteverde ↔ Tamarindo](/private-shuttle/monteverde-to-tamarindo) | **$270** | $315 | 3 h 30 min |
 | [Manuel Antonio ↔ Tamarindo](/private-shuttle/manuel-antonio-quepos-to-tamarindo) | **$410** | $455 | 5 h |
+| [La Fortuna ↔ Papagayo](/private-shuttle/la-fortuna-to-papagayo) | **$285** | $330 | 4 h 30 min |
 | Manuel Antonio ↔ Uvita | **$180** | $195 | 1 h 30 min |
+
+### Back to the airport (departure day)
+
+Everyone plans the arrival transfer and forgets the departure one. It's the same drive in reverse and the same price — but it's the leg where timing actually matters, because a missed international flight is not a fixable problem. Book it at the same time as your arrival.
+
+**Flying out of SJO (San José):**
+
+| Route | 1–5 pax | 6–9 pax | Drive time |
+|---|---|---|---|
+| [La Fortuna → SJO Airport](/private-shuttle/la-fortuna-to-sjo) | **$220** | $275 | 3 h |
+| [Manuel Antonio → SJO Airport](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | **$220** | $275 | 3 h |
+| [Monteverde → SJO Airport](/private-shuttle/monteverde-to-sjo) | **$220** | $265 | 4 h |
+| [Jacó → SJO Airport](/private-shuttle/jaco-to-sjo-juan-santamaria-int-airport) | **$175** | $190 | 1 h 30 min |
+| [Puerto Viejo → SJO Airport](/private-shuttle/puerto-viejo-to-sjo-juan-santamaria-int-airport) | **$320** | $365 | 4 h 30 min |
+| [Tamarindo → SJO Airport](/private-shuttle/tamarindo-to-sjo-juan-santamaria-int-airport) | **$345** | $390 | 5 h |
+| [Santa Teresa → SJO Airport](/private-shuttle/santa-teresa-to-sjo-juan-santamaria-int-airport) | **$375** | $420 | 6 h |
+
+**Flying out of LIR (Liberia):**
+
+| Route | 1–5 pax | 6–9 pax | Drive time |
+|---|---|---|---|
+| [Papagayo → LIR Airport](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) | **$110** | $140 | 30 min |
+| [Tamarindo → LIR Airport](/private-shuttle/tamarindo-to-lir-liberia-int-airport) | **$135** | $175 | 1 h 15 min |
+| [Playa Conchal → LIR Airport](/private-shuttle/conchal-to-lir-liberia-int-airport) | **$135** | $175 | 1 h |
+| [Playa Flamingo → LIR Airport](/private-shuttle/flamingo-to-lir-liberia-int-airport) | **$135** | $175 | 1 h |
+| [La Fortuna → LIR Airport](/private-shuttle/la-fortuna-to-lir) | **$225** | $280 | 3 h |
+| [Jacó → LIR Airport](/private-shuttle/jaco-to-lir-liberia-int-airport) | **$300** | $345 | 3 h 30 min |
+| [Santa Teresa → LIR Airport](/private-shuttle/santa-teresa-to-lir-liberia-int-airport) | **$350** | $395 | 5 h |
+
+Rule of thumb for departure pickups: **4 hours before an international flight** from anywhere 3 hours out, 5–6 hours from Santa Teresa or Puerto Viejo. From Papagayo or Tamarindo to LIR, 3 hours is plenty. Morning traffic entering the San José metro area is the one thing that reliably eats the buffer.
 
 (These are our 2026 published rates; competitors in the same quality tier are typically within $30–40 of these prices.)
 
