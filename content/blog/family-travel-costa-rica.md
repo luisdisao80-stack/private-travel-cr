@@ -52,7 +52,7 @@ The transfers your kids will tolerate (and the ones they won't):
 
 **Harder transfers with kids (mountains, longer):**
 - [La Fortuna to Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) (4–5h)
-- [La Fortuna to Monteverde](/private-shuttle/la-fortuna-to-monteverde) (3.5h, includes bumpy section)
+- [La Fortuna to Monteverde](/private-shuttle/la-fortuna-to-monteverde) (3.5h, winding mountain section at the end)
 - Anywhere to/from Drake Bay or [Puerto Viejo](/private-shuttle/sjo-to-puerto-viejo) (5+ hours)
 
 **For longer transfers**, our drivers usually recommend a snack/bathroom stop at a Soda (Costa Rican family restaurant) along the way. Mention it when you book — we know which ones are clean and quick.

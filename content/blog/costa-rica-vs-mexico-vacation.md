@@ -209,7 +209,7 @@ If you've landed on Costa Rica, the rest of your planning gets easier — fly in
 The four legs almost every first-timer ends up booking:
 
 - **[SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna)** (3 hours, the Arenal volcano base)
-- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** (3 hours, cloud forest)
+- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** (3.5 hours, cloud forest)
 - **[SJO Airport → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio)** (3 hours, jungle beach)
 - **[LIR Airport → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo)** (1 hour, Guanacaste beaches)
 

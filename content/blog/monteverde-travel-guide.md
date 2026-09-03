@@ -38,7 +38,7 @@ Direct booking: [private shuttle from LIR to Monteverde](/private-shuttle/lir-to
 ### From La Fortuna (the famous jeep-boat-jeep)
 Two real options:
 
-1. **Road around Lake Arenal** — about 4 hours, fully paved, scenic. You stay in the same vehicle the entire way.
+1. **Road around Lake Arenal** — about 3.5 hours, fully paved, scenic. You stay in the same vehicle the entire way.
 2. **Jeep-boat-jeep across Lake Arenal** — about 3 hours total, requires a vehicle change at the lake. Faster but with two transfers. Best in dry season.
 
 Our private shuttle takes the road route by default; we can arrange the boat option on request.
@@ -149,7 +149,7 @@ If you have 4+ nights, these are the day trips that justify the time:
 The most common onward connections, with one-click booking:
 
 - **[Monteverde → SJO Airport](/private-shuttle/monteverde-to-sjo)** (4 hours)
-- **[Monteverde → La Fortuna](/private-shuttle/monteverde-to-la-fortuna)** (4 hours road, or 3 hours jeep-boat-jeep)
+- **[Monteverde → La Fortuna](/private-shuttle/monteverde-to-la-fortuna)** (3.5 hours road, or 3 hours jeep-boat-jeep)
 - **[Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio)** (4 hours)
 - **[Monteverde → Tamarindo](/private-shuttle/monteverde-to-tamarindo)** (4.5 hours)
 - **[Monteverde → Papagayo](/private-shuttle/monteverde-to-papagayo-peninsula-guanacaste)** (4 hours)

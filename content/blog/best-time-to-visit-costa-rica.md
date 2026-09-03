@@ -115,6 +115,6 @@ The transfers we run most, in every month of the year:
 - **[SJO Airport → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio)** — beach and national park, 3 h
 - **[SJO Airport → Monteverde](/private-shuttle/sjo-to-monteverde)** — cloud forest, best Dec–Apr
 - **[LIR Airport → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo)** — Guanacaste beaches, 1 h 15
-- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** — the classic connector, 3 h
+- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** — the classic connector, 3.5 h
 
 [See our private shuttle routes →](/routes)
