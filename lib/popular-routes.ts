@@ -18,6 +18,10 @@ export const POPULAR_DESTINATIONS: readonly string[] = [
   // up in the bookings table — so the web-only numbers understated them.
   "Flamingo (Guanacaste)",
   "Las Catalinas, Guanacaste",
+  // Diego 2026-09-03: 27 tramos vendidos y no había NI UNA página indexable.
+  // Era el hueco más grande del sitio — todo ese tráfico se iba a /routes/,
+  // que no se indexa. Suma 26 páginas nuevas.
+  "San Jose Downtown",
 ] as const;
 
 const popularSet = new Set<string>(POPULAR_DESTINATIONS);
