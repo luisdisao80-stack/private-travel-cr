@@ -100,6 +100,10 @@ const CAMBIOS = {
   "content/blog/la-fortuna-to-monteverde.md": [
     ["Driving around the lake takes **3 to 3.5 hours**.", "Driving around the lake takes **about 3.5 hours**."],
     ["You spend 3 hours getting there, not 8", "You spend 3.5 hours getting there, not 8"],
+    // Esta es la description del frontmatter, o sea el texto que Google
+    // muestra debajo del título en los resultados. Es la mención más visible
+    // de todas y casi se me pasa.
+    ["so 40 km takes 3 hours either way", "so 40 km takes 3.5 hours either way"],
   ],
   "content/blog/family-travel-costa-rica.md": [
     [
