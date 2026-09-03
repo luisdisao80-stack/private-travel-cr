@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import FAQSchema from "@/components/FAQSchema";
 import ReviewSchema from "@/components/ReviewSchema";
-import { getAllLocations } from "@/lib/routes-db";
+import { getAllLocations, getTopRoutesForHome } from "@/lib/routes-db";
 import { getAllHotels } from "@/lib/hotels-db";
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { getAllPosts } from "@/lib/blog";
@@ -32,10 +32,13 @@ const FAQSection = dynamic(() => import("@/components/FAQSection"));
 export const revalidate = 86400;
 
 export default async function Home() {
-  const [locations, hotels, google] = await Promise.all([
+  const [locations, hotels, google, topRoutes] = await Promise.all([
     getAllLocations(),
     getAllHotels(),
     getGoogleReviews(),
+    // Las 17 rutas que más venden, con precio y duración de la base. Antes
+    // estaban escritas a mano dentro del componente y se desactualizaban.
+    getTopRoutesForHome(),
   ]);
   // Blog posts are read off-disk synchronously — no Promise.all slot needed.
   // Newest-first; BlogHighlights renders the top 3.
@@ -87,7 +90,7 @@ export default async function Home() {
 
       <FleetPreview />
 
-      <PopularRoutes />
+      <PopularRoutes routes={topRoutes} />
 
       {/* Reddit social proof — unsolicited recommendations from real
           travelers on r/CostaRicaTravel. Sits high in the conversion

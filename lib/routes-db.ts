@@ -1,6 +1,7 @@
 import { supabase } from "./supabase";
 import type { Route } from "./types";
-import { isPopularRoute, isTopRoute } from "./popular-routes";
+import { isPopularRoute, isTopRoute, TOP_PAIRS } from "./popular-routes";
+import { displayLocation, isAirport } from "./locations";
 
 // Supabase returns max 1000 rows per request; paginate for the full 1240+ routes.
 const PAGE_SIZE = 1000;
@@ -214,6 +215,72 @@ export async function getRelatedRoutes(
 }
 
 const bySlug = (a: Route, b: Route) => (a.slug ?? "").localeCompare(b.slug ?? "");
+
+export type HomeRoute = {
+  from: string;
+  to: string;
+  slug: string;
+  hub: "private-shuttle" | "routes";
+  priceFrom: number;
+  duration: string;
+};
+
+/**
+ * Las tarjetas de "Popular routes" de la home, sacadas de la base.
+ *
+ * Antes eran ocho rutas escritas a mano en el componente, con precio y
+ * duración copiados. Copiar los datos significa que se desactualizan: cuando
+ * corregimos La Fortuna ↔ Monteverde a 3,5 H, la página de la ruta decía 3,5 H
+ * y la home seguía diciendo 4h. El mismo dato en dos lugares siempre termina
+ * así, no es cuestión de acordarse. Ahora sale de `routes` y no puede divergir.
+ *
+ * Además eran 8 de las 34 que venden. La home es la página con más fuerza del
+ * sitio, así que enlazar solo 8 desperdicia el resto: van los 17 pares.
+ *
+ * Un sentido por par, no los dos. El de vuelta ya recibe enlace desde la propia
+ * página de ida (regla 1 de getRelatedRoutes), y mostrar "SJO → La Fortuna" y
+ * "La Fortuna → SJO" juntos en la home no le sirve a nadie que esté buscando.
+ * Cuando hay aeropuerto, el aeropuerto va de origen: así es como la gente
+ * busca ("San Jose airport to La Fortuna"), no al revés.
+ */
+export async function getTopRoutesForHome(): Promise<HomeRoute[]> {
+  const all = await getIndexableRoutesCached();
+
+  // Índice por par ordenado, para encontrar cualquiera de los dos sentidos.
+  const porSentido = new Map<string, Route>();
+  for (const r of all) {
+    if (r.slug) porSentido.set(`${r.origen} ${r.destino}`, r);
+  }
+
+  const salida: HomeRoute[] = [];
+  // Recorremos TOP_PAIRS y no la tabla para conservar el orden en que Diego
+  // las dictó: primero las de SJO, después las de Liberia, después Fortuna.
+  for (const [a, b] of TOP_PAIRS) {
+    const origen = isAirport(a) ? a : isAirport(b) ? b : a;
+    const destino = origen === a ? b : a;
+
+    const fila =
+      porSentido.get(`${origen} ${destino}`) ??
+      porSentido.get(`${destino} ${origen}`);
+    // Si el par no está en la base o no es indexable, no lo inventamos.
+    if (!fila || !fila.slug) continue;
+    // La tarjeta muestra precio y duración: sin alguno de los dos queda rota
+    // ("desde $null"), así que mejor no mostrarla. Hoy las 17 los tienen; esto
+    // es un seguro por si alguna fila queda a medias más adelante.
+    if (fila.precio1a6 == null || !fila.duracion) continue;
+
+    salida.push({
+      from: displayLocation(fila.origen),
+      to: displayLocation(fila.destino),
+      slug: fila.slug,
+      hub: isPopularRoute(fila.origen, fila.destino) ? "private-shuttle" : "routes",
+      priceFrom: fila.precio1a6,
+      duration: fila.duracion,
+    });
+  }
+
+  return salida;
+}
 
 /**
  * Ordena por slug y después corta el arranque según de qué página venimos.
