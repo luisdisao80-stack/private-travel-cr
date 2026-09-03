@@ -1,6 +1,6 @@
 ---
 title: "La Fortuna to Monteverde: 4 Ways to Get There (2026)"
-description: "Lake Arenal sits between them, so 40 km takes 3 hours either way. Taxi-boat-taxi $30, shared van $55, private shuttle $255 or self-drive — ranked honestly."
+description: "Lake Arenal sits between them, so 40 km takes 3.5 hours either way. Taxi-boat-taxi $30, shared van $55, private shuttle $255 or self-drive — ranked honestly."
 date: "2026-05-29"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
