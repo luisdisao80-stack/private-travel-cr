@@ -85,7 +85,7 @@ The flight home is where the timing actually bites, because there's no recoverin
 
 - **[La Fortuna → SJO](/private-shuttle/la-fortuna-to-sjo):** $220, 3 hours
 - **[Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport):** $220, 3 hours
-- **[Monteverde → SJO](/private-shuttle/monteverde-to-sjo):** $220, 4 hours (first hour is gravel)
+- **[Monteverde → SJO](/private-shuttle/monteverde-to-sjo):** $220, 4 hours (the first 35 km down Route 606 are paved but slow and winding)
 - **[Jacó → SJO](/private-shuttle/jaco-to-sjo-juan-santamaria-int-airport):** $175, 1 hour 30 min
 - **[Puerto Viejo → SJO](/private-shuttle/puerto-viejo-to-sjo-juan-santamaria-int-airport):** $320, 4 hours 30 min
 - **[Tamarindo → SJO](/private-shuttle/tamarindo-to-sjo-juan-santamaria-int-airport):** $345, 5 hours
