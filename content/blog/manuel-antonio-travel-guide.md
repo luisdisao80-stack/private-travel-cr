@@ -153,7 +153,8 @@ The most common onward connections, with one-click booking:
 - **[Manuel Antonio → La Fortuna](/private-shuttle/manuel-antonio-quepos-to-la-fortuna)** (5.5 hours)
 - **[Manuel Antonio → Monteverde](/private-shuttle/manuel-antonio-quepos-to-monteverde)** (4 hours)
 - **[Manuel Antonio → Tamarindo](/private-shuttle/manuel-antonio-quepos-to-tamarindo)** (6 hours)
-- **[Manuel Antonio → Uvita](/private-shuttle/manuel-antonio-quepos-to-uvita)** (1 hour)
+- **[Manuel Antonio → Jacó](/private-shuttle/manuel-antonio-quepos-to-jaco)** (1.5 hours)
+- **[Manuel Antonio → Santa Teresa](/private-shuttle/manuel-antonio-quepos-to-santa-teresa)** (5 hours)
 
 ## Frequently asked questions
 

@@ -94,7 +94,7 @@ You arrive at SJO and leave from SJO. The route forms a loop down the country an
 
 **Private shuttle Manuel Antonio to SJO (3h).** Plan to arrive at the airport 2.5 hours before international flights.
 
-[See Manuel Antonio to SJO shuttle →](/private-shuttle/manuel-antonio-to-sjo)
+[See Manuel Antonio to SJO shuttle →](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport)
 
 ## Total cost estimate (for 2 people)
 

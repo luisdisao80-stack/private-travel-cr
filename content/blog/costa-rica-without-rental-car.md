@@ -50,9 +50,9 @@ The honest comparison, based on a typical 7-day couple's trip:
 - **Total: $855–925 USD**
 
 **Option B — Private shuttles (couple, 3 transfers + 2 day-tours):**
-- SJO → La Fortuna: $220
-- La Fortuna → Manuel Antonio: $330
-- Manuel Antonio → SJO: $220
+- [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna): $220
+- [La Fortuna → Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio): $330
+- [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport): $220
 - 2 local day trips by Uber/taxi (~$40 each): $80
 - **Total: $850 USD**
 
@@ -62,7 +62,7 @@ The honest comparison, based on a typical 7-day couple's trip:
 
 **No.** Manuel Antonio is the easiest "no-rental" destination in Costa Rica. The town is small, the national park is walkable from most hotels, restaurants are clustered along one main road, and Uber + taxis cover everything else.
 
-If you arrive on a private shuttle from SJO ($220 for the whole vehicle), spend 3 nights walking everywhere or taking $5 Uber rides between the beach, your hotel, and dinner, then shuttle out to your next destination — you'll have spent about $260 less than a 4-day SUV rental.
+If you arrive on a [private shuttle from SJO to Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) ($220 for the whole vehicle), spend 3 nights walking everywhere or taking $5 Uber rides between the beach, your hotel, and dinner, then shuttle out to your next destination — you'll have spent about $260 less than a 4-day SUV rental.
 
 The only Manuel Antonio scenario where a rental makes sense: you want to do daily side trips to remote beaches (Playa Biesanz, Playa Espadilla Sur, Quepos waterfalls) without arranging tours.
 
@@ -101,8 +101,8 @@ We're going to use our own pricing because it's what we know. Other operators ar
 For a typical 7-night itinerary — **SJO → La Fortuna → Monteverde → Manuel Antonio → SJO** — here's the shuttle math:
 
 - [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna): ~$220 (up to 5 passengers, door-to-door, ~3 hours)
-- [La Fortuna → Monteverde](/routes/la-fortuna-to-monteverde): ~$255 (~3.5 hours via Cañas)
-- [Monteverde → Manuel Antonio](/routes/monteverde-to-manuel-antonio): ~$310 (~5 hours)
+- [La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde): ~$255 (~3.5 hours via Cañas)
+- [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio): ~$310 (~5 hours)
 - [Manuel Antonio → SJO](/routes/manuel-antonio-quepos-to-san-jose-downtown): ~$220 (~3 hours)
 
 **Total: about $1,005 for the whole trip**, regardless of whether you're 2 people or 5.
@@ -132,11 +132,11 @@ Here's a real, bookable itinerary using only private shuttles and walking. No re
 
 **Day 2 — La Fortuna.** Volcano hike + hot springs. Tour pickup is from your hotel lobby — every tour operator in town includes round-trip transfers as standard. [Our La Fortuna travel guide](/blog/la-fortuna-travel-guide) has the full play-by-play.
 
-**Day 3 — Transfer to Monteverde.** [La Fortuna → Monteverde](/routes/la-fortuna-to-monteverde) takes about 3.5 hours via Cañas (paved road since 2020). Or upgrade to the jeep-boat-jeep across Lake Arenal — same price for groups of 4+, more scenic.
+**Day 3 — Transfer to Monteverde.** [La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde) takes about 3.5 hours via Cañas (paved road since 2020). Or upgrade to the jeep-boat-jeep across Lake Arenal — same price for groups of 4+, more scenic.
 
 **Day 4 — Monteverde.** Cloud forest + hanging bridges. Again, every tour includes hotel pickup. The Monteverde road is the one road in Costa Rica I most strongly recommend *not* driving yourself in a rental.
 
-**Day 5 — Transfer to Manuel Antonio.** [Monteverde → Manuel Antonio](/routes/monteverde-to-manuel-antonio) is about 5 hours but mostly downhill. Arrive in time for sunset on the beach.
+**Day 5 — Transfer to Manuel Antonio.** [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) is about 5 hours but mostly downhill. Arrive in time for sunset on the beach.
 
 **Day 6 — Manuel Antonio National Park.** The park entrance is a 5-minute Uber from any hotel (~$3–5). Or walk if you're staying at a beachfront hotel. No car needed; you'd just pay $15 for parking and walk to the same entrance anyway.
 

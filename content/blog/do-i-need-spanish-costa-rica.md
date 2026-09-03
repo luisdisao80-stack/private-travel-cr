@@ -173,4 +173,11 @@ No. Most highway signs are universal symbols. Distances are in kilometers.
 
 We handle the pickup, the driving, and the Spanish so you don't have to. Every driver bilingual, every shuttle door-to-door.
 
+The airport pickups where having a bilingual driver matters most:
+
+- **[SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna)**
+- **[SJO Airport → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio)**
+- **[SJO Airport → Monteverde](/private-shuttle/sjo-to-monteverde)**
+- **[LIR Airport → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo)**
+
 [See all our shuttle routes →](/routes)

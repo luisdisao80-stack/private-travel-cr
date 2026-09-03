@@ -23,7 +23,7 @@ Here are your four real options.
 - **Cons:** Pricier per person if you're solo or a couple.
 - **Best for:** Families, couples who want a stress-free start, groups of 4+.
 
-[See our private shuttle from LIR to Tamarindo →](/private-shuttle/lir-to-tamarindo)
+[See our private shuttle from LIR to Tamarindo →](/private-shuttle/lir-liberia-int-airport-to-tamarindo)
 
 ## 2. Shared shuttle van (~$30–45 USD per person)
 
@@ -67,9 +67,9 @@ If you're **renting in Tamarindo for 5+ days and want to explore other beaches**
 
 Most travelers who land in Liberia don't stop at Tamarindo — they pair beach days with the Arenal Volcano. Two ways to build it:
 
-- **Beach first, volcano second:** Do your Tamarindo days, then take a [private shuttle from Tamarindo to La Fortuna](/private-shuttle/la-fortuna-to-tamarindo) (about 3h30). It's the same route in reverse and one of our most-booked connections.
+- **Beach first, volcano second:** Do your Tamarindo days, then take a [private shuttle from Tamarindo to La Fortuna](/private-shuttle/tamarindo-to-la-fortuna) (about 3h30). It's the same route in reverse and one of our most-booked connections.
 - **Volcano first:** Go straight from the airport with our [Liberia Airport to La Fortuna shuttle](/private-shuttle/lir-to-la-fortuna) (about 2h45), then loop back to the Guanacaste beaches afterward.
 
 Either way you skip the rental-car paperwork on arrival day and travel door-to-door.
 
-[Book your LIR to Tamarindo shuttle →](/private-shuttle/lir-to-tamarindo)
+[Book your LIR to Tamarindo shuttle →](/private-shuttle/lir-liberia-int-airport-to-tamarindo)

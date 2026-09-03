@@ -17,13 +17,13 @@ The 80/20 of Costa Rica honeymoons is **3–4 nights in La Fortuna** (volcano + 
 
 ### Sample 7-night honeymoon itinerary
 
-**Day 1:** Land at SJO. Private shuttle to La Fortuna (3h). Check into a hot springs hotel — Tabacón, Nayara Springs, or The Springs. Welcome dinner.
+**Day 1:** Land at SJO. [Private shuttle to La Fortuna](/private-shuttle/sjo-to-la-fortuna) (3h). Check into a hot springs hotel — Tabacón, Nayara Springs, or The Springs. Welcome dinner.
 
 **Day 2:** Morning at hot springs. Afternoon Arenal volcano hike + La Fortuna waterfall.
 
 **Day 3:** Mistico Hanging Bridges in the morning. Spa or pool in the afternoon. Dinner at Don Rufino (the best restaurant in La Fortuna).
 
-**Day 4:** Private shuttle La Fortuna to Manuel Antonio (4–5h). Stop on the way for lunch at Tárcoles (crocodile bridge). Check into beachfront hotel.
+**Day 4:** Private shuttle [La Fortuna to Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) (4–5h). Stop on the way for lunch at Tárcoles (crocodile bridge). Check into beachfront hotel.
 
 **Day 5:** Manuel Antonio National Park — guided tour. Beach in the afternoon.
 
@@ -31,16 +31,16 @@ The 80/20 of Costa Rica honeymoons is **3–4 nights in La Fortuna** (volcano + 
 
 **Day 7:** Beach morning, spa afternoon. Last dinner at Ronny's Place (sunset view).
 
-**Day 8:** Private shuttle to SJO airport (3h). Fly home.
+**Day 8:** Private shuttle [Manuel Antonio to SJO airport](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) (3h). Fly home.
 
 ## The "best of CR" 10-day honeymoon
 
 If you have 10 days, add **Monteverde** between La Fortuna and Manuel Antonio. Cloud forest, hanging bridges, zip lining, and incredible night walks. Adds variety without too much logistics.
 
-**Days 1–4:** SJO → La Fortuna (volcano + hot springs).
-**Days 4–6:** La Fortuna → Monteverde (cloud forest).
-**Days 6–9:** Monteverde → Manuel Antonio (beach).
-**Day 10:** Manuel Antonio → SJO.
+**Days 1–4:** [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna) (volcano + hot springs).
+**Days 4–6:** [La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde) (cloud forest).
+**Days 6–9:** [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) (beach).
+**Day 10:** [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport).
 
 ## The "remote luxury" 8-day honeymoon
 

@@ -253,6 +253,64 @@
   margin: 2rem 0;
 }
 
+/* ------------------------------------------------------------
+   Tablas del blog
+   ------------------------------------------------------------
+   Hasta ahora acá no había NADA de tablas, y no era un olvido:
+   remark corría sin `remark-gfm`, así que las tablas del markdown
+   nunca llegaban a ser <table> — salían como un párrafo de barritas
+   ("La Fortuna | $220 | 3 h |"). Al activar gfm en lib/blog.ts
+   aparecen 21 tablas reales que sin estas reglas heredarían el
+   estilo por defecto del navegador: texto negro sobre fondo negro.
+
+   El wrapper con overflow-x va en <table> y no en un div porque el
+   HTML lo genera remark y no podemos meterle un contenedor; por eso
+   `display: block` — es lo que permite scrollear la tabla de precios
+   en un teléfono sin romper el ancho de la columna de texto.
+   ------------------------------------------------------------ */
+.blog-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  margin: 1.75rem 0;
+}
+
+.blog-content thead {
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.blog-content th {
+  color: rgb(255 255 255);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+  white-space: nowrap;
+}
+
+.blog-content td {
+  color: rgb(209 213 219);
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* La primera columna es el nombre de la ruta y es la que lleva el
+   enlace: si se parte en dos líneas la tabla de precios se vuelve
+   ilegible en móvil. */
+.blog-content td:first-child {
+  white-space: nowrap;
+}
+
+.blog-content tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.blog-content tbody tr:hover {
+  background: rgba(245, 158, 11, 0.04);
+}
+
 /* ============================================================
    Scroll reveal — reemplazo CSS de framer-motion `whileInView`
    ============================================================

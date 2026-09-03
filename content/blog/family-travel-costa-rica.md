@@ -44,15 +44,16 @@ After years of doing family transfers, our ranking:
 The transfers your kids will tolerate (and the ones they won't):
 
 **Kid-friendly transfers (under 3 hours, mostly paved):**
-- SJO to La Fortuna (3h, paved highway + mountain road)
-- LIR to Tamarindo (1h15min, all paved highway)
-- LIR to La Fortuna (3h, mostly paved)
+- [SJO to La Fortuna](/private-shuttle/sjo-to-la-fortuna) (3h, paved highway + mountain road)
+- [LIR to Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) (1h15min, all paved highway)
+- [LIR to La Fortuna](/private-shuttle/lir-to-la-fortuna) (3h, mostly paved)
+- [SJO to Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) (3h, coastal highway — the easiest beach run)
 - San José city to nearby attractions (1–2h)
 
 **Harder transfers with kids (mountains, longer):**
-- La Fortuna to Manuel Antonio (4–5h)
-- La Fortuna to Monteverde (3.5h, includes bumpy section)
-- Anywhere to/from Drake Bay or Puerto Viejo (5+ hours)
+- [La Fortuna to Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) (4–5h)
+- [La Fortuna to Monteverde](/private-shuttle/la-fortuna-to-monteverde) (3.5h, includes bumpy section)
+- Anywhere to/from Drake Bay or [Puerto Viejo](/private-shuttle/sjo-to-puerto-viejo) (5+ hours)
 
 **For longer transfers**, our drivers usually recommend a snack/bathroom stop at a Soda (Costa Rican family restaurant) along the way. Mention it when you book — we know which ones are clean and quick.
 
