@@ -197,6 +197,7 @@ export default async function BlogPostPage({
         url={canonicalUrl}
         image={post.image}
         datePublished={post.date}
+        dateModified={post.updated}
         authorName={post.author}
       />
       {howToSteps.length > 0 && (

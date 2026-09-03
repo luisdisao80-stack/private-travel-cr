@@ -112,7 +112,7 @@ export default async function RoutePage({ params }: Props) {
   }
 
   const [related, destinationHotels] = await Promise.all([
-    getRelatedRoutes(route.origen, slug, 4),
+    getRelatedRoutes(route, 4),
     getHotelsByArea(route.destino, 6),
   ]);
   const relatedArticles = getRelatedArticles(

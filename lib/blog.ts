@@ -12,6 +12,14 @@ export interface BlogPostMeta {
   title: string;
   description: string;
   date: string;
+  /**
+   * Fecha del último cambio real de contenido, si lo hubo. Va aparte de `date`
+   * porque `date` es cuándo se publicó y no se debe mover: cambiarla haría que
+   * el artículo salte al principio del listado cada vez que se corrige una
+   * coma. El sitemap manda `updated || date` como lastmod, así que ponerla es
+   * lo que hace que Google note que el artículo cambió.
+   */
+  updated?: string;
   author: string;
   category: string;
   readTime: number;
@@ -49,6 +57,7 @@ export function getAllPosts(): BlogPostMeta[] {
         title: data.title || "",
         description: data.description || "",
         date: data.date || "",
+        updated: data.updated || undefined,
         author: data.author || "Private Travel CR",
         category: data.category || "Travel",
         readTime: data.readTime || 5,
@@ -89,6 +98,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     title: data.title || "",
     description: data.description || "",
     date: data.date || "",
+    updated: data.updated || undefined,
     author: data.author || "Private Travel CR",
     category: data.category || "Travel",
     readTime: data.readTime || 5,

@@ -2,6 +2,7 @@
 title: "Family Travel in Costa Rica: A Practical Guide for Parents"
 description: "Everything you actually need to know about traveling Costa Rica with kids — car seats, safest destinations, kid-friendly hotels, what to pack, and which routes work best with little ones."
 date: "2026-05-29"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Family Travel"
 readTime: 8

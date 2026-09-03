@@ -2,6 +2,7 @@
 title: "Honeymoon in Costa Rica: The Best Routes, Hotels, and Itineraries"
 description: "An honest honeymoon guide to Costa Rica — where to go, where to stay, the best 7-day and 10-day itineraries, and how to make the transfers feel romantic instead of exhausting."
 date: "2026-05-29"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Travel Guide"
 readTime: 9

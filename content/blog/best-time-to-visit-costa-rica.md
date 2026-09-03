@@ -2,6 +2,7 @@
 title: "When to Visit Costa Rica: A Month-by-Month Local's Guide"
 description: "Dry season vs green season, what each region looks like in every month, the holiday weeks to avoid (or chase), and the best times for whales, turtles, and surf."
 date: "2026-05-14"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 7

@@ -2,6 +2,7 @@
 title: "Costa Rica in 7 Days: The Itinerary We'd Pick (After Driving 1,000+ Travelers)"
 description: "A realistic 7-day Costa Rica itinerary covering volcano, cloud forest, and beach — with exact transfer times, where to stay, and how to avoid burning out."
 date: "2026-05-29"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Travel Guide"
 readTime: 8
