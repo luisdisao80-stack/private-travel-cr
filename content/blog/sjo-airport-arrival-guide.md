@@ -69,11 +69,13 @@ For our shuttles, your driver has your flight number and is tracking your arriva
 SJO is in Alajuela, about 20 minutes from downtown San José. From here:
 
 - **San José hotels:** ~20 min
-- **La Fortuna / Arenal:** ~3 hours
-- **Manuel Antonio:** ~3 hours
-- **Tamarindo / Guanacaste:** ~5 hours
-- **Monteverde:** ~3 hours 30 min
-- **Puerto Viejo (Caribbean):** ~4 hours 30 min
+- **[La Fortuna / Arenal](/private-shuttle/sjo-to-la-fortuna):** ~3 hours
+- **[Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio):** ~3 hours
+- **[Tamarindo / Guanacaste](/private-shuttle/sjo-to-tamarindo):** ~5 hours
+- **[Monteverde](/private-shuttle/sjo-to-monteverde):** ~3 hours 30 min
+- **[Puerto Viejo (Caribbean)](/private-shuttle/sjo-to-puerto-viejo):** ~4 hours 30 min
+- **[Jacó](/private-shuttle/sjo-juan-santamaria-int-airport-to-jaco):** ~1 hour 30 min
+- **[Santa Teresa](/private-shuttle/sjo-juan-santamaria-int-airport-to-santa-teresa):** ~5 hours
 
 If you're flying into the country's other airport — Daniel Oduber International (LIR) in Liberia — the process is similar but smaller and faster. LIR is closer to the Guanacaste beach towns.
 
@@ -84,3 +86,5 @@ Late flight? Lost bag? Sudden change of plans? **Message us on WhatsApp before y
 ---
 
 If you're flying into SJO and want to skip the hassle of the arrival hall, [book a private shuttle](/routes) and we'll handle everything from the moment you clear customs to the moment you check into your hotel.
+
+The three pickups we do most from SJO arrivals: [SJO → La Fortuna ($220)](/private-shuttle/sjo-to-la-fortuna), [SJO → Manuel Antonio ($220)](/private-shuttle/sjo-to-manuel-antonio), and [SJO → Monteverde ($220)](/private-shuttle/sjo-to-monteverde).

@@ -34,14 +34,14 @@ Most travelers end up using a combination of 2–3 of these on a single trip. He
 
 | Route | 1–5 pax | 6–9 pax | Time |
 |---|---|---|---|
-| SJO → La Fortuna | $220 | $275 | 3 h |
-| SJO → Manuel Antonio | $220 | $275 | 3 h |
-| SJO → Monteverde | $220 | $265 | 4 h |
-| SJO → Tamarindo | $345 | $390 | 5 h |
-| LIR → Tamarindo | $135 | $175 | 1 h 15 min |
-| LIR → La Fortuna | $225 | $280 | 3 h |
-| La Fortuna ↔ Monteverde | $255 | $300 | 3 h |
-| La Fortuna ↔ Manuel Antonio | $330 | $375 | 4 h 30 min |
+| [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna) | $220 | $275 | 3 h |
+| [SJO → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | $220 | $275 | 3 h |
+| [SJO → Monteverde](/private-shuttle/sjo-to-monteverde) | $220 | $265 | 4 h |
+| [SJO → Tamarindo](/private-shuttle/sjo-to-tamarindo) | $345 | $390 | 5 h |
+| [LIR → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | $135 | $175 | 1 h 15 min |
+| [LIR → La Fortuna](/private-shuttle/lir-to-la-fortuna) | $225 | $280 | 3 h |
+| [La Fortuna ↔ Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 | $300 | 3 h |
+| [La Fortuna ↔ Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) | $330 | $375 | 4 h 30 min |
 
 **Pros:**
 - Door-to-door — no lugging bags through bus terminals.
@@ -223,5 +223,12 @@ Rental cars should be booked **2–3 weeks in advance** for high season because 
 4. **Build buffer into airport days.** If your shuttle is 3 hours and your flight is at 10 am, depart at 6 am, not 7 am.
 
 ---
+
+The four legs of the classic loop, with live prices on each page:
+
+- **[SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna)** — 3 h
+- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** — 3 h
+- **[Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio)** — 4 h
+- **[Manuel Antonio → SJO Airport](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport)** — 3 h
 
 Want a private shuttle quote? [See all our routes →](/routes) or [book directly →](/book). Replies on WhatsApp in under 5 minutes during business hours.

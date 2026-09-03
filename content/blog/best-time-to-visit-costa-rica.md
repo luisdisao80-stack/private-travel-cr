@@ -107,4 +107,14 @@ Honest local pick for a first visit: **late November or mid-May**. Both let you 
 
 ---
 
-Whatever month you choose, the drive between the airport and your hotel is the start of your trip — we can make it part of the experience. [See our private shuttle routes →](/routes)
+Whatever month you choose, the drive between the airport and your hotel is the start of your trip — we can make it part of the experience.
+
+The transfers we run most, in every month of the year:
+
+- **[SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna)** — volcano and hot springs, 3 h
+- **[SJO Airport → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio)** — beach and national park, 3 h
+- **[SJO Airport → Monteverde](/private-shuttle/sjo-to-monteverde)** — cloud forest, best Dec–Apr
+- **[LIR Airport → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo)** — Guanacaste beaches, 1 h 15
+- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** — the classic connector, 3 h
+
+[See our private shuttle routes →](/routes)

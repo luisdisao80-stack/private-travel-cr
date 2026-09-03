@@ -27,15 +27,15 @@ To visualize it: open Google Maps, search "Tamarindo Costa Rica", and you'll see
 
 We drive guests to Tamarindo from every major hub. Here's the honest breakdown:
 
-**From LIR (Liberia airport).** The default option. About 1 hour 15 minutes door-to-door on paved roads through Filadelfia and Santa Cruz. [Private LIR → Tamarindo shuttle](/routes/lir-liberia-int-airport-to-tamarindo) is the no-stress version — your driver meets you with a sign, the car seat is already installed if you asked for one, and you're at your hotel before your phone finishes downloading the Costa Rica weather forecast.
+**From LIR (Liberia airport).** The default option. About 1 hour 15 minutes door-to-door on paved roads through Filadelfia and Santa Cruz. [Private LIR → Tamarindo shuttle](/private-shuttle/lir-liberia-int-airport-to-tamarindo) is the no-stress version — your driver meets you with a sign, the car seat is already installed if you asked for one, and you're at your hotel before your phone finishes downloading the Costa Rica weather forecast.
 
-**From SJO (San José airport).** A long day — 4.5 to 5 hours depending on traffic crossing the Río Tempisque bridge. Most guests who fly into SJO break the trip with a stop (more on that below). If you're going direct, [SJO → Tamarindo](/routes/sjo-to-tamarindo) is a comfortable private shuttle with one bathroom stop and Wi-Fi onboard.
+**From SJO (San José airport).** A long day — 4.5 to 5 hours depending on traffic crossing the Río Tempisque bridge. Most guests who fly into SJO break the trip with a stop (more on that below). If you're going direct, [SJO → Tamarindo](/private-shuttle/sjo-to-tamarindo) is a comfortable private shuttle with one bathroom stop and Wi-Fi onboard.
 
 **From La Fortuna.** Around 4 hours via Cañas. This is a popular combo: people do volcano first, then beach. [La Fortuna → Tamarindo](/private-shuttle/la-fortuna-to-tamarindo) is one of our most-booked Pacific transfers.
 
-**From Monteverde.** About 3.5 hours descending from the cloud forest to sea level via the new Cañas road. [Monteverde → Tamarindo](/routes/monteverde-to-tamarindo) — most guests appreciate the silence after a few foggy mornings up in the mountains.
+**From Monteverde.** About 3.5 hours descending from the cloud forest to sea level via the new Cañas road. [Monteverde → Tamarindo](/private-shuttle/monteverde-to-tamarindo) — most guests appreciate the silence after a few foggy mornings up in the mountains.
 
-**From Manuel Antonio.** A long inland drive, about 5 hours, crossing the country from the South Pacific to the North Pacific. [Manuel Antonio → Tamarindo](/routes/manuel-antonio-quepos-to-tamarindo) — usually booked by guests who want to sample both coastlines in one trip.
+**From Manuel Antonio.** A long inland drive, about 5 hours, crossing the country from the South Pacific to the North Pacific. [Manuel Antonio → Tamarindo](/private-shuttle/manuel-antonio-quepos-to-tamarindo) — usually booked by guests who want to sample both coastlines in one trip.
 
 The rental car alternative looks cheaper on paper, but most travelers don't actually want to drive 4–5 hours after an overnight flight, navigate Costa Rica's signage (which is sparse), and pay 2026 insurance prices on top.
 
@@ -140,7 +140,7 @@ If you have 4+ nights, the day-trip menu is excellent:
 - **Rincón de la Vieja National Park** — active volcano, hot springs, hanging bridges. 2 hours away by private shuttle. [Rincón de la Vieja → Tamarindo](/routes/rincon-de-la-vieja-to-tamarindo) is one of our most-requested round-trips out of the beach.
 - **Río Celeste waterfall** — the impossibly turquoise waterfall in the rainforest. 2.5 hours each way, so it's a long day, but the photos are unbeatable.
 - **Palo Verde National Park** — a slow-boat wildlife cruise on the Tempisque River. Crocodiles, monkeys, and 300+ bird species. Great for families.
-- **Arenal Volcano (La Fortuna) overnight** — if you started in Tamarindo and didn't see the volcano yet, a 2-night side trip is doable. [Tamarindo → La Fortuna](/routes/tamarindo-to-la-fortuna) takes about 4 hours.
+- **Arenal Volcano (La Fortuna) overnight** — if you started in Tamarindo and didn't see the volcano yet, a 2-night side trip is doable. [Tamarindo → La Fortuna](/private-shuttle/tamarindo-to-la-fortuna) takes about 4 hours.
 
 ## Practical info
 
@@ -164,14 +164,14 @@ If you have 4+ nights, the day-trip menu is excellent:
 
 ## Onward connections
 
-Most travelers fly home from LIR after Tamarindo: [Tamarindo → LIR](/routes/tamarindo-to-lir-liberia-int-airport) takes the same 1h15 as the inbound. If you're connecting onward in Costa Rica, our most-booked outbound combos are:
+Most travelers fly home from LIR after Tamarindo: [Tamarindo → LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) takes the same 1h15 as the inbound. If you're connecting onward in Costa Rica, our most-booked outbound combos are:
 
-- [Tamarindo → La Fortuna](/routes/tamarindo-to-la-fortuna) — about 4 hours, volcano-and-hot-springs combo
-- [Tamarindo → Monteverde](/routes/tamarindo-to-monteverde) — about 3.5 hours, beach-to-cloud-forest classic
-- [Tamarindo → Manuel Antonio](/routes/tamarindo-to-manuel-antonio-quepos) — about 5 hours, second beach + national park
-- [Tamarindo → SJO](/routes/tamarindo-to-sjo-juan-santamaria-int-airport) — the long airport day, about 5 hours
+- [Tamarindo → La Fortuna](/private-shuttle/tamarindo-to-la-fortuna) — about 4 hours, volcano-and-hot-springs combo
+- [Tamarindo → Monteverde](/private-shuttle/tamarindo-to-monteverde) — about 3.5 hours, beach-to-cloud-forest classic
+- [Tamarindo → Manuel Antonio](/private-shuttle/tamarindo-to-manuel-antonio-quepos) — about 5 hours, second beach + national park
+- [Tamarindo → SJO](/private-shuttle/tamarindo-to-sjo-juan-santamaria-int-airport) — the long airport day, about 5 hours
 
-For travelers with extra time, [Tamarindo → Santa Teresa](/routes/tamarindo-to-santa-teresa) (about 5 hours with ferry) is the boho-yoga-surf upgrade — quieter, hipper, and pricier than Tamarindo itself.
+For travelers with extra time, [Tamarindo → Santa Teresa](/private-shuttle/tamarindo-to-santa-teresa) (about 5 hours with ferry) is the boho-yoga-surf upgrade — quieter, hipper, and pricier than Tamarindo itself.
 
 ## FAQ
 

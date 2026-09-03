@@ -90,7 +90,7 @@ If your trip is **mostly beach + relaxation**, Mexico's Caribbean has the edge. 
 
 ## Ease of travel
 
-Costa Rica is small (about the size of West Virginia). You can see **3–4 totally different ecosystems in one week** without flying. The shuttle from SJO to La Fortuna is 3 hours. La Fortuna to Manuel Antonio is 4 hours. Liberia to Tamarindo is 1 hour. Distances are manageable.
+Costa Rica is small (about the size of West Virginia). You can see **3–4 totally different ecosystems in one week** without flying. The shuttle from [SJO to La Fortuna](/private-shuttle/sjo-to-la-fortuna) is 3 hours. [La Fortuna to Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) is 4 hours. [Liberia to Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) is 1 hour. Distances are manageable.
 
 Mexico is **huge** (about 18x the size of Costa Rica). Cancún to Mexico City is a 2.5-hour flight. Mexico City to Oaxaca is another hour. To see "Mexico" properly you have to fly a lot, or pick one region and stay there.
 
@@ -205,6 +205,13 @@ Costa Rica is safer for solo travelers; Mexico has more nightlife scene (especia
 ---
 
 If you've landed on Costa Rica, the rest of your planning gets easier — fly into SJO or LIR, pick a region or two, and let a private driver handle the in-country roads so you can focus on monkeys and waterfalls instead of mountain switchbacks.
+
+The four legs almost every first-timer ends up booking:
+
+- **[SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna)** (3 hours, the Arenal volcano base)
+- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** (3 hours, cloud forest)
+- **[SJO Airport → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio)** (3 hours, jungle beach)
+- **[LIR Airport → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo)** (1 hour, Guanacaste beaches)
 
 We're a family-run shuttle company based in La Fortuna. Every transfer is one flat price **per vehicle** (not per person), door-to-door, with flight tracking and free child seats included — and Diego answers every WhatsApp personally, usually in under 5 minutes.
 

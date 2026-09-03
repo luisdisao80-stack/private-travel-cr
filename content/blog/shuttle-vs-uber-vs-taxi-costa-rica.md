@@ -53,7 +53,7 @@ A door-to-door private vehicle (van or SUV) with a professional bilingual driver
 
 - **Where it works:** Anywhere in Costa Rica. We've driven shuttles from SJO to Puerto Viejo, LIR to Drake Bay, La Fortuna to Tortuguero — anywhere with a road.
 - **Airport use:** Yes, including SJO and LIR. Drivers wait inside arrivals with a sign with your name. Flight tracking included.
-- **Cost:** Fixed in advance, no surge pricing. SJO to La Fortuna $220 USD for the whole vehicle (up to 5 people; larger vans available). LIR to Tamarindo $135 USD. La Fortuna to Manuel Antonio $330 USD.
+- **Cost:** Fixed in advance, no surge pricing. [SJO to La Fortuna $220 USD](/private-shuttle/sjo-to-la-fortuna) for the whole vehicle (up to 5 people; larger vans available). [LIR to Tamarindo $135 USD](/private-shuttle/lir-liberia-int-airport-to-tamarindo). [La Fortuna to Manuel Antonio $330 USD](/private-shuttle/la-fortuna-to-manuel-antonio).
 - **Reliability:** High when booked with a licensed operator. The vehicle is guaranteed, the driver speaks English, child seats and WiFi included.
 
 **When to use a private shuttle:**
@@ -83,8 +83,8 @@ A door-to-door private vehicle (van or SUV) with a professional bilingual driver
 
 ## The Bottom Line
 
-- **Going from an airport to your destination?** → Private shuttle.
-- **Moving between destinations (La Fortuna, Monteverde, Manuel Antonio, etc.)?** → Private shuttle.
+- **Going from an airport to your destination?** → Private shuttle. ([SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna), [SJO → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio), [LIR → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo).)
+- **Moving between destinations (La Fortuna, Monteverde, Manuel Antonio, etc.)?** → Private shuttle. ([La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde), [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio).)
 - **Short ride inside San José?** → Uber.
 - **Short ride inside any other city or town?** → Taxi.
 - **You're solo or backpacking?** → Mix shared shuttles and taxis.

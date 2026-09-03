@@ -21,14 +21,14 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 
 | Destination | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| La Fortuna (Arenal) | **$220** | $275 | 3 h |
-| Manuel Antonio | **$220** | $275 | 3 h |
-| Monteverde | **$220** | $265 | 4 h |
-| Jacó | **$175** | $190 | 1 h 30 min |
-| Tamarindo | **$345** | $390 | 5 h |
-| Santa Teresa | **$375** | $420 | 5 h |
-| Puerto Viejo (Caribbean) | **$320** | $365 | 4 h 30 min |
-| Papagayo Peninsula | **$340** | $385 | 5 h |
+| [La Fortuna (Arenal)](/private-shuttle/sjo-to-la-fortuna) | **$220** | $275 | 3 h |
+| [Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | **$220** | $275 | 3 h |
+| [Monteverde](/private-shuttle/sjo-to-monteverde) | **$220** | $265 | 4 h |
+| [Jacó](/private-shuttle/sjo-juan-santamaria-int-airport-to-jaco) | **$175** | $190 | 1 h 30 min |
+| [Tamarindo](/private-shuttle/sjo-to-tamarindo) | **$345** | $390 | 5 h |
+| [Santa Teresa](/private-shuttle/sjo-juan-santamaria-int-airport-to-santa-teresa) | **$375** | $420 | 5 h |
+| [Puerto Viejo (Caribbean)](/private-shuttle/sjo-to-puerto-viejo) | **$320** | $365 | 4 h 30 min |
+| [Papagayo Peninsula](/private-shuttle/sjo-juan-santamaria-int-airport-to-papagayo-peninsula-guanacaste) | **$340** | $385 | 5 h |
 | Nosara | **$370** | $415 | 5 h |
 | Drake Bay | **$390** | $440 | 6 h |
 
@@ -36,29 +36,29 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 
 | Destination | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| Tamarindo | **$135** | $175 | 1 h 15 min |
-| Papagayo Peninsula | **$110** | $140 | 30 min |
-| Playa Conchal | **$135** | $175 | 1 h |
-| Playa Flamingo | **$135** | $175 | 1 h |
+| [Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | **$135** | $175 | 1 h 15 min |
+| [Papagayo Peninsula](/private-shuttle/lir-to-papagayo) | **$110** | $140 | 30 min |
+| [Playa Conchal](/private-shuttle/lir-liberia-int-airport-to-conchal) | **$135** | $175 | 1 h |
+| [Playa Flamingo](/private-shuttle/lir-liberia-int-airport-to-flamingo) | **$135** | $175 | 1 h |
 | Playa Hermosa | **$110** | $140 | 30 min |
-| La Fortuna | **$225** | $280 | 3 h |
-| Monteverde | **$230** | $275 | 3 h |
-| Santa Teresa | **$350** | $395 | 4 h |
+| [La Fortuna](/private-shuttle/lir-to-la-fortuna) | **$225** | $280 | 3 h |
+| [Monteverde](/private-shuttle/lir-to-monteverde) | **$230** | $275 | 3 h |
+| [Santa Teresa](/private-shuttle/lir-liberia-int-airport-to-santa-teresa) | **$350** | $395 | 4 h |
 | Nosara | **$240** | $285 | 2 h 30 min |
-| Manuel Antonio | **$375** | $420 | 5 h |
+| [Manuel Antonio](/private-shuttle/lir-liberia-int-airport-to-manuel-antonio-quepos) | **$375** | $420 | 5 h |
 
 ### Between popular destinations
 
 | Route | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| La Fortuna ↔ Monteverde | **$255** | $300 | 3 h |
-| La Fortuna ↔ Manuel Antonio | **$330** | $375 | 4 h 30 min |
-| La Fortuna ↔ Tamarindo | **$315** | $360 | 4 h 30 min |
-| La Fortuna ↔ Jacó | **$260** | $305 | 3 h 30 min |
-| La Fortuna ↔ Puerto Viejo | **$390** | $435 | 5 h |
-| Monteverde ↔ Manuel Antonio | **$310** | $355 | 4 h |
-| Monteverde ↔ Tamarindo | **$270** | $315 | 3 h 30 min |
-| Manuel Antonio ↔ Tamarindo | **$410** | $455 | 5 h |
+| [La Fortuna ↔ Monteverde](/private-shuttle/la-fortuna-to-monteverde) | **$255** | $300 | 3 h |
+| [La Fortuna ↔ Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) | **$330** | $375 | 4 h 30 min |
+| [La Fortuna ↔ Tamarindo](/private-shuttle/la-fortuna-to-tamarindo) | **$315** | $360 | 4 h 30 min |
+| [La Fortuna ↔ Jacó](/private-shuttle/la-fortuna-to-jaco) | **$260** | $305 | 3 h 30 min |
+| [La Fortuna ↔ Puerto Viejo](/private-shuttle/la-fortuna-to-puerto-viejo) | **$390** | $435 | 5 h |
+| [Monteverde ↔ Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) | **$310** | $355 | 4 h |
+| [Monteverde ↔ Tamarindo](/private-shuttle/monteverde-to-tamarindo) | **$270** | $315 | 3 h 30 min |
+| [Manuel Antonio ↔ Tamarindo](/private-shuttle/manuel-antonio-quepos-to-tamarindo) | **$410** | $455 | 5 h |
 | Manuel Antonio ↔ Uvita | **$180** | $195 | 1 h 30 min |
 
 (These are our 2026 published rates; competitors in the same quality tier are typically within $30–40 of these prices.)
@@ -191,10 +191,10 @@ For a classic 10-day Costa Rica trip (SJO → La Fortuna → Monteverde → Manu
 
 | Leg | Cost |
 |---|---|
-| SJO → La Fortuna | $220 |
-| La Fortuna → Monteverde | $255 |
-| Monteverde → Manuel Antonio | $310 |
-| Manuel Antonio → SJO | $220 |
+| [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna) | $220 |
+| [La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 |
+| [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) | $310 |
+| [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | $220 |
 | **Total** | **$1,005** |
 
 That's ~$250 per person for a family of 4 — for a stress-free, door-to-door private experience across the entire trip.

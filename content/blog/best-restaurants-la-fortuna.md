@@ -244,4 +244,11 @@ Yes, and the scene has gotten much better in the last five years. **Organico** a
 **Which La Fortuna restaurants have volcano views?**
 **Benedictus Steakhouse** is the gold standard — floor-to-ceiling windows facing Arenal. **Que Rico Arenal** has a similar view at a much lower price point. Both are a short drive out of the town center, toward El Castillo. The downtown restaurants don't have volcano views (the town sits below the volcano, with buildings in the way).
 
+Getting to La Fortuna in the first place — the two routes almost everyone takes:
+
+- **[SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna)** — 3 hours, $220 per vehicle
+- **[LIR Airport → La Fortuna](/private-shuttle/lir-to-la-fortuna)** — 3 hours, $225 per vehicle
+
+Already in the country? [Monteverde → La Fortuna](/private-shuttle/monteverde-to-la-fortuna), [Tamarindo → La Fortuna](/private-shuttle/tamarindo-to-la-fortuna), and [Manuel Antonio → La Fortuna](/private-shuttle/manuel-antonio-quepos-to-la-fortuna) are our most-booked inland connections.
+
 [Book a private shuttle to La Fortuna →](/routes)
