@@ -42,6 +42,12 @@ Most travelers end up using a combination of 2–3 of these on a single trip. He
 | [LIR → La Fortuna](/private-shuttle/lir-to-la-fortuna) | $225 | $280 | 3 h |
 | [La Fortuna ↔ Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 | $300 | 3 h |
 | [La Fortuna ↔ Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) | $330 | $375 | 4 h 30 min |
+| [La Fortuna → SJO](/private-shuttle/la-fortuna-to-sjo) | $220 | $275 | 3 h |
+| [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | $220 | $275 | 3 h |
+| [Tamarindo → LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) | $135 | $175 | 1 h 15 min |
+| [Papagayo → LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) | $110 | $140 | 30 min |
+
+The return legs are the same price as the outbound and they're the ones travelers book last. Reserve both at once — a departure-day scramble is how people end up paying $180 for a taxi they didn't need.
 
 **Pros:**
 - Door-to-door — no lugging bags through bus terminals.

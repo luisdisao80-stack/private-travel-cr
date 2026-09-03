@@ -79,7 +79,20 @@ SJO is in Alajuela, about 20 minutes from downtown San José. From here:
 
 If you're flying into the country's other airport — Daniel Oduber International (LIR) in Liberia — the process is similar but smaller and faster. LIR is closer to the Guanacaste beach towns.
 
-## 10. What to do if your plans change
+## 10. Departure day: the part nobody plans
+
+The flight home is where the timing actually bites, because there's no recovering from a missed international departure. Same routes, same prices, in reverse:
+
+- **[La Fortuna → SJO](/private-shuttle/la-fortuna-to-sjo):** $220, 3 hours
+- **[Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport):** $220, 3 hours
+- **[Monteverde → SJO](/private-shuttle/monteverde-to-sjo):** $220, 4 hours (first hour is gravel)
+- **[Jacó → SJO](/private-shuttle/jaco-to-sjo-juan-santamaria-int-airport):** $175, 1 hour 30 min
+- **[Puerto Viejo → SJO](/private-shuttle/puerto-viejo-to-sjo-juan-santamaria-int-airport):** $320, 4 hours 30 min
+- **[Tamarindo → SJO](/private-shuttle/tamarindo-to-sjo-juan-santamaria-int-airport):** $345, 5 hours
+
+SJO wants you there 3 hours before an international flight, and the drive in from anywhere north or west of the city hits San José morning traffic. From a 3-hour destination, we schedule the pickup **4 hours before departure** — that buffer is not padding, it's the traffic.
+
+## 11. What to do if your plans change
 
 Late flight? Lost bag? Sudden change of plans? **Message us on WhatsApp before you walk out of the airport.** We can rebook your pickup time, hold a driver, or rearrange a multi-stop trip on the fly. Most travelers don't realize this is possible until they're in trouble — we're a phone call away.
 

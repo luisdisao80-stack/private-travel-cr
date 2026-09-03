@@ -37,6 +37,11 @@ Long one. **About 6 hours, 320 km** down the entire Pacific coast. Most people w
 
 If your itinerary is Guanacaste → Manuel Antonio → fly out SJO, this works. If it's just Manuel Antonio, fly into SJO instead.
 
+### Going back to SJO
+[Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) is $220 and the same 3 hours — one of the two transfers we run most. Book it with your arrival.
+
+For an international flight, we schedule the pickup **4 hours before departure**: the coastal highway is easy, but entering the San José metro area in the morning can add 30–45 minutes that Google Maps won't warn you about. If your flight is late afternoon, tell the driver — the Tárcoles crocodile bridge and lunch in Atenas turn a dead travel day into one last stop.
+
 ### From La Fortuna
 **About 5.5 hours, 280 km** — the classic "rainforest to beach" travel day for travelers doing the Arenal + Pacific combo. Route goes through the central mountains, down to the coast at Orotina, then south on the Costanera.
 

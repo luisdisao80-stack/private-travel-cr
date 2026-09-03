@@ -37,9 +37,14 @@ Direct booking: [private shuttle from SJO to La Fortuna](/private-shuttle/sjo-to
 ### From LIR (Liberia Int. Airport — Guanacaste)
 **3 hours, 145 km**, via the Pan-American Highway south to Cañas, then Route 142 around Lake Arenal. The Lake Arenal stretch is one of the most beautiful drives in Costa Rica when the volcano is visible.
 
-LIR makes sense if you're combining La Fortuna with Guanacaste beaches (Tamarindo, Conchal, Papagayo) — saves you the back-and-forth.
+LIR makes sense if you're combining La Fortuna with Guanacaste beaches ([Tamarindo](/private-shuttle/la-fortuna-to-tamarindo), [Conchal](/private-shuttle/la-fortuna-to-conchal), [Papagayo](/private-shuttle/la-fortuna-to-papagayo)) — saves you the back-and-forth.
 
 Direct booking: [private shuttle from LIR to La Fortuna](/private-shuttle/lir-to-la-fortuna).
+
+### Going back to the airport
+Same drive, same price, and the one people book late. [La Fortuna → SJO](/private-shuttle/la-fortuna-to-sjo) is $220 and 3 hours; [La Fortuna → LIR](/private-shuttle/la-fortuna-to-lir) is $225 and 3 hours.
+
+The thing worth knowing: for a flight before 10 a.m. out of SJO you want a 4 or 5 a.m. pickup, because morning traffic entering the San José metro area adds 30–45 minutes that Google Maps won't show you. Most La Fortuna hotels will make you a breakfast box if you ask the night before.
 
 ### Driving yourself
 You can rent a car, but most travelers don't need to. Once you're in La Fortuna, attractions are mostly within a 30-minute radius and every hotel coordinates transport to tours. Renting just to drive 3 hours each way, pay for parking, and worry about insurance is a poor trade for most itineraries.
