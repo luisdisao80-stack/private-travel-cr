@@ -9,7 +9,7 @@ image: "/blog/lake-arenal-boat.jpg"
 imageAlt: "Boat crossing Lake Arenal between La Fortuna and Monteverde, Costa Rica"
 ---
 
-This is one of the most popular transfers in Costa Rica — and one of the most confusing for first-time visitors. La Fortuna and Monteverde are only **40 km apart as the crow flies**, but Lake Arenal sits between them. Driving around the lake takes **3 to 3.5 hours**. There's also a famous taxi-boat-taxi route that crosses the lake and takes about the same time but feels shorter because you break up the drive.
+This is one of the most popular transfers in Costa Rica — and one of the most confusing for first-time visitors. La Fortuna and Monteverde are only **40 km apart as the crow flies**, but Lake Arenal sits between them. Driving around the lake takes **about 3.5 hours**. There's also a famous taxi-boat-taxi route that crosses the lake and takes about the same time but feels shorter because you break up the drive.
 
 Here are your four options.
 
@@ -55,7 +55,7 @@ It's technically possible. Bus from La Fortuna to Tilarán (around the north sid
 
 ## Which one do we recommend?
 
-For most travelers (couples, families, anyone with 2+ days in Monteverde and limited time), **the private shuttle is the best value**. You spend 3 hours getting there, not 8, and you arrive ready to enjoy Monteverde rather than exhausted from logistics.
+For most travelers (couples, families, anyone with 2+ days in Monteverde and limited time), **the private shuttle is the best value**. You spend 3.5 hours getting there, not 8, and you arrive ready to enjoy Monteverde rather than exhausted from logistics.
 
 The taxi-boat-taxi is a fun option for adventurous solo/couple travelers. It's about the same time and adds the boat experience.
 

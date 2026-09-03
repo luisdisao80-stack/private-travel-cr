@@ -50,7 +50,7 @@ For couples who want fewer touristy spots and more wow-factor. This itinerary is
 
 **Days 4–6:** Private shuttle to Río Celeste / Bijagua area. Stay at Hacienda Sueño Azul or Río Celeste Hideaway. Almost no tourists. The Río Celeste river is unreal.
 
-**Days 7–8:** Private shuttle to Papagayo Peninsula (Andaz, Four Seasons, Secrets Papagayo). Beach + luxury hotel finale. If you skip Río Celeste, the direct [La Fortuna → Papagayo shuttle](/private-shuttle/la-fortuna-to-papagayo) is $285 and about 4.5 hours; flying home from Liberia afterwards, [Papagayo → LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) is $110 and the shortest airport run in the country.
+**Days 7–8:** Private shuttle to Papagayo Peninsula (Andaz, Four Seasons, Secrets Papagayo). Beach + luxury hotel finale. If you skip Río Celeste, the direct [La Fortuna → Papagayo shuttle](/private-shuttle/la-fortuna-to-papagayo) is $285 and about 3.5 hours; flying home from Liberia afterwards, [Papagayo → LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) is $110 and the shortest airport run in the country.
 
 Cost is higher but the photos are very different from everyone else's.
 

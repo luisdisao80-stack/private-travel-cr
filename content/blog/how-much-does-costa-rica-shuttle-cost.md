@@ -67,7 +67,7 @@ All prices below are for **1–5 passengers in a standard van** and include all 
 
 | From → To | 1–5 pax | Duration |
 |---|---|---|
-| La Fortuna ↔ Monteverde | $255 | 3h |
+| La Fortuna ↔ Monteverde | $255 | 3h30min |
 | La Fortuna ↔ Manuel Antonio | $330 | 4h30min |
 | La Fortuna ↔ Tamarindo | $315 | 4h30min |
 | La Fortuna ↔ Jacó | $260 | 3h30min |

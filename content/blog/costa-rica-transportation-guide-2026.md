@@ -40,7 +40,7 @@ Most travelers end up using a combination of 2–3 of these on a single trip. He
 | [SJO → Tamarindo](/private-shuttle/sjo-to-tamarindo) | $345 | $390 | 5 h |
 | [LIR → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | $135 | $175 | 1 h 15 min |
 | [LIR → La Fortuna](/private-shuttle/lir-to-la-fortuna) | $225 | $280 | 3 h |
-| [La Fortuna ↔ Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 | $300 | 3 h |
+| [La Fortuna ↔ Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 | $300 | 3.5 h |
 | [La Fortuna ↔ Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) | $330 | $375 | 4 h 30 min |
 | [La Fortuna → SJO](/private-shuttle/la-fortuna-to-sjo) | $220 | $275 | 3 h |
 | [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | $220 | $275 | 3 h |
@@ -233,7 +233,7 @@ Rental cars should be booked **2–3 weeks in advance** for high season because 
 The four legs of the classic loop, with live prices on each page:
 
 - **[SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna)** — 3 h
-- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** — 3 h
+- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** — 3.5 h
 - **[Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio)** — 4 h
 - **[Manuel Antonio → SJO Airport](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport)** — 3 h
 

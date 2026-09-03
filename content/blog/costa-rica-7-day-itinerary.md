@@ -50,7 +50,7 @@ You arrive at SJO and leave from SJO. The route forms a loop down the country an
 
 **Lunch and pack up.** Check out by noon.
 
-**Private shuttle La Fortuna to Monteverde (3 hours).** Around the lake on Route 142. Or take the taxi-boat-taxi option (also 3 hours, more scenic).
+**Private shuttle La Fortuna to Monteverde (3.5 hours).** Around the lake on Route 142. Or take the taxi-boat-taxi option (about 3 hours, more scenic).
 
 **Where to stay:** Hotel Belmar (boutique, sustainable, great restaurant) or Monteverde Lodge & Gardens.
 

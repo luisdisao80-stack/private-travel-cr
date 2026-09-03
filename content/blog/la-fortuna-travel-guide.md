@@ -157,7 +157,7 @@ If you have 4+ nights, these are the day trips that justify the time:
 
 The most common onward connections, with one-click booking:
 
-- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** (4 hours by road, or 3 hours via jeep-boat-jeep across Lake Arenal)
+- **[La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde)** (3.5 hours by road, or 3 hours via jeep-boat-jeep across Lake Arenal)
 - **[La Fortuna → Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio)** (5.5 hours)
 - **[La Fortuna → Tamarindo](/private-shuttle/la-fortuna-to-tamarindo)** (4.5 hours)
 - **[La Fortuna → SJO Airport](/private-shuttle/la-fortuna-to-sjo)** (3 hours)

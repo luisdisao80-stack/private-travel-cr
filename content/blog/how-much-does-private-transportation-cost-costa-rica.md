@@ -52,7 +52,7 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 
 | Route | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| [La Fortuna ↔ Monteverde](/private-shuttle/la-fortuna-to-monteverde) | **$255** | $300 | 3 h |
+| [La Fortuna ↔ Monteverde](/private-shuttle/la-fortuna-to-monteverde) | **$255** | $300 | 3.5 h |
 | [La Fortuna ↔ Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) | **$330** | $375 | 4 h 30 min |
 | [La Fortuna ↔ Tamarindo](/private-shuttle/la-fortuna-to-tamarindo) | **$315** | $360 | 4 h 30 min |
 | [La Fortuna ↔ Jacó](/private-shuttle/la-fortuna-to-jaco) | **$260** | $305 | 3 h 30 min |
@@ -60,7 +60,7 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 | [Monteverde ↔ Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) | **$310** | $355 | 4 h |
 | [Monteverde ↔ Tamarindo](/private-shuttle/monteverde-to-tamarindo) | **$270** | $315 | 3 h 30 min |
 | [Manuel Antonio ↔ Tamarindo](/private-shuttle/manuel-antonio-quepos-to-tamarindo) | **$410** | $455 | 5 h |
-| [La Fortuna ↔ Papagayo](/private-shuttle/la-fortuna-to-papagayo) | **$285** | $330 | 4 h 30 min |
+| [La Fortuna ↔ Papagayo](/private-shuttle/la-fortuna-to-papagayo) | **$285** | $330 | 3 h 30 min |
 | Manuel Antonio ↔ Uvita | **$180** | $195 | 1 h 30 min |
 
 ### Back to the airport (departure day)
