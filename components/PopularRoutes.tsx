@@ -1,41 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { Clock, ArrowRight, Sparkles, MapPin } from "lucide-react";
+import { Clock, ArrowRight, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 import Price from "@/components/Price";
+import type { HomeRoute } from "@/lib/routes-db";
 
-type Route = {
-  from: string;
-  to: string;
-  slug: string;
-  // Whether this slug lives under /private-shuttle/ (both endpoints popular)
-  // or /routes/ (long-tail). Matches the routing in app/sitemap.ts.
-  hub: "private-shuttle" | "routes";
-  priceFrom: number;
-  duration: string;
-  popular?: boolean;
-};
-
-// Slugs verificados contra data/migration/new-route-slugs.txt
-// Display prices for the home-page Popular Routes strip. These mirror the
-// DB precio1a6 column for the 8 most-booked pairs. The 3 SJO/LIR ↔ La
-// Fortuna + SJO ↔ Manuel Antonio routes are the "excluded" ones from the
-// 2026-05 +$10 catalog bump (operator-mandated), so their prices stayed
-// the same. The other 5 routes added $10.
-const popularRoutes: Route[] = [
-  { from: "San Jose Airport", to: "La Fortuna", slug: "sjo-to-la-fortuna", hub: "private-shuttle", priceFrom: 220, duration: "3h", popular: true },
-  { from: "Liberia Airport", to: "La Fortuna", slug: "lir-to-la-fortuna", hub: "private-shuttle", priceFrom: 225, duration: "3h", popular: true },
-  { from: "La Fortuna", to: "Monteverde", slug: "la-fortuna-to-monteverde", hub: "private-shuttle", priceFrom: 255, duration: "4h", popular: true },
-  { from: "La Fortuna", to: "Tamarindo", slug: "la-fortuna-to-tamarindo", hub: "private-shuttle", priceFrom: 315, duration: "4h 30min" },
-  { from: "La Fortuna", to: "Manuel Antonio", slug: "la-fortuna-to-manuel-antonio", hub: "private-shuttle", priceFrom: 330, duration: "5h 30min" },
-  { from: "San Jose Airport", to: "Manuel Antonio", slug: "sjo-to-manuel-antonio", hub: "private-shuttle", priceFrom: 220, duration: "3h" },
-  { from: "San Jose Airport", to: "Puerto Viejo", slug: "sjo-to-puerto-viejo", hub: "private-shuttle", priceFrom: 320, duration: "4h 30min" },
-  { from: "San Jose Airport", to: "Tamarindo", slug: "sjo-to-tamarindo", hub: "private-shuttle", priceFrom: 345, duration: "5h" },
-];
-
-export default function PopularRoutes() {
+/**
+ * Las rutas ya no viven acá.
+ *
+ * Estaban escritas a mano, con precio y duración copiados de la base. Copiar un
+ * dato garantiza que tarde o temprano se desactualiza: al corregir La Fortuna ↔
+ * Monteverde a 3,5 H, la página de la ruta pasó a decir 3,5 H y esta tarjeta
+ * siguió diciendo 4h — el sitio contradiciéndose solo. Ahora las manda la home
+ * desde getTopRoutesForHome(), que las lee de `routes`.
+ *
+ * También se fue el badge de "popular". Marcaba 3 de 8 tarjetas; ahora las 17
+ * son las que más venden, así que un badge en algunas no distingue nada.
+ */
+export default function PopularRoutes({ routes }: { routes: HomeRoute[] }) {
   const { t, lang } = useLanguage();
 
   return (
@@ -68,7 +52,7 @@ export default function PopularRoutes() {
         </div>
 
         <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
-          {popularRoutes.map((route, index) => (
+          {routes.map((route, index) => (
             <div
               key={route.slug}
               className={`reveal reveal-d${Math.min(index + 1, 4)}`}
@@ -84,13 +68,6 @@ export default function PopularRoutes() {
                   <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-600/5 border border-amber-500/30 flex items-center justify-center">
                     <MapPin size={16} className="text-amber-400" strokeWidth={1.5} />
                   </div>
-
-                  {route.popular && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[9px] font-bold">
-                      <Sparkles size={8} />
-                      {t.routes.popular}
-                    </span>
-                  )}
                 </div>
 
                 <div className="mb-3 flex-1">

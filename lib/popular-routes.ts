@@ -44,7 +44,7 @@ export function isPopularRoute(origen: string, destino: string): boolean {
  * directions. Note SJO↔La Fortuna and LIR↔La Fortuna each appear once here even
  * though Diego listed them twice (once from the airport, once from La Fortuna).
  */
-const TOP_PAIRS: readonly (readonly [string, string])[] = [
+export const TOP_PAIRS: readonly (readonly [string, string])[] = [
   // desde el aeropuerto de San José
   ["SJO - Juan Santamaria Int. Airport", "La Fortuna (Arenal)"],
   ["SJO - Juan Santamaria Int. Airport", "Puerto Viejo (Caribbean Coast)"],

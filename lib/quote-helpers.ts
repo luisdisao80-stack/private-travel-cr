@@ -184,19 +184,46 @@ export function calculateAllPricesFromRoute(route: Route): {
   };
 }
 
+/**
+ * La columna `duracion` no viene en un solo formato. La mayoría dice "3 H" o
+ * "3,5 H", pero hay filas con "3h", "4H", "5,5H", " 6 H" y —el caso que
+ * importa— "2h 30min".
+ *
+ * La versión anterior hacía `.replace("H", "")` y después parseFloat. Con
+ * "2h 30min" no borraba nada (la h es minúscula) y parseFloat cortaba en el
+ * primer no-dígito: devolvía 2 horas. Los 30 minutos se perdían en silencio,
+ * en las 34 filas con ese formato, tanto en el `duration` de schema.org que
+ * lee Google como en el tiempo que ve el cliente en el cotizador. "1h 30min"
+ * se reportaba como 1 hora: un tercio menos.
+ *
+ * Ahora se leen las dos partes explícitamente. Sigue habiendo un fallback de
+ * 3 h para nulos, que es lo que hacía antes.
+ */
 export function parseDurationToMinutes(duracion: string | null): number {
   if (!duracion) return 180;
-  const cleaned = duracion.replace("H", "").replace(",", ".").trim();
-  const hours = parseFloat(cleaned);
-  return Math.round(hours * 60);
+
+  // "2h 30min" / "1h 45min": horas y minutos por separado.
+  const horasYMinutos = duracion.match(/(\d+)\s*[hH]\s*(\d+)\s*min/);
+  if (horasYMinutos) {
+    return Number(horasYMinutos[1]) * 60 + Number(horasYMinutos[2]);
+  }
+
+  // "45 min" suelto, sin horas.
+  const soloMinutos = duracion.match(/^\s*(\d+)\s*min/);
+  if (soloMinutos) return Number(soloMinutos[1]);
+
+  // "3 H", "3,5 H", "5,5H", "4h", " 6 H": horas con decimal opcional.
+  const horas = duracion.match(/(\d+(?:[.,]\d+)?)/);
+  if (!horas) return 180;
+  return Math.round(parseFloat(horas[1].replace(",", ".")) * 60);
 }
 
 export function formatDuration(duracion: string | null): string {
   if (!duracion) return "3h";
-  const cleaned = duracion.replace("H", "").replace(",", ".").trim();
-  const hours = parseFloat(cleaned);
-  const wholeHours = Math.floor(hours);
-  const minutes = Math.round((hours - wholeHours) * 60);
+  const total = parseDurationToMinutes(duracion);
+  const wholeHours = Math.floor(total / 60);
+  const minutes = total % 60;
+  if (wholeHours === 0) return minutes + "min";
   if (minutes === 0) return wholeHours + "h";
   return wholeHours + "h " + minutes + "min";
 }
