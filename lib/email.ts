@@ -561,6 +561,78 @@ function renderNoteBlockHtml(
   `;
 }
 
+/**
+ * `<head>` compartido por TODOS los correos del sitio.
+ *
+ * Vivía suelto dentro de shellHtml, así que el correo del recordatorio —que
+ * se arma en app/api/cron/send-reminders— se quedó en el template oscuro
+ * viejo cuando este se pasó a modo claro. O sea: la reserva llegaba clara y
+ * el recordatorio del día siguiente llegaba negro, con el mismo lavado en
+ * iPhone que costó tres PRs arreglar acá. Se exporta para que no puedan
+ * volver a separarse: quien cambie la paleta la cambia en los dos.
+ *
+ * Paleta náutica (spec de Diego, 2026-07-02):
+ *   Navy   #1e3a8a  — eyebrows, número de orden, "Trip #N"
+ *   Orange #ea580c  — total, precio, énfasis principal
+ *   Green  #16a34a  — bloque de dirección de RECOGIDA
+ *   Blue   #3b82f6  — bloque de dirección de ENTREGA
+ * Los títulos van casi negros (#111827) por legibilidad.
+ */
+export function emailHeadHtml(title: string): string {
+  return `<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${escapeHtml(title)}</title>
+  <!-- Force light rendering across every client. "only light" locks
+       Apple Mail out of Smart-Invert and stops Outlook 2021+ from
+       auto-darkening the template. -->
+  <meta name="color-scheme" content="only light" />
+  <meta name="supported-color-schemes" content="only light" />
+  <style>
+    :root { color-scheme: only light; supported-color-schemes: only light; }
+    /* Belt-and-suspenders block for any client that STILL tries to
+       flip colors in dark mode — pin the surface colors so the nautical
+       navy/orange/green palette stays intact regardless of what the
+       OS thinks. */
+    @media (prefers-color-scheme: dark) {
+      body, table { background: #f3f4f6 !important; }
+      .ptcr-card { background: #ffffff !important; }
+      .ptcr-heading { color: #111827 !important; }
+      .ptcr-body { color: #374151 !important; }
+      .ptcr-muted { color: #6b7280 !important; }
+      .ptcr-navy { color: #1e3a8a !important; }
+      .ptcr-orange { color: #ea580c !important; }
+      .ptcr-green { color: #16a34a !important; }
+      .ptcr-pickup-box { background: #dcfce7 !important; border-color: #16a34a !important; }
+      .ptcr-pickup-eyebrow { color: #15803d !important; }
+      .ptcr-pickup-text { color: #14532d !important; }
+      .ptcr-dropoff-box { background: #dbeafe !important; border-color: #3b82f6 !important; }
+      .ptcr-dropoff-eyebrow { color: #1e40af !important; }
+      .ptcr-dropoff-text { color: #1e3a8a !important; }
+      .ptcr-trip-meta { color: #b45309 !important; }
+      /* Review CTA — Gmail Android is the main dark-mode client
+         we care about here. Keep the amber palette pinned so the
+         block still reads as the same call-out. */
+      .ptcr-review-box { background: #fef3c7 !important; border-color: #f59e0b !important; }
+      .ptcr-review-eyebrow { color: #b45309 !important; }
+      .ptcr-review-title { color: #78350f !important; }
+      .ptcr-review-body { color: #78350f !important; }
+      /* Customer-request callout — new 2026-07-17. Two variants
+         share the .ptcr-request-box class but split for the color
+         palette so Gmail Android dark mode doesn't wash out the
+         "impossible to miss" red on Diego's internal email or the
+         soft amber on the customer confirmation. */
+      .ptcr-request-internal { background: #fef2f2 !important; border-color: #dc2626 !important; }
+      .ptcr-request-eyebrow-internal { color: #991b1b !important; }
+      .ptcr-request-text-internal { color: #7f1d1d !important; }
+      .ptcr-request-customer { background: #fef3c7 !important; border-color: #f59e0b !important; }
+      .ptcr-request-eyebrow-customer { color: #b45309 !important; }
+      .ptcr-request-text-customer { color: #78350f !important; }
+    }
+  </style>
+</head>`;
+}
+
 function shellHtml({
   title,
   intro,
@@ -663,58 +735,7 @@ function shellHtml({
   // Headings stay near-black (#111827) for max legibility.
   return `<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${escapeHtml(title)}</title>
-  <!-- Force light rendering across every client. "only light" locks
-       Apple Mail out of Smart-Invert and stops Outlook 2021+ from
-       auto-darkening the template. -->
-  <meta name="color-scheme" content="only light" />
-  <meta name="supported-color-schemes" content="only light" />
-  <style>
-    :root { color-scheme: only light; supported-color-schemes: only light; }
-    /* Belt-and-suspenders block for any client that STILL tries to
-       flip colors in dark mode — pin the surface colors so the nautical
-       navy/orange/green palette stays intact regardless of what the
-       OS thinks. */
-    @media (prefers-color-scheme: dark) {
-      body, table { background: #f3f4f6 !important; }
-      .ptcr-card { background: #ffffff !important; }
-      .ptcr-heading { color: #111827 !important; }
-      .ptcr-body { color: #374151 !important; }
-      .ptcr-muted { color: #6b7280 !important; }
-      .ptcr-navy { color: #1e3a8a !important; }
-      .ptcr-orange { color: #ea580c !important; }
-      .ptcr-green { color: #16a34a !important; }
-      .ptcr-pickup-box { background: #dcfce7 !important; border-color: #16a34a !important; }
-      .ptcr-pickup-eyebrow { color: #15803d !important; }
-      .ptcr-pickup-text { color: #14532d !important; }
-      .ptcr-dropoff-box { background: #dbeafe !important; border-color: #3b82f6 !important; }
-      .ptcr-dropoff-eyebrow { color: #1e40af !important; }
-      .ptcr-dropoff-text { color: #1e3a8a !important; }
-      .ptcr-trip-meta { color: #b45309 !important; }
-      /* Review CTA — Gmail Android is the main dark-mode client
-         we care about here. Keep the amber palette pinned so the
-         block still reads as the same call-out. */
-      .ptcr-review-box { background: #fef3c7 !important; border-color: #f59e0b !important; }
-      .ptcr-review-eyebrow { color: #b45309 !important; }
-      .ptcr-review-title { color: #78350f !important; }
-      .ptcr-review-body { color: #78350f !important; }
-      /* Customer-request callout — new 2026-07-17. Two variants
-         share the .ptcr-request-box class but split for the color
-         palette so Gmail Android dark mode doesn't wash out the
-         "impossible to miss" red on Diego's internal email or the
-         soft amber on the customer confirmation. */
-      .ptcr-request-internal { background: #fef2f2 !important; border-color: #dc2626 !important; }
-      .ptcr-request-eyebrow-internal { color: #991b1b !important; }
-      .ptcr-request-text-internal { color: #7f1d1d !important; }
-      .ptcr-request-customer { background: #fef3c7 !important; border-color: #f59e0b !important; }
-      .ptcr-request-eyebrow-customer { color: #b45309 !important; }
-      .ptcr-request-text-customer { color: #78350f !important; }
-    }
-  </style>
-</head>
+${emailHeadHtml(title)}
 <body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
     <tr>
