@@ -16,7 +16,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { Resend } from "resend";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { escapeHtml } from "@/lib/email";
+import { escapeHtml, emailHeadHtml } from "@/lib/email";
 import type { CartItem } from "@/lib/CartContext";
 
 export const runtime = "nodejs";
@@ -85,6 +85,26 @@ function formatLocal(d: Date): string {
   });
 }
 
+// Modo claro con la paleta náutica del correo de reserva — 2026-09-04
+// (Diego: "quiero que el mensaje del reminder tenga los mismos colores del
+// booking").
+//
+// Este era el ÚLTIMO template oscuro que quedaba. El de reserva se pasó a
+// claro el 2026-06-30 después de tres intentos fallidos de ganarle al
+// Smart-Invert de iOS Mail (PR #4 @media, PR #5 #fefefe, PR #7 text-shadow):
+// Apple suaviza cualquier texto casi blanco sobre casi negro, se declare lo
+// que se declare en el CSS. O sea que el cliente recibía la reserva clara y
+// legible, y al día siguiente el recordatorio negro y lavado — el correo que
+// se lee a las 5am antes de un traslado, justo cuando peor se ve la pantalla.
+//
+// El `<head>` (metas color-scheme + bloque @media que fija la paleta) se
+// importa de lib/email para que los dos correos no puedan volver a separarse.
+//
+// Se aprovecha para traer los bloques de dirección del correo de reserva:
+// verde = dónde lo recogen, azul = dónde lo dejan. Antes las direcciones eran
+// dos filas de tabla iguales a "Passengers", con el mismo peso visual que el
+// número de pasajeros; en un recordatorio la dirección de recogida es el dato
+// que se busca a las 5am.
 function buildReminderHtml(opts: {
   customerName: string;
   orderNumber: string;
@@ -92,10 +112,6 @@ function buildReminderHtml(opts: {
   pickupAt: Date;
 }): string {
   const it = opts.trip;
-  const pickup =
-    it.pickupPlace && it.pickupPlace !== it.fromName ? it.pickupPlace : it.fromName;
-  const dropoff =
-    it.dropoffPlace && it.dropoffPlace !== it.toName ? it.dropoffPlace : it.toName;
   // Every user-supplied field goes through escapeHtml before landing
   // in this template. Without it, a hotel name like `Hotel & Spa "Best"`
   // rendered as `Hotel  Spa Best` in Gmail (& swallowed as an entity
@@ -105,51 +121,124 @@ function buildReminderHtml(opts: {
   // is escaped after the split so any punctuation in the first name
   // still gets treated safely.
   const firstName = escapeHtml(opts.customerName.split(" ")[0] || "there");
-  return `<!doctype html><html><body style="margin:0;padding:24px;background:#000;font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#fff;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:linear-gradient(180deg,#0a0a0a,#000);border:1px solid rgba(245,158,11,0.25);border-radius:18px;overflow:hidden;">
-  <tr><td style="padding:24px;text-align:center;border-bottom:1px solid #1f2937;">
-    <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
-      <img
-        src="https://www.privatetravelcr.com/logo-ptcr.svg"
-        alt="Private Travel Costa Rica"
-        width="180"
-        height="78"
-        style="display:block;margin:0 auto 4px auto;width:180px;height:auto;border:0;"
-      />
-    </a>
-    <div style="font-size:11px;color:#fbbf24;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
-    <h1 style="margin:12px 0 0 0;font-size:22px;font-weight:800;">Your shuttle is tomorrow</h1>
-    <p style="margin:6px 0 0 0;font-size:13px;color:#d1d5db;">
-      Hi ${firstName} — a quick reminder of your pickup.
-    </p>
-  </td></tr>
-  <tr><td style="padding:20px 24px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;">
-      <tr><td style="color:#9ca3af;padding:4px 0;">Order</td>
-          <td style="color:#fbbf24;text-align:right;font-family:Menlo,monospace;font-size:12px;">${escapeHtml(opts.orderNumber)}</td></tr>
-      <tr><td style="color:#9ca3af;padding:4px 0;">Pickup</td>
-          <td style="text-align:right;font-weight:600;">${escapeHtml(formatLocal(opts.pickupAt))} (Costa Rica)</td></tr>
-      <tr><td style="color:#9ca3af;padding:4px 0;">From</td>
-          <td style="text-align:right;font-weight:600;">${escapeHtml(pickup)}</td></tr>
-      <tr><td style="color:#9ca3af;padding:4px 0;">To</td>
-          <td style="text-align:right;font-weight:600;">${escapeHtml(dropoff)}</td></tr>
-      <tr><td style="color:#9ca3af;padding:4px 0;">Passengers</td>
-          <td style="text-align:right;font-weight:600;">${it.passengers}</td></tr>
-      ${it.flightNumber ? `<tr><td style="color:#9ca3af;padding:4px 0;">Flight</td><td style="text-align:right;font-weight:600;">${escapeHtml(it.flightNumber)}</td></tr>` : ""}
-      ${it.extraStopHours && it.extraStopHours > 0 ? `<tr><td style="color:#9ca3af;padding:4px 0;">Extra wait</td><td style="text-align:right;font-weight:600;color:#fbbf24;">${it.extraStopHours}h paid</td></tr>` : ""}
-      ${it.extraStopNames?.length ? `<tr><td style="color:#9ca3af;padding:4px 0;">Stops</td><td style="text-align:right;font-weight:600;color:#fbbf24;">${escapeHtml(it.extraStopNames.join(", "))}</td></tr>` : ""}
-    </table>
-    <p style="margin:18px 0 4px 0;font-size:13px;color:#d1d5db;line-height:1.5;">
-      Please have your bags ready 5 minutes before pickup. Your driver will message you when they're a few minutes away.
-    </p>
-    <p style="margin:16px 0 0 0;text-align:center;">
-      <a href="https://wa.me/50686334133" style="display:inline-block;background:#16a34a;color:#fff;font-weight:700;font-size:14px;text-decoration:none;padding:11px 22px;border-radius:10px;">Chat on WhatsApp</a>
-    </p>
-  </td></tr>
-  <tr><td style="padding:14px 24px;background:rgba(255,255,255,0.02);border-top:1px solid #1f2937;text-align:center;font-size:11px;color:#6b7280;">
-    Private Travel Costa Rica · La Fortuna · +506 8633-4133
-  </td></tr>
-</table></body></html>`;
+
+  // Mismo criterio que shuttleRowHtml en lib/email: el bloque solo aparece
+  // cuando la dirección exacta difiere del nombre de la ciudad, si no repite
+  // el dato de la línea de arriba.
+  const pickupBox =
+    it.pickupPlace && it.pickupPlace !== it.fromName
+      ? `
+        <div class="ptcr-pickup-box" style="margin:10px 0 4px 0;padding:12px 14px;background:#dcfce7;border-left:4px solid #16a34a;border-radius:8px;">
+          <div class="ptcr-pickup-eyebrow" style="font-size:10px;color:#15803d;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
+            📍 Pickup at
+          </div>
+          <div class="ptcr-pickup-text" style="font-size:14px;color:#14532d;font-weight:700;line-height:1.4;">
+            ${escapeHtml(it.pickupPlace)}
+          </div>
+        </div>
+      `
+      : "";
+  const dropoffBox =
+    it.dropoffPlace && it.dropoffPlace !== it.toName
+      ? `
+        <div class="ptcr-dropoff-box" style="margin:10px 0 4px 0;padding:12px 14px;background:#dbeafe;border-left:4px solid #3b82f6;border-radius:8px;">
+          <div class="ptcr-dropoff-eyebrow" style="font-size:10px;color:#1e40af;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">
+            🏁 Drop off at
+          </div>
+          <div class="ptcr-dropoff-text" style="font-size:14px;color:#1e3a8a;font-weight:700;line-height:1.4;">
+            ${escapeHtml(it.dropoffPlace)}
+          </div>
+        </div>
+      `
+      : "";
+  // Píldoras naranjas, igual que en el correo de reserva.
+  const extraStops =
+    it.extraStopHours && it.extraStopHours > 0
+      ? `<div style="font-size:12px;color:#c2410c;font-weight:700;margin-top:8px;background:#ffedd5;padding:6px 10px;border-radius:6px;display:inline-block;">⏱ Extra wait: ${it.extraStopHours}h paid${
+          it.extraStopNames?.length
+            ? ` — ${escapeHtml(it.extraStopNames.join(", "))}`
+            : ""
+        }</div>`
+      : "";
+
+  return `<!doctype html>
+<html lang="en">
+${emailHeadHtml("Your shuttle is tomorrow")}
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" class="ptcr-card" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
+          <tr>
+            <td style="padding:32px 24px 24px 24px;text-align:center;background:#eff6ff;border-bottom:3px solid #1e3a8a;">
+              <a href="https://www.privatetravelcr.com" style="display:inline-block;text-decoration:none;">
+                <img
+                  src="https://www.privatetravelcr.com/logo-ptcr.svg"
+                  alt="Private Travel Costa Rica"
+                  width="180"
+                  height="78"
+                  style="display:block;margin:0 auto 4px auto;width:180px;height:auto;border:0;"
+                />
+              </a>
+              <div class="ptcr-navy" style="font-size:11px;color:#1e3a8a;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-top:4px;">Private Travel CR</div>
+              <h1 class="ptcr-heading" style="margin:14px 0 0 0;font-size:24px;color:#111827;font-weight:800;">Your shuttle is tomorrow</h1>
+              <p class="ptcr-body" style="margin:10px 0 0 0;font-size:14px;color:#374151;line-height:1.5;">Hi ${firstName} &mdash; a quick reminder of your pickup.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 24px 0 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;">
+                <tr>
+                  <td style="padding:18px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td class="ptcr-muted" style="font-size:12px;color:#6b7280;">Order number</td>
+                        <td class="ptcr-navy" style="font-size:13px;color:#1e3a8a;font-family:'SFMono-Regular',Menlo,monospace;font-weight:700;text-align:right;">${escapeHtml(opts.orderNumber)}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:16px 20px;border-top:1px solid #e5e7eb;vertical-align:top;">
+                    <div class="ptcr-heading" style="font-size:15px;color:#111827;font-weight:700;line-height:1.4;">
+                      ${escapeHtml(it.fromName)}
+                    </div>
+                    ${pickupBox}
+                    <div class="ptcr-muted" style="font-size:12px;color:#9ca3af;margin:6px 0 6px 0;">&darr;</div>
+                    <div class="ptcr-heading" style="font-size:15px;color:#111827;font-weight:700;line-height:1.4;">
+                      ${escapeHtml(it.toName)}
+                    </div>
+                    ${dropoffBox}
+                    <div class="ptcr-trip-meta" style="font-size:14px;color:#b45309;font-weight:700;margin-top:12px;padding:8px 12px;background:#fef3c7;border-radius:6px;display:inline-block;">
+                      🕐 ${escapeHtml(formatLocal(opts.pickupAt))} (Costa Rica) · 👥 ${it.passengers} pax${it.flightNumber ? ` · ✈️ Flight ${escapeHtml(it.flightNumber)}` : ""}
+                    </div>
+                    ${extraStops}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 24px 28px 24px;text-align:center;">
+              <p class="ptcr-body" style="margin:0 0 18px 0;font-size:13px;color:#374151;line-height:1.5;">
+                Please have your bags ready 5 minutes before pickup. Your driver will message you when they&rsquo;re a few minutes away.
+              </p>
+              <a href="https://wa.me/50686334133" style="display:inline-block;background:#16a34a;color:#ffffff;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:10px;">Chat on WhatsApp</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:18px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
+              <div class="ptcr-muted" style="font-size:11px;color:#6b7280;">
+                Private Travel Costa Rica · La Fortuna, Alajuela · +506 8633-4133
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
 }
 
 export async function GET(req: NextRequest) {
