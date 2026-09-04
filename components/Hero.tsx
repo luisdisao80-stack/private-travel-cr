@@ -247,23 +247,40 @@ export default function Hero({
         and skip lazy-loading.
       */}
       {/*
-        Hero LCP optimization: q=40 AVIF (~30 KB on mobile vs 44 KB at
-        q=50, 95 KB at q=75) + a low-quality base64 blur placeholder so
-        the area paints instantly with the dominant colors while the
-        real image is still downloading. Visual quality at q=40 is
-        indistinguishable on mobile with the dark gradient overlay
-        sitting on top.
+        Foto: la van con el Arenal detrás, en La Fortuna (Diego, 2026-09-04).
+        Reemplaza a principal.jpg, que eran 1600x1200 — medida de foto pasada
+        por WhatsApp (EXIF borrado, tope exacto en 1600 px). Contra los ~3000
+        px que pide una pantalla retina a pantalla completa, el navegador la
+        estiraba casi al doble y por eso se veía pixeleada en computadora,
+        aunque en teléfono se viera bien.
+
+        Recorte: la foto es 4:3 y el hero ocupa toda la pantalla, así que en
+        móvil (relación casi 1:2) object-cover recorta a los lados y se comía
+        el volcán, dejando pura van blanca. Por eso el object-position va
+        corrido a la izquierda en móvil y centrado de tablet para arriba, que
+        es donde ya caben los dos.
+
+        quality=60: se subió desde 40. Aquel 40 se eligió para una foto que
+        de todos modos iba estirada; con resolución de sobra el estirado ya
+        no tapa los artefactos de compresión, se ven. En móvil (640 px) la
+        diferencia es de pocos KB, que es donde importa el LCP.
+
+        Ojo: tiene que ser uno de los valores de `images.qualities` en
+        next.config.ts. Un valor fuera de esa lista NO se ignora ni cae al
+        default: el optimizador responde error y el hero se queda sin imagen.
+        Con 55 (que no está en la lista) devolvía
+        '"q" parameter (quality) of 55 is not allowed'.
       */}
       <Image
-        src="/principal.jpg"
-        alt="Costa Rica private shuttle on a coastal road"
+        src="/hero-arenal-van.jpg"
+        alt="Private Travel CR van parked with the Arenal Volcano behind it in La Fortuna, Costa Rica"
         fill
         priority
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
-        quality={40}
+        quality={60}
         placeholder="blur"
-        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJAA8DASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGB//EACAQAAEDBAIDAAAAAAAAAAAAAAECAwQABRESBiETIzH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AmIcJ7VOcahx3pTYUUq8aSdAfwK6Wcv5VHQGvgPa1AGzVCEr2YIIK7HE7yPe5/9k="
-        className="object-cover object-center -z-[1]"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAIAAoDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwAaSZA73LxKmPlKxk4Pp1qubpySUa3K9icjj86KKtTlbclwR//Z"
+        className="object-cover object-[18%_50%] md:object-center -z-[1]"
       />
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/75 z-[1]" />
