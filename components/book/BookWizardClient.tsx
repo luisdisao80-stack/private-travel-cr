@@ -398,8 +398,8 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
           extend past the section bottom without getting clipped. */}
       <section className="relative w-full">
         <NextImage
-          src="/principal.jpg"
-          alt="Costa Rica private shuttle on a coastal road"
+          src="/hero-arenal-van.jpg"
+          alt="Private Travel CR van parked with the Arenal Volcano behind it in La Fortuna, Costa Rica"
           fill
           priority
           sizes="100vw"
