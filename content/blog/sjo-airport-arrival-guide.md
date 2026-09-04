@@ -2,6 +2,7 @@
 title: "Arriving at SJO Airport: A Local's Guide to Getting from the Plane to Your Hotel"
 description: "What to expect at Juan Santamaría International Airport — immigration, customs, ATMs, WiFi, and how to find your driver without falling for the unofficial taxi mafia."
 date: "2026-05-13"
+updated: "2026-09-03"
 author: "Diego Salas Oviedo"
 category: "Travel Tips"
 readTime: 6
@@ -72,7 +73,7 @@ SJO is in Alajuela, about 20 minutes from downtown San José. From here:
 - **[La Fortuna / Arenal](/private-shuttle/sjo-to-la-fortuna):** ~3 hours
 - **[Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio):** ~3 hours
 - **[Tamarindo / Guanacaste](/private-shuttle/sjo-to-tamarindo):** ~5 hours
-- **[Monteverde](/private-shuttle/sjo-to-monteverde):** ~3 hours 30 min
+- **[Monteverde](/private-shuttle/sjo-to-monteverde):** ~4 hours
 - **[Puerto Viejo (Caribbean)](/private-shuttle/sjo-to-puerto-viejo):** ~4 hours 30 min
 - **[Jacó](/private-shuttle/sjo-juan-santamaria-int-airport-to-jaco):** ~1 hour 30 min
 - **[Santa Teresa](/private-shuttle/sjo-juan-santamaria-int-airport-to-santa-teresa):** ~5 hours
