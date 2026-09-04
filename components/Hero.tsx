@@ -247,12 +247,19 @@ export default function Hero({
         and skip lazy-loading.
       */}
       {/*
-        Foto: la van con el Arenal detrás, en La Fortuna (Diego, 2026-09-04).
-        Reemplaza a principal.jpg, que eran 1600x1200 — medida de foto pasada
-        por WhatsApp (EXIF borrado, tope exacto en 1600 px). Contra los ~3000
-        px que pide una pantalla retina a pantalla completa, el navegador la
-        estiraba casi al doble y por eso se veía pixeleada en computadora,
-        aunque en teléfono se viera bien.
+        Foto: la van con el Arenal detrás, en La Fortuna. Original de Diego
+        (iPhone 13, 4032x3024), reescalada a 3840 y con el EXIF botado —no
+        conviene publicar las coordenadas GPS del lugar.
+
+        Reemplaza a principal.jpg, que eran 1600x1200 y por eso se veía
+        pixeleada en computadora aunque en teléfono se viera bien: con el
+        `sizes` de abajo, una pantalla retina de 1440 px pide el breakpoint
+        de 3840, así que el navegador estiraba la foto a más del doble.
+
+        El 3840 no es un número redondo cualquiera: es el deviceSize más
+        grande que sirve Next por defecto. A menos resolución de fuente ese
+        breakpoint vuelve a estirar, que es justo el problema que se está
+        arreglando.
 
         Recorte: la foto es 4:3 y el hero ocupa toda la pantalla, así que en
         móvil (relación casi 1:2) object-cover recorta a los lados y se comía
@@ -260,10 +267,15 @@ export default function Hero({
         corrido a la izquierda en móvil y centrado de tablet para arriba, que
         es donde ya caben los dos.
 
-        quality=60: se subió desde 40. Aquel 40 se eligió para una foto que
-        de todos modos iba estirada; con resolución de sobra el estirado ya
-        no tapa los artefactos de compresión, se ven. En móvil (640 px) la
-        diferencia es de pocos KB, que es donde importa el LCP.
+        quality=50: comparado contra 60 a tamaño real —la foto de 3840
+        mostrada a 2880 px físicos, que es lo que ve una retina— no se
+        distingue: ni en el detalle fino (emblema, parrilla, placa) ni en
+        el cielo, donde sería de esperar bandas. Diferencia media de 1,2
+        sobre 255, y encima lleva el degradado oscuro de abajo. A cambio
+        son 158 KB menos en 3840 y 66 KB menos en 1920.
+
+        Lo que se veía mal nunca fue la compresión sino la resolución de
+        origen, así que la calidad se puede gastar en otra parte.
 
         Ojo: tiene que ser uno de los valores de `images.qualities` en
         next.config.ts. Un valor fuera de esa lista NO se ignora ni cae al
@@ -277,9 +289,9 @@ export default function Hero({
         fill
         priority
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
-        quality={60}
+        quality={50}
         placeholder="blur"
-        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAIAAoDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwAaSZA73LxKmPlKxk4Pp1qubpySUa3K9icjj86KKtTlbclwR//Z"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAT/xAAeEAACAgICAwAAAAAAAAAAAAABAgADBBEiMUFRkf/EABQBAQAAAAAAAAAAAAAAAAAAAAL/xAAZEQADAAMAAAAAAAAAAAAAAAAAAQIDETH/2gAMAwEAAhEDEQA/ADWXVh3y3pVCOJWsnR9dyY5bkko2MV8E7Gx9iI1krXQOJP/Z"
         className="object-cover object-[18%_50%] md:object-center -z-[1]"
       />
 

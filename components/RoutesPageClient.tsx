@@ -136,13 +136,16 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
           contained without needing overflow-hidden on the section. */}
       <section className="relative w-full">
         {/* eslint-disable-next-line jsx-a11y/alt-text */}
+        {/* 50 y no 65: la foto de origen subió a 3840 px, y con sizes=100vw
+            una pantalla retina pide justo ese tamaño. A 65 serían ~500 KB
+            para algo que va debajo del degradado negro de dos líneas abajo. */}
         <NextImage
           src="/hero-arenal-van.jpg"
           alt="Private Travel CR van parked with the Arenal Volcano behind it in La Fortuna, Costa Rica"
           fill
           priority
           sizes="100vw"
-          quality={65}
+          quality={50}
           className="object-cover object-center -z-[1]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
