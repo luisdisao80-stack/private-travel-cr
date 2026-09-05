@@ -1225,3 +1225,40 @@
 /* Encima del verde clarito el check verde se queda en 2,8:1 y pide 3.
    Solo los de la lista: el del círculo naranja es blanco y ese va bien. */
 .tema-claro .border-amber-500.bg-amber-500\/10 li svg { color: #15803d !important; }
+
+/* ---------- La franja de confianza, levantada ---------- */
+/* Diego la quiere "resaltada como con sombra". Estaba plana: fondo casi
+   blanco sobre página blanca, así que no se distinguía de lo de arriba y
+   lo de abajo.
+
+   Se hace en dos capas: la banda de atrás con un azul muy tenue, y la
+   caja de adentro en blanco puro con sombra. El blanco sobre el azul
+   tenue es lo que hace que la caja se despegue; sin la banda, blanco
+   sobre blanco no se vería por más sombra que le ponga.
+
+   Va por aria-label y no por una clase, porque el componente no tiene
+   ninguna clase propia que la identifique. Están los dos idiomas. */
+.tema-claro section[aria-label="Trust signals"],
+.tema-claro section[aria-label="Señales de confianza"] {
+  background-image: none !important;
+  background-color: #eff2fd !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+.tema-claro section[aria-label="Trust signals"] > div,
+.tema-claro section[aria-label="Señales de confianza"] > div {
+  background-color: #ffffff;
+  border: 1px solid #e0e7ff;
+  border-radius: 1.5rem;
+  padding: 2.25rem 1.5rem;
+  /* Dos sombras: una amplia y suave que da el relieve, y otra corta y
+     pegada al borde que evita que se vea "flotando" sin apoyo. */
+  box-shadow: 0 22px 45px -22px rgba(23,37,84,.38),
+              0 3px 8px -3px rgba(23,37,84,.12);
+}
+@media (min-width: 768px) {
+  .tema-claro section[aria-label="Trust signals"] > div,
+  .tema-claro section[aria-label="Señales de confianza"] > div {
+    padding: 2.75rem 2.5rem;
+  }
+}
