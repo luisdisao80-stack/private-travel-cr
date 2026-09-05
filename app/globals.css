@@ -586,10 +586,23 @@
    blanco puro: cae sobre tarjetas con un tinte naranja del 5-10% y ahí baja
    a 4,0-4,4 y no llega al mínimo. #9a3412 aguanta 7:1 incluso sobre el
    tinte, y sigue siendo naranja. */
+.tema-claro .text-amber-100,
 .tema-claro .text-amber-200,
 .tema-claro .text-amber-300,
 .tema-claro .text-amber-400,
-.tema-claro .text-amber-500 { color: var(--ptcr-naranja) !important; }
+.tema-claro .text-amber-500,
+.tema-claro [class*="text-amber-100/"],
+.tema-claro [class*="text-amber-200/"] { color: var(--ptcr-naranja) !important; }
+
+/* Los avisos de las cajitas de alerta se me habían escapado enteros: el
+   tono 100 del ámbar y el 200 del rojo son casi blancos y estaban puestos
+   para leerse sobre el fondo negro. En claro caen sobre su propio tinte al
+   5-10% y quedan en 1,1:1 y 1,25:1 — no se leen. Los pillé midiendo la
+   pantalla de pago, que ninguna de las rutas sueltas alcanza.
+   Estas dos familias SOLO se usan como texto dentro de esas cajas (lo
+   comprobé en los 24 sitios donde aparecen), nunca como fondo ni borde,
+   así que cambiarlas de raíz no arrastra nada más. */
+.tema-claro .text-red-200 { color: #b91c1c !important; }
 
 /* Menos en los titulares GRANDES: ahí el tamaño ya da legibilidad de sobra
    y el naranja vivo es lo que hace que se vea la marca — "20+ years driving
@@ -650,9 +663,13 @@
 .tema-claro .sobre-foto .text-gray-300 { color: #e5e7eb !important; }
 .tema-claro .sobre-foto .text-gray-400,
 .tema-claro .sobre-foto .text-gray-500 { color: #d1d5db !important; }
+.tema-claro .sobre-foto .text-amber-100,
 .tema-claro .sobre-foto .text-amber-200,
 .tema-claro .sobre-foto .text-amber-300,
-.tema-claro .sobre-foto .text-amber-400 { color: #fdba74 !important; }
+.tema-claro .sobre-foto .text-amber-400,
+.tema-claro .sobre-foto [class*="text-amber-100/"],
+.tema-claro .sobre-foto [class*="text-amber-200/"] { color: #fdba74 !important; }
+.tema-claro .sobre-foto .text-red-200 { color: #fecaca !important; }
 .tema-claro .sobre-foto .border-white\/10,
 .tema-claro .sobre-foto .border-white\/20 { border-color: rgba(255,255,255,0.2) !important; }
 .tema-claro .sobre-foto .bg-gray-900,
@@ -966,14 +983,15 @@
 
    Probé oscurecer el dorado con un filtro y queda embarrado — el brillo
    metálico se pierde. Lo que funciona es lo de siempre con un logo
-   dorado: una pastilla azul marino detrás. Encima suma azul a la barra,
-   que era lo que Diego pidió.
+   dorado: una pastilla oscura detrás. La probé en azul marino y Diego la
+   quiere negra (2026-09-05): el marino chocaba con el azul del propio
+   logo y se veían dos azules distintos peleando.
 
    `content-box` a propósito: `h-14` fija 56px de alto y con el
    `border-box` de Tailwind el relleno se los comería por dentro,
    dejando el arte más chico en vez de darle aire. */
 .tema-claro img[src*="logo-ptcr"] {
-  background-color: var(--ptcr-marino);
+  background-color: #000000;
   padding: 4px 10px;
   border-radius: 11px;
   box-sizing: content-box;
@@ -1054,12 +1072,19 @@
 .tema-claro .sobre-foto .buscador-claro .text-gray-500,
 .tema-claro .sobre-foto .buscador-claro .text-gray-600 { color: #475569 !important; }
 .tema-claro .sobre-foto .buscador-claro [class*="text-white/"] { color: #475569 !important; }
+.tema-claro .sobre-foto .buscador-claro .text-amber-100,
 .tema-claro .sobre-foto .buscador-claro .text-amber-200,
 .tema-claro .sobre-foto .buscador-claro .text-amber-300,
 .tema-claro .sobre-foto .buscador-claro .text-amber-400,
 .tema-claro .sobre-foto .buscador-claro .text-amber-500,
+.tema-claro .sobre-foto .buscador-claro [class*="text-amber-100/"],
+.tema-claro .sobre-foto .buscador-claro [class*="text-amber-200/"],
 .tema-claro .sobre-foto .buscador-claro [class*="text-amber-300/"],
 .tema-claro .sobre-foto .buscador-claro [class*="text-amber-400/"] { color: var(--ptcr-naranja) !important; }
+/* Los dos avisos del buscador del inicio ("no reconocemos ese destino" y
+   el de error) viven dentro de esta tarjeta clara, así que aquí el rojo
+   vuelve a ser oscuro, no el claro que puse para encima de la foto. */
+.tema-claro .sobre-foto .buscador-claro .text-red-200 { color: #b91c1c !important; }
 .tema-claro .sobre-foto .buscador-claro .border-white\/10,
 .tema-claro .sobre-foto .buscador-claro .border-white\/20 { border-color: #dde3fa !important; }
 /* El texto de sugerencia de los campos salía en gris muy claro sobre
@@ -1183,3 +1208,20 @@
   .sobre-foto
   [class*="bg-amber-500/1"][class*="border-amber-500/"]
   span.text-amber-300 { color: #ffffff !important; }
+
+/* ---------- La tarjeta elegida, en verde ---------- */
+/* Diego (2026-09-05): la tarjeta que está elegida llevaba borde naranja
+   y relleno melocotón. El borde naranja se queda; el relleno pasa al
+   verde clarito del correo de confirmación, que es `#dcfce7` con el
+   verde `#16a34a` de acento (lib/email.ts, el bloque de la dirección de
+   recogida). Así el "elegido" se dice con el mismo idioma en la web y en
+   el correo.
+
+   Son dos sitios: las tarjetas de servicio de la reserva (Estándar /
+   VIP) y los asuntos del formulario de contacto. */
+.tema-claro .border-amber-500.bg-amber-500\/10 {
+  background-color: #dcfce7 !important;
+}
+/* Encima del verde clarito el check verde se queda en 2,8:1 y pide 3.
+   Solo los de la lista: el del círculo naranja es blanco y ese va bien. */
+.tema-claro .border-amber-500.bg-amber-500\/10 li svg { color: #15803d !important; }
