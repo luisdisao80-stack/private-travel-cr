@@ -505,14 +505,23 @@ export default function Hero({
               )}
             </button>
 
-            {canAddToCart && (
-              <p className="mt-2 text-center text-[11px] text-gray-400">
-                {/* Ya no decimos "y pasajeros": se eligen acá arriba. */}
-                {lang === "en"
-                  ? "Pick your date and time at checkout."
-                  : "Elegís fecha y hora en el checkout."}
-              </p>
-            )}
+            {/* Esta línea va SIEMPRE puesta, aunque todavía no haya precio.
+                Cuando aparecía y desaparecía con `canAddToCart`, la tarjeta
+                cambiaba 25px de alto (17px del texto + 8px del margen) y la
+                página brincaba justo al borrar el destino — es el resto del
+                brinco que reportó Diego el 2026-09-05. Escondida con
+                `invisible` (no con `hidden`) sigue ocupando su lugar. */}
+            <p
+              className={`mt-2 text-center text-[11px] text-gray-400 ${
+                canAddToCart ? "" : "invisible"
+              }`}
+              aria-hidden={!canAddToCart}
+            >
+              {/* Ya no decimos "y pasajeros": se eligen acá arriba. */}
+              {lang === "en"
+                ? "Pick your date and time at checkout."
+                : "Elegís fecha y hora en el checkout."}
+            </p>
 
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
               <span className="flex items-center gap-1.5">

@@ -88,6 +88,14 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
   // cargando para siempre.
   const settledKeyRef = useRef<string | null>(null);
 
+  // Nota de por qué esta caja tiene alto fijo, que es la raíz de todo:
+  // el arreglo del 2026-08-30 igualó "cargando" con "resultado", pero
+  // los otros tres estados quedaron cada uno con el suyo — tarjeta 99px,
+  // "no hay precio" 16-32px, vacío 0px. Cada cambio de estado movía la
+  // página. Diego lo reportó dos veces (2026-09-05) y las dos tenía
+  // razón. Ahora los cinco estados pasan por PriceCardShell y miden lo
+  // mismo, siempre, desde el primer cargue.
+
   useEffect(() => {
     const f = from.trim();
     const t = to.trim();
@@ -172,7 +180,29 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
     };
   }, [from, to, adults]);
 
-  if (state.status === "idle") return null;
+  // Vacío. Antes esto era `return null` seco y ahí estaba el brinco de
+  // borrar con la "x": la tarjeta de 115px se iba a 0 de un solo. Ahora
+  // el hueco se queda, pero con una frase que dice qué hacer — un
+  // rectángulo vacío se vería como un error de la página.
+  //
+  // Y se queda SIEMPRE, desde el primer cargue. Al principio lo dejé
+  // apareciendo solo después de la primera cotización, para no gastar
+  // 115px arriba del pliegue; pero Diego mandó la captura del caso real
+  // (los dos campos con texto) y ahí se veía el problema: la caja nacía
+  // en la primera letra y pegaba el brinco de 115px justo mientras
+  // escribía. Un alto fijo desde el arranque es la única forma de que no
+  // brinque nunca, y de paso la frase le dice al visitante qué hacer.
+  if (state.status === "idle") {
+    return (
+      <PriceCardShell>
+        <p className="flex-1 text-center text-xs text-gray-400">
+          {es
+            ? "Elegí origen y destino para ver el precio."
+            : "Pick a pickup and drop-off to see the price."}
+        </p>
+      </PriceCardShell>
+    );
+  }
 
   // Mientras recotiza: si ya había un precio lo dejamos puesto y sólo lo
   // atenuamos, y si no, pintamos un esqueleto con la MISMA estructura de
@@ -217,23 +247,30 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
     return <PriceCard data={lastFound} es={es} stale />;
   }
 
+  // Estos dos mensajes van dentro de la MISMA caja que la tarjeta. Antes
+  // eran un <div> suelto de 16-32px que reemplazaba una tarjeta de 99px,
+  // y eso es lo que encogía la página al borrar una letra del destino.
   if (state.status === "notFound") {
     return (
-      <div className="mt-4 text-center text-xs text-amber-300/80">
-        {es
-          ? "Todavía no tenemos precio directo para ese par — seguí y te lo cotizamos."
-          : "We don't have a direct price for that pair yet — continue and we'll quote it."}
-      </div>
+      <PriceCardShell>
+        <p className="flex-1 text-center text-xs text-amber-300/80">
+          {es
+            ? "Todavía no tenemos precio directo para ese par — seguí y te lo cotizamos."
+            : "We don't have a direct price for that pair yet — continue and we'll quote it."}
+        </p>
+      </PriceCardShell>
     );
   }
 
   if (state.status === "error") {
     return (
-      <div className="mt-4 text-center text-xs text-red-300">
-        {es
-          ? "No pudimos conectarnos para traer el precio. Revisá tu conexión e intentá de nuevo."
-          : "Couldn't reach the pricing server. Check your connection and try again."}
-      </div>
+      <PriceCardShell>
+        <p className="flex-1 text-center text-xs text-red-300">
+          {es
+            ? "No pudimos conectarnos para traer el precio. Revisá tu conexión e intentá de nuevo."
+            : "Couldn't reach the pricing server. Check your connection and try again."}
+        </p>
+      </PriceCardShell>
     );
   }
 
@@ -259,7 +296,13 @@ function PriceCardShell({
   return (
     <div
       aria-busy={busy || stale}
-      className={`mt-4 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 flex items-center justify-between gap-3 transition-opacity duration-150 ${
+      // min-h medido, no inventado: la tarjeta con precio da 99px exactos
+      // en celular (390) y en escritorio (1440). Fijarlo acá es lo que
+      // garantiza que TODOS los estados midan igual, incluso los que
+      // llevan menos texto, sin tener que cuadrarle las líneas a cada uno.
+      // Si algún día la tarjeta con precio crece de 99px, hay que subir
+      // este número o el brinco vuelve.
+      className={`mt-4 min-h-[99px] rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 flex items-center justify-between gap-3 transition-opacity duration-150 ${
         stale ? "opacity-40" : "opacity-100"
       }`}
     >
