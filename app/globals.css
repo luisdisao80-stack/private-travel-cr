@@ -480,6 +480,33 @@
      no hay un solo `text-gray-900` ni `text-zinc-900`: esas variables
      hoy sólo pintan fondos y bordes. */
 
+  /* Verde, esmeralda y naranja: las tres familias que se me habian
+     escapado. No fue descuido mio revisando: mi medidor leia el color
+     calculado con una expresion que solo entendia `rgb(...)`, y Tailwind v4
+     los guarda en oklch — Chrome los devuelve como `lab(...)`. El medidor
+     los saltaba sin decir nada, asi que salian 0 fallos con 17 textos
+     ilegibles en pantalla. Medido de verdad, sobre blanco:
+
+       text-green-400   1,78:1     text-emerald-300/80  1,53:1
+       text-orange-400  2,38:1     text-orange-300      1,42:1
+
+     Los tonos de abajo (500 en adelante) son rellenos de boton y ya se
+     corrigen mas abajo; aca solo van los claros, que son los que se usan
+     como letra e iconos. */
+  --color-green-200: #15803d;
+  --color-green-300: #15803d;
+  --color-green-400: #15803d;
+  --color-emerald-200: #007a55;
+  --color-emerald-300: #007a55;
+  --color-emerald-400: #007a55;
+  --color-orange-200: #c94200;
+  --color-orange-300: #c94200;
+  --color-orange-400: #c94200;
+  /* La X roja de la tabla comparativa se queda en 2,89:1 con el rojo de
+     fabrica; con #b91c1c pasa y sigue leyendose como "no". */
+  --color-red-300: #b91c1c;
+  --color-red-400: #b91c1c;
+
   /* Los tres colores, en un solo lugar.
 
      Diego, 3ra vuelta: "azul rey". El azul rey de CSS es #4169e1 y sí se
@@ -523,6 +550,17 @@
   --color-zinc-950: #09090b;
   --color-zinc-900: #18181b;
   --color-zinc-800: #27272a;
+  --color-green-200: oklch(92.5% 0.084 155.995);
+  --color-green-300: oklch(87.1% 0.15 154.449);
+  --color-green-400: oklch(79.2% 0.209 151.711);
+  --color-emerald-200: oklch(90.5% 0.093 164.15);
+  --color-emerald-300: oklch(84.5% 0.143 164.978);
+  --color-emerald-400: oklch(76.5% 0.177 163.223);
+  --color-orange-200: oklch(90.1% 0.076 70.697);
+  --color-orange-300: oklch(83.7% 0.128 66.29);
+  --color-orange-400: oklch(75% 0.183 55.934);
+  --color-red-300: oklch(80.8% 0.114 19.571);
+  --color-red-400: oklch(70.4% 0.191 22.216);
 }
 
 /* ---------- Texto ---------- */
@@ -918,3 +956,165 @@
 .tema-claro [class*="bg-amber-500/5"][class*="border-amber-500/"][class*="rounded-full"][class*="inline-flex"] svg {
   color: var(--ptcr-azul) !important;
 }
+
+/* ---------- El logo necesita fondo oscuro ---------- */
+/* Esto no se ve en ningún medidor de contraste (las normas dejan los
+   logotipos por fuera) pero es lo primero que ve un cliente y estaba mal:
+   el logo es dorado metálico, hecho para fondo oscuro. Sobre la barra
+   blanca el bajotítulo "WELCOME TO THE COUNTRY OF PURA VIDA" casi
+   desaparece y el dorado se ve deslavado, como impreso con poca tinta.
+
+   Probé oscurecer el dorado con un filtro y queda embarrado — el brillo
+   metálico se pierde. Lo que funciona es lo de siempre con un logo
+   dorado: una pastilla azul marino detrás. Encima suma azul a la barra,
+   que era lo que Diego pidió.
+
+   `content-box` a propósito: `h-14` fija 56px de alto y con el
+   `border-box` de Tailwind el relleno se los comería por dentro,
+   dejando el arte más chico en vez de darle aire. */
+.tema-claro img[src*="logo-ptcr"] {
+  background-color: var(--ptcr-marino);
+  padding: 4px 10px;
+  border-radius: 11px;
+  box-sizing: content-box;
+}
+
+/* ---------- El buscador va claro aunque esté sobre la foto ---------- */
+/* La foto del hero se queda oscura a propósito (el título blanco encima
+   necesita ese fondo), y por eso `.sobre-foto` devuelve los colores
+   oscuros. Pero el buscador es una tarjeta que flota encima: dejarla
+   negra la delataba como "lo viejo" en medio del tema claro.
+
+   Como las variables se heredan, basta con volver a poner los valores
+   claros en la tarjeta: lo de adentro los hereda solo. */
+.tema-claro .sobre-foto .buscador-claro {
+  --color-black: #ffffff;
+  --color-gray-950: #f4f6ff;
+  --color-gray-900: #ffffff;
+  --color-gray-800: #f4f6ff;
+  --color-zinc-950: #f4f6ff;
+  --color-zinc-900: #ffffff;
+  --color-zinc-800: #f4f6ff;
+  --color-amber-300: #ea580c;
+  --color-amber-400: #d24400;
+  --color-amber-500: #d24400;
+  --color-amber-600: #b03a00;
+  /* Las familias que `.sobre-foto` había devuelto a su tono claro de
+     origen (para que se leyeran encima de la foto) quedaban ahora sobre
+     la tarjeta blanca: el verde de los "check" daba 1,7:1 y las flechas
+     naranjas 1,7:1. Aquí adentro el fondo vuelve a ser blanco, así que
+     vuelven también los tonos oscuros del tema claro. */
+  --color-green-200: #15803d;
+  --color-green-300: #15803d;
+  --color-green-400: #15803d;
+  --color-emerald-200: #007a55;
+  --color-emerald-300: #007a55;
+  --color-emerald-400: #007a55;
+  --color-orange-200: #c94200;
+  --color-orange-300: #c94200;
+  --color-orange-400: #c94200;
+  --color-red-300: #b91c1c;
+  --color-red-400: #b91c1c;
+  border-color: #dde3fa !important;
+  box-shadow: 0 18px 40px -18px rgba(23, 37, 84, 0.45) !important;
+}
+/* El texto de adentro va por reglas con `!important` que la excepción de
+   `.sobre-foto` volvía a poner en blanco; hay que devolverlo. */
+.tema-claro .sobre-foto .buscador-claro .text-white,
+.tema-claro .sobre-foto .buscador-claro h2 { color: var(--ptcr-marino) !important; }
+.tema-claro .sobre-foto .buscador-claro [class*="text-gray-3"],
+.tema-claro .sobre-foto .buscador-claro [class*="text-gray-4"],
+.tema-claro .sobre-foto .buscador-claro [class*="text-white/"] { color: #475569 !important; }
+
+/* ---------- Letra del mismo color que su propio tinte ---------- */
+/* Mismo caso que ya arreglé con el ámbar, pero en verde y naranja: una
+   pastilla `bg-green-500/10` con letra `text-green-400` dentro. Sobre
+   blanco el verde llega justo, pero encima de su propio tinte pierde
+   medio punto y se queda en 4,1-4,3.
+
+   La barra en `bg-green-500/` es lo que separa la pastilla translúcida
+   del botón sólido `bg-green-500`, que lleva letra blanca y no hay que
+   tocar. */
+.tema-claro [class*="bg-green-500/"][class*="text-green-"],
+.tema-claro [class*="bg-green-500/"] [class*="text-green-"],
+.tema-claro [class*="bg-green-400/"] [class*="text-green-"] { color: #14532d !important; }
+
+.tema-claro [class*="bg-orange-500/"][class*="text-orange-"],
+.tema-claro [class*="bg-orange-500/"] [class*="text-orange-"],
+.tema-claro [class*="bg-orange-400/"] [class*="text-orange-"] { color: #7c2d12 !important; }
+
+/* El interior del buscador también. Estas reglas repiten las del tema
+   claro pero con un `.buscador-claro` de más, para ganarle en peso a las
+   excepciones de `.sobre-foto` sin tener que ir poniéndoles un `:not()`
+   a las veinte de arriba. */
+.tema-claro .sobre-foto .buscador-claro .text-gray-100,
+.tema-claro .sobre-foto .buscador-claro .text-gray-200,
+.tema-claro .sobre-foto .buscador-claro .text-gray-300 { color: #334155 !important; }
+.tema-claro .sobre-foto .buscador-claro .text-gray-400,
+.tema-claro .sobre-foto .buscador-claro .text-gray-500,
+.tema-claro .sobre-foto .buscador-claro .text-gray-600 { color: #475569 !important; }
+.tema-claro .sobre-foto .buscador-claro [class*="text-white/"] { color: #475569 !important; }
+.tema-claro .sobre-foto .buscador-claro .text-amber-200,
+.tema-claro .sobre-foto .buscador-claro .text-amber-300,
+.tema-claro .sobre-foto .buscador-claro .text-amber-400,
+.tema-claro .sobre-foto .buscador-claro .text-amber-500,
+.tema-claro .sobre-foto .buscador-claro [class*="text-amber-300/"],
+.tema-claro .sobre-foto .buscador-claro [class*="text-amber-400/"] { color: var(--ptcr-naranja) !important; }
+.tema-claro .sobre-foto .buscador-claro .border-white\/10,
+.tema-claro .sobre-foto .buscador-claro .border-white\/20 { border-color: #dde3fa !important; }
+/* El texto de sugerencia de los campos salía en gris muy claro sobre
+   blanco (1,4:1). No es texto "de verdad" pero es lo que le dice al
+   cliente qué escribir. */
+.tema-claro .sobre-foto .buscador-claro input::placeholder,
+.tema-claro .sobre-foto .buscador-claro textarea::placeholder { color: #64748b !important; opacity: 1; }
+
+/* Los iconos también. Dos reglas de la excepción `.sobre-foto` les ponen
+   el tono claro a la fuerza para que se lean encima de la foto, pero
+   dentro de la tarjeta el fondo ya es blanco: la flecha de intercambio y
+   los botones de +/- se quedaban en 1,7:1 y el check verde en 1,7:1.
+
+   El truco de `[class*="bg-amber-500/"]` es que también casa con el
+   `hover:bg-amber-500/20` de esos botones, por eso los agarraba. Aquí
+   basta con que el icono siga el color de su propio botón, que ya está
+   en el naranja del tema claro. */
+.tema-claro .sobre-foto .buscador-claro [class*="bg-amber-500/"][class*="border-amber-500/"] svg {
+  color: inherit !important;
+}
+.tema-claro .sobre-foto .buscador-claro svg.lucide-check.text-amber-300,
+.tema-claro .sobre-foto .buscador-claro svg.lucide-check.text-amber-400,
+.tema-claro .sobre-foto .buscador-claro svg.lucide-circle-check.text-amber-300,
+.tema-claro .sobre-foto .buscador-claro svg.lucide-circle-check.text-amber-400 {
+  color: #16a34a !important;
+}
+
+/* ---------- Botón desactivado ---------- */
+/* El botón del buscador arranca desactivado porque todavía no hay origen
+   ni destino: `disabled:opacity-40`. Sobre fondo negro eso se leía como
+   un naranja apagado y se entendía. Sobre blanco queda un salmón pálido
+   con letra blanca encima que no se lee y parece un error de pintado, no
+   un botón apagado.
+
+   Gris de verdad: se entiende sin leerlo. (Las normas de contraste no
+   aplican a controles desactivados, así que esto es criterio, no norma.) */
+.tema-claro button:disabled.bg-amber-500,
+.tema-claro button:disabled.bg-amber-400 {
+  opacity: 1;
+  background-color: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  box-shadow: none !important;
+}
+.tema-claro button:disabled.bg-amber-500 svg,
+.tema-claro button:disabled.bg-amber-400 svg { color: #94a3b8 !important; }
+
+/* ---------- Sitio para la barra de arriba ---------- */
+/* La barra va fija y antes era transparente: el título del hero se veía
+   por debajo y quedaba bien. Al ponerla blanca sólida pasó a tapar lo
+   que cae en esos primeros 105 px, y en el móvil se comía el renglón
+   "Costa Rica Shuttle" entero (25 px), más 9 px del título en /routes y
+   en /book.
+
+   Los tres hero comparten la misma forma: la sección con la foto y
+   dentro el contenedor del contenido con su `pt-24`. Se le reserva a ese
+   contenedor la altura de la barra más un respiro. Va sólo en el tema
+   claro, así que si volvemos al oscuro esto no existe. */
+.tema-claro .sobre-foto .container.relative.z-10 { padding-top: 7.5rem; }
