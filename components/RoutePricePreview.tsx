@@ -88,19 +88,13 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
   // cargando para siempre.
   const settledKeyRef = useRef<string | null>(null);
 
-  // ¿Ya se le apartó el campo a la tarjeta de precio?
-  //
-  // El arreglo del 2026-08-30 igualó el alto de "cargando" y "resultado",
-  // pero los otros tres estados quedaron cada uno con el suyo: la tarjeta
-  // mide 99px, el mensaje de "no hay precio" 16-32px y el vacío 0px. Por
-  // eso Diego volvió a reportar (2026-09-05) que al BORRAR el destino la
-  // página brinca: escribir no cambiaba de estado, borrar sí.
-  //
-  // En el primer cargue esto va en false a propósito. Apartar 115px
-  // vacíos arriba del pliegue, por si el visitante después cotiza, sería
-  // peor que el brinco. Se prende cuando el visitante ya pidió un precio,
-  // y de ahí en adelante el espacio no se vuelve a soltar.
-  const [slotReserved, setSlotReserved] = useState(false);
+  // Nota de por qué esta caja tiene alto fijo, que es la raíz de todo:
+  // el arreglo del 2026-08-30 igualó "cargando" con "resultado", pero
+  // los otros tres estados quedaron cada uno con el suyo — tarjeta 99px,
+  // "no hay precio" 16-32px, vacío 0px. Cada cambio de estado movía la
+  // página. Diego lo reportó dos veces (2026-09-05) y las dos tenía
+  // razón. Ahora los cinco estados pasan por PriceCardShell y miden lo
+  // mismo, siempre, desde el primer cargue.
 
   useEffect(() => {
     const f = from.trim();
@@ -125,10 +119,6 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
 
     let cancelled = false;
     setState({ status: "loading" });
-    // Desde acá el espacio queda apartado para siempre: el esqueleto de
-    // "cargando" ya ocupa el alto de la tarjeta, así que soltarlo después
-    // es exactamente lo que producía el brinco.
-    setSlotReserved(true);
     // Invalidate the parent's cached quote as soon as the pair changes,
     // so a stale price from the previous route can never be added to the
     // cart while this request is still in flight. Esto es lo que impide
@@ -194,8 +184,15 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
   // borrar con la "x": la tarjeta de 115px se iba a 0 de un solo. Ahora
   // el hueco se queda, pero con una frase que dice qué hacer — un
   // rectángulo vacío se vería como un error de la página.
+  //
+  // Y se queda SIEMPRE, desde el primer cargue. Al principio lo dejé
+  // apareciendo solo después de la primera cotización, para no gastar
+  // 115px arriba del pliegue; pero Diego mandó la captura del caso real
+  // (los dos campos con texto) y ahí se veía el problema: la caja nacía
+  // en la primera letra y pegaba el brinco de 115px justo mientras
+  // escribía. Un alto fijo desde el arranque es la única forma de que no
+  // brinque nunca, y de paso la frase le dice al visitante qué hacer.
   if (state.status === "idle") {
-    if (!slotReserved) return null;
     return (
       <PriceCardShell>
         <p className="flex-1 text-center text-xs text-gray-400">
