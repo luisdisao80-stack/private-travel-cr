@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MapPin, Plane, Building2 } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 import type { Hotel } from "@/lib/types";
 import {
   displayLocation,
@@ -24,6 +25,18 @@ type LocationInputProps = {
    *  the pickup/dropoff address field on the checkout step. */
   onHotelPick?: (hotel: Hotel | null) => void;
 };
+
+// Tope de filas que se dibujan. No es cosmético: cada fila es un
+// <button> y la lista se re-arma en cada tecla, así que dibujar las 110
+// que calzan con "la" se siente lento al escribir. 25 cubre el 100% de
+// las búsquedas que medí salvo "la" y "hotel" (que nadie escribe para
+// buscar un lugar), y cuando sí corta, ahora se avisa abajo.
+const MAX_SUGGESTIONS = 25;
+
+// Alto del nav fijo (~89px) más un poco de aire. Es el límite de cuánto
+// se puede subir la página para hacerle campo al menú sin esconder el
+// propio campo de búsqueda debajo del nav.
+const NAV_CLEARANCE = 100;
 
 // Suggestion entry — either a location string or a hotel pointer.
 type Suggestion =
@@ -60,6 +73,7 @@ export default function LocationInput({
   hotels = [],
   onHotelPick,
 }: LocationInputProps) {
+  const { lang } = useLanguage();
   const [open, setOpen] = useState(false);
   // Keyboard-nav index into the visible suggestions[]. Starts at 0 so
   // the top match is pre-highlighted the moment the visitor types —
@@ -69,6 +83,7 @@ export default function LocationInput({
   // Enter commits, Esc closes.
   const [highlightIndex, setHighlightIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const locationSet = useMemo(() => new Set(locations), [locations]);
 
   const isDbName = locationSet.has(value);
@@ -80,7 +95,7 @@ export default function LocationInput({
     return () => clearTimeout(t);
   }, [value]);
 
-  const suggestions = useMemo<Suggestion[]>(() => {
+  const allSuggestions = useMemo<Suggestion[]>(() => {
     // Filter by whatever the user has typed. We used to zero the query
     // when the value happened to equal a DB name exactly — the intent
     // was "already picked, show everything again" — but that fired
@@ -120,10 +135,21 @@ export default function LocationInput({
       }))
       .filter((x) => x.score > 0);
 
-    return [...locItems, ...hotelItems]
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 10);
+    return [...locItems, ...hotelItems].sort((a, b) => b.score - a.score);
   }, [debouncedValue, locations, hotels]);
+
+  // Lo que se enseña de verdad. Antes el tope eran 10 fijas y Diego
+  // reportó (2026-09-05) que "en el where to salen muy pocos lugares".
+  // Medido sobre los datos reales, subiendo el tope a 500: "playa"
+  // calza 27, "san" 33, "guanacaste" 23, "monteverde" 14 — la mediana
+  // de una búsqueda normal es 14, y "la" llega a 110. O sea que 10
+  // cortaba casi todas las búsquedas, y peor: las cortaba en silencio,
+  // así que el cliente no tenía cómo saber que su hotel sí estaba.
+  const suggestions = useMemo(
+    () => allSuggestions.slice(0, MAX_SUGGESTIONS),
+    [allSuggestions],
+  );
+  const hiddenCount = allSuggestions.length - suggestions.length;
 
   // Reset the highlight to the top match every time the visible
   // suggestion list changes — otherwise pressing Enter after typing
@@ -155,6 +181,66 @@ export default function LocationInput({
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
+
+  // Que el menú quepa donde el cliente lo pueda ver.
+  //
+  // El menú flota (`absolute`) a propósito. Antes en celular estaba en
+  // el flujo (`static md:absolute`) y por eso abrirlo o cerrarlo movía
+  // el alto de la página entera: medido, 328px al abrirse y 229px más
+  // cuando la lista se achica — 557px de brinco escribiendo un solo
+  // destino. Eso es lo que reportó Diego (2026-09-05).
+  //
+  // Pero flotando aparece el problema que `static` estaba tapando: en
+  // celular el teclado en pantalla puede dejar el menú debajo y el
+  // cliente no ve nada. `visualViewport` es la única API que sabe dónde
+  // termina lo que se ve de verdad con el teclado arriba, así que al
+  // abrir se revisa y, si no cabe, se sube la página lo justo — nunca
+  // tanto como para meter el campo debajo del nav fijo.
+  useEffect(() => {
+    if (!open) return;
+
+    function ensureMenuVisible() {
+      const menu = menuRef.current;
+      const wrapper = wrapperRef.current;
+      if (!menu || !wrapper) return;
+
+      const vv = window.visualViewport;
+      if (!vv) return;
+
+      // Solo cuando hay teclado en pantalla tapando. Sin esta condición
+      // el efecto también dispara en computadora — medido, movía la
+      // página 178px al abrir el menú, o sea que yo mismo estaba
+      // metiendo el brinco que vinimos a quitar. En computadora el menú
+      // puede pasarse del borde de abajo sin problema: como flota,
+      // acompaña al campo si el cliente hace scroll.
+      const keyboard = window.innerHeight - vv.height;
+      if (keyboard < 120) return;
+
+      const overflow = menu.getBoundingClientRect().bottom - (vv.offsetTop + vv.height) + 12;
+      if (overflow <= 0) return;
+
+      // Tope: el campo tiene que quedar visible bajo el nav fijo. De
+      // nada sirve enseñar el menú si se pierde de vista lo que escribió.
+      const room = wrapper.getBoundingClientRect().top - NAV_CLEARANCE;
+      const delta = Math.min(overflow, room);
+      if (delta <= 0) return;
+
+      // Sin animación: un scroll suave aquí se vería exactamente igual
+      // que el brinco que estamos quitando.
+      window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
+    }
+
+    // Un frame de espera para medir el menú ya dibujado.
+    const frame = requestAnimationFrame(ensureMenuVisible);
+    // El teclado no sube al instante; cuando sube, visualViewport
+    // dispara resize y hay que volver a revisar.
+    const vv = window.visualViewport;
+    vv?.addEventListener("resize", ensureMenuVisible);
+    return () => {
+      cancelAnimationFrame(frame);
+      vv?.removeEventListener("resize", ensureMenuVisible);
+    };
+  }, [open]);
 
   return (
     // z-index jumps when the dropdown is open so it stacks above the
@@ -214,7 +300,10 @@ export default function LocationInput({
         </button>
       )}
       {open && suggestions.length > 0 && (
-        <div className="static md:absolute z-50 w-full mt-2 bg-gradient-to-br from-gray-900/98 to-black/98 backdrop-blur-xl border border-amber-500/30 rounded-xl shadow-2xl shadow-black/60 max-h-80 overflow-y-auto">
+        <div
+          ref={menuRef}
+          className="absolute z-50 w-full mt-2 bg-gradient-to-br from-gray-900/98 to-black/98 backdrop-blur-xl border border-amber-500/30 rounded-xl shadow-2xl shadow-black/60 max-h-80 overflow-y-auto"
+        >
           {suggestions.map((s, idx) => {
             // Highlighted row = current keyboard target. Rendered with
             // an amber background so the visitor can see at a glance
@@ -278,6 +367,18 @@ export default function LocationInput({
               </button>
             );
           })}
+          {/* El aviso de "hay más". Esto es lo que faltaba de verdad: el
+              tope viejo cortaba la lista sin decir nada, así que el que
+              no veía su hotel asumía que no estaba y se iba. Es un <div>,
+              no un <button>: no se puede escoger ni sale en la navegación
+              con flechas, solo explica qué hacer. */}
+          {hiddenCount > 0 && (
+            <div className="px-4 py-2.5 text-[11px] text-gray-400 bg-black/40 border-t border-amber-500/20">
+              {lang === "en"
+                ? `+${hiddenCount} more — keep typing to narrow it down`
+                : `+${hiddenCount} más — seguí escribiendo para afinar`}
+            </div>
+          )}
         </div>
       )}
     </div>
