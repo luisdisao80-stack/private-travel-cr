@@ -1118,3 +1118,68 @@
    contenedor la altura de la barra más un respiro. Va sólo en el tema
    claro, así que si volvemos al oscuro esto no existe. */
 .tema-claro .sobre-foto .container.relative.z-10 { padding-top: 7.5rem; }
+
+/* ---------- La franja de /book y /routes ---------- */
+/* La foto del volcán siempre estuvo ahí (`hero-arenal-van.jpg`), pero
+   debajo de un negro al 80% que subía a negro puro: no se veía la foto,
+   se veía una franja gris. Con el fondo blanco alrededor eso quedaba
+   como un hueco muerto entre la barra y el contenido.
+
+   Se baja el negro hasta donde el título blanco todavía se lee y se le
+   da más alto a la franja, para que la foto se lea como foto y no como
+   una raya. `.pt-24` es lo que tienen en común /book y /routes y no la
+   portada, que ya trae su propia altura. */
+/* La foto llevaba `-z-[1]`, o sea que se pintaba DETRÁS del fondo de su
+   propio `<main class="bg-black">`. En el sitio oscuro ese fondo es
+   negro y el degradado de encima iba al 80-100%, así que nadie notó que
+   la foto no se veía nunca: se estaba descargando una imagen de portada
+   con prioridad para taparla entera. En claro el fondo es blanco y el
+   agujero canta. Subirla a la capa 0 la deja debajo del degradado
+   (capa 1) y del contenido (capa 10), que es donde tenía que estar. */
+.tema-claro .sobre-foto img.-z-\[1\] { z-index: 0; }
+
+.tema-claro .sobre-foto .from-black\/80 {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.34) 0%,
+    rgba(0, 0, 0, 0.42) 55%,
+    rgba(0, 0, 0, 0.72) 100%
+  ) !important;
+}
+.tema-claro .sobre-foto .container.relative.z-10.pt-24 {
+  padding-top: 9rem;
+  padding-bottom: 5.5rem;
+}
+
+/* ---------- Texto encima de las fotos ---------- */
+/* Esto ya venía así del sitio de hoy, no lo traje yo: al medir el texto
+   contra la foto de verdad (y no contra un color plano) salen seis sitios
+   donde el texto se apoya en una parte clara de la imagen y se pierde.
+
+   El subtítulo de la portada era el peor: 2,12:1 cuando pide 3. La cinta
+   negra de encima de la foto estaba al 35%; al 50% el subtítulo pasa y la
+   foto se sigue viendo. */
+.tema-claro .sobre-foto .from-black\/35 {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.44) 55%,
+    rgba(0, 0, 0, 0.78) 100%
+  ) !important;
+}
+
+/* La pastilla de las reseñas de Google es un negro al 60% encima de la
+   foto: según qué haya detrás, el "200+" se quedaba en 4,0:1. Se le sube
+   el negro a la pastilla, que no oscurece la foto entera, solo la
+   pastilla. Va por `a.` para no tocar los botones de intercambio del
+   buscador, que también son `bg-black/60` pero ahí el negro ya es blanco. */
+.tema-claro .sobre-foto a.bg-black\/60 { background-color: rgba(0, 0, 0, 0.82) !important; }
+.tema-claro .sobre-foto a.bg-black\/60 .text-gray-300 { color: #ffffff !important; }
+
+/* El rótulo de /contact iba en naranja claro de 12px encima de la foto:
+   2,72:1. En blanco se lee y el marco naranja de la pastilla mantiene el
+   color donde importa. */
+.tema-claro
+  .sobre-foto
+  [class*="bg-amber-500/1"][class*="border-amber-500/"]
+  span.text-amber-300 { color: #ffffff !important; }
