@@ -447,36 +447,60 @@
      (from-amber-300 via-400 to-500) siga leyéndose sobre la foto. */
   --color-amber-100: #ffedd5;
   --color-amber-200: #fed7aa;
-  /* El 300 y el 400 eran los tonos claros de la rampa. Sobre negro servían;
-     sobre blanco no: las medallas ("⭐ MOST POPULAR") los usan de FONDO con
-     letra blanca encima y ahí un naranja claro da 2,9:1. Fuera de la foto
-     toda la rampa se va a la mitad oscura. Dentro de `.sobre-foto` se
-     devuelven los claros, que es donde sí hacen falta. */
-  --color-amber-300: #ea580c;
-  --color-amber-400: #c2410c;
-  /* El 500 es el naranja del botón. Sobre negro daba igual cuál fuera;
-     sobre blanco tiene que aguantar texto blanco encima, y #ea580c sólo
-     llega a 3,4:1 (el mínimo es 4,5). #c2410c da 5,2:1 y sigue leyéndose
-     naranja. Medido, no elegido a ojo. */
-  --color-amber-500: #c2410c;
-  --color-amber-600: #9a3412;
-  --color-amber-700: #7c2d12;
 
-  /* Los oscuros pasan a claros. Acá está el verdadero cambio de tema:
-     mueve fondos sólidos, degradados y bordes a la vez.
-     Se alternan blanco y gris muy claro para que las secciones se
-     sigan separando sin tener que dibujar líneas. */
+  /* Diego, 2da vuelta: "un naranja más vivo".
+     El límite no es de gusto, es medible. Sobre blanco (y con letra blanca
+     encima, que es como se usa en los botones) el mínimo legible es 4,5:1:
+       #f97316  2,80  ← el más vivo, ilegible
+       #ea580c  3,56  ← sirve sólo para texto GRANDE, que pide 3:1
+       #d24400  4,60  ← el más vivo que pasa en todo
+       #c2410c  5,18  ← el de la primera prueba, apagado al lado
+     Así que #d24400 de base — naranja puro, sin nada de azul adentro,
+     bastante más encendido que el anterior — y #ea580c reservado para los
+     titulares, donde el tamaño ya hace el trabajo. */
+  --color-amber-300: #ea580c;
+  --color-amber-400: #d24400;
+  --color-amber-500: #d24400;
+  --color-amber-600: #b03a00;
+  --color-amber-700: #9a3412;
+
+  /* Azul de verdad, no gris. Diego pidió usarlo más: el fondo alterno de
+     las secciones deja de ser gris neutro y pasa a azul muy claro. Es el
+     cambio que más "azulea" el sitio sin tocar un solo componente, porque
+     estas variables pintan TODAS las secciones de una. */
   --color-black: #ffffff;
-  --color-gray-950: #f3f4f6;
+  --color-gray-950: #f4f6ff;
   --color-gray-900: #ffffff;
-  --color-gray-800: #f3f4f6;
-  --color-zinc-950: #f3f4f6;
+  --color-gray-800: #f4f6ff;
+  --color-zinc-950: #f4f6ff;
   --color-zinc-900: #ffffff;
-  --color-zinc-800: #f3f4f6;
+  --color-zinc-800: #f4f6ff;
 
   /* Se puede remapear gray-900/950 sin miedo porque en todo el sitio
      no hay un solo `text-gray-900` ni `text-zinc-900`: esas variables
      hoy sólo pintan fondos y bordes. */
+
+  /* Los tres colores, en un solo lugar.
+
+     Diego, 3ra vuelta: "azul rey". El azul rey de CSS es #4169e1 y sí se
+     lee sobre blanco (4.85), pero se cae en cuanto el fondo deja de ser
+     blanco puro, y medio sitio tiene fondo azulito:
+
+       azul       sobre blanco   sobre sección   sobre pastilla
+                    #ffffff        #f4f6ff         #e4eaff
+       #4169e1       4.85           4.49 ✗          4.23 ✗
+       #3b5be0       5.59           5.18            4.88  ← pasa en todos
+       #2f4fd8       6.50           6.02            5.67
+       #1e3a8a      10.36           9.60            9.04
+
+     Así que el azul rey del sitio es #3b5be0: el mismo tono, un pelo más
+     denso, y ya no se despinta encima de los fondos claros. */
+  --ptcr-naranja: #c94200;
+  --ptcr-naranja-vivo: #ea580c;
+  --ptcr-azul: #3b5be0;
+  --ptcr-azul-oscuro: #2f4fd8;
+  --ptcr-marino: #1e3a8a;
+  --ptcr-verde: #16a34a;
 }
 
 /* Lo que va ENCIMA de una foto vuelve a ser oscuro.
@@ -503,16 +527,20 @@
 
 /* ---------- Texto ---------- */
 /* El texto sí va por clase: las variables de arriba no lo tocan porque
-   el sitio usa `text-white` y la rampa de grises, no `text-black`. */
-.tema-claro .text-white { color: #111827 !important; }
+   el sitio usa `text-white` y la rampa de grises, no `text-black`.
+   Los titulares van en azul marino en vez de negro: es lo que más azul
+   mete en el sitio, porque son el bloque de texto más grande de cada
+   sección, y da 14,7:1 — más contraste que el negro de la prueba
+   anterior. Los párrafos siguen la misma familia fría. */
+.tema-claro .text-white { color: var(--ptcr-marino) !important; }
 .tema-claro .text-gray-100,
 .tema-claro .text-gray-200,
-.tema-claro .text-gray-300 { color: #374151 !important; }
+.tema-claro .text-gray-300 { color: #334155 !important; }
 /* #6b7280 da 4,83:1 contra blanco puro — pasa por poco, pero en cuanto el
    texto cae sobre una tarjeta gris o un tinte naranja baja a 4,2 y no llega.
    #4b5563 aguanta 7,4:1 y deja margen para todos esos fondos. */
 .tema-claro .text-gray-400,
-.tema-claro .text-gray-500 { color: #4b5563 !important; }
+.tema-claro .text-gray-500 { color: #475569 !important; }
 
 /* El acento en texto no puede seguir la rampa: naranja 400 sobre blanco
    no se lee. Los degradados sí la siguen, por las variables de arriba. */
@@ -523,17 +551,27 @@
 .tema-claro .text-amber-200,
 .tema-claro .text-amber-300,
 .tema-claro .text-amber-400,
-.tema-claro .text-amber-500 { color: #9a3412 !important; }
+.tema-claro .text-amber-500 { color: var(--ptcr-naranja) !important; }
 
-/* Menos en los titulares: ahí el tamaño ya da legibilidad de sobra y el
-   naranja vivo es lo que hace que se vea la marca — "20+ years driving
-   Costa Rica." pierde toda la fuerza en marrón. */
-.tema-claro h1 [class*="text-amber-"],
-.tema-claro h2 [class*="text-amber-"],
-.tema-claro h3 [class*="text-amber-"],
-.tema-claro h1[class*="text-amber-"],
-.tema-claro h2[class*="text-amber-"],
-.tema-claro h3[class*="text-amber-"] { color: #c2410c !important; }
+/* Menos en los titulares GRANDES: ahí el tamaño ya da legibilidad de sobra
+   y el naranja vivo es lo que hace que se vea la marca — "20+ years driving
+   Costa Rica." pierde toda la fuerza en marrón.
+
+   Ojo con "grande": la norma pide 4,5:1 hasta los 24px, y sólo baja a 3:1
+   de ahí para arriba (o 18,66px en negrita). Yo había puesto la excepción
+   en h1/h2/h3 a secas y eso agarró los títulos de las tarjetas de /tours y
+   del blog, que son h3 de 18px — once textos quedaron en 3,4:1. Por eso
+   ahora la excepción va por TAMAÑO declarado, no por etiqueta. */
+.tema-claro .text-2xl[class*="text-amber-"],
+.tema-claro .text-3xl[class*="text-amber-"],
+.tema-claro .text-4xl[class*="text-amber-"],
+.tema-claro .text-5xl[class*="text-amber-"],
+.tema-claro .text-6xl[class*="text-amber-"],
+.tema-claro .text-2xl [class*="text-amber-"],
+.tema-claro .text-3xl [class*="text-amber-"],
+.tema-claro .text-4xl [class*="text-amber-"],
+.tema-claro .text-5xl [class*="text-amber-"],
+.tema-claro .text-6xl [class*="text-amber-"] { color: var(--ptcr-naranja-vivo) !important; }
 
 /* ---------- Bordes ---------- */
 .tema-claro .border-white\/10,
@@ -564,7 +602,7 @@
 .tema-claro nav {
   background-color: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #dde3fa;
 }
 
 /* ---------- Excepciones encima de la foto ---------- */
@@ -627,7 +665,7 @@
    Ojo: `text-amber-500/0` es invisible a propósito (una animación), y
    no entra acá porque el selector sólo toma 300 y 400. */
 .tema-claro [class*="text-amber-300/"],
-.tema-claro [class*="text-amber-400/"] { color: #9a3412 !important; }
+.tema-claro [class*="text-amber-400/"] { color: var(--ptcr-naranja) !important; }
 
 /* Y encima de la foto, todo esto vuelve a ser claro. */
 .tema-claro .sobre-foto .text-white\/90 { color: rgba(255,255,255,0.9) !important; }
@@ -645,7 +683,7 @@
    `from-amber-400` no se toca, porque es otra clase y ahí el tono claro
    sí hace falta (va sobre la foto). */
 .tema-claro .bg-amber-300,
-.tema-claro .bg-amber-400 { background-color: #c2410c !important; }
+.tema-claro .bg-amber-400 { background-color: var(--ptcr-naranja) !important; }
 
 /* Los dos niveles más tenues quedaban por debajo de 3:1 sobre el gris de
    fondo — el precio tachado del listado de rutas, por ejemplo. */
@@ -708,12 +746,14 @@
    Además esa pastilla era el peor contraste medido (2,1–2,9:1): naranja
    sobre naranja pálido. Pasa a azul, que era justo lo que faltaba repartir. */
 .tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"] {
-  background-color: #eff6ff !important;
-  border-color: #bfdbfe !important;
+  background-color: #e4eaff !important;
+  border-color: #a8b8f7 !important;
 }
 .tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"],
 .tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"] span,
-.tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"] svg { color: #1e3a8a !important; }
+.tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"] svg {
+  color: var(--ptcr-azul-oscuro) !important;
+}
 
 /* La pastilla del VIP (tinte /20) se queda naranja: ahí el color ES el
    mensaje. Sólo se aclara el fondo para que el texto se lea (6,9:1). */
@@ -738,3 +778,143 @@
 .tema-claro .sobre-foto [class*="bg-amber-500/"][class*="border-amber-500/"],
 .tema-claro .sobre-foto [class*="bg-amber-500/"][class*="border-amber-500/"] span,
 .tema-claro .sobre-foto [class*="bg-amber-500/"][class*="border-amber-500/"] svg { color: #fdba74 !important; }
+
+/* ============================================================
+   2da vuelta — más vivo y más dinámico
+   ============================================================
+   Diego: "un naranja más vivo, usar más el azul, que se vea
+   moderno y dinámico con colores vivos".
+
+   Vivo NO es subirle la saturación a todo: sobre blanco eso se
+   vuelve ilegible enseguida (ver el cuadro de arriba). Lo que sí
+   da sensación de vivo es POR DÓNDE va el color:
+     - relleno pleno en vez de texto de color (un botón naranja
+       entero grita más que una palabra naranja),
+     - las secciones ya no alternan blanco/gris sino blanco/azul,
+     - sombras de color en vez de sombras grises,
+     - más superficie de azul, que era lo que faltaba.
+   ============================================================ */
+
+/* ---------- Azul en los iconos ---------- */
+/* Los cuadritos de "Free WiFi", "Licensed & insured" y compañía usan la
+   misma pastilla ámbar que los rótulos, así que ya entran por la regla de
+   arriba. Acá se les sube el azul a pleno para que se vean encendidos. */
+.tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"] svg {
+  color: var(--ptcr-azul) !important;
+}
+
+/* ---------- Botones: relleno vivo + sombra de color ---------- */
+/* La sombra naranja debajo del botón es lo que lo hace ver "moderno":
+   el botón deja de estar pegado a la página y flota. No cuesta nada de
+   contraste porque va por fuera del botón, no debajo de la letra. */
+.tema-claro .bg-amber-500:not(.sobre-foto *),
+.tema-claro .bg-amber-400:not(.sobre-foto *) {
+  box-shadow: 0 10px 22px -10px rgba(210, 68, 0, 0.75);
+}
+.tema-claro .bg-green-600:not(.sobre-foto *),
+.tema-claro .bg-green-500:not(.sobre-foto *) {
+  box-shadow: 0 10px 22px -10px rgba(22, 163, 74, 0.75);
+}
+
+/* ---------- Azul en las secciones alternas ---------- */
+/* `--color-gray-950` ya las pintó de azul muy claro. Acá sólo se corrige
+   el borde, que seguía gris y cortaba el tono. */
+.tema-claro .border-white\/10,
+.tema-claro .border-white\/20 { border-color: #dde3fa !important; }
+
+/* ---------- Tarjetas: sombra azulada en vez de gris ---------- */
+/* Una sombra gris sobre fondo azul claro se ve sucia. Con la sombra
+   teñida del mismo azul las tarjetas se despegan y el conjunto se ve
+   más limpio. */
+.tema-claro .bg-gray-900,
+.tema-claro .bg-zinc-900,
+.tema-claro .bg-gray-800,
+.tema-claro .bg-zinc-800 {
+  box-shadow: 0 2px 10px -4px rgba(59, 91, 224, 0.22);
+}
+
+/* ---------- Blog: enlaces en azul ---------- */
+/* En un texto largo el naranja cansa y además compite con los botones.
+   El azul es lo que la gente ya reconoce como "esto es un enlace", y de
+   paso reparte el color. #3b5be0 da 5,6:1. */
+.tema-claro .blog-content a { color: var(--ptcr-azul) !important; }
+.tema-claro .blog-content h1,
+.tema-claro .blog-content h2,
+.tema-claro .blog-content h3,
+.tema-claro .blog-content h4,
+.tema-claro .blog-content strong,
+.tema-claro .blog-content th { color: var(--ptcr-marino) !important; }
+.tema-claro .blog-content em { color: var(--ptcr-naranja) !important; }
+.tema-claro .blog-content li::marker { color: var(--ptcr-naranja) !important; }
+.tema-claro .blog-content blockquote { border-left-color: var(--ptcr-azul) !important; }
+.tema-claro .blog-content thead { background: #f4f6ff !important; }
+
+/* ---------- Botones de color: la letra vuelve a ser blanca ---------- */
+/* `.text-white` pasa a azul marino en todo el sitio, y eso está bien encima
+   de blanco. Pero estos botones traen `bg-blue-500 text-white` en el mismo
+   elemento: ahí quedaba marino sobre azul (2,75:1) y verde (3,22:1).
+   Encima de un relleno saturado la letra tiene que seguir siendo blanca.
+
+   Va por clase exacta a propósito: `.bg-blue-500` NO agarra a
+   `bg-blue-500/10`, que en Tailwind es otra clase distinta y sí es un
+   fondo clarito donde la letra debe ir oscura. */
+.tema-claro .bg-blue-500,
+.tema-claro .bg-blue-600,
+.tema-claro .bg-blue-700,
+.tema-claro .bg-green-500,
+.tema-claro .bg-green-600,
+.tema-claro .bg-green-700,
+.tema-claro .bg-red-500,
+.tema-claro .bg-red-600,
+.tema-claro .bg-blue-500 *,
+.tema-claro .bg-blue-600 *,
+.tema-claro .bg-green-500 *,
+.tema-claro .bg-green-600 *,
+.tema-claro .bg-red-500 *,
+.tema-claro .bg-red-600 * { color: #ffffff !important; }
+
+/* Y de paso los rellenos se corrigen: blue-500 con letra blanca da 3,68:1
+   y green-600 da 3,30:1 — ninguno llega al mínimo ni en el tema oscuro de
+   hoy. Con el azul rey (5,59) y un verde un punto más hondo (5,02) pasan,
+   y el azul rey se reparte también por acá. */
+.tema-claro .bg-blue-500,
+.tema-claro .bg-blue-600 { background-color: var(--ptcr-azul) !important; }
+.tema-claro .bg-green-500,
+.tema-claro .bg-green-600 { background-color: #15803d !important; }
+
+/* ---------- Naranja encima de tarjetas con tinte ámbar ---------- */
+/* El sello de TripAdvisor y compañía tienen fondo ámbar al 10%; ahí el
+   naranja pierde 1,2 puntos de contraste y se queda en 3,4:1. */
+.tema-claro [class*="bg-amber-"] [class*="text-amber-"],
+.tema-claro [class*="from-amber-"] [class*="text-amber-"] {
+  color: #9a3412 !important;
+}
+
+/* Mismo caso pero cuando el tinte ámbar y la letra ámbar van en el MISMO
+   elemento — el paso activo del wizard de /book es `text-amber-400
+   bg-amber-500/5`. Se excluyen las pastillas de rótulo, que ya van en azul
+   por la regla de más arriba y no hay que devolverlas a naranja. */
+.tema-claro [class*="bg-amber-"][class*="text-amber-"]:not([class*="border-amber-500/"]) {
+  color: #9a3412 !important;
+}
+
+/* ---------- Los rótulos que se me habían escapado ---------- */
+/* Hay dos recetas para la misma pastilla de rótulo en el sitio: unas usan
+   `bg-amber-500/10` y otras `bg-amber-500/5`. Mi regla sólo agarraba las
+   primeras, así que "✦ VERIFIED REVIEWS", "✦ OUR FLEET" y compañía seguían
+   naranjas mientras las de al lado ya eran azules — quedaba desparejo.
+
+   Acá va apretado a propósito (`inline-flex` + `rounded-full`) porque
+   `bg-amber-500/5` también lo usan cajas grandes de aviso y CTAs que deben
+   seguir siendo naranjas: ahí el fondo azul no pega. */
+.tema-claro [class*="bg-amber-500/5"][class*="border-amber-500/"][class*="rounded-full"][class*="inline-flex"] {
+  background-color: #e4eaff !important;
+  border-color: #a8b8f7 !important;
+}
+.tema-claro [class*="bg-amber-500/5"][class*="border-amber-500/"][class*="rounded-full"][class*="inline-flex"],
+.tema-claro [class*="bg-amber-500/5"][class*="border-amber-500/"][class*="rounded-full"][class*="inline-flex"] span {
+  color: var(--ptcr-azul-oscuro) !important;
+}
+.tema-claro [class*="bg-amber-500/5"][class*="border-amber-500/"][class*="rounded-full"][class*="inline-flex"] svg {
+  color: var(--ptcr-azul) !important;
+}
