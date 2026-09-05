@@ -101,6 +101,9 @@ export default function RootLayout({
         "h-full",
         "antialiased",
         "font-sans",
+        // PRUEBA — tema claro. Ver el bloque "tema-claro" al final de
+        // globals.css. Se quita esta clase y el sitio vuelve al oscuro.
+        "tema-claro",
         inter.variable
       )}
     >

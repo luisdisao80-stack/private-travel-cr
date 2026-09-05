@@ -404,3 +404,337 @@
 @media (prefers-reduced-motion: reduce) {
   .cart-fade-in, .cart-slide-in, .cart-item-in { animation: none; }
 }
+
+/* ============================================================
+   PRUEBA — TEMA CLARO
+   ============================================================
+   Diego, 2026-09-04: "no me está gustando el dark mode, prefiero
+   algo más claro con azul, verde, naranja, fondo blanco".
+
+   Esto es una PRUEBA para que la vea, no el trabajo final. Va como
+   capa encima en vez de reescribir los 60 archivos que tienen los
+   colores a mano: así se ve hoy mismo, y si no le gusta se borra
+   este bloque y no queda rastro.
+
+   Cómo funciona sin tocar componentes: Tailwind v4 no escribe el
+   color dentro de la utilidad, escribe la variable —
+   `.bg-amber-500{background-color:var(--color-amber-500)}`. Y de la
+   misma variable salen los degradados (`from-black` pone
+   `--tw-gradient-from: var(--color-black)`) y las transparencias
+   (`to-black/95` es un color-mix sobre ella). O sea que redefinir
+   un puñado de variables mueve las ~1.400 utilidades de golpe,
+   incluidas las que no se ven en el HTML.
+
+   Primero probé sobrescribiendo las clases (`.bg-black{...}`) y se
+   quedaba a medias: las secciones que usan degradado —"20+ years
+   driving Costa Rica", entre otras— siguieron negras, porque el
+   degradado no pasa por `background-color`. Por variable sí entran.
+
+   La paleta NO es inventada: es la misma que Diego ya aprobó para
+   los correos (lib/email.ts) — azul marino, naranja, verde, fondo
+   gris claro y tarjetas blancas. Así el correo de reserva y el
+   sitio dejan de parecer dos marcas distintas.
+
+   Si se aprueba, el trabajo de verdad es llevar estos valores a los
+   componentes y borrar este bloque: una capa de `!important` no se
+   sostiene a la larga, porque obliga a cada color nuevo a pelear
+   contra ella.
+   ============================================================ */
+
+.tema-claro {
+  /* Acento: la rampa de ámbar pasa a naranja. Se conserva el orden
+     claro -> oscuro para que el degradado del título del hero
+     (from-amber-300 via-400 to-500) siga leyéndose sobre la foto. */
+  --color-amber-100: #ffedd5;
+  --color-amber-200: #fed7aa;
+  /* El 300 y el 400 eran los tonos claros de la rampa. Sobre negro servían;
+     sobre blanco no: las medallas ("⭐ MOST POPULAR") los usan de FONDO con
+     letra blanca encima y ahí un naranja claro da 2,9:1. Fuera de la foto
+     toda la rampa se va a la mitad oscura. Dentro de `.sobre-foto` se
+     devuelven los claros, que es donde sí hacen falta. */
+  --color-amber-300: #ea580c;
+  --color-amber-400: #c2410c;
+  /* El 500 es el naranja del botón. Sobre negro daba igual cuál fuera;
+     sobre blanco tiene que aguantar texto blanco encima, y #ea580c sólo
+     llega a 3,4:1 (el mínimo es 4,5). #c2410c da 5,2:1 y sigue leyéndose
+     naranja. Medido, no elegido a ojo. */
+  --color-amber-500: #c2410c;
+  --color-amber-600: #9a3412;
+  --color-amber-700: #7c2d12;
+
+  /* Los oscuros pasan a claros. Acá está el verdadero cambio de tema:
+     mueve fondos sólidos, degradados y bordes a la vez.
+     Se alternan blanco y gris muy claro para que las secciones se
+     sigan separando sin tener que dibujar líneas. */
+  --color-black: #ffffff;
+  --color-gray-950: #f3f4f6;
+  --color-gray-900: #ffffff;
+  --color-gray-800: #f3f4f6;
+  --color-zinc-950: #f3f4f6;
+  --color-zinc-900: #ffffff;
+  --color-zinc-800: #f3f4f6;
+
+  /* Se puede remapear gray-900/950 sin miedo porque en todo el sitio
+     no hay un solo `text-gray-900` ni `text-zinc-900`: esas variables
+     hoy sólo pintan fondos y bordes. */
+}
+
+/* Lo que va ENCIMA de una foto vuelve a ser oscuro.
+   El hero, el banner de /routes y el del wizard llevan la foto con un
+   degradado oscuro encima; ahí el texto tiene que seguir claro. Como
+   las variables se heredan, basta con devolverles el valor original
+   dentro del bloque marcado. */
+.tema-claro .sobre-foto {
+  /* Encima de la foto el naranja vuelve a ser el brillante: ahí el fondo
+     es oscuro y el #c2410c del botón se apaga. Acá sí se necesita la rampa
+     clara — el título del hero es un degradado 300→400→500. */
+  --color-amber-300: #fdba74;
+  --color-amber-400: #fb923c;
+  --color-amber-500: #f97316;
+  --color-amber-600: #ea580c;
+  --color-black: #000000;
+  --color-gray-950: #030712;
+  --color-gray-900: #111827;
+  --color-gray-800: #1f2937;
+  --color-zinc-950: #09090b;
+  --color-zinc-900: #18181b;
+  --color-zinc-800: #27272a;
+}
+
+/* ---------- Texto ---------- */
+/* El texto sí va por clase: las variables de arriba no lo tocan porque
+   el sitio usa `text-white` y la rampa de grises, no `text-black`. */
+.tema-claro .text-white { color: #111827 !important; }
+.tema-claro .text-gray-100,
+.tema-claro .text-gray-200,
+.tema-claro .text-gray-300 { color: #374151 !important; }
+/* #6b7280 da 4,83:1 contra blanco puro — pasa por poco, pero en cuanto el
+   texto cae sobre una tarjeta gris o un tinte naranja baja a 4,2 y no llega.
+   #4b5563 aguanta 7,4:1 y deja margen para todos esos fondos. */
+.tema-claro .text-gray-400,
+.tema-claro .text-gray-500 { color: #4b5563 !important; }
+
+/* El acento en texto no puede seguir la rampa: naranja 400 sobre blanco
+   no se lee. Los degradados sí la siguen, por las variables de arriba. */
+/* #c2410c da 5,2:1 sobre blanco puro, pero casi ningún texto está sobre
+   blanco puro: cae sobre tarjetas con un tinte naranja del 5-10% y ahí baja
+   a 4,0-4,4 y no llega al mínimo. #9a3412 aguanta 7:1 incluso sobre el
+   tinte, y sigue siendo naranja. */
+.tema-claro .text-amber-200,
+.tema-claro .text-amber-300,
+.tema-claro .text-amber-400,
+.tema-claro .text-amber-500 { color: #9a3412 !important; }
+
+/* Menos en los titulares: ahí el tamaño ya da legibilidad de sobra y el
+   naranja vivo es lo que hace que se vea la marca — "20+ years driving
+   Costa Rica." pierde toda la fuerza en marrón. */
+.tema-claro h1 [class*="text-amber-"],
+.tema-claro h2 [class*="text-amber-"],
+.tema-claro h3 [class*="text-amber-"],
+.tema-claro h1[class*="text-amber-"],
+.tema-claro h2[class*="text-amber-"],
+.tema-claro h3[class*="text-amber-"] { color: #c2410c !important; }
+
+/* ---------- Bordes ---------- */
+.tema-claro .border-white\/10,
+.tema-claro .border-white\/20 { border-color: #e5e7eb !important; }
+.tema-claro .border-white { border-color: #d1d5db !important; }
+
+/* ---------- Tarjetas ---------- */
+/* Antes eran cajas oscuras sobre negro y se distinguían solas. En blanco
+   sobre blanco desaparecen, así que necesitan borde y una sombra mínima. */
+.tema-claro .bg-gray-900,
+.tema-claro .bg-zinc-900,
+.tema-claro .bg-gray-800,
+.tema-claro .bg-zinc-800 {
+  border-color: #e5e7eb;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+/* ---------- Botones de acento ---------- */
+/* `text-black` en este sitio siempre está encima de un botón de color
+   (ámbar o verde) — no hay un solo caso sobre fondo claro. Con el naranja
+   y el verde de la paleta, negro encima no da contraste: va blanco. */
+.tema-claro .text-black { color: #ffffff !important; }
+
+/* ---------- Barra de navegación ---------- */
+/* Antes era transparente arriba y negra al bajar. Transparente ya no
+   sirve: los enlaces se volvieron oscuros y la foto se los come. Va
+   blanca siempre, que además es lo normal en un sitio claro. */
+.tema-claro nav {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ---------- Excepciones encima de la foto ---------- */
+.tema-claro .sobre-foto .text-white { color: #ffffff !important; }
+.tema-claro .sobre-foto .text-gray-100,
+.tema-claro .sobre-foto .text-gray-200,
+.tema-claro .sobre-foto .text-gray-300 { color: #e5e7eb !important; }
+.tema-claro .sobre-foto .text-gray-400,
+.tema-claro .sobre-foto .text-gray-500 { color: #d1d5db !important; }
+.tema-claro .sobre-foto .text-amber-200,
+.tema-claro .sobre-foto .text-amber-300,
+.tema-claro .sobre-foto .text-amber-400 { color: #fdba74 !important; }
+.tema-claro .sobre-foto .border-white\/10,
+.tema-claro .sobre-foto .border-white\/20 { border-color: rgba(255,255,255,0.2) !important; }
+.tema-claro .sobre-foto .bg-gray-900,
+.tema-claro .sobre-foto .bg-zinc-900,
+.tema-claro .sobre-foto .bg-gray-800,
+.tema-claro .sobre-foto .bg-zinc-800 { border-color: rgba(255,255,255,0.1); box-shadow: none; }
+
+/* ---------- Blog ---------- */
+/* Estas reglas están escritas a mano más arriba en este archivo, no son
+   utilidades de Tailwind, así que hay que repetirlas. */
+.tema-claro .blog-content,
+.tema-claro .blog-content p,
+.tema-claro .blog-content ul,
+.tema-claro .blog-content ol,
+.tema-claro .blog-content td { color: #374151; }
+.tema-claro .blog-content h1,
+.tema-claro .blog-content h2,
+.tema-claro .blog-content h3,
+.tema-claro .blog-content h4,
+.tema-claro .blog-content strong,
+.tema-claro .blog-content th { color: #111827; }
+.tema-claro .blog-content a { color: #ea580c; }
+.tema-claro .blog-content em { color: #c2410c; }
+.tema-claro .blog-content li::marker { color: #ea580c; }
+.tema-claro .blog-content blockquote { color: #6b7280; border-left-color: #ea580c; }
+.tema-claro .blog-content thead { background: rgba(234, 88, 12, 0.06); }
+.tema-claro .blog-content td { border-bottom-color: #e5e7eb; }
+.tema-claro .blog-content pre { background: #f3f4f6; border-color: #e5e7eb; }
+.tema-claro .blog-content pre code { color: #374151; }
+.tema-claro .blog-content code { background: rgba(234,88,12,0.08); color: #9a3412; }
+
+/* ---------- Texto con transparencia ---------- */
+/* `text-white/70` es OTRA clase que `text-white`: sale de un color-mix,
+   no de la variable, así que la regla de arriba no la alcanza. Son 124
+   usos y ahí estaba el párrafo de "20+ years driving Costa Rica",
+   que quedaba blanco sobre blanco.
+   Se mapea nivel por nivel para no perder la jerarquía: lo que era más
+   tenue sobre negro sigue siendo más tenue sobre blanco. */
+.tema-claro .text-white\/90 { color: #111827 !important; }
+.tema-claro .text-white\/80 { color: #1f2937 !important; }
+.tema-claro .text-white\/70 { color: #374151 !important; }
+.tema-claro .text-white\/60 { color: #4b5563 !important; }
+.tema-claro .text-white\/50 { color: #6b7280 !important; }
+.tema-claro .text-white\/40 { color: #9ca3af !important; }
+
+/* El acento con transparencia va todo al mismo naranja legible.
+   Se usa selector por atributo porque son 12 combinaciones distintas.
+   Ojo: `text-amber-500/0` es invisible a propósito (una animación), y
+   no entra acá porque el selector sólo toma 300 y 400. */
+.tema-claro [class*="text-amber-300/"],
+.tema-claro [class*="text-amber-400/"] { color: #9a3412 !important; }
+
+/* Y encima de la foto, todo esto vuelve a ser claro. */
+.tema-claro .sobre-foto .text-white\/90 { color: rgba(255,255,255,0.9) !important; }
+.tema-claro .sobre-foto .text-white\/80 { color: rgba(255,255,255,0.8) !important; }
+.tema-claro .sobre-foto .text-white\/70 { color: rgba(255,255,255,0.7) !important; }
+.tema-claro .sobre-foto .text-white\/60 { color: rgba(255,255,255,0.6) !important; }
+.tema-claro .sobre-foto .text-white\/50 { color: rgba(255,255,255,0.5) !important; }
+.tema-claro .sobre-foto .text-white\/40 { color: rgba(255,255,255,0.4) !important; }
+.tema-claro .sobre-foto [class*="text-amber-300/"],
+.tema-claro .sobre-foto [class*="text-amber-400/"] { color: #fdba74 !important; }
+
+/* ---------- Correcciones que salieron del medidor de contraste ---------- */
+/* El botón `bg-amber-400 text-black` quedaba blanco sobre naranja claro:
+   2,26:1, ilegible. El fondo del BOTÓN va al naranja oscuro; el degradado
+   `from-amber-400` no se toca, porque es otra clase y ahí el tono claro
+   sí hace falta (va sobre la foto). */
+.tema-claro .bg-amber-300,
+.tema-claro .bg-amber-400 { background-color: #c2410c !important; }
+
+/* Los dos niveles más tenues quedaban por debajo de 3:1 sobre el gris de
+   fondo — el precio tachado del listado de rutas, por ejemplo. */
+.tema-claro .text-white\/50,
+.tema-claro .text-white\/40 { color: #4b5563 !important; }
+
+/* El tinte ámbar al 20% marca "esto está seleccionado" (tipo de servicio en
+   la calculadora, medalla del VIP). Sobre blanco queda naranja pálido y el
+   texto naranja encima se pierde: 2,1–3,9:1. Se aclara el fondo casi a
+   blanco y se oscurece la letra; el borde naranja sigue marcando la
+   selección igual de bien. */
+.tema-claro [class*="bg-amber-500/2"] { background-color: #fff7ed !important; }
+.tema-claro [class*="bg-amber-500/2"],
+.tema-claro [class*="bg-amber-500/2"] > div,
+.tema-claro [class*="bg-amber-500/2"] > span,
+.tema-claro [class*="bg-amber-500/2"] svg { color: #9a3412 !important; }
+.tema-claro .sobre-foto [class*="bg-amber-500/2"] {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+}
+.tema-claro .sobre-foto [class*="bg-amber-500/2"],
+.tema-claro .sobre-foto [class*="bg-amber-500/2"] > div,
+.tema-claro .sobre-foto [class*="bg-amber-500/2"] > span,
+.tema-claro .sobre-foto [class*="bg-amber-500/2"] svg { color: #fdba74 !important; }
+
+/* ============================================================
+   Repartir los tres colores
+   ============================================================
+   Con sólo cambiar ámbar por naranja el sitio quedaba naranja de
+   arriba a abajo — y Diego pidió azul, verde Y naranja. Antes eso no
+   se notaba porque el negro hacía de separador; sobre blanco, un solo
+   acento repetido 1.400 veces se vuelve ruido.
+
+   El reparto no es decorativo, sigue el significado de cada cosa:
+     naranja  -> acción y plata (botones de reservar, precios)
+     verde    -> lo que tranquiliza (incluido, confirmado, WhatsApp)
+     azul     -> lo que sólo rotula (los títulos chiquitos de sección)
+
+   Es el mismo criterio de los correos, donde el verde marca el punto
+   de recogida y el naranja el total.
+   ============================================================ */
+
+/* Verde: los ✓ de "esto viene incluido". Se alcanzan por la clase que
+   les pone lucide, sin tener que tocar cada componente. */
+.tema-claro svg.lucide-check.text-amber-400,
+.tema-claro svg.lucide-circle-check.text-amber-400,
+.tema-claro svg.lucide-shield-check.text-amber-400,
+.tema-claro svg.lucide-check.text-amber-300,
+.tema-claro svg.lucide-circle-check.text-amber-300 { color: #16a34a !important; }
+
+/* Azul marino: los rótulos de sección ("✦ MEET DIEGO", "PRIVATE SHUTTLE",
+   "✦ VERIFIED REVIEWS"). */
+.tema-claro .text-amber-400.uppercase,
+.tema-claro .text-amber-300.uppercase,
+.tema-claro .text-amber-500.uppercase { color: #1e3a8a !important; }
+
+/* Ojo: la mayoría de esos rótulos NO llevan la clase `uppercase` — el texto
+   ya viene en mayúscula desde translations.ts, así que la regla de arriba no
+   los alcanzaba y seguían naranja. La marca de verdad es la pastilla que los
+   envuelve: fondo ámbar translúcido + borde ámbar.
+   Además esa pastilla era el peor contraste medido (2,1–2,9:1): naranja
+   sobre naranja pálido. Pasa a azul, que era justo lo que faltaba repartir. */
+.tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"] {
+  background-color: #eff6ff !important;
+  border-color: #bfdbfe !important;
+}
+.tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"],
+.tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"] span,
+.tema-claro [class*="bg-amber-500/1"][class*="border-amber-500/"] svg { color: #1e3a8a !important; }
+
+/* La pastilla del VIP (tinte /20) se queda naranja: ahí el color ES el
+   mensaje. Sólo se aclara el fondo para que el texto se lea (6,9:1). */
+.tema-claro [class*="bg-amber-500/2"][class*="border-amber-500/"] {
+  background-color: #fff7ed !important;
+  border-color: #fdba74 !important;
+}
+.tema-claro [class*="bg-amber-500/2"][class*="border-amber-500/"] span,
+.tema-claro [class*="bg-amber-500/2"][class*="border-amber-500/"] svg { color: #9a3412 !important; }
+
+/* Encima de la foto no aplica ninguno de los dos: ahí el fondo es oscuro
+   y tanto el azul marino como el verde se pierden. */
+.tema-claro .sobre-foto .text-amber-400.uppercase,
+.tema-claro .sobre-foto .text-amber-300.uppercase,
+.tema-claro .sobre-foto .text-amber-500.uppercase { color: #fdba74 !important; }
+.tema-claro .sobre-foto svg.lucide-check.text-amber-400,
+.tema-claro .sobre-foto svg.lucide-circle-check.text-amber-400 { color: #4ade80 !important; }
+.tema-claro .sobre-foto [class*="bg-amber-500/"][class*="border-amber-500/"] {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+.tema-claro .sobre-foto [class*="bg-amber-500/"][class*="border-amber-500/"],
+.tema-claro .sobre-foto [class*="bg-amber-500/"][class*="border-amber-500/"] span,
+.tema-claro .sobre-foto [class*="bg-amber-500/"][class*="border-amber-500/"] svg { color: #fdba74 !important; }

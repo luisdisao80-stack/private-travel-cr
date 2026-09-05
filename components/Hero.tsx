@@ -239,7 +239,7 @@ export default function Hero({
   };
 
   return (
-    <section className="relative z-20 min-h-[85vh] md:min-h-screen w-full flex items-center justify-center isolate">
+    <section className="sobre-foto relative z-20 min-h-[85vh] md:min-h-screen w-full flex items-center justify-center isolate">
       {/*
         LCP-critical image. Self-hosted in /public so Next/Image can serve
         responsive AVIF/WebP variants (~50-80 KB on mobile vs the old

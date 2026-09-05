@@ -396,7 +396,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       {/* Hero */}
       {/* overflow-visible (not -hidden) so the LocationInput dropdown can
           extend past the section bottom without getting clipped. */}
-      <section className="relative w-full">
+      <section className="sobre-foto relative w-full">
         {/* 50 y no 65: la foto de origen subió a 3840 px, y con sizes=100vw
             una pantalla retina pide justo ese tamaño. A 65 serían ~500 KB
             para algo que va debajo del degradado negro de dos líneas abajo. */}

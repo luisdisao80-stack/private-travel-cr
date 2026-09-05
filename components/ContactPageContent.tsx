@@ -23,7 +23,7 @@ export default function ContactPageContent() {
   return (
     <>
       {/* HERO with background image */}
-      <section className="relative isolate min-h-[55vh] flex items-center justify-center overflow-hidden">
+      <section className="sobre-foto relative isolate min-h-[55vh] flex items-center justify-center overflow-hidden">
         <img
           src="/blog/manuel-antonio-jungle-coast.jpg"
           alt=""

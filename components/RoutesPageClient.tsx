@@ -134,7 +134,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
           the section's bottom edge. overflow-hidden was clipping the third
           suggestion in half. NextImage `fill` + object-cover keeps the bg
           contained without needing overflow-hidden on the section. */}
-      <section className="relative w-full">
+      <section className="sobre-foto relative w-full">
         {/* eslint-disable-next-line jsx-a11y/alt-text */}
         {/* 50 y no 65: la foto de origen subió a 3840 px, y con sizes=100vw
             una pantalla retina pide justo ese tamaño. A 65 serían ~500 KB
