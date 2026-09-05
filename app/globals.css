@@ -1248,7 +1248,10 @@
 .tema-claro section[aria-label="Trust signals"] > div,
 .tema-claro section[aria-label="Señales de confianza"] > div {
   background-color: #ffffff;
-  border: 1px solid #e0e7ff;
+  /* El mismo naranja del borde de las tarjetas elegidas (#d24400) y del
+     mismo grosor, para que "borde naranja" quiera decir lo mismo en todo
+     el sitio. Antes era un azul clarito que casi no se veía. */
+  border: 2px solid #d24400;
   border-radius: 1.5rem;
   padding: 2.25rem 1.5rem;
   /* Dos sombras: una amplia y suave que da el relieve, y otra corta y
@@ -1273,7 +1276,10 @@
 .tema-claro section[aria-label="Included in every shuttle"] > div,
 .tema-claro section[aria-label="Incluido en cada shuttle"] > div {
   background-color: #ffffff;
-  border: 1px solid #e0e7ff;
+  /* El mismo naranja del borde de las tarjetas elegidas (#d24400) y del
+     mismo grosor, para que "borde naranja" quiera decir lo mismo en todo
+     el sitio. Antes era un azul clarito que casi no se veía. */
+  border: 2px solid #d24400;
   border-radius: 1.5rem;
   padding: 1.75rem 1rem;
   box-shadow: 0 22px 45px -22px rgba(23,37,84,.38),
