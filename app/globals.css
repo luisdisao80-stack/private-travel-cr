@@ -1262,3 +1262,38 @@
     padding: 2.75rem 2.5rem;
   }
 }
+
+/* ---------- "Todo lo que necesitás", levantada igual ---------- */
+/* Diego quiso el mismo tratamiento que la franja de confianza. Aquí no
+   sirve el mismo truco de la banda de atrás: esa sección es `container`,
+   o sea que ya viene con márgenes, y la banda saldría como un rectángulo
+   de color flotando con aire a los lados en vez de cruzar la pantalla.
+   Así que el relieve se lo da la caja: blanco, borde azul clarito y la
+   MISMA sombra que la otra, para que las dos se lean como hermanas. */
+.tema-claro section[aria-label="Included in every shuttle"] > div,
+.tema-claro section[aria-label="Incluido en cada shuttle"] > div {
+  background-color: #ffffff;
+  border: 1px solid #e0e7ff;
+  border-radius: 1.5rem;
+  padding: 1.75rem 1rem;
+  box-shadow: 0 22px 45px -22px rgba(23,37,84,.38),
+              0 3px 8px -3px rgba(23,37,84,.12);
+}
+/* En el teléfono estos ocho puntos van en dos columnas MUY justas: el
+   texto ya se partía en tres líneas antes de que yo tocara nada. Con el
+   relleno que le puse primero (1,5rem) perdía 48px más de ancho y pasaba
+   a cuatro líneas ("Private — just / your / group"). Se le devuelve el
+   ancho quitándole margen a la sección, que en el teléfono no hace falta. */
+@media (max-width: 767px) {
+  .tema-claro section[aria-label="Included in every shuttle"],
+  .tema-claro section[aria-label="Incluido en cada shuttle"] {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+@media (min-width: 768px) {
+  .tema-claro section[aria-label="Included in every shuttle"] > div,
+  .tema-claro section[aria-label="Incluido en cada shuttle"] > div {
+    padding: 2.75rem 2.5rem;
+  }
+}

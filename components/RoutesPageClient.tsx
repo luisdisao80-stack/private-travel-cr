@@ -476,7 +476,14 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
       )}
 
       {/* INCLUDED IN EVERY SHUTTLE */}
-      <section className="container mx-auto px-4 py-10 md:py-14">
+      {/* El aria-label no es decorativo: sin nombre, un <section> no cuenta
+          como región y el lector de pantalla no la anuncia. De paso es lo
+          único por lo que el tema claro puede agarrarla, porque este bloque
+          no tiene ninguna clase propia. Igual que en TrustStrip. */}
+      <section
+        aria-label={lang === "en" ? "Included in every shuttle" : "Incluido en cada shuttle"}
+        className="container mx-auto px-4 py-10 md:py-14"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
             <span className="text-amber-400 text-xs font-bold tracking-[0.2em] uppercase">
