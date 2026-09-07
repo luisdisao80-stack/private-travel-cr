@@ -83,7 +83,10 @@ export default function Navbar() {
               width={256}
               height={112}
               loading="eager"
-              className="h-14 w-auto group-hover:scale-105 transition-transform"
+              /* Tema claro: el arte del logo es dorado sobre transparente y se
+                 perdia sobre el nav blanco. La cajita negra redondeada replica
+                 el mock aprobado y le devuelve el contraste. */
+              className="h-14 w-auto rounded-lg bg-black px-3 py-1.5 group-hover:scale-105 transition-transform"
             />
           </Link>
 

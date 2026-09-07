@@ -396,7 +396,9 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       {/* Hero */}
       {/* overflow-visible (not -hidden) so the LocationInput dropdown can
           extend past the section bottom without getting clipped. */}
-      <section className="relative w-full">
+      {/* `isolate`: la foto usa -z-[1] y, sin un stacking context propio, se
+          iba detras del bg-white del <main> y el header quedaba gris plano. */}
+      <section className="relative isolate w-full">
         {/* 50 y no 65: la foto de origen subió a 3840 px, y con sizes=100vw
             una pantalla retina pide justo ese tamaño. A 65 serían ~500 KB
             para algo que va debajo del degradado negro de dos líneas abajo. */}
@@ -409,8 +411,10 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
           quality={50}
           className="object-cover object-center -z-[1]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />
+        {/* Tema claro: antes el degradado terminaba en negro solido para
+            fundirse con la pagina oscura. Ahora la pagina es blanca, asi que
+            se aligera para que la foto se vea y el texto blanco siga legible. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/60 z-[1]" />
         <div className="relative z-10 container mx-auto px-4 pt-24 pb-10 md:pt-28 md:pb-12">
           {view === "checkout" ? (
             <div className="text-center">
