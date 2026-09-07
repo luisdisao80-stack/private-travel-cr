@@ -485,6 +485,11 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     onHotelPick={handleDropoffHotel}
                   />
                 </div>
+                {/* Pedido de Diego 2026-09-07: igual que en la home, al
+                    inicio solo los campos de origen/destino; el resto
+                    aparece cuando la ruta ya está escogida. */}
+                {heroFrom.trim().length > 0 && heroTo.trim().length > 0 && (
+                  <>
                 {/* El mismo contador que el buscador de la home, no una
                     copia: ver el comentario de PaxSelector. Va antes del
                     precio porque el precio depende de él. */}
@@ -542,6 +547,8 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                         : "Agregar al carrito"}
                   </button>
                 ) : null}
+                  </>
+                )}
                 {/* El itinerario que se va armando, acá mismo debajo del
                     buscador.
                     Antes esta caja decía sólo "3 viajes · $670 en total":

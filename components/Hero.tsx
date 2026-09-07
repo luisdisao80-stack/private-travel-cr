@@ -420,6 +420,11 @@ export default function Hero({
               />
             </div>
 
+            {/* Pedido de Diego 2026-09-07: al inicio solo se ven los campos
+                de origen/destino; pasajeros, precio y botón aparecen hasta
+                que la ruta esté escogida (ambos campos con texto). */}
+            {pickup.trim().length > 0 && dropoff.trim().length > 0 && (
+              <>
             <PaxSelector
               adults={adults}
               childrenCount={children}
@@ -522,6 +527,8 @@ export default function Hero({
                 ? "Pick your date and time at checkout."
                 : "Elegís fecha y hora en el checkout."}
             </p>
+              </>
+            )}
 
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-slate-200 text-xs text-slate-500">
               <span className="flex items-center gap-1.5">

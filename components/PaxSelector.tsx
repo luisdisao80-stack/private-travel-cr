@@ -120,7 +120,7 @@ export default function PaxSelector({
     // somos" → "cuánto cuesta". Botones +/- en vez de un campo de número
     // porque en celular escribir un dígito abre el teclado y tapa media
     // pantalla.
-    <div className={`rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 ${className}`}>
+    <div className={`rounded-xl border border-orange-300 bg-slate-50 px-4 py-3 ${className}`}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
           <Users size={15} className="text-orange-600" />

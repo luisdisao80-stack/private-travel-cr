@@ -287,7 +287,7 @@ export default function LocationInput({
           }
         }}
         placeholder={placeholder}
-        className="w-full pl-12 pr-9 py-4 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 transition"
+        className="w-full pl-12 pr-9 py-4 bg-white border border-orange-400 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 transition"
       />
       {value && (
         <button
