@@ -278,9 +278,9 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
 
   if (items.length === 0) {
     return (
-      <div className="p-6 text-center text-gray-400">
+      <div className="p-6 text-center text-slate-500">
         <p>{es ? "Tu carrito está vacío." : "Your cart is empty."}</p>
-        <button onClick={onBack} className="mt-3 text-amber-400 hover:text-amber-300 text-sm">
+        <button onClick={onBack} className="mt-3 text-orange-600 hover:text-orange-700 text-sm">
           ← {es ? "Volver" : "Back"}
         </button>
       </div>
@@ -296,14 +296,14 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-amber-400 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-orange-600 transition-colors"
         >
           <ArrowLeft size={14} />
           {lang === "es" ? "Volver" : "Back"}
         </button>
         <button
           onClick={onBack}
-          className="lg:hidden inline-flex items-center gap-1.5 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-3 py-1.5 text-xs text-amber-300 hover:text-amber-200 transition-colors"
+          className="lg:hidden inline-flex items-center gap-1.5 rounded-lg border border-dashed border-orange-300 hover:border-orange-500 hover:bg-orange-50 px-3 py-1.5 text-xs text-orange-600 hover:text-amber-800 transition-colors"
         >
           <span className="text-base leading-none">+</span>
           {lang === "es" ? "Agregar otro viaje" : "Add another trip"}
@@ -312,7 +312,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
 
       {/* One card per cart item — addresses, service type, flight all per-trip. */}
       <section className="space-y-4">
-        <div className="text-amber-400 text-xs font-bold tracking-[0.18em] uppercase">
+        <div className="text-orange-600 text-xs font-bold tracking-[0.18em] uppercase">
           {lang === "es" ? "Tus viajes" : "Your trips"}
         </div>
         {items.map((item, idx) => (
@@ -332,35 +332,35 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
       </section>
 
       <section className="space-y-4">
-        <div className="text-amber-400 text-xs font-bold tracking-[0.18em] uppercase">
+        <div className="text-orange-600 text-xs font-bold tracking-[0.18em] uppercase">
           {es ? "Tus datos" : "Your information"}
         </div>
 
         <div className="grid md:grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <Label className="text-gray-300 text-sm">
+            <Label className="text-slate-600 text-sm">
               {es ? "Nombre completo" : "Full name"}{" "}
-              <span className="text-red-400">*</span>
+              <span className="text-red-600">*</span>
             </Label>
             <Input
               value={form.name}
               onChange={handleChange("name")}
               placeholder={es ? "Juan Pérez" : "John Doe"}
-              className="bg-black/50 border-amber-500/30 text-white h-11"
+              className="bg-white border-slate-300 text-slate-900 h-11"
             />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-gray-300 text-sm">
-              {es ? "Correo" : "Email"} <span className="text-red-400">*</span>
+            <Label className="text-slate-600 text-sm">
+              {es ? "Correo" : "Email"} <span className="text-red-600">*</span>
             </Label>
             <Input
               type="email"
               value={form.email}
               onChange={handleChange("email")}
               placeholder={es ? "vos@ejemplo.com" : "you@example.com"}
-              className="bg-black/50 border-amber-500/30 text-white h-11"
+              className="bg-white border-slate-300 text-slate-900 h-11"
             />
-            <p className="text-[10px] text-gray-500">
+            <p className="text-[10px] text-slate-500">
               {es
                 ? "Ahí te mandamos la confirmación."
                 : "We'll send your confirmation here."}
@@ -369,8 +369,8 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
         </div>
 
         <div className="space-y-1.5">
-          <Label className="text-gray-300 text-sm">
-            {es ? "Teléfono" : "Phone"} <span className="text-red-400">*</span>
+          <Label className="text-slate-600 text-sm">
+            {es ? "Teléfono" : "Phone"} <span className="text-red-600">*</span>
           </Label>
           <div className="flex gap-2">
             <select
@@ -379,11 +379,11 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
                 const next = COUNTRY_CODES.find((c) => c.iso2 === e.target.value);
                 if (next) setCountry(next);
               }}
-              className="w-24 sm:w-28 md:w-32 bg-black/50 border border-amber-500/30 text-white h-11 rounded-md px-2 text-sm focus:border-amber-500 outline-none shrink-0"
+              className="w-24 sm:w-28 md:w-32 bg-white border border-slate-300 text-slate-900 h-11 rounded-md px-2 text-sm focus:border-orange-600 outline-none shrink-0"
               aria-label={es ? "Código de país" : "Country code"}
             >
               {COUNTRY_CODES.map((c) => (
-                <option key={c.iso2} value={c.iso2} className="bg-gray-900">
+                <option key={c.iso2} value={c.iso2} className="bg-white">
                   {c.flag} {c.dial}
                 </option>
               ))}
@@ -394,17 +394,17 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
               value={form.phoneLocal}
               onChange={handleChange("phoneLocal")}
               placeholder="555 123 4567"
-              className="bg-black/50 border-amber-500/30 text-white h-11 flex-1"
+              className="bg-white border-slate-300 text-slate-900 h-11 flex-1"
             />
           </div>
-          <p className="text-[10px] text-gray-500">
+          <p className="text-[10px] text-slate-500">
             {es ? "Seleccionado:" : "Selected:"}{" "}
-            <span className="text-amber-400">{country.flag} {country.name} ({country.dial})</span>
+            <span className="text-orange-600">{country.flag} {country.name} ({country.dial})</span>
           </p>
         </div>
 
         <div className="space-y-1.5">
-          <Label className="text-gray-300 text-sm">
+          <Label className="text-slate-600 text-sm">
             {es ? "Solicitudes especiales (opcional)" : "Special requests (optional)"}
           </Label>
           <textarea
@@ -416,13 +416,13 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
                 : "Anything we should know? Child seats, late arrival, etc."
             }
             rows={3}
-            className="w-full rounded-md bg-black/50 border border-amber-500/30 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40 resize-none"
+            className="w-full rounded-md bg-white border border-slate-300 text-slate-900 px-3 py-2 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500/40 resize-none"
           />
         </div>
       </section>
 
       {error ? (
-        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-xs">
+        <div className="p-3 rounded-lg bg-red-50 border border-red-300 text-red-700 text-xs">
           {error}
         </div>
       ) : null}
@@ -432,15 +432,15 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           type="checkbox"
           checked={acceptedTerms}
           onChange={(e) => setAcceptedTerms(e.target.checked)}
-          className="mt-0.5 h-4 w-4 rounded border-amber-500/40 bg-black/50 accent-amber-500 shrink-0"
+          className="mt-0.5 h-4 w-4 rounded border-slate-300 bg-white accent-orange-600 shrink-0"
         />
-        <span className="text-xs text-gray-300 leading-snug">
+        <span className="text-xs text-slate-600 leading-snug">
           {es ? "Leí y acepto los " : "I have read and accept the "}
           <a
             href="/terms"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-amber-400 hover:text-amber-300 underline underline-offset-2"
+            className="text-orange-600 hover:text-orange-700 underline underline-offset-2"
           >
             {es ? "Términos y Condiciones" : "Terms & Conditions"}
           </a>
@@ -455,7 +455,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           (not red) to match the site's other non-blocking hints instead
           of looking like an error. */}
       {airportTripsMissingFlight.length > 0 && (
-        <div className="rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
+        <div className="rounded-lg border border-amber-300 bg-orange-50 px-4 py-3 text-xs text-amber-900">
           {airportTripsMissingFlight.length === 1 ? (
             es ? (
               <>
@@ -498,7 +498,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           igual. Apunta al viaje concreto por número + ruta, como el
           resto de los mensajes del carrito. */}
       {incompleteTrip && (
-        <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200">
+        <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-xs text-red-700">
           <p className="leading-snug">
             {tripGapMessage(
               incompleteTrip.gap,
@@ -512,7 +512,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
               href={lang === "es" ? WHATSAPP_URGENT_URL_ES : WHATSAPP_URGENT_URL_EN}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+              className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-slate-900 font-semibold text-xs px-3 py-1.5 transition-colors"
             >
               {lang === "es" ? "Escríbenos por WhatsApp" : "WhatsApp us"}
             </a>
@@ -521,7 +521,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
       )}
 
       {!firstTripLeadTimeOk && items.length > 0 && (
-        <div className="rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
+        <div className="rounded-lg border border-orange-500/50 bg-orange-50 px-4 py-3 text-xs text-amber-900">
           <p className="leading-snug mb-2">
             {lang === "es" ? LEAD_TIME_MESSAGE_ES : LEAD_TIME_MESSAGE_EN}
           </p>
@@ -529,7 +529,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
             href={lang === "es" ? WHATSAPP_URGENT_URL_ES : WHATSAPP_URGENT_URL_EN}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-slate-900 font-semibold text-xs px-3 py-1.5 transition-colors"
           >
             {lang === "es" ? "Escríbenos por WhatsApp" : "WhatsApp us"}
           </a>
@@ -549,8 +549,8 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           (missing flight) and the small grey FX disclaimer below — same
           visual hierarchy the form already uses, so it reads as "heads
           up" not "error". */}
-      <div className="rounded-lg border border-amber-500/40 bg-amber-500/5 px-4 py-3 text-xs text-amber-100/90 leading-relaxed">
-        <p className="font-semibold text-amber-300 mb-1">
+      <div className="rounded-lg border border-orange-300 bg-orange-50 px-4 py-3 text-xs text-amber-900/90 leading-relaxed">
+        <p className="font-semibold text-orange-600 mb-1">
           {es
             ? "💳 Ojo — tarjetas internacionales"
             : "💳 Heads up — international cards"}
@@ -559,7 +559,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           {es
             ? "Algunos bancos de Estados Unidos, Canadá y Europa rechazan automáticamente los cobros desde Costa Rica como control de fraude. Si te rechazan la tarjeta, llamá a tu banco y autorizá el cobro a "
             : "Some US, Canada and EU banks auto-decline charges from Costa Rica as a fraud check. If your card is declined, call your bank and authorize the charge to "}
-          <span className="font-semibold text-amber-200">
+          <span className="font-semibold text-amber-800">
             &ldquo;Private Travel CR&rdquo;
           </span>{" "}
           {es ? "— o " : "— or "}
@@ -571,7 +571,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
             }
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-green-400 hover:text-green-300 underline underline-offset-2"
+            className="font-semibold text-green-700 hover:text-green-700 underline underline-offset-2"
           >
             {es ? "escribinos por WhatsApp" : "WhatsApp us"}
           </a>{" "}
@@ -587,7 +587,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           and Tilopay rejects the charge. Surfacing this early avoids
           a dead-end mid-checkout. */}
       {items.length > 0 && totalPrice <= 0 ? (
-        <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200">
+        <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-xs text-red-700">
           {es
             ? "Tu carrito se ve vacío o dañado — recargá la página y volvé a agregar tus viajes para continuar."
             : "Your cart looks empty or invalid — please refresh the page and re-add your trips to continue."}
@@ -602,10 +602,10 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           directly above the Pay CTA to reinforce the decision at the exact
           instant of commitment. Bilingual to match the rest of the form. */}
       {items.length > 0 && totalPrice > 0 ? (
-        <div className="rounded-xl border border-white/10 bg-gray-900/40 px-4 py-3">
+        <div className="rounded-xl border border-slate-200 bg-white/40 px-4 py-3">
           <div className="flex items-center gap-2 mb-2">
-            <ShieldCheck size={16} className="text-amber-400 shrink-0" />
-            <span className="text-xs font-semibold text-white">
+            <ShieldCheck size={16} className="text-orange-600 shrink-0" />
+            <span className="text-xs font-semibold text-slate-900">
               {lang === "es"
                 ? "Por qué reservar con nosotros"
                 : "Why book with us"}
@@ -626,8 +626,8 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
                   "Secure payment — card details never touch our servers",
                 ]
             ).map((item) => (
-              <li key={item} className="flex items-start gap-2 text-xs text-gray-300 leading-snug">
-                <Check size={14} className="text-green-400 mt-0.5 shrink-0" />
+              <li key={item} className="flex items-start gap-2 text-xs text-slate-600 leading-snug">
+                <Check size={14} className="text-green-700 mt-0.5 shrink-0" />
                 <span>{item}</span>
               </li>
             ))}
@@ -638,7 +638,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
       <Button
         onClick={handleSubmit}
         disabled={!isValid || loading}
-        className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-base disabled:opacity-40"
+        className="w-full h-14 bg-orange-600 hover:bg-orange-700 text-white font-bold text-base disabled:opacity-40"
       >
         {loading ? (
           <Loader2 size={18} className="animate-spin" />
@@ -651,17 +651,17 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
       </Button>
 
       {showCurrencyHint ? (
-        <p className="text-[11px] text-center text-amber-300">
+        <p className="text-[11px] text-center text-orange-600">
           ≈ {convertedTotal} {currency}{" "}
           {es ? "al tipo de cambio de hoy" : "at today's rate"}
         </p>
       ) : null}
-      <p className="text-[11px] text-center text-green-400">
+      <p className="text-[11px] text-center text-green-700">
         {es
           ? "Impuestos incluidos · Precio final"
           : "Taxes included · Final price"}
       </p>
-      <p className="text-[10px] text-center text-gray-500">
+      <p className="text-[10px] text-center text-slate-500">
         {es
           ? "El cobro se hace en USD por Tilopay. Tu banco aplica el tipo de cambio del día. Los datos de tu tarjeta nunca pasan por nuestros servidores."
           : "Charges in USD via Tilopay. Your card issuer applies the live conversion rate. Card details never touch our servers."}
@@ -676,7 +676,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           italic helper copy so the legitimate paying customer barely
           notices it, but anyone confused at their bank statement gets
           the answer here first. */}
-      <p className="text-[10px] text-center text-gray-500 italic mt-2 px-2">
+      <p className="text-[10px] text-center text-slate-500 italic mt-2 px-2">
         {es
           ? "💳 Ojo: algunos bancos (sobre todo de Estados Unidos, Canadá y Europa) cobran aparte una pequeña comisión por transacción internacional (~3%) cuando pagás a un comercio de Costa Rica. Esa comisión NO es nuestra, es de tu banco. Las tarjetas pensadas para viajar (Chase Sapphire, Capital One Venture, Amex Platinum, etc.) normalmente no la cobran."
           : "💳 Heads-up: some banks (especially in the US / Canada / EU) charge a small foreign transaction fee (~3%) on top when you pay a Costa Rica-based merchant. That fee is NOT ours — it's your bank's. Travel-friendly cards (Chase Sapphire, Capital One Venture, Amex Platinum, etc.) usually waive it."}
@@ -950,22 +950,22 @@ function TripConfigCard({
   };
 
   return (
-    <div className="rounded-2xl border border-amber-500/20 bg-black/30 p-4 md:p-5 space-y-4">
+    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5 space-y-4">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-2 min-w-0">
-          <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-amber-500/20 border border-amber-500/30 text-xs font-bold text-amber-300 shrink-0">
+          <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-orange-100 border border-slate-200 text-xs font-bold text-orange-600 shrink-0">
             #{index + 1}
           </span>
           <div className="min-w-0">
-            <div className="text-sm font-semibold text-white flex items-start gap-1.5">
-              <MapPin size={13} className="text-amber-400 mt-0.5 shrink-0" />
+            <div className="text-sm font-semibold text-slate-900 flex items-start gap-1.5">
+              <MapPin size={13} className="text-orange-600 mt-0.5 shrink-0" />
               <span className="break-words">{item.fromName}</span>
             </div>
             <div className="pl-[18px]">
-              <ArrowDown size={11} className="text-amber-400/60" />
+              <ArrowDown size={11} className="text-orange-600/60" />
             </div>
-            <div className="text-sm font-semibold text-white flex items-start gap-1.5">
-              <MapPin size={13} className="text-amber-400 mt-0.5 shrink-0" />
+            <div className="text-sm font-semibold text-slate-900 flex items-start gap-1.5">
+              <MapPin size={13} className="text-orange-600 mt-0.5 shrink-0" />
               <span className="break-words">{item.toName}</span>
             </div>
           </div>
@@ -974,7 +974,7 @@ function TripConfigCard({
           <button
             type="button"
             onClick={onRemove}
-            className="text-gray-500 hover:text-red-400 transition-colors p-1"
+            className="text-slate-500 hover:text-red-600 transition-colors p-1"
             aria-label={es ? "Quitar viaje" : "Remove trip"}
           >
             <Trash2 size={15} />
@@ -991,10 +991,10 @@ function TripConfigCard({
       <div className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <Label className="text-gray-300 text-xs flex items-center gap-1.5">
-              <Calendar size={12} className="text-amber-400" />
+            <Label className="text-slate-600 text-xs flex items-center gap-1.5">
+              <Calendar size={12} className="text-orange-600" />
               {lang === "es" ? "Fecha" : "Date"}{" "}
-              <span className="text-red-400">*</span>
+              <span className="text-red-600">*</span>
             </Label>
             <DatePicker
               value={item.date}
@@ -1005,38 +1005,38 @@ function TripConfigCard({
               className={
                 item.date
                   ? "h-10"
-                  : "h-10 border-red-500/50 ring-1 ring-red-500/30"
+                  : "h-10 border-red-400 ring-1 ring-red-500/30"
               }
             />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-gray-300 text-xs flex items-center gap-1.5">
-              <Clock size={12} className="text-amber-400" />
+            <Label className="text-slate-600 text-xs flex items-center gap-1.5">
+              <Clock size={12} className="text-orange-600" />
               {lang === "es" ? "Hora de recogida" : "Pickup time"}{" "}
-              <span className="text-red-400">*</span>
+              <span className="text-red-600">*</span>
             </Label>
             <select
               value={item.pickupTime}
               onChange={(e) => setPickupTime(e.target.value)}
               className={
-                "w-full bg-black/50 border text-white h-10 rounded-md px-3 text-sm focus:border-amber-500 outline-none " +
+                "w-full bg-white border text-slate-900 h-10 rounded-md px-3 text-sm focus:border-orange-600 outline-none " +
                 (item.pickupTime
-                  ? "border-amber-500/30"
-                  : "border-red-500/50 ring-1 ring-red-500/30")
+                  ? "border-slate-200"
+                  : "border-red-400 ring-1 ring-red-500/30")
               }
             >
               <option value="">
                 {lang === "es" ? "Elegí la hora…" : "Select time…"}
               </option>
               {timeOptionsFiltered.map((t) => (
-                <option key={t.value} value={t.value} className="bg-gray-900">
+                <option key={t.value} value={t.value} className="bg-white">
                   {t.label}
                 </option>
               ))}
             </select>
             {isPickingEarliestDate &&
               timeOptionsFiltered.length < TIME_OPTIONS.length && (
-                <p className="text-[10px] text-gray-500">
+                <p className="text-[10px] text-slate-500">
                   {lang === "es"
                     ? `Los horarios antes requieren ${MIN_LEAD_TIME_HOURS}h de anticipación — escogé un horario más tarde u otro día.`
                     : `Earlier times need ${MIN_LEAD_TIME_HOURS}h notice — pick a later slot or day.`}
@@ -1046,16 +1046,16 @@ function TripConfigCard({
         </div>
 
         <div className="space-y-1.5">
-          <Label className="text-gray-300 text-xs flex items-center gap-1.5">
-            <Users size={12} className="text-amber-400" />
+          <Label className="text-slate-600 text-xs flex items-center gap-1.5">
+            <Users size={12} className="text-orange-600" />
             {lang === "es" ? "Pasajeros" : "Passengers"}{" "}
-            <span className="text-red-400">*</span>
+            <span className="text-red-600">*</span>
           </Label>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-black/40 border border-white/10 rounded-lg p-2.5">
-              <div className="text-[10px] text-gray-400">
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5">
+              <div className="text-[10px] text-slate-500">
                 {lang === "es" ? "Adultos" : "Adults"}{" "}
-                <span className="text-gray-600">
+                <span className="text-slate-500">
                   {lang === "es" ? "12+ años" : "12+ years"}
                 </span>
               </div>
@@ -1067,13 +1067,13 @@ function TripConfigCard({
                 value={adultsStr}
                 onChange={(e) => handleAdultsChange(e.target.value)}
                 onBlur={handleAdultsBlur}
-                className="mt-1 w-full bg-black border border-white/20 text-white rounded px-2 py-1.5 text-sm"
+                className="mt-1 w-full bg-white border border-slate-300 text-slate-900 rounded px-2 py-1.5 text-sm"
               />
             </div>
-            <div className="bg-black/40 border border-white/10 rounded-lg p-2.5">
-              <div className="text-[10px] text-gray-400">
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5">
+              <div className="text-[10px] text-slate-500">
                 {lang === "es" ? "Niños" : "Children"}{" "}
-                <span className="text-gray-600">
+                <span className="text-slate-500">
                   {lang === "es" ? "0-11 años" : "0-11 years"}
                 </span>
               </div>
@@ -1085,18 +1085,18 @@ function TripConfigCard({
                 value={childrenStr}
                 onChange={(e) => handleChildrenChange(e.target.value)}
                 onBlur={handleChildrenBlur}
-                className="mt-1 w-full bg-black border border-white/20 text-white rounded px-2 py-1.5 text-sm"
+                className="mt-1 w-full bg-white border border-slate-300 text-slate-900 rounded px-2 py-1.5 text-sm"
               />
             </div>
           </div>
           {overCapacity ? (
-            <p className="text-[11px] text-red-400">
+            <p className="text-[11px] text-red-600">
               {lang === "es"
                 ? `Máximo ${MAX_TOTAL_PAX} en total. Escribinos por WhatsApp para grupos más grandes.`
                 : `Max ${MAX_TOTAL_PAX} total. Contact us via WhatsApp for larger groups.`}
             </p>
           ) : (
-            <p className="text-[11px] text-gray-500">
+            <p className="text-[11px] text-slate-500">
               {totalPax}{" "}
               {totalPax === 1
                 ? lang === "es"
@@ -1107,7 +1107,7 @@ function TripConfigCard({
                   : "passengers"}{" "}
               · {item.vehicleName}
               {repricing ? (
-                <span className="text-amber-400/80">
+                <span className="text-orange-600/80">
                   {" "}
                   · {lang === "es" ? "recalculando…" : "updating price…"}
                 </span>
@@ -1115,7 +1115,7 @@ function TripConfigCard({
             </p>
           )}
           {repriceFailed && !overCapacity ? (
-            <p className="text-[11px] text-amber-300/90">
+            <p className="text-[11px] text-orange-600/90">
               {lang === "es"
                 ? "No pudimos actualizar el precio para ese grupo. Mantenemos el precio anterior — confirmalo con nosotros por WhatsApp antes de pagar."
                 : "We couldn't update the price for that group size. Keeping the previous price — please confirm with us on WhatsApp before paying."}
@@ -1132,11 +1132,11 @@ function TripConfigCard({
             el carrito y en el correo de confirmación.
           */}
           {item.extraStopNames?.length ? (
-            <p className="text-[11px] text-amber-300/90">
+            <p className="text-[11px] text-orange-600/90">
               {es ? "Paradas: " : "Stops: "}
               {item.extraStopNames.join(" · ")}
               {item.extraStopHours > 0 ? (
-                <span className="text-gray-500">
+                <span className="text-slate-500">
                   {" "}
                   ({item.extraStopHours}h{" "}
                   {es ? "de espera, ya incluidas" : "of waiting, already included"})
@@ -1148,7 +1148,7 @@ function TripConfigCard({
       </div>
 
       <div>
-        <div className="text-[10px] text-amber-300 font-bold tracking-[0.18em] uppercase mb-2">
+        <div className="text-[10px] text-orange-600 font-bold tracking-[0.18em] uppercase mb-2">
           {es ? "Servicio" : "Service"}
         </div>
         <div className="grid sm:grid-cols-2 gap-2">
@@ -1238,8 +1238,8 @@ function TripConfigCard({
 
       <div className="space-y-3">
         <div className="space-y-1.5">
-          <Label className="text-gray-300 text-xs flex items-center gap-1.5">
-            <MapPin size={12} className="text-amber-400" />
+          <Label className="text-slate-600 text-xs flex items-center gap-1.5">
+            <MapPin size={12} className="text-orange-600" />
             {es ? "Dirección de recogida" : "Pickup address"}
           </Label>
           <HotelAddressAutocomplete
@@ -1252,13 +1252,13 @@ function TripConfigCard({
                 ? `Hotel, Airbnb o dirección en ${item.fromName}`
                 : `Hotel, Airbnb or address in ${item.fromName}`
             }
-            inputClassName="w-full bg-black/50 border border-amber-500/30 text-white rounded-md h-10 px-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+            inputClassName="w-full bg-white border border-slate-300 text-slate-900 rounded-md h-10 px-3 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
           />
         </div>
 
         <div className="space-y-1.5">
-          <Label className="text-gray-300 text-xs flex items-center gap-1.5">
-            <MapPin size={12} className="text-amber-400" />
+          <Label className="text-slate-600 text-xs flex items-center gap-1.5">
+            <MapPin size={12} className="text-orange-600" />
             {es ? "Dirección de destino" : "Drop-off address"}
           </Label>
           <HotelAddressAutocomplete
@@ -1271,17 +1271,17 @@ function TripConfigCard({
                 ? `Hotel, Airbnb o dirección en ${item.toName}`
                 : `Hotel, Airbnb or address in ${item.toName}`
             }
-            inputClassName="w-full bg-black/50 border border-amber-500/30 text-white rounded-md h-10 px-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+            inputClassName="w-full bg-white border border-slate-300 text-slate-900 rounded-md h-10 px-3 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
           />
         </div>
 
         {showFlight ? (
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label className="text-gray-300 text-xs flex items-center gap-1.5">
-                <Plane size={12} className="text-amber-400" />
+              <Label className="text-slate-600 text-xs flex items-center gap-1.5">
+                <Plane size={12} className="text-orange-600" />
                 {es ? "Número de vuelo" : "Flight number"}{" "}
-                <span className="text-gray-500 font-normal">
+                <span className="text-slate-500 font-normal">
                   {es ? "(opcional)" : "(optional)"}
                 </span>
               </Label>
@@ -1289,10 +1289,10 @@ function TripConfigCard({
                 value={flightNumberValue}
                 onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
                 placeholder={es ? "ej. UA1234" : "e.g. UA1234"}
-                className="bg-black/50 text-white h-10 uppercase border-amber-500/30"
+                className="bg-white text-slate-900 h-10 uppercase border-slate-300"
               />
               {flightNumberValue.trim().length === 0 && (
-                <p className="text-[10px] text-gray-500 mt-1">
+                <p className="text-[10px] text-slate-500 mt-1">
                   {es
                     ? "Opcional — nos ayuda a seguir tu vuelo por si hay atrasos. También nos lo podés mandar después por WhatsApp."
                     : "Optional — helps us track your flight for delays. You can also send it later on WhatsApp."}
@@ -1300,18 +1300,18 @@ function TripConfigCard({
               )}
             </div>
             <div className="space-y-1.5">
-              <Label className="text-gray-300 text-xs flex items-center gap-1.5">
-                <Clock size={12} className="text-amber-400" />
+              <Label className="text-slate-600 text-xs flex items-center gap-1.5">
+                <Clock size={12} className="text-orange-600" />
                 {es ? "Hora del vuelo" : "Flight time"}
               </Label>
               <select
                 value={flight.time}
                 onChange={(e) => onFlightChange({ ...flight, time: e.target.value })}
-                className="w-full bg-black/50 border border-amber-500/30 text-white h-10 rounded-md px-3 text-sm focus:border-amber-500 outline-none"
+                className="w-full bg-white border border-slate-300 text-slate-900 h-10 rounded-md px-3 text-sm focus:border-orange-600 outline-none"
               >
                 <option value="">{es ? "Elegí la hora…" : "Select time…"}</option>
                 {TIME_OPTIONS.map((t) => (
-                  <option key={t.value} value={t.value} className="bg-gray-900">
+                  <option key={t.value} value={t.value} className="bg-white">
                     {t.label}
                   </option>
                 ))}
@@ -1322,7 +1322,7 @@ function TripConfigCard({
       </div>
 
       {nightExtra > 0 ? (
-        <div className="flex items-center justify-between text-[11px] text-amber-300/90">
+        <div className="flex items-center justify-between text-[11px] text-orange-600/90">
           <span>
             {lang === "es"
               ? "Recargo por recogida nocturna (11PM–5AM)"
@@ -1332,11 +1332,11 @@ function TripConfigCard({
         </div>
       ) : null}
 
-      <div className="flex items-center justify-between pt-2 border-t border-white/5">
-        <span className="text-xs text-gray-400">
+      <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+        <span className="text-xs text-slate-500">
           {es ? "Total del viaje" : "Trip total"}
         </span>
-        <span className="text-lg font-bold text-white"><Price usd={item.totalPrice} /></span>
+        <span className="text-lg font-bold text-blue-900"><Price usd={item.totalPrice} /></span>
       </div>
     </div>
   );
@@ -1375,57 +1375,57 @@ function ServiceCard({
       className={
         "relative text-left rounded-xl p-4 border-2 transition-all " +
         (selected
-          ? "border-amber-500 bg-amber-500/10 shadow-md shadow-amber-500/20"
-          : "border-white/10 bg-gray-900/40 hover:border-amber-500/40")
+          ? "border-orange-600 bg-orange-50 shadow-md shadow-orange-600/15"
+          : "border-slate-200 bg-white/40 hover:border-orange-300")
       }
     >
       {badge ? (
-        <span className="absolute -top-2.5 right-3 px-2.5 py-0.5 rounded-full bg-amber-500 text-black text-[9px] font-bold tracking-wider shadow">
+        <span className="absolute -top-2.5 right-3 px-2.5 py-0.5 rounded-full bg-orange-600 text-white text-[9px] font-bold tracking-wider shadow">
           {badge}
         </span>
       ) : null}
 
       <div className="flex items-start justify-between mb-1">
         <div>
-          <div className="font-bold text-white text-base flex items-center gap-1.5 leading-tight">
-            {crown ? <Crown size={15} className="text-amber-400" /> : null}
+          <div className="font-bold text-blue-900 text-base flex items-center gap-1.5 leading-tight">
+            {crown ? <Crown size={15} className="text-orange-600" /> : null}
             {label}
           </div>
           {tagline ? (
-            <div className="text-[10px] text-amber-300/80 font-semibold tracking-wider uppercase mt-0.5">
+            <div className="text-[10px] text-orange-600/80 font-semibold tracking-wider uppercase mt-0.5">
               {tagline}
             </div>
           ) : null}
         </div>
         {selected ? (
-          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-black shrink-0">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange-600 text-white shrink-0">
             <Check size={11} strokeWidth={3} />
           </span>
         ) : null}
       </div>
 
-      <p className="text-[11px] text-gray-400 mb-2 leading-snug">{description}</p>
+      <p className="text-[11px] text-slate-500 mb-2 leading-snug">{description}</p>
 
       <div className="mb-2">
-        <div className="text-xl font-bold text-white leading-none">
+        <div className="text-xl font-bold text-blue-900 leading-none">
           <Price usd={priceUsd} />
         </div>
         {priceNote ? (
-          <div className="text-[10px] text-amber-400/90 mt-0.5">{priceNote}</div>
+          <div className="text-[10px] text-orange-600/90 mt-0.5">{priceNote}</div>
         ) : null}
       </div>
 
       <ul className="space-y-1 mb-2">
         {features.map((f) => (
-          <li key={f} className="flex items-start gap-1.5 text-[11px] text-gray-300 leading-tight">
-            <Check size={11} className="text-amber-400 shrink-0 mt-0.5" />
+          <li key={f} className="flex items-start gap-1.5 text-[11px] text-slate-600 leading-tight">
+            <Check size={11} className="text-orange-600 shrink-0 mt-0.5" />
             <span>{f}</span>
           </li>
         ))}
       </ul>
 
       {ideal ? (
-        <div className="pt-2 mt-2 border-t border-white/5 text-[10px] text-gray-400 italic leading-tight">
+        <div className="pt-2 mt-2 border-t border-slate-200 text-[10px] text-slate-500 italic leading-tight">
           {ideal}
         </div>
       ) : null}

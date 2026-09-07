@@ -160,24 +160,24 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
       <div className="max-w-5xl mx-auto">
         <Link
           href={`/tours/${tour.slug}`}
-          className="inline-flex items-center gap-1.5 text-amber-400 text-sm hover:text-amber-300 mb-4 transition-colors"
+          className="inline-flex items-center gap-1.5 text-orange-600 text-sm hover:text-orange-700 mb-4 transition-colors"
         >
           <ArrowLeft size={14} />
           Back to tour
         </Link>
 
-        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-blue-900 mb-2">
           Complete your booking
         </h1>
-        <p className="text-gray-400 mb-8 text-sm">
+        <p className="text-slate-500 mb-8 text-sm">
           Your spot is held for 15 minutes once you continue to payment.
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Customer form */}
           <section className="lg:col-span-3 space-y-5">
-            <div className="rounded-2xl bg-gray-900/50 border border-white/10 p-6">
-              <h2 className="text-lg font-bold text-white mb-4">
+            <div className="rounded-2xl bg-white border border-slate-200 p-6">
+              <h2 className="text-lg font-bold text-blue-900 mb-4">
                 Your details
               </h2>
 
@@ -218,7 +218,7 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
                     style={{ width: 120, flex: "0 0 auto" }}
                   >
                     {COUNTRY_CODES.map((c) => (
-                      <option key={c.iso2} value={c.iso2} className="bg-gray-900">
+                      <option key={c.iso2} value={c.iso2} className="bg-white">
                         {c.flag} {c.dial}
                       </option>
                     ))}
@@ -234,9 +234,9 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
                     style={{ flex: 1 }}
                   />
                 </div>
-                <p className="text-[10px] text-gray-500 mt-1.5">
+                <p className="text-[10px] text-slate-500 mt-1.5">
                   Selected:{" "}
-                  <span className="text-amber-400">
+                  <span className="text-orange-600">
                     {country.flag} {country.name} ({country.dial})
                   </span>
                 </p>
@@ -263,19 +263,19 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
               </Field>
             </div>
 
-            <label className="flex items-start gap-3 text-sm text-gray-300 cursor-pointer select-none">
+            <label className="flex items-start gap-3 text-sm text-slate-600 cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={accepts}
                 onChange={(e) => setAccepts(e.target.checked)}
-                className="mt-0.5 w-4 h-4 accent-amber-500"
+                className="mt-0.5 w-4 h-4 accent-orange-600"
               />
               <span>
                 I agree to the{" "}
                 <Link
                   href="/terms"
                   target="_blank"
-                  className="text-amber-400 hover:text-amber-300 underline underline-offset-2"
+                  className="text-orange-600 hover:text-orange-700 underline underline-offset-2"
                 >
                   Terms &amp; cancellation policy
                 </Link>{" "}
@@ -284,20 +284,20 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
             </label>
 
             {error ? (
-              <div className="flex items-start gap-2 rounded-xl bg-red-500/10 border border-red-500/40 p-4 text-sm text-red-200">
+              <div className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-300 p-4 text-sm text-red-700">
                 <AlertCircle size={16} className="mt-0.5 shrink-0" />
                 <span>{error}</span>
               </div>
             ) : null}
 
             {!leadTimeOk && (
-              <div className="rounded-xl border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100">
+              <div className="rounded-xl border border-orange-500/50 bg-orange-50 px-4 py-3 text-xs text-amber-900">
                 <p className="leading-snug mb-2">{LEAD_TIME_MESSAGE_EN}</p>
                 <a
                   href={WHATSAPP_URGENT_URL_EN}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-slate-900 font-semibold text-xs px-3 py-1.5 transition-colors"
                 >
                   WhatsApp us
                 </a>
@@ -308,7 +308,7 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
               type="button"
               onClick={submit}
               disabled={!canSubmit}
-              className="w-full h-14 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-lg shadow-amber-500/20"
+              className="w-full h-14 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-base flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-lg shadow-orange-600/15"
             >
               {submitting ? (
                 <>
@@ -324,11 +324,11 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
             </button>
 
             {showCurrencyHint ? (
-              <p className="text-[11px] text-center text-amber-300">
+              <p className="text-[11px] text-center text-orange-600">
                 ≈ {convertedTotal} {currency} at today&apos;s rate
               </p>
             ) : null}
-            <p className="text-[11px] text-center text-gray-500">
+            <p className="text-[11px] text-center text-slate-500">
               Charges in USD via Tilopay · Visa, Mastercard, AmEx accepted ·
               Receipt by email
             </p>
@@ -336,7 +336,7 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
 
           {/* Order summary */}
           <aside className="lg:col-span-2">
-            <div className="rounded-2xl bg-gray-900/60 border border-amber-500/20 overflow-hidden sticky top-24">
+            <div className="rounded-2xl bg-white border border-slate-200 overflow-hidden sticky top-24">
               {tour.hero_image ? (
                 <div className="relative w-full aspect-[16/9]">
                   <Image
@@ -351,22 +351,22 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
               ) : null}
 
               <div className="p-5">
-                <h2 className="text-base font-bold text-white leading-tight mb-3">
+                <h2 className="text-base font-bold text-blue-900 leading-tight mb-3">
                   {tour.name}
                 </h2>
 
-                <ul className="space-y-2.5 text-sm text-gray-300 mb-5">
+                <ul className="space-y-2.5 text-sm text-slate-600 mb-5">
                   <li className="flex items-center gap-2">
-                    <Calendar size={14} className="text-amber-400" />
+                    <Calendar size={14} className="text-orange-600" />
                     {dateLabel}
                   </li>
                   <li className="flex items-center gap-2">
-                    <Clock size={14} className="text-amber-400" />
+                    <Clock size={14} className="text-orange-600" />
                     Departure {booking.time || "—"} ·{" "}
                     {tour.duration_label}
                   </li>
                   <li className="flex items-center gap-2">
-                    <Users size={14} className="text-amber-400" />
+                    <Users size={14} className="text-orange-600" />
                     {booking.adults} adult{booking.adults !== 1 ? "s" : ""}
                     {booking.children > 0
                       ? ` + ${booking.children} child${booking.children !== 1 ? "ren" : ""}`
@@ -374,7 +374,7 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
                   </li>
                 </ul>
 
-                <div className="border-t border-white/5 pt-4 space-y-1.5 text-sm">
+                <div className="border-t border-slate-200 pt-4 space-y-1.5 text-sm">
                   <Row
                     label={<>{booking.adults} × adult @ <Price usd={tour.adult_price} /></>}
                     value={booking.adultSubtotal}
@@ -387,21 +387,21 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
                   ) : null}
                 </div>
 
-                <div className="border-t border-amber-500/30 mt-4 pt-4 flex items-baseline justify-between">
-                  <span className="text-sm text-gray-400">Total</span>
+                <div className="border-t border-slate-200 mt-4 pt-4 flex items-baseline justify-between">
+                  <span className="text-sm text-slate-500">Total</span>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-white">
+                    <div className="text-2xl font-bold text-blue-900">
                       ${booking.total.toFixed(0)}{" "}
-                      <span className="text-xs font-normal text-gray-400">
+                      <span className="text-xs font-normal text-slate-500">
                         USD
                       </span>
                     </div>
                     {showCurrencyHint ? (
-                      <div className="text-[11px] text-amber-300">
+                      <div className="text-[11px] text-orange-600">
                         ≈ {convertedTotal} {currency}
                       </div>
                     ) : null}
-                    <div className="text-[11px] text-green-400">
+                    <div className="text-[11px] text-green-700">
                       ✓ Taxes included
                     </div>
                   </div>
@@ -434,7 +434,7 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block mb-3 last:mb-0">
-      <span className="block text-xs font-semibold text-gray-400 mb-1.5">
+      <span className="block text-xs font-semibold text-slate-500 mb-1.5">
         {label}
       </span>
       {children}
@@ -450,9 +450,9 @@ function Row({
   value: number;
 }) {
   return (
-    <div className="flex justify-between text-gray-400">
+    <div className="flex justify-between text-slate-500">
       <span>{label}</span>
-      <span className="text-gray-200">
+      <span className="text-slate-600">
         <Price usd={value} />
       </span>
     </div>

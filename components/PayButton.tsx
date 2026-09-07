@@ -62,7 +62,7 @@ export default function PayButton({ token, totalUsd }: Props) {
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="w-full h-14 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold text-base rounded-xl transition-colors inline-flex items-center justify-center gap-2"
+        className="w-full h-14 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-base rounded-xl transition-colors inline-flex items-center justify-center gap-2"
       >
         {loading ? (
           <Loader2 size={18} className="animate-spin" />
@@ -74,7 +74,7 @@ export default function PayButton({ token, totalUsd }: Props) {
         )}
       </button>
       {error && (
-        <div className="mt-3 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+        <div className="mt-3 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}

@@ -27,7 +27,7 @@ export default function ExpandableReviewBody({ text, expandThreshold = 280 }: Pr
     <div className="flex-1 mb-4">
       <p
         className={
-          "text-sm text-gray-300 leading-relaxed " +
+          "text-sm text-slate-600 leading-relaxed " +
           (expanded || !showToggle ? "" : "line-clamp-6")
         }
       >
@@ -37,7 +37,7 @@ export default function ExpandableReviewBody({ text, expandThreshold = 280 }: Pr
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-2 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
+          className="mt-2 text-xs font-semibold text-orange-600 hover:text-orange-700 transition-colors"
         >
           {expanded ? "Show less ↑" : "Read more ↓"}
         </button>

@@ -100,7 +100,7 @@ export default function HotelAddressAutocomplete({
   hotels,
   contextArea,
   className = "relative w-full",
-  inputClassName = "w-full bg-black border border-white/20 text-white rounded-lg px-4 py-3 focus:border-amber-500 outline-none",
+  inputClassName = "w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:border-orange-600 outline-none",
 }: Props) {
   const [open, setOpen] = useState(false);
   // Pre-highlight the top match so "type marriott, hit Enter" is a
@@ -208,14 +208,14 @@ export default function HotelAddressAutocomplete({
         // z-50 so we render above sibling inputs (BookingForm stacks
         // pickup + dropoff addresses back-to-back — without the z-bump
         // the dropoff dropdown covers the pickup one).
-        <div className="absolute z-50 left-0 right-0 mt-1 bg-gradient-to-br from-gray-900/98 to-black/98 backdrop-blur-xl border border-amber-500/30 rounded-xl shadow-2xl shadow-black/60 max-h-72 overflow-y-auto">
+        <div className="absolute z-50 left-0 right-0 mt-1 bg-white backdrop-blur-xl border border-slate-200 rounded-xl shadow-2xl shadow-black/60 max-h-72 overflow-y-auto">
           {suggestions.map((s, idx) => {
             const isActive = idx === highlightIndex;
             const rowClass =
-              "w-full flex items-center gap-3 text-left px-4 py-3 transition-colors text-sm border-b border-white/5 last:border-b-0 " +
+              "w-full flex items-center gap-3 text-left px-4 py-3 transition-colors text-sm border-b border-slate-200 last:border-b-0 " +
               (isActive
-                ? "bg-amber-500/20 text-white"
-                : "text-white hover:bg-amber-500/15");
+                ? "bg-orange-50 text-slate-900"
+                : "text-slate-700 hover:bg-orange-50");
             return (
               <button
                 key={`hotel-${s.hotel.id}`}
@@ -233,11 +233,11 @@ export default function HotelAddressAutocomplete({
               >
                 <Building2
                   size={14}
-                  className="text-amber-400/80 shrink-0"
+                  className="text-orange-600/80 shrink-0"
                   aria-hidden="true"
                 />
                 <span className="flex-1 min-w-0 truncate">{s.hotel.name}</span>
-                <span className="text-[10px] uppercase tracking-wider text-gray-500 shrink-0">
+                <span className="text-[10px] uppercase tracking-wider text-slate-500 shrink-0">
                   Hotel · {s.hotel.city}
                 </span>
               </button>

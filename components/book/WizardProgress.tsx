@@ -40,7 +40,7 @@ export default function WizardProgress({ current, onStepClick }: Props) {
   const currentIdx = STEPS.findIndex((s) => s.id === current);
 
   return (
-    <div className="w-full bg-gray-950/60 border-y border-amber-500/10 backdrop-blur-sm">
+    <div className="w-full bg-slate-50/60 border-y border-slate-200 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-4">
           {STEPS.map((s, i) => {
@@ -55,20 +55,20 @@ export default function WizardProgress({ current, onStepClick }: Props) {
                 className={
                   "relative flex items-center justify-center gap-2 py-4 md:py-5 text-xs md:text-sm font-semibold transition-colors " +
                   (st === "current"
-                    ? "text-amber-400 border-b-2 border-amber-400 bg-amber-500/5"
+                    ? "text-orange-600 border-b-2 border-orange-500 bg-orange-50"
                     : st === "done"
-                      ? "text-green-400 " + (clickable ? "hover:bg-green-500/5 cursor-pointer" : "")
-                      : "text-gray-500")
+                      ? "text-green-700 " + (clickable ? "hover:bg-green-50 cursor-pointer" : "")
+                      : "text-slate-500")
                 }
               >
                 <span
                   className={
                     "inline-flex items-center justify-center w-6 h-6 md:w-7 md:h-7 rounded-full text-[11px] font-bold " +
                     (st === "current"
-                      ? "bg-amber-500 text-black"
+                      ? "bg-orange-600 text-white"
                       : st === "done"
-                        ? "bg-green-500 text-black"
-                        : "bg-gray-800 text-gray-500 border border-gray-700")
+                        ? "bg-green-600 text-white"
+                        : "bg-slate-100 text-slate-500 border border-slate-300")
                   }
                 >
                   {st === "done" ? <Check size={14} strokeWidth={3} /> : i + 1}

@@ -41,16 +41,16 @@ export default async function RouteReviews({
   return (
     <section className="mb-12" aria-labelledby="route-reviews-heading">
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center">
           <Star size={20} className="fill-amber-400 text-amber-400" strokeWidth={0} />
         </div>
-        <h2 id="route-reviews-heading" className="text-2xl font-bold text-white">
+        <h2 id="route-reviews-heading" className="text-2xl font-bold text-blue-900">
           {routeSpecific
             ? `What travelers say about ${originName} → ${destName}`
             : "What our travelers say"}
         </h2>
       </div>
-      <p className="text-gray-400 text-sm mb-6">
+      <p className="text-slate-500 text-sm mb-6">
         Rated 5.0 stars across 200+ Google and TripAdvisor reviews.
       </p>
 
@@ -58,21 +58,21 @@ export default async function RouteReviews({
         {reviews.map((r) => (
           <article
             key={r.id}
-            className="flex flex-col rounded-2xl bg-gradient-to-br from-gray-900/70 to-black/70 border border-white/10 p-6"
+            className="flex flex-col rounded-2xl bg-white shadow-sm border border-slate-200 p-6"
           >
-            <Quote size={22} className="text-amber-400/60 mb-3" />
+            <Quote size={22} className="text-orange-600/60 mb-3" />
             <div className="flex items-center gap-0.5 mb-3">
               {[...Array(r.rating)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" strokeWidth={0} />
               ))}
             </div>
             {r.title ? (
-              <h3 className="text-base font-bold text-white mb-2 leading-snug">{r.title}</h3>
+              <h3 className="text-base font-bold text-blue-900 mb-2 leading-snug">{r.title}</h3>
             ) : null}
-            <p className="text-gray-300 text-sm leading-relaxed mb-4">{r.body}</p>
-            <div className="mt-auto pt-3 border-t border-white/5">
-              <p className="text-sm font-semibold text-white">{r.author}</p>
-              <p className="text-xs text-gray-500">
+            <p className="text-slate-600 text-sm leading-relaxed mb-4">{r.body}</p>
+            <div className="mt-auto pt-3 border-t border-slate-200">
+              <p className="text-sm font-semibold text-slate-900">{r.author}</p>
+              <p className="text-xs text-slate-500">
                 {r.location} · {r.source === "google" ? "Google" : "TripAdvisor"} · {r.date}
               </p>
             </div>

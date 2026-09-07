@@ -26,27 +26,27 @@ export default function PopularRoutes({ routes }: { routes: HomeRoute[] }) {
     <section
       id="rutas"
       key={lang}
-      className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
+      className="relative py-24 px-4 bg-white overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.08),transparent_70%)]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="reveal text-center mb-16">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-            <span className="text-amber-400 text-sm font-medium tracking-wider">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+            <span className="text-orange-600 text-sm font-medium tracking-wider">
               {t.routes.badge}
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-bold text-blue-900 mb-4 tracking-tight">
             {t.routes.titlePart1}
-            <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="block text-orange-600">
               {t.routes.titlePart2}
             </span>
           </h2>
 
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
             {t.routes.subtitle}
           </p>
         </div>
@@ -63,49 +63,49 @@ export default function PopularRoutes({ routes }: { routes: HomeRoute[] }) {
             >
               <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/0 to-amber-600/0 group-hover:from-amber-500/30 group-hover:to-amber-600/10 rounded-2xl blur-xl transition-all duration-500" />
 
-              <div className="relative flex h-full flex-col bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-2xl p-5 hover:border-amber-500/40 transition-all duration-300">
+              <div className="relative flex h-full flex-col bg-white border border-slate-200 rounded-2xl p-5 hover:border-orange-300 transition-all duration-300">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-600/5 border border-amber-500/30 flex items-center justify-center">
-                    <MapPin size={16} className="text-amber-400" strokeWidth={1.5} />
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-100 to-amber-600/5 border border-slate-200 flex items-center justify-center">
+                    <MapPin size={16} className="text-orange-600" strokeWidth={1.5} />
                   </div>
                 </div>
 
                 <div className="mb-3 flex-1">
-                  <div className="text-amber-400 font-semibold text-[10px] tracking-[0.08em] uppercase mb-2">
+                  <div className="text-orange-600 font-semibold text-[10px] tracking-[0.08em] uppercase mb-2">
                     Private Shuttle
                   </div>
-                  <div className="text-white font-bold text-sm leading-tight mb-1.5">
+                  <div className="text-blue-900 font-bold text-sm leading-tight mb-1.5">
                     {route.from}
                   </div>
 
                   <div className="flex items-center gap-2 my-1.5">
                     <div className="flex-1 h-px bg-gradient-to-r from-amber-500/40 to-transparent" />
-                    <ArrowRight size={12} className="text-amber-400" />
+                    <ArrowRight size={12} className="text-orange-600" />
                     <div className="flex-1 h-px bg-gradient-to-l from-amber-500/40 to-transparent" />
                   </div>
 
-                  <div className="text-white font-bold text-sm leading-tight">
+                  <div className="text-blue-900 font-bold text-sm leading-tight">
                     {route.to}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-[11px] text-gray-400 mb-3">
-                  <Clock size={10} className="text-amber-400/70" />
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mb-3">
+                  <Clock size={10} className="text-orange-600/70" />
                   <span>{route.duration}</span>
-                  <span className="text-gray-600">·</span>
+                  <span className="text-slate-500">·</span>
                   <span>{t.routes.private}</span>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-white/5">
+                <div className="flex items-center justify-between pt-3 border-t border-slate-200">
                   <div>
-                    <div className="text-[9px] text-gray-500 leading-none tracking-[0.05em] uppercase">
+                    <div className="text-[9px] text-slate-500 leading-none tracking-[0.05em] uppercase">
                       {t.routes.from}
                     </div>
-                    <div className="text-xl font-bold text-amber-400 leading-tight">
+                    <div className="text-xl font-bold text-orange-600 leading-tight">
                       <Price usd={route.priceFrom} />
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1 text-[11px] text-amber-400 font-semibold group-hover:translate-x-1 transition-transform">
+                  <span className="inline-flex items-center gap-1 text-[11px] text-orange-600 font-semibold group-hover:translate-x-1 transition-transform">
                     <span>Book Now</span>
                     <ArrowRight size={11} />
                   </span>
@@ -118,9 +118,9 @@ export default function PopularRoutes({ routes }: { routes: HomeRoute[] }) {
 
         {/* Bottom CTA */}
         <div className="reveal mt-12 text-center">
-          <p className="text-gray-400 mb-5">
+          <p className="text-slate-500 mb-5">
             {t.routes.noDestination}{" "}
-            <span className="text-white font-semibold">{t.routes.routesAvailable}</span>{" "}
+            <span className="text-slate-900 font-semibold">{t.routes.routesAvailable}</span>{" "}
             {t.routes.inCostaRica}
           </p>
           {/* In-content contextual link to the money landing page. Editorial
@@ -128,20 +128,20 @@ export default function PopularRoutes({ routes }: { routes: HomeRoute[] }) {
               exact-keyword anchor ("private transportation in Costa Rica")
               reinforces the ranking signal for the generic queries that were
               stuck at position ~10 in GSC (2026-07). */}
-          <p className="text-gray-400 mb-5 text-sm">
+          <p className="text-slate-500 mb-5 text-sm">
             {lang === "en" ? (
               <>
                 Learn more about our{" "}
                 <Link
                   href="/private-transportation-costa-rica"
-                  className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                  className="text-orange-600 font-semibold underline-offset-4 hover:underline"
                 >
                   private transportation in Costa Rica
                 </Link>{" "}
                 and{" "}
                 <Link
                   href="/costa-rica-airport-transfers"
-                  className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                  className="text-orange-600 font-semibold underline-offset-4 hover:underline"
                 >
                   Costa Rica airport transfers
                 </Link>{" "}
@@ -152,14 +152,14 @@ export default function PopularRoutes({ routes }: { routes: HomeRoute[] }) {
                 Conocé más sobre nuestro{" "}
                 <Link
                   href="/private-transportation-costa-rica"
-                  className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                  className="text-orange-600 font-semibold underline-offset-4 hover:underline"
                 >
                   transporte privado en Costa Rica
                 </Link>{" "}
                 y los{" "}
                 <Link
                   href="/costa-rica-airport-transfers"
-                  className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                  className="text-orange-600 font-semibold underline-offset-4 hover:underline"
                 >
                   traslados desde el aeropuerto
                 </Link>{" "}
@@ -170,7 +170,7 @@ export default function PopularRoutes({ routes }: { routes: HomeRoute[] }) {
           <Link href="/routes">
             <Button
               size="lg"
-              className="h-14 px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold shadow-2xl shadow-amber-500/30"
+              className="h-14 px-8 bg-orange-600 hover:bg-orange-700 text-white font-bold shadow-2xl shadow-orange-600/25"
             >
               {t.routes.seeAll}
               <ArrowRight className="ml-2" size={18} />

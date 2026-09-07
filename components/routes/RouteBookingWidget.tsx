@@ -173,15 +173,15 @@ export default function RouteBookingWidget({
 
   if (added) {
     return (
-      <div className="rounded-2xl border border-green-500/40 bg-green-500/10 p-5 md:p-6">
-        <p className="flex items-center gap-2 text-base font-bold text-green-300">
+      <div className="rounded-2xl border border-green-600 bg-green-50 p-5 md:p-6">
+        <p className="flex items-center gap-2 text-base font-bold text-green-700">
           <CheckCircle2 size={18} className="shrink-0" />
           {en ? "Added to your trip" : "Agregado a tu viaje"}
         </p>
-        <p className="mt-2 text-sm text-gray-200">
+        <p className="mt-2 text-sm text-slate-600">
           {originName} → {destName}
         </p>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-slate-500">
           {prettyDate(added.date)} · {added.pax}{" "}
           {en
             ? added.pax === 1
@@ -190,11 +190,11 @@ export default function RouteBookingWidget({
             : added.pax === 1
               ? "pasajero"
               : "pasajeros"}{" "}
-          · <Price usd={added.price} className="font-semibold text-amber-400" />
+          · <Price usd={added.price} className="font-semibold text-orange-600" />
         </p>
         {added.stopNames.length ? (
-          <p className="mt-2 flex items-start gap-1.5 text-xs text-gray-400">
-            <MapPinned size={13} className="mt-0.5 shrink-0 text-amber-400/70" />
+          <p className="mt-2 flex items-start gap-1.5 text-xs text-slate-500">
+            <MapPinned size={13} className="mt-0.5 shrink-0 text-orange-600/70" />
             <span>
               {en ? "Stopping at: " : "Con parada en: "}
               {added.stopNames.join(" · ")}
@@ -205,7 +205,7 @@ export default function RouteBookingWidget({
         <div className="mt-5 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/book?checkout=1"
-            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 px-6 text-center font-bold text-black transition-colors hover:bg-amber-600"
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 py-3 px-6 text-center font-bold text-white transition-colors hover:bg-orange-700"
           >
             {en ? "Continue to checkout" : "Continuar al pago"}
             <ArrowRight size={16} />
@@ -215,7 +215,7 @@ export default function RouteBookingWidget({
               que acá no sirve repetir este mismo widget. */}
           <Link
             href="/book?add=1"
-            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/40 bg-black/40 py-3 px-6 text-center font-bold text-amber-300 transition-colors hover:bg-amber-500/20"
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-orange-300 bg-white py-3 px-6 text-center font-bold text-orange-600 transition-colors hover:bg-orange-50"
           >
             {en ? "Add another trip" : "Agregar otro viaje"}
           </Link>
@@ -224,7 +224,7 @@ export default function RouteBookingWidget({
         <button
           type="button"
           onClick={() => setAdded(null)}
-          className="mt-4 w-full text-center text-xs text-gray-400 underline underline-offset-2 transition-colors hover:text-amber-300"
+          className="mt-4 w-full text-center text-xs text-slate-500 underline underline-offset-2 transition-colors hover:text-orange-700"
         >
           {en
             ? "Book this route again with other dates"
@@ -235,15 +235,15 @@ export default function RouteBookingWidget({
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-black/40 p-5 md:p-6">
-      <p className="mb-4 text-sm font-semibold text-white">
+    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-5 md:p-6">
+      <p className="mb-4 text-sm font-semibold text-slate-900">
         {en
           ? "Check availability and price for your group"
           : "Mirá la disponibilidad y el precio de tu grupo"}
       </p>
 
       <div className="mb-3">
-        <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-amber-400">
+        <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-orange-600">
           <Calendar size={16} />
           {en ? "Travel date" : "Fecha del viaje"}
         </label>
@@ -286,12 +286,12 @@ export default function RouteBookingWidget({
               misma cuenta de $/hora — pero diciendo qué se ve en esas
               horas en vez de vender tiempo suelto. */}
           {stops.length ? (
-            <div className="mb-4 border-t border-white/10 pt-4">
-              <p className="mb-1 flex items-center gap-2 text-sm font-semibold text-amber-400">
+            <div className="mb-4 border-t border-slate-200 pt-4">
+              <p className="mb-1 flex items-center gap-2 text-sm font-semibold text-orange-600">
                 <MapPinned size={16} />
                 {en ? "Stop along the way?" : "¿Parás en el camino?"}
               </p>
-              <p className="mb-3 text-xs text-gray-400">
+              <p className="mb-3 text-xs text-slate-500">
                 {en
                   ? "These are right on your route — your driver waits while you visit."
                   : "Quedan de paso en tu ruta — el chofer te espera mientras la visitás."}
@@ -307,27 +307,27 @@ export default function RouteBookingWidget({
                       className={
                         "flex cursor-pointer gap-3 rounded-xl border p-3 transition-colors " +
                         (on
-                          ? "border-amber-500/60 bg-amber-500/10"
-                          : "border-white/10 bg-black/30 hover:border-amber-500/30")
+                          ? "border-orange-400 bg-orange-50"
+                          : "border-slate-200 bg-white hover:border-orange-300")
                       }
                     >
                       <input
                         type="checkbox"
                         checked={on}
                         onChange={() => toggleStop(s.id)}
-                        className="mt-0.5 h-4 w-4 shrink-0 accent-amber-500"
+                        className="mt-0.5 h-4 w-4 shrink-0 accent-orange-600"
                       />
                       <span className="min-w-0 flex-1">
                         <span className="flex flex-wrap items-baseline justify-between gap-x-2">
-                          <span className="text-sm font-semibold text-white">
+                          <span className="text-sm font-semibold text-slate-900">
                             {s.name}
                           </span>
-                          <span className="text-xs font-semibold text-amber-400">
+                          <span className="text-xs font-semibold text-orange-600">
                             +{s.hours}h · +
                             <Price usd={s.hours * EXTRA_STOP_PRICE_USD} />
                           </span>
                         </span>
-                        <span className="mt-1 block text-xs leading-snug text-gray-400">
+                        <span className="mt-1 block text-xs leading-snug text-slate-500">
                           {en ? s.blurbEn : s.blurbEs}
                         </span>
                         {/* El aviso del Poás (reserva previa obligatoria)
@@ -336,7 +336,7 @@ export default function RouteBookingWidget({
                             se entera después de pagar, el reclamo le
                             llega a Diego. */}
                         {warn ? (
-                          <span className="mt-1.5 flex items-start gap-1.5 text-[11px] leading-snug text-amber-300/90">
+                          <span className="mt-1.5 flex items-start gap-1.5 text-[11px] leading-snug text-orange-600/90">
                             <Info size={12} className="mt-0.5 shrink-0" />
                             <span>{warn}</span>
                           </span>
@@ -350,7 +350,7 @@ export default function RouteBookingWidget({
               {/* Diego, 2026-08-30: "solo ofrece las paradas, no almuerzo,
                   y que ellos deben pagar las entradas". Se dice antes de
                   pagar y en la misma caja donde se elige. */}
-              <p className="mt-3 text-[11px] leading-snug text-gray-500">
+              <p className="mt-3 text-[11px] leading-snug text-slate-500">
                 {en
                   ? "The price above covers your driver's time and the wait. Entrance fees are not included — you pay those directly at each place. Meals aren't included either."
                   : "El precio de arriba cubre el tiempo del chofer y la espera. Las entradas NO están incluidas: esas las pagás vos directamente en cada lugar. Las comidas tampoco van incluidas."}
@@ -358,13 +358,13 @@ export default function RouteBookingWidget({
             </div>
           ) : null}
 
-          <div className="mb-4 flex items-end justify-between gap-3 border-t border-white/10 pt-4">
+          <div className="mb-4 flex items-end justify-between gap-3 border-t border-slate-200 pt-4">
             <div>
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-slate-500">
                 {en ? "Total for your group" : "Total por tu grupo"}
               </div>
-              <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-gray-500">
-                <Car size={12} className="text-amber-400/70" />
+              <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-slate-500">
+                <Car size={12} className="text-orange-600/70" />
                 {getVehicleName(vehicleId)}
                 {duracion ? ` · ${duracion}` : ""}
               </div>
@@ -372,7 +372,7 @@ export default function RouteBookingWidget({
                   $220 a $325 sin explicación se lee como un cobro
                   escondido, aunque lo acabe de elegir él mismo. */}
               {extraHours > 0 ? (
-                <div className="mt-1 text-[11px] text-gray-500">
+                <div className="mt-1 text-[11px] text-slate-500">
                   {en ? "Transfer " : "Traslado "}
                   <Price usd={basePrice} />
                   {en ? ` + ${extraHours}h of stops ` : ` + ${extraHours}h de paradas `}
@@ -381,10 +381,10 @@ export default function RouteBookingWidget({
               ) : null}
             </div>
             <div className="text-right">
-              <div className="text-3xl font-bold text-amber-400">
+              <div className="text-3xl font-bold text-orange-600">
                 <Price usd={price} />
               </div>
-              <div className="text-[11px] text-gray-500">
+              <div className="text-[11px] text-slate-500">
                 {en ? "per vehicle, not per person" : "por vehículo, no por persona"}
               </div>
             </div>
@@ -394,7 +394,7 @@ export default function RouteBookingWidget({
             type="button"
             onClick={handleAdd}
             disabled={!canAdd}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-4 font-bold text-black transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-40"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 py-4 font-bold text-white transition-colors hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ShoppingCart size={18} />
             {items.length > 0
@@ -409,7 +409,7 @@ export default function RouteBookingWidget({
               roto". Esta línea dice qué falta — y sólo aparece cuando
               falta, para no ensuciar el caso normal. */}
           {!date ? (
-            <p className="mt-2 text-center text-xs text-gray-500">
+            <p className="mt-2 text-center text-xs text-slate-500">
               {en
                 ? "Pick a date to add this trip"
                 : "Elegí la fecha para agregar el viaje"}

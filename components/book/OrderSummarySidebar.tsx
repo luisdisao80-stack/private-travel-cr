@@ -88,12 +88,12 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
 
   return (
     <aside className="hidden lg:block lg:sticky lg:top-24">
-      <div className="rounded-2xl overflow-hidden border border-amber-500/20 bg-gradient-to-br from-gray-900 to-black shadow-2xl shadow-black/40">
-        <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 border-b border-amber-500/20 px-6 py-5">
-          <h2 className="text-xl md:text-2xl font-bold text-white">
+      <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-2xl shadow-black/40">
+        <div className="bg-gradient-to-r from-orange-100 to-amber-600/10 border-b border-slate-200 px-6 py-5">
+          <h2 className="text-xl md:text-2xl font-bold text-blue-900">
             {es ? "Resumen de tu compra" : "Order Summary"}
           </h2>
-          <p className="text-sm text-amber-200/80 mt-1">
+          <p className="text-sm text-amber-800 mt-1">
             {es
               ? `${items.length} ${items.length === 1 ? "viaje" : "viajes"} en el carrito`
               : `${items.length} ${items.length === 1 ? "trip" : "trips"} in cart`}
@@ -107,19 +107,19 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
               return (
                 <div
                   key={it.id}
-                  className="rounded-xl border border-amber-500/15 bg-black/30 p-4"
+                  className="rounded-xl border border-slate-200 bg-slate-50 p-4"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <span className="inline-flex items-center gap-2">
-                      <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-amber-500/20 border border-amber-500/30 text-xs font-bold text-amber-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-orange-100 border border-slate-200 text-xs font-bold text-orange-600">
                         #{idx + 1}
                       </span>
-                      <span className="text-xs uppercase tracking-wider text-gray-400">
+                      <span className="text-xs uppercase tracking-wider text-slate-500">
                         {it.serviceType === "vip" ? "VIP" : es ? "Estándar" : "Standard"} ·{" "}
                         {it.vehicleName}
                       </span>
                     </span>
-                    <span className="text-base font-bold text-white"><Price usd={it.totalPrice} /></span>
+                    <span className="text-base font-bold text-blue-900"><Price usd={it.totalPrice} /></span>
                   </div>
 
                   <div className="flex gap-3">
@@ -130,27 +130,27 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
                     ) : null}
                     <div className="flex-1 min-w-0 text-sm">
                       <div className="flex items-start gap-1.5">
-                        <MapPin size={13} className="text-amber-400 mt-0.5 shrink-0" />
-                        <span className="text-white font-medium break-words">{it.fromName}</span>
+                        <MapPin size={13} className="text-orange-600 mt-0.5 shrink-0" />
+                        <span className="text-slate-900 font-medium break-words">{it.fromName}</span>
                       </div>
                       <div className="pl-[17px] py-0.5">
-                        <ArrowDown size={12} className="text-amber-400/60" />
+                        <ArrowDown size={12} className="text-orange-600/60" />
                       </div>
                       <div className="flex items-start gap-1.5">
-                        <MapPin size={13} className="text-amber-400 mt-0.5 shrink-0" />
-                        <span className="text-white font-medium break-words">{it.toName}</span>
+                        <MapPin size={13} className="text-orange-600 mt-0.5 shrink-0" />
+                        <span className="text-slate-900 font-medium break-words">{it.toName}</span>
                       </div>
-                      <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-400">
+                      <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
                         <span className="inline-flex items-center gap-1">
-                          <Calendar size={11} className="text-amber-400" />
+                          <Calendar size={11} className="text-orange-600" />
                           {formatDateShort(it.date, es)}
                         </span>
                         <span className="inline-flex items-center gap-1">
-                          <Clock size={11} className="text-amber-400" />
+                          <Clock size={11} className="text-orange-600" />
                           {format12h(it.pickupTime)}
                         </span>
                         <span className="inline-flex items-center gap-1">
-                          <Users size={11} className="text-amber-400" />
+                          <Users size={11} className="text-orange-600" />
                           {it.passengers} pax
                         </span>
                       </div>
@@ -176,7 +176,7 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
             <button
               type="button"
               onClick={onAddAnotherTrip}
-              className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
+              className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-orange-300 hover:border-orange-500 hover:bg-orange-50 px-4 py-3 text-sm text-orange-600 hover:text-amber-800 transition-colors"
             >
               <Plus size={16} />
               <span>{es ? "Agregar otro viaje" : "Add another trip"}</span>
@@ -184,29 +184,29 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
           ) : (
             <Link
               href="/book?add=1"
-              className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 px-4 py-3 text-sm text-amber-300 hover:text-amber-200 transition-colors"
+              className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-orange-300 hover:border-orange-500 hover:bg-orange-50 px-4 py-3 text-sm text-orange-600 hover:text-amber-800 transition-colors"
             >
               <Plus size={16} />
               <span>{es ? "Agregar otro viaje" : "Add another trip"}</span>
             </Link>
           )}
 
-          <div className="pt-5 border-t border-amber-500/10">
+          <div className="pt-5 border-t border-slate-200">
             <div className="flex items-end justify-between">
-              <span className="text-gray-400 text-base">Total</span>
+              <span className="text-slate-500 text-base">Total</span>
               <div className="text-right">
-                <div className="text-4xl font-bold text-white leading-none">${totalPrice.toFixed(2)} <span className="text-base font-normal text-gray-400">USD</span></div>
+                <div className="text-4xl font-bold text-blue-900 leading-none">${totalPrice.toFixed(2)} <span className="text-base font-normal text-slate-500">USD</span></div>
                 {showCurrencyHint ? (
-                  <div className="text-xs text-amber-300 mt-1">
+                  <div className="text-xs text-orange-600 mt-1">
                     ≈ {convertedTotal} {currency}
                   </div>
                 ) : null}
-                <div className="text-xs text-green-400 mt-1.5">
+                <div className="text-xs text-green-700 mt-1.5">
                   {es
                     ? "Precio final · Impuestos incluidos"
                     : "Final price · All taxes included"}
                 </div>
-                <div className="text-[10px] text-gray-500 mt-0.5">
+                <div className="text-[10px] text-slate-500 mt-0.5">
                   {es ? "El cobro se hace en USD por Tilopay" : "Charges in USD via Tilopay"}
                 </div>
               </div>
@@ -216,7 +216,7 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
           <button
             type="button"
             onClick={() => setOpenIncluded((v) => !v)}
-            className="w-full flex items-center justify-between rounded-lg bg-gray-800/40 border border-white/5 hover:border-amber-500/30 transition-colors px-4 py-3.5 text-sm text-white"
+            className="w-full flex items-center justify-between rounded-lg bg-slate-50 border border-slate-200 hover:border-orange-300 transition-colors px-4 py-3.5 text-sm text-slate-700"
           >
             <span>{es ? "¿Qué incluye?" : "What's included?"}</span>
             {openIncluded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -224,8 +224,8 @@ export default function OrderSummarySidebar({ items, totalPrice, onAddAnotherTri
           {openIncluded ? (
             <div className="grid grid-cols-1 gap-2.5 -mt-2">
               {(es ? INCLUDED_ES : INCLUDED_EN).map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-2 text-sm text-gray-300">
-                  <Icon size={15} className="text-amber-400" />
+                <div key={label} className="flex items-center gap-2 text-sm text-slate-600">
+                  <Icon size={15} className="text-orange-600" />
                   {label}
                 </div>
               ))}

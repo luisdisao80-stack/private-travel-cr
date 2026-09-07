@@ -48,12 +48,12 @@ export function DatePicker({
         <button
           type="button"
           className={cn(
-            "flex h-12 w-full items-center justify-start gap-2 rounded-md border border-amber-500/30 bg-black/50 px-3 text-left text-white transition-colors hover:border-amber-500/60 focus:border-amber-500 focus:outline-none",
-            !selected && "text-gray-500",
+            "flex h-12 w-full items-center justify-start gap-2 rounded-md border border-slate-300 bg-white px-3 text-left text-slate-900 transition-colors hover:border-orange-400 focus:border-orange-600 focus:outline-none",
+            !selected && "text-slate-500",
             className
           )}
         >
-          <CalendarIcon size={16} className="text-amber-400 shrink-0" />
+          <CalendarIcon size={16} className="text-orange-600 shrink-0" />
           <span className="truncate">{display}</span>
         </button>
       </PopoverTrigger>
@@ -100,7 +100,7 @@ export function DatePicker({
             dropdowns: "flex items-center justify-center gap-2",
             dropdown_root: "relative",
             dropdown:
-              "h-8 px-2 pr-7 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-semibold appearance-none cursor-pointer hover:bg-amber-500/20 focus:outline-none focus:border-amber-500",
+              "h-8 px-2 pr-7 rounded-md bg-orange-50 border border-slate-200 text-orange-600 text-sm font-semibold appearance-none cursor-pointer hover:bg-orange-50 focus:outline-none focus:border-orange-600",
             months_dropdown: "",
             years_dropdown: "",
             nav: "hidden",
@@ -109,16 +109,16 @@ export function DatePicker({
             month_grid: "w-full border-collapse",
             weekdays: "flex",
             weekday:
-              "w-9 h-9 text-[0.7rem] font-medium text-gray-500 uppercase flex items-center justify-center",
+              "w-9 h-9 text-[0.7rem] font-medium text-slate-500 uppercase flex items-center justify-center",
             week: "flex w-full",
             day: "h-9 w-9 text-center text-sm p-0 relative",
             day_button:
-              "h-9 w-9 inline-flex items-center justify-center rounded-md text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors",
+              "h-9 w-9 inline-flex items-center justify-center rounded-md text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors",
             selected:
-              "[&_button]:bg-amber-500 [&_button]:text-black [&_button]:font-bold [&_button]:hover:bg-amber-500 [&_button]:hover:text-black",
-            today: "[&_button]:ring-1 [&_button]:ring-amber-500/50",
-            outside: "[&_button]:text-gray-700",
-            disabled: "[&_button]:text-gray-700 [&_button]:opacity-40 [&_button]:cursor-not-allowed [&_button]:hover:bg-transparent [&_button]:hover:text-gray-700",
+              "[&_button]:bg-orange-600 [&_button]:text-white [&_button]:font-bold [&_button]:hover:bg-orange-700 [&_button]:hover:text-white",
+            today: "[&_button]:ring-1 [&_button]:ring-orange-500/50",
+            outside: "[&_button]:text-slate-400",
+            disabled: "[&_button]:text-slate-400 [&_button]:opacity-40 [&_button]:cursor-not-allowed [&_button]:hover:bg-transparent [&_button]:hover:text-slate-400",
             hidden: "invisible",
           }}
         />

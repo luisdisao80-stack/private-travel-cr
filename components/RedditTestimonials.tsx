@@ -68,7 +68,7 @@ export default function RedditTestimonials() {
   return (
     <section
       id="reddit-testimonials"
-      className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
+      className="relative py-24 px-4 bg-white overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(245,158,11,0.08),transparent_70%)]" />
 
@@ -86,11 +86,11 @@ export default function RedditTestimonials() {
             </span>
           </div>
 
-          <h2 className="reveal reveal-d2 text-3xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4">
+          <h2 className="reveal reveal-d2 text-3xl md:text-5xl font-bold text-blue-900 tracking-tight leading-[1.05] mb-4">
             {heading}
           </h2>
 
-          <p className="reveal reveal-d3 max-w-2xl mx-auto text-gray-400 text-sm md:text-base leading-relaxed">
+          <p className="reveal reveal-d3 max-w-2xl mx-auto text-slate-500 text-sm md:text-base leading-relaxed">
             {subhead}
           </p>
         </div>
@@ -104,41 +104,41 @@ export default function RedditTestimonials() {
           {TESTIMONIALS.map((t, i) => {
             const card = (
             <article
-              className={`reveal reveal-d${Math.min(i + 1, 4)} relative h-full bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 md:p-8 hover:border-amber-500/40 transition-colors`}
+              className={`reveal reveal-d${Math.min(i + 1, 4)} relative h-full bg-white border border-slate-200 rounded-2xl p-6 md:p-8 hover:border-orange-300 transition-colors`}
             >
               {/* Decorative quote glyph */}
               <Quote
-                className="absolute -top-3 -left-2 text-amber-400/40"
+                className="absolute -top-3 -left-2 text-orange-600/40"
                 size={48}
                 aria-hidden="true"
               />
 
               <div className="relative">
                 {/* Context line */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 mb-4">
-                  <span className="text-[10px] font-bold tracking-wider uppercase text-amber-300">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-slate-200 mb-4">
+                  <span className="text-[10px] font-bold tracking-wider uppercase text-orange-600">
                     {isEn ? t.contextEn : t.contextEs}
                   </span>
                 </div>
 
                 {/* Body */}
-                <blockquote className="text-gray-200 text-sm md:text-base leading-relaxed mb-5">
+                <blockquote className="text-slate-600 text-sm md:text-base leading-relaxed mb-5">
                   &ldquo;{isEn ? t.bodyEn : t.bodyEs}&rdquo;
                 </blockquote>
 
                 {/* Source */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                <div className="flex items-center justify-between pt-4 border-t border-slate-200">
                   <div className="flex items-center gap-2">
                     <span
                       aria-hidden="true"
                       className="inline-block w-2 h-2 rounded-full bg-[#FF4500]"
                     />
-                    <span className="text-xs text-gray-400 font-mono">
+                    <span className="text-xs text-slate-500 font-mono">
                       {t.source}
                     </span>
                   </div>
                   {t.url ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 transition-colors">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-orange-600 transition-colors">
                       {readOnReddit}
                       <ExternalLink size={11} />
                     </span>

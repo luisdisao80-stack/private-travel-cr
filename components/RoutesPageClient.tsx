@@ -127,7 +127,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
       ];
 
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen bg-white">
       {/* HERO + SEARCH */}
       {/* overflow-visible (not -hidden) is intentional: the LocationInput
           dropdown opens absolutely below the search card and extends past
@@ -160,7 +160,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4"
             >
               {lang === "en" ? "1,200+ Private Shuttle Routes" : "1,200+ Rutas de Shuttle Privado"}
-              <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent mt-1">
+              <span className="block text-orange-500 mt-1">
                 {lang === "en" ? "across Costa Rica" : "en Costa Rica"}
               </span>
             </motion.h1>
@@ -172,7 +172,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-6"
+              className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-black/60 border border-white/10 hover:border-orange-400/40 backdrop-blur-sm transition-colors mb-6"
             >
               <GoogleGLogo size={20} className="shrink-0" />
               <div className="flex items-center gap-1">
@@ -184,7 +184,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 <strong>{reviewStats.google.rating.toFixed(1)}</strong>{" "}
                 {lang === "en" ? "on Google Reviews" : "en Google Reviews"}
               </span>
-              <ExternalLink size={12} className="text-white/40" />
+              <ExternalLink size={12} className="text-slate-400" />
             </motion.a>
 
             {/* SEARCH CARD */}
@@ -192,9 +192,9 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible"
+              className="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible"
             >
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-5">
+              <h2 className="text-xl md:text-2xl font-bold text-blue-900 mb-5">
                 {lang === "en" ? "Where are you headed?" : "¿A dónde vas?"}
               </h2>
 
@@ -223,7 +223,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                   }}
                   aria-label={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
                   title={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
-                  className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-amber-500/30 bg-black/60 hover:bg-amber-500/20 hover:border-amber-500/60 text-amber-400 transition-colors"
+                  className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-slate-300 bg-white hover:bg-orange-50 hover:border-orange-500 text-orange-600 transition-colors"
                 >
                   <ArrowLeftRight size={16} className="hidden md:block" />
                   <ArrowLeftRight size={16} className="rotate-90 md:hidden" />
@@ -238,17 +238,17 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 />
               </div>
 
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-slate-200 text-xs text-slate-500">
                 <span className="flex items-center gap-1.5">
-                  <Zap size={12} className="text-amber-400" />
+                  <Zap size={12} className="text-orange-600" />
                   {lang === "en" ? "Stripe payment processor" : "Procesador de pagos Stripe"}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Shield size={12} className="text-amber-400" />
+                  <Shield size={12} className="text-orange-600" />
                   {lang === "en" ? "Free cancellation" : "Cancelación gratis"}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 size={12} className="text-amber-400" />
+                  <CheckCircle2 size={12} className="text-orange-600" />
                   {lang === "en" ? "No hidden fees" : "Sin cargos ocultos"}
                 </span>
               </div>
@@ -261,7 +261,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
       {hasSearch && (
         <section className="container mx-auto px-4 py-6 md:py-8">
           <div className="max-w-5xl mx-auto">
-            <p className="text-amber-400 text-sm font-bold tracking-wider uppercase mb-6">
+            <p className="text-orange-600 text-sm font-bold tracking-wider uppercase mb-6">
               {lang === "en"
                 ? `${filteredRoutes.length} ${filteredRoutes.length === 1 ? "route" : "routes"} found`
                 : `${filteredRoutes.length} ${filteredRoutes.length === 1 ? "ruta encontrada" : "rutas encontradas"}`}
@@ -269,7 +269,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
 
             {filteredRoutes.length === 0 ? (
               <div className="text-center py-16">
-                <p className="text-gray-400">
+                <p className="text-slate-500">
                   {lang === "en"
                     ? "No routes found. Try a different search."
                     : "No se encontraron rutas. Probá otra búsqueda."}
@@ -283,25 +283,25 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
-                    className="relative bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50"
+                    className="relative bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50"
                   >
                     {/* Header — route name + duration */}
                     <div className="flex items-center gap-4 flex-1 min-w-0">
                       <div
                         style={{ width: "44px", height: "44px" }}
-                        className="rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0"
+                        className="rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center shrink-0"
                       >
-                        <MapPin size={18} className="text-amber-400" />
+                        <MapPin size={18} className="text-orange-600" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-base md:text-lg font-bold text-white leading-tight">
-                          {route.origen} <span className="text-amber-400">→</span>{" "}
-                          <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                        <h3 className="text-base md:text-lg font-bold text-blue-900 leading-tight">
+                          {route.origen} <span className="text-orange-600">→</span>{" "}
+                          <span className="text-orange-600">
                             {route.destino}
                           </span>
                         </h3>
                         {route.duracion && (
-                          <div className="mt-1 inline-flex items-center gap-1 text-xs text-gray-400">
+                          <div className="mt-1 inline-flex items-center gap-1 text-xs text-slate-500">
                             <Clock size={11} />
                             {route.duracion}
                           </div>
@@ -368,7 +368,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                         );
                       };
                       const tierClass =
-                        "rounded-lg bg-gray-900/50 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 border border-amber-500/30 p-3 text-center transition-colors";
+                        "rounded-lg bg-white hover:bg-white/70 hover:ring-2 hover:ring-orange-500/40 border border-slate-200 p-3 text-center transition-colors";
                       const addLabel =
                         lang === "en" ? "Add to cart" : "Agregar al carrito";
                       const addedLabel =
@@ -376,7 +376,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                       const labelFor = (tier: string) =>
                         addedKey === tierKey(tier) ? addedLabel : addLabel;
                       return (
-                        <div className="mt-5 pt-5 border-t border-white/5 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <div className="mt-5 pt-5 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                           <button
                             type="button"
                             onClick={() => addTier(2, route.precio1a6 ?? 0, "staria")}
@@ -394,11 +394,11 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                                 className="max-h-full max-w-full object-contain"
                               />
                             </div>
-                            <div className="text-[10px] text-gray-400 uppercase tracking-wider">1-5 PAX · Staria</div>
-                            <div className="text-lg font-bold text-amber-400 mt-0.5">
+                            <div className="text-[10px] text-slate-500 uppercase tracking-wider">1-5 PAX · Staria</div>
+                            <div className="text-lg font-bold text-orange-600 mt-0.5">
                               <Price usd={route.precio1a6 ?? 0} />
                             </div>
-                            <div className="text-[10px] text-amber-300/80 mt-1">{labelFor("staria")}</div>
+                            <div className="text-[10px] text-orange-600/80 mt-1">{labelFor("staria")}</div>
                           </button>
                           {route.precio7a9 ? (
                             <button
@@ -418,11 +418,11 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                                   className="max-h-full max-w-full object-contain"
                                 />
                               </div>
-                              <div className="text-[10px] text-gray-400 uppercase tracking-wider">6-9 PAX · Hiace</div>
-                              <div className="text-lg font-bold text-amber-400 mt-0.5">
+                              <div className="text-[10px] text-slate-500 uppercase tracking-wider">6-9 PAX · Hiace</div>
+                              <div className="text-lg font-bold text-orange-600 mt-0.5">
                                 <Price usd={route.precio7a9 ?? 0} />
                               </div>
-                              <div className="text-[10px] text-amber-300/80 mt-1">{labelFor("hiace")}</div>
+                              <div className="text-[10px] text-orange-600/80 mt-1">{labelFor("hiace")}</div>
                             </button>
                           ) : null}
                           {route.precio10a12 ? (
@@ -443,11 +443,11 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                                   className="max-h-full max-w-full object-contain"
                                 />
                               </div>
-                              <div className="text-[10px] text-gray-400 uppercase tracking-wider">10-12 PAX · Maxus</div>
-                              <div className="text-lg font-bold text-amber-400 mt-0.5">
+                              <div className="text-[10px] text-slate-500 uppercase tracking-wider">10-12 PAX · Maxus</div>
+                              <div className="text-lg font-bold text-orange-600 mt-0.5">
                                 <Price usd={route.precio10a12 ?? 0} />
                               </div>
-                              <div className="text-[10px] text-amber-300/80 mt-1">{labelFor("maxus")}</div>
+                              <div className="text-[10px] text-orange-600/80 mt-1">{labelFor("maxus")}</div>
                             </button>
                           ) : null}
                         </div>
@@ -462,7 +462,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                             ? `/private-shuttle/${route.slug}`
                             : `/routes/${route.slug}`
                         }
-                        className="text-xs text-gray-400 hover:text-amber-400 transition-colors underline underline-offset-2"
+                        className="text-xs text-slate-500 hover:text-orange-600 transition-colors underline underline-offset-2"
                       >
                         {lang === "en" ? "View route details →" : "Ver detalles →"}
                       </Link>
@@ -479,12 +479,12 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
       <section className="container mx-auto px-4 py-10 md:py-14">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
-            <span className="text-amber-400 text-xs font-bold tracking-[0.2em] uppercase">
+            <span className="text-orange-600 text-xs font-bold tracking-[0.2em] uppercase">
               {lang === "en" ? "Included in every shuttle" : "Incluido en cada shuttle"}
             </span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mt-3 tracking-tight">
+            <h2 className="text-3xl md:text-5xl font-bold text-blue-900 mt-3 tracking-tight">
               {lang === "en" ? "Everything you need." : "Todo lo que necesitás."}
-              <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+              <span className="block text-orange-600">
                 {lang === "en" ? "Nothing extra to pay." : "Sin pagar nada extra."}
               </span>
             </h2>
@@ -498,15 +498,15 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="flex items-center gap-3 p-4 rounded-2xl bg-gray-900/40 border border-white/5"
+                className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-slate-200"
               >
                 <div
                   style={{ width: "44px", height: "44px" }}
-                  className="rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0"
+                  className="rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center shrink-0"
                 >
-                  <Icon size={20} className="text-amber-400" strokeWidth={1.75} />
+                  <Icon size={20} className="text-orange-600" strokeWidth={1.75} />
                 </div>
-                <span className="text-white text-sm md:text-base font-medium leading-tight">
+                <span className="text-slate-700 text-sm md:text-base font-medium leading-tight">
                   {label}
                 </span>
               </motion.div>
@@ -523,12 +523,12 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="max-w-3xl mx-auto text-center bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30 rounded-3xl p-8 md:p-10"
+            className="max-w-3xl mx-auto text-center bg-gradient-to-br from-orange-50 to-amber-600/5 border border-slate-200 rounded-3xl p-8 md:p-10"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+            <h3 className="text-2xl md:text-3xl font-bold text-blue-900 mb-3">
               {lang === "en" ? "Ready to book?" : "¿Listo para reservar?"}
             </h3>
-            <p className="text-gray-400 mb-6 max-w-xl mx-auto">
+            <p className="text-slate-500 mb-6 max-w-xl mx-auto">
               {lang === "en"
                 ? "Get an instant quote and complete your booking in minutes."
                 : "Obtené una cotización al instante y completá tu reserva en minutos."}
@@ -552,7 +552,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 if (pickupHotel || dropoffHotel) params.set("direct", "1");
                 return `/book?${params.toString()}`;
               })()}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-base shadow-2xl shadow-orange-600/25 hover:shadow-orange-600/30 transition-all"
             >
               {/* Con viajes en el carrito este CTA va derecho al checkout
                   (ver el href de arriba), así que el texto tiene que
