@@ -12,7 +12,7 @@ export default function CartIcon() {
     <button
       onClick={() => setCartOpen(true)}
       aria-label={`${t.cart.openCart} (${itemCount})`}
-      className="relative p-2 rounded-full text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 transition-all"
+      className="relative p-2 rounded-full text-slate-700 hover:text-orange-600 hover:bg-orange-50 transition-all"
     >
       <ShoppingCart size={20} />
 
@@ -23,7 +23,7 @@ export default function CartIcon() {
       {itemCount > 0 && (
         <span
           key={itemCount}
-          className="badge-pop absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-black text-[10px] font-bold flex items-center justify-center border-2 border-black"
+          className="badge-pop absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-orange-600 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white"
         >
           {itemCount}
         </span>

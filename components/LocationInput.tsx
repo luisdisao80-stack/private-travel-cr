@@ -254,7 +254,7 @@ export default function LocationInput({
     >
       <MapPin
         size={18}
-        className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 pointer-events-none"
+        className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600 pointer-events-none"
       />
       <input
         type="text"
@@ -287,14 +287,14 @@ export default function LocationInput({
           }
         }}
         placeholder={placeholder}
-        className="w-full pl-12 pr-9 py-4 bg-black/60 border border-amber-500/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/60 transition"
+        className="w-full pl-12 pr-9 py-4 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 transition"
       />
       {value && (
         <button
           type="button"
           onClick={() => onChange("")}
           aria-label="Clear"
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors text-xl leading-none"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors text-xl leading-none"
         >
           ×
         </button>
@@ -302,7 +302,7 @@ export default function LocationInput({
       {open && suggestions.length > 0 && (
         <div
           ref={menuRef}
-          className="absolute z-50 w-full mt-2 bg-gradient-to-br from-gray-900/98 to-black/98 backdrop-blur-xl border border-amber-500/30 rounded-xl shadow-2xl shadow-black/60 max-h-80 overflow-y-auto"
+          className="absolute z-50 w-full mt-2 bg-white backdrop-blur-xl border border-slate-200 rounded-xl shadow-2xl shadow-slate-900/15 max-h-80 overflow-y-auto"
         >
           {suggestions.map((s, idx) => {
             // Highlighted row = current keyboard target. Rendered with
@@ -312,10 +312,10 @@ export default function LocationInput({
             // follows the pointer, keeping mouse + keyboard in sync.
             const isActive = idx === highlightIndex;
             const rowClass =
-              "w-full flex items-center gap-3 text-left px-4 py-3 transition-colors text-sm border-b border-white/5 last:border-b-0 " +
+              "w-full flex items-center gap-3 text-left px-4 py-3 transition-colors text-sm border-b border-slate-100 last:border-b-0 " +
               (isActive
-                ? "bg-amber-500/20 text-white"
-                : "text-white hover:bg-amber-500/15");
+                ? "bg-orange-50 text-slate-900"
+                : "text-slate-700 hover:bg-orange-50/60");
 
             if (s.kind === "location") {
               const airport = isAirport(s.loc);
@@ -331,9 +331,9 @@ export default function LocationInput({
                   className={rowClass}
                 >
                   {airport ? (
-                    <Plane size={14} className="text-amber-400 shrink-0" />
+                    <Plane size={14} className="text-orange-600 shrink-0" />
                   ) : (
-                    <MapPin size={14} className="text-amber-400/60 shrink-0" />
+                    <MapPin size={14} className="text-orange-600/60 shrink-0" />
                   )}
                   <span className="flex-1 min-w-0 truncate">{displayLocation(s.loc)}</span>
                 </button>
@@ -357,11 +357,11 @@ export default function LocationInput({
               >
                 <Building2
                   size={14}
-                  className="text-amber-400/80 shrink-0"
+                  className="text-orange-600/80 shrink-0"
                   aria-hidden="true"
                 />
                 <span className="flex-1 min-w-0 truncate">{s.hotel.name}</span>
-                <span className="text-[10px] uppercase tracking-wider text-gray-500 shrink-0">
+                <span className="text-[10px] uppercase tracking-wider text-slate-400 shrink-0">
                   Hotel · {s.hotel.city}
                 </span>
               </button>
@@ -373,7 +373,7 @@ export default function LocationInput({
               no un <button>: no se puede escoger ni sale en la navegación
               con flechas, solo explica qué hacer. */}
           {hiddenCount > 0 && (
-            <div className="px-4 py-2.5 text-[11px] text-gray-400 bg-black/40 border-t border-amber-500/20">
+            <div className="px-4 py-2.5 text-[11px] text-slate-500 bg-slate-50 border-t border-slate-200">
               {lang === "en"
                 ? `+${hiddenCount} more — keep typing to narrow it down`
                 : `+${hiddenCount} más — seguí escribiendo para afinar`}

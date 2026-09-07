@@ -47,7 +47,7 @@ const BookingForm = dynamic(() => import("@/components/BookingForm"), {
   ssr: false,
   loading: () => (
     <div className="p-8 flex justify-center">
-      <div className="h-6 w-6 rounded-full border-2 border-amber-500/30 border-t-amber-400 animate-spin" />
+      <div className="h-6 w-6 rounded-full border-2 border-slate-200 border-t-amber-400 animate-spin" />
     </div>
   ),
 });
@@ -200,17 +200,17 @@ export default function Cart() {
 
           {/* Drawer */}
           <div
-            className="cart-slide-in fixed top-0 right-0 bottom-0 w-full sm:w-[480px] bg-black border-l border-amber-500/20 z-[70] flex flex-col"
+            className="cart-slide-in fixed top-0 right-0 bottom-0 w-full sm:w-[480px] bg-white border-l border-slate-200 z-[70] flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-amber-500/10 bg-gradient-to-b from-amber-500/5 to-transparent">
+            <div className="flex items-center justify-between p-5 border-b border-slate-200 bg-gradient-to-b from-amber-500/5 to-transparent">
               <div className="flex items-center gap-2">
-                <ShoppingCart className="text-amber-400" size={22} />
-                <h2 className="text-xl font-bold text-white">
+                <ShoppingCart className="text-orange-600" size={22} />
+                <h2 className="text-xl font-bold text-blue-900">
                   {showBookingForm ? t.cart.bookingDetails : t.cart.title}
                 </h2>
                 {!showBookingForm && items.length > 0 && (
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-slate-500">
                     ({items.length} {items.length === 1 ? t.cart.transfer : t.cart.transfers})
                   </span>
                 )}
@@ -218,7 +218,7 @@ export default function Cart() {
               <button
                 onClick={handleClose}
                 aria-label={t.cart.close}
-                className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-full transition-all"
+                className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-all"
               >
                 <X size={20} />
               </button>
@@ -230,14 +230,14 @@ export default function Cart() {
                 items.length === 0 ? (
                   /* Empty state */
                   <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-                    <div className="w-20 h-20 rounded-full bg-amber-500/10 flex items-center justify-center mb-4">
-                      <ShoppingCart size={32} className="text-amber-400/50" />
+                    <div className="w-20 h-20 rounded-full bg-orange-50 flex items-center justify-center mb-4">
+                      <ShoppingCart size={32} className="text-orange-600/50" />
                     </div>
-                    <h3 className="text-white font-semibold mb-2">{t.cart.emptyTitle}</h3>
-                    <p className="text-gray-400 text-sm mb-6">{t.cart.emptyDescription}</p>
+                    <h3 className="text-slate-900 font-semibold mb-2">{t.cart.emptyTitle}</h3>
+                    <p className="text-slate-500 text-sm mb-6">{t.cart.emptyDescription}</p>
                     <Button
                       onClick={handleClose}
-                      className="bg-amber-500 hover:bg-amber-600 text-black font-semibold"
+                      className="bg-orange-600 hover:bg-orange-700 text-slate-900 font-semibold"
                     >
                       {t.cart.startBooking}
                       <ArrowRight size={16} className="ml-2" />
@@ -249,10 +249,10 @@ export default function Cart() {
                     {items.map((item, idx) => (
                       <div
                         key={item.id}
-                        className="cart-item-in relative p-4 rounded-xl border border-amber-500/20 bg-gradient-to-br from-white/[0.04] to-transparent"
+                        className="cart-item-in relative p-4 rounded-xl border border-slate-200 bg-gradient-to-br from-white/[0.04] to-transparent"
                       >
                         {/* Number badge */}
-                        <div className="absolute -top-2.5 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black text-xs font-bold px-2.5 py-0.5 rounded-full">
+                        <div className="absolute -top-2.5 left-3 bg-orange-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">
                           #{idx + 1}
                         </div>
 
@@ -260,25 +260,25 @@ export default function Cart() {
                         <button
                           onClick={() => removeItem(item.id)}
                           aria-label={t.cart.removeItem}
-                          className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-full transition-all"
+                          className="absolute top-3 right-3 p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-all"
                         >
                           <Trash2 size={14} />
                         </button>
 
                         {/* Route */}
                         <div className="mb-3 pr-8">
-                          <div className="flex items-center gap-2 text-white font-semibold text-sm mb-1">
-                            <MapPin size={14} className="text-amber-400 flex-shrink-0" />
+                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-sm mb-1">
+                            <MapPin size={14} className="text-orange-600 flex-shrink-0" />
                             <span className="truncate">{item.fromName}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-white font-semibold text-sm">
-                            <ArrowRight size={14} className="text-amber-400 flex-shrink-0" />
+                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-sm">
+                            <ArrowRight size={14} className="text-orange-600 flex-shrink-0" />
                             <span className="truncate">{item.toName}</span>
                           </div>
                         </div>
 
                         {/* Details */}
-                        <div className="grid grid-cols-2 gap-2 text-xs text-gray-400 mb-3">
+                        <div className="grid grid-cols-2 gap-2 text-xs text-slate-500 mb-3">
                           <div className="flex items-center gap-1.5">
                             <Calendar size={12} />
                             {/* Los viajes agregados desde el hero llegan
@@ -288,21 +288,21 @@ export default function Cart() {
                             {item.date ? (
                               <span>{formatDate(item.date)}</span>
                             ) : (
-                              <span className="text-amber-400/90 font-medium">
+                              <span className="text-orange-600/90 font-medium">
                                 {lang === "es" ? "Falta la fecha" : "Date missing"}
                               </span>
                             )}
                             {item.pickupTime ? (
                               <>
-                                <span className="text-gray-600">·</span>
-                                <Clock size={12} className="text-amber-400/70" />
-                                <span className="text-amber-400/90 font-medium">{formatTime(item.pickupTime)}</span>
+                                <span className="text-slate-500">·</span>
+                                <Clock size={12} className="text-orange-600/70" />
+                                <span className="text-orange-600/90 font-medium">{formatTime(item.pickupTime)}</span>
                               </>
                             ) : (
                               <>
-                                <span className="text-gray-600">·</span>
-                                <Clock size={12} className="text-amber-400/70" />
-                                <span className="text-amber-400/90 font-medium">
+                                <span className="text-slate-500">·</span>
+                                <Clock size={12} className="text-orange-600/70" />
+                                <span className="text-orange-600/90 font-medium">
                                   {lang === "es" ? "Falta la hora" : "Time missing"}
                                 </span>
                               </>
@@ -312,7 +312,7 @@ export default function Cart() {
                             <Users size={12} />
                             {item.passengers} {t.cart.pax}
                             {item.children > 0 && (
-                              <span className="text-amber-400/80 ml-1">
+                              <span className="text-orange-600/80 ml-1">
                                 ({item.children} {item.children === 1 ? t.cart.child : t.cart.children})
                               </span>
                             )}
@@ -320,9 +320,9 @@ export default function Cart() {
                         </div>
 
                         {/* Pickup / Dropoff with vehicle photo */}
-                        <div className="flex gap-3 mb-3 pb-3 border-b border-amber-500/10">
+                        <div className="flex gap-3 mb-3 pb-3 border-b border-slate-200">
                           {/* Vehicle photo - left side */}
-                          <div className="flex-shrink-0 w-40 h-28 rounded-lg overflow-hidden bg-white border border-amber-500/30 flex items-center justify-center p-2">
+                          <div className="flex-shrink-0 w-40 h-28 rounded-lg overflow-hidden bg-white border border-slate-200 flex items-center justify-center p-2">
                             <img
                               src={
                                 item.vehicleId === "staria"
@@ -345,26 +345,26 @@ export default function Cart() {
                             <div className="flex items-start gap-2">
                               <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-1.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <span className="text-gray-500">{t.cart.pickup}: </span>
+                                <span className="text-slate-500">{t.cart.pickup}: </span>
                                 {/* Fallback al nombre de la zona: el
                                     quick-add del hero sólo trae dirección
                                     exacta cuando eligieron un hotel. */}
-                                <span className="text-gray-200 break-words">{item.pickupPlace || item.fromName}</span>
+                                <span className="text-slate-600 break-words">{item.pickupPlace || item.fromName}</span>
                               </div>
                             </div>
                             <div className="flex items-start gap-2">
                               <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <span className="text-gray-500">{t.cart.dropoff}: </span>
-                                <span className="text-gray-200 break-words">{item.dropoffPlace || item.toName}</span>
+                                <span className="text-slate-500">{t.cart.dropoff}: </span>
+                                <span className="text-slate-600 break-words">{item.dropoffPlace || item.toName}</span>
                               </div>
                             </div>
                             {item.flightNumber && (
                               <div className="flex items-start gap-2">
-                                <Plane size={11} className="text-amber-400 mt-1 flex-shrink-0" />
+                                <Plane size={11} className="text-orange-600 mt-1 flex-shrink-0" />
                                 <div className="flex-1 min-w-0">
-                                  <span className="text-gray-500">{t.cart.flight}: </span>
-                                  <span className="text-amber-400 font-medium uppercase">{item.flightNumber}</span>
+                                  <span className="text-slate-500">{t.cart.flight}: </span>
+                                  <span className="text-orange-600 font-medium uppercase">{item.flightNumber}</span>
                                 </div>
                               </div>
                             )}
@@ -372,31 +372,31 @@ export default function Cart() {
                         </div>
 
                         {/* Service + price */}
-                        <div className="flex items-center justify-between pt-3 border-t border-amber-500/10">
+                        <div className="flex items-center justify-between pt-3 border-t border-slate-200">
                           <div className="flex items-center gap-2">
                             {item.serviceType === "vip" ? (
-                              <span className="flex items-center gap-1 text-xs font-semibold text-amber-400">
+                              <span className="flex items-center gap-1 text-xs font-semibold text-orange-600">
                                 <Crown size={12} />
                                 VIP
                               </span>
                             ) : (
-                              <span className="text-xs font-semibold text-white/70">
+                              <span className="text-xs font-semibold text-slate-600">
                                 {t.cart.standard}
                               </span>
                             )}
-                            <span className="text-xs text-gray-500">·</span>
-                            <span className="text-xs text-gray-400">{item.vehicleName}</span>
+                            <span className="text-xs text-slate-500">·</span>
+                            <span className="text-xs text-slate-500">{item.vehicleName}</span>
                             {item.extraStopHours > 0 && (
                               <>
-                                <span className="text-xs text-gray-500">·</span>
-                                <span className="flex items-center gap-1 text-xs text-amber-400">
+                                <span className="text-xs text-slate-500">·</span>
+                                <span className="flex items-center gap-1 text-xs text-orange-600">
                                   <Clock size={11} />
                                   +{item.extraStopHours}h
                                 </span>
                               </>
                             )}
                           </div>
-                          <div className="text-amber-400 font-bold"><Price usd={item.totalPrice} /></div>
+                          <div className="text-orange-600 font-bold"><Price usd={item.totalPrice} /></div>
                         </div>
 
                         {/* Los nombres de las paradas, si las eligió por
@@ -410,7 +410,7 @@ export default function Cart() {
                             Waterfall Gardens") le comían el espacio al
                             precio. Acá abajo tiene el ancho entero. */}
                         {item.extraStopNames?.length ? (
-                          <div className="mt-1.5 text-xs text-gray-400 break-words">
+                          <div className="mt-1.5 text-xs text-slate-500 break-words">
                             {item.extraStopNames.join(" · ")}
                           </div>
                         ) : null}
@@ -420,7 +420,7 @@ export default function Cart() {
                     {/* Clear cart button */}
                     <button
                       onClick={clearCart}
-                      className="w-full text-xs text-gray-500 hover:text-red-400 transition-colors py-2"
+                      className="w-full text-xs text-slate-500 hover:text-red-600 transition-colors py-2"
                     >
                       {t.cart.clearAll}
                     </button>
@@ -434,20 +434,20 @@ export default function Cart() {
 
             {/* Footer with total */}
             {!showBookingForm && items.length > 0 && (
-              <div className="border-t border-amber-500/20 p-5 space-y-4 bg-gradient-to-t from-amber-500/5 to-transparent">
+              <div className="border-t border-slate-200 p-5 space-y-4 bg-gradient-to-t from-amber-500/5 to-transparent">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400 text-sm">{t.cart.total}</span>
+                  <span className="text-slate-500 text-sm">{t.cart.total}</span>
                   <div className="text-right">
-                    <span className="text-3xl font-bold text-white">
+                    <span className="text-3xl font-bold text-blue-900">
                       ${totalPrice.toFixed(2)}
-                      <span className="text-sm text-gray-400 font-normal ml-1">USD</span>
+                      <span className="text-sm text-slate-500 font-normal ml-1">USD</span>
                     </span>
                     {showCurrencyHint ? (
-                      <div className="text-[11px] text-amber-300 mt-0.5">
+                      <div className="text-[11px] text-orange-600 mt-0.5">
                         ≈ {convertedTotal} {currency}
                       </div>
                     ) : null}
-                    <div className="text-[11px] text-gray-500 mt-0.5">{t.quote.taxesIncluded} · {lang === "en" ? "Charges in USD via Tilopay" : "Cobros en USD vía Tilopay"}</div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">{t.quote.taxesIncluded} · {lang === "en" ? "Charges in USD via Tilopay" : "Cobros en USD vía Tilopay"}</div>
                   </div>
                 </div>
                 {cartIssue && (
@@ -457,8 +457,8 @@ export default function Cart() {
                       // rojo = bloqueante. missingSchedule/missingFlight
                       // ya no bloquean, así que van en ámbar.
                       cartIssue.kind === "sameRoute"
-                        ? "rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs text-red-200"
-                        : "rounded-lg border border-amber-400/50 bg-amber-500/10 px-4 py-3 text-xs text-amber-100"
+                        ? "rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-xs text-red-700"
+                        : "rounded-lg border border-orange-500/50 bg-orange-50 px-4 py-3 text-xs text-amber-900"
                     }
                   >
                     {cartIssue.kind === "leadTime" && (
@@ -476,7 +476,7 @@ export default function Cart() {
                           }
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-white font-semibold text-xs px-3 py-1.5 transition-colors"
+                          className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-slate-900 font-semibold text-xs px-3 py-1.5 transition-colors"
                         >
                           {lang === "es"
                             ? "Escríbenos por WhatsApp"
@@ -521,7 +521,7 @@ export default function Cart() {
                           : "Pickup and drop-off are the same on a trip"
                         : undefined
                   }
-                  className="w-full h-14 bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full h-14 bg-orange-600 hover:bg-orange-700 text-white font-bold text-lg disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {t.cart.continueBooking}
                   <ArrowRight size={18} className="ml-2" />
@@ -538,7 +538,7 @@ export default function Cart() {
                     // surface as the sidebar "Add another trip" CTA.
                     router.push("/book?add=1");
                   }}
-                  className="w-full h-12 border border-amber-500/30 hover:border-amber-500/60 hover:bg-amber-500/5 text-amber-400 font-semibold rounded-md transition-all flex items-center justify-center gap-2"
+                  className="w-full h-12 border border-slate-200 hover:border-orange-400 hover:bg-orange-50 text-orange-600 font-semibold rounded-md transition-all flex items-center justify-center gap-2"
                 >
                   <span className="text-lg">+</span>
                   <span>

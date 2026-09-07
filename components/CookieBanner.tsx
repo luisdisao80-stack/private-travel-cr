@@ -84,16 +84,16 @@ export default function CookieBanner() {
       data-cookie-banner=""
       className="fixed bottom-4 left-4 right-4 md:left-6 md:right-auto md:bottom-6 md:max-w-md z-[80]"
     >
-      <div className="rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-amber-500/30 shadow-2xl shadow-black/60 p-5">
+      <div className="rounded-2xl bg-white border border-slate-200 shadow-2xl shadow-black/60 p-5">
         <div className="flex items-start gap-3">
-          <div className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full bg-amber-500/15 border border-amber-500/40">
-            <Cookie size={18} className="text-amber-400" />
+          <div className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full bg-orange-50 border border-orange-300">
+            <Cookie size={18} className="text-orange-600" />
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="text-sm font-bold text-white mb-1">
+            <h2 className="text-sm font-bold text-blue-900 mb-1">
               {es ? "Usamos cookies" : "We use cookies"}
             </h2>
-            <p className="text-xs text-gray-400 leading-relaxed">
+            <p className="text-xs text-slate-500 leading-relaxed">
               {es
                 ? "Las cookies esenciales hacen que el sitio funcione (carrito, idioma). Las de analítica nos ayudan a entender qué rutas buscás y dónde falla el proceso de reserva. Podés rechazar la analítica y todo lo demás sigue funcionando. "
                 : "Essential cookies make the site work (cart, language). Analytics cookies help us understand which routes you search and where the booking flow needs work. You can decline analytics and the rest still works. "}
@@ -102,7 +102,7 @@ export default function CookieBanner() {
                   ventana critica y Next se traia /privacy entera sin que
                   nadie la pida. Casi nadie hace clic; el que lo haga espera
                   una navegacion normal. */}
-              <Link href="/privacy" prefetch={false} className="text-amber-400 hover:text-amber-300 underline underline-offset-2">
+              <Link href="/privacy" prefetch={false} className="text-orange-600 hover:text-orange-700 underline underline-offset-2">
                 {es ? "Leé nuestra política de privacidad" : "Read our privacy policy"}
               </Link>
               .
@@ -111,14 +111,14 @@ export default function CookieBanner() {
               <button
                 type="button"
                 onClick={() => choose("accepted")}
-                className="flex-1 h-9 px-4 rounded-lg bg-amber-500 hover:bg-amber-600 text-black text-xs font-bold transition"
+                className="flex-1 h-9 px-4 rounded-lg bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold transition"
               >
                 {es ? "Aceptar todo" : "Accept all"}
               </button>
               <button
                 type="button"
                 onClick={() => choose("declined")}
-                className="flex-1 h-9 px-4 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-semibold transition"
+                className="flex-1 h-9 px-4 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-semibold transition"
               >
                 {es ? "Sólo esenciales" : "Essential only"}
               </button>
