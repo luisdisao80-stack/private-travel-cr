@@ -485,11 +485,6 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     onHotelPick={handleDropoffHotel}
                   />
                 </div>
-                {/* Pedido de Diego 2026-09-07: igual que en la home, al
-                    inicio solo los campos de origen/destino; el resto
-                    aparece cuando la ruta ya está escogida. */}
-                {heroFrom.trim().length > 0 && heroTo.trim().length > 0 && (
-                  <>
                 {/* El mismo contador que el buscador de la home, no una
                     copia: ver el comentario de PaxSelector. Va antes del
                     precio porque el precio depende de él. */}
@@ -501,6 +496,11 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   lang={lang}
                   className="mt-3"
                 />
+                {/* Pedido de Diego 2026-09-07: igual que en la home, se ven
+                    origen/destino y pasajeros; el precio y el botón
+                    aparecen cuando la ruta ya está escogida. */}
+                {heroFrom.trim().length > 0 && heroTo.trim().length > 0 && (
+                  <>
                 {/* `heroTotalPax`, NO `heroAdults`: el precio es por
                     vehículo y los niños también ocupan asiento. Con
                     adultos sueltos, 4 adultos + 3 niños cotizaba como

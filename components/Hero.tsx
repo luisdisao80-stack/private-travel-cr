@@ -420,11 +420,6 @@ export default function Hero({
               />
             </div>
 
-            {/* Pedido de Diego 2026-09-07: al inicio solo se ven los campos
-                de origen/destino; pasajeros, precio y botón aparecen hasta
-                que la ruta esté escogida (ambos campos con texto). */}
-            {pickup.trim().length > 0 && dropoff.trim().length > 0 && (
-              <>
             <PaxSelector
               adults={adults}
               childrenCount={children}
@@ -433,6 +428,12 @@ export default function Hero({
               lang={lang}
               className="mt-3"
             />
+
+            {/* Pedido de Diego 2026-09-07: al inicio se ven origen/destino
+                y pasajeros; el precio y el botón aparecen hasta que la
+                ruta esté escogida (ambos campos con texto). */}
+            {pickup.trim().length > 0 && dropoff.trim().length > 0 && (
+              <>
 
             {overCapacity && (
               <BigGroupNotice
