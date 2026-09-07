@@ -40,7 +40,7 @@ export default async function BookPage({ searchParams }: { searchParams: SearchP
     getAllHotels(),
   ]);
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen bg-white">
       <Navbar />
       <Suspense fallback={null}>
         <BookWizardClient locations={locations} hotels={hotels} />

@@ -120,7 +120,7 @@ export default async function TourDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(tourSchema) }}
       />
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950">
+      <main className="min-h-screen bg-slate-50">
         {/*
           Hero layout: photo + title block in two separate horizontal
           rows. Earlier iterations tried a single hero with the title
@@ -138,7 +138,7 @@ export default async function TourDetailPage({ params }: Props) {
           <div className="max-w-5xl mx-auto">
             <Link
               href="/tours"
-              className="inline-flex items-center gap-1.5 text-amber-400 text-xs hover:text-amber-300 mb-3 transition-colors"
+              className="inline-flex items-center gap-1.5 text-orange-600 text-xs hover:text-orange-700 mb-3 transition-colors"
             >
               <ArrowLeft size={12} />
               Back to tours
@@ -162,23 +162,23 @@ export default async function TourDetailPage({ params }: Props) {
         {/* Title block — clean, no overlay. Sits right under the photo. */}
         <section className="px-4 pt-5 pb-2">
           <div className="max-w-5xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-3">
-              <MapPin size={11} className="text-amber-400" />
-              <span className="text-[10px] font-semibold text-amber-400 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-orange-50 border border-slate-200 mb-3">
+              <MapPin size={11} className="text-orange-600" />
+              <span className="text-[10px] font-semibold text-orange-600 uppercase tracking-wider">
                 La Fortuna · Arenal
               </span>
             </div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 tracking-tight leading-tight">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-900 mb-2 tracking-tight leading-tight">
               {tour.name}
             </h1>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500">
               <span className="inline-flex items-center gap-1.5">
-                <Clock size={14} className="text-amber-400" />
+                <Clock size={14} className="text-orange-600" />
                 {tour.duration_label}
               </span>
               {tour.min_age ? (
                 <span className="inline-flex items-center gap-1.5">
-                  <Users size={14} className="text-amber-400" />
+                  <Users size={14} className="text-orange-600" />
                   Ages {tour.min_age}+
                 </span>
               ) : null}
@@ -193,17 +193,17 @@ export default async function TourDetailPage({ params }: Props) {
             <div className="lg:col-span-2 space-y-10">
               {/* Highlights */}
               {tour.highlights.length > 0 ? (
-                <div className="rounded-2xl bg-amber-500/5 border border-amber-500/20 p-6">
+                <div className="rounded-2xl bg-orange-50 border border-slate-200 p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <Sparkles size={18} className="text-amber-400" />
-                    <h2 className="text-lg font-bold text-white">Highlights</h2>
+                    <Sparkles size={18} className="text-orange-600" />
+                    <h2 className="text-lg font-bold text-blue-900">Highlights</h2>
                   </div>
                   <ul className="space-y-2">
                     {tour.highlights.map((h, i) => (
-                      <li key={i} className="flex items-start gap-2 text-gray-300">
+                      <li key={i} className="flex items-start gap-2 text-slate-600">
                         <CheckCircle2
                           size={16}
-                          className="text-amber-400 mt-0.5 shrink-0"
+                          className="text-orange-600 mt-0.5 shrink-0"
                         />
                         <span className="text-sm leading-relaxed">{h}</span>
                       </li>
@@ -215,10 +215,10 @@ export default async function TourDetailPage({ params }: Props) {
               {/* Description */}
               {tour.description ? (
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-2xl font-bold text-blue-900 mb-4">
                     About this tour
                   </h2>
-                  <div className="prose prose-invert max-w-none text-gray-300 leading-relaxed whitespace-pre-line">
+                  <div className="prose prose-invert max-w-none text-slate-600 leading-relaxed whitespace-pre-line">
                     {tour.description}
                   </div>
                 </div>
@@ -227,18 +227,18 @@ export default async function TourDetailPage({ params }: Props) {
               {/* Included */}
               {tour.includes.length > 0 ? (
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-2xl font-bold text-blue-900 mb-4">
                     What&apos;s included
                   </h2>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {tour.includes.map((item, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-2 text-gray-300 text-sm"
+                        className="flex items-start gap-2 text-slate-600 text-sm"
                       >
                         <CheckCircle2
                           size={16}
-                          className="text-green-400 mt-0.5 shrink-0"
+                          className="text-green-700 mt-0.5 shrink-0"
                         />
                         <span>{item}</span>
                       </li>
@@ -251,16 +251,16 @@ export default async function TourDetailPage({ params }: Props) {
               {tour.what_to_bring.length > 0 ? (
                 <div>
                   <div className="flex items-center gap-2 mb-4">
-                    <Backpack size={20} className="text-amber-400" />
-                    <h2 className="text-2xl font-bold text-white">What to bring</h2>
+                    <Backpack size={20} className="text-orange-600" />
+                    <h2 className="text-2xl font-bold text-blue-900">What to bring</h2>
                   </div>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {tour.what_to_bring.map((item, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-2 text-gray-300 text-sm"
+                        className="flex items-start gap-2 text-slate-600 text-sm"
                       >
-                        <span className="text-amber-400 mt-0.5">•</span>
+                        <span className="text-orange-600 mt-0.5">•</span>
                         <span>{item}</span>
                       </li>
                     ))}
@@ -271,22 +271,22 @@ export default async function TourDetailPage({ params }: Props) {
               {/* Schedule */}
               {tour.schedule_times.length > 0 ? (
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-2xl font-bold text-blue-900 mb-4">
                     Departure times
                   </h2>
                   <div className="flex flex-wrap gap-3">
                     {tour.schedule_times.map((slot, i) => (
                       <div
                         key={i}
-                        className="rounded-xl bg-gray-900/40 border border-white/10 px-4 py-3"
+                        className="rounded-xl bg-white/40 border border-slate-200 px-4 py-3"
                       >
-                        <div className="text-[10px] uppercase tracking-wider text-gray-500">
+                        <div className="text-[10px] uppercase tracking-wider text-slate-500">
                           Departure
                         </div>
-                        <div className="text-lg font-bold text-white">
+                        <div className="text-lg font-bold text-blue-900">
                           {slot.departure}
                         </div>
-                        <div className="text-[11px] text-gray-400 mt-0.5">
+                        <div className="text-[11px] text-slate-500 mt-0.5">
                           Returns ~{slot.return}
                         </div>
                       </div>
@@ -300,11 +300,11 @@ export default async function TourDetailPage({ params }: Props) {
                     // Dropped the amber 'link-ish' colouring, added an
                     // explicit info icon + 'asked at checkout' line so
                     // visitors know the dropdown is one step away.
-                    <div className="mt-4 flex items-start gap-2 text-sm text-gray-400 bg-white/5 border border-white/10 rounded-lg p-3">
+                    <div className="mt-4 flex items-start gap-2 text-sm text-slate-500 bg-slate-50 border border-slate-200 rounded-lg p-3">
                       <svg
                         viewBox="0 0 24 24"
                         fill="none"
-                        className="w-4 h-4 text-gray-400 mt-0.5 shrink-0"
+                        className="w-4 h-4 text-slate-500 mt-0.5 shrink-0"
                         stroke="currentColor"
                         strokeWidth="2"
                         aria-hidden="true"
@@ -314,9 +314,9 @@ export default async function TourDetailPage({ params }: Props) {
                         <line x1="12" y1="8" x2="12.01" y2="8" />
                       </svg>
                       <span>
-                        <span className="text-gray-200">Pickup area:</span>{" "}
+                        <span className="text-slate-600">Pickup area:</span>{" "}
                         {tour.pickup_zone}.{" "}
-                        <span className="text-gray-500">
+                        <span className="text-slate-500">
                           Tell us your exact hotel during checkout — hotels outside
                           this zone may have a small extra transport fee we&apos;ll
                           quote before you confirm.
@@ -330,10 +330,10 @@ export default async function TourDetailPage({ params }: Props) {
               {/* Kid policy */}
               {tour.child_policy_note ? (
                 <div className="rounded-2xl bg-blue-500/5 border border-blue-500/20 p-5">
-                  <h3 className="font-bold text-blue-300 mb-1">
+                  <h3 className="font-bold text-blue-800 mb-1">
                     Traveling with kids
                   </h3>
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm text-slate-600">
                     {tour.child_policy_note}
                   </p>
                 </div>
@@ -367,7 +367,7 @@ export default async function TourDetailPage({ params }: Props) {
         {related.length > 0 ? (
           <section className="px-4 pb-20">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-2xl font-bold text-white mb-6">
+              <h2 className="text-2xl font-bold text-blue-900 mb-6">
                 You might also like
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -375,7 +375,7 @@ export default async function TourDetailPage({ params }: Props) {
                   <Link
                     key={t.id}
                     href={`/tours/${t.slug}`}
-                    className="group rounded-2xl bg-gray-900/40 border border-white/10 hover:border-amber-500/40 overflow-hidden transition-all"
+                    className="group rounded-2xl bg-white/40 border border-slate-200 hover:border-orange-300 overflow-hidden transition-all"
                   >
                     <div className="relative w-full h-40 bg-gradient-to-br from-amber-900 to-amber-600">
                       {t.hero_image ? (
@@ -389,15 +389,15 @@ export default async function TourDetailPage({ params }: Props) {
                       ) : null}
                     </div>
                     <div className="p-4">
-                      <h3 className="text-base font-bold text-white mb-2 leading-tight">
+                      <h3 className="text-base font-bold text-blue-900 mb-2 leading-tight">
                         {t.name}
                       </h3>
-                      <div className="flex items-center justify-between text-xs text-gray-400">
+                      <div className="flex items-center justify-between text-xs text-slate-500">
                         <span className="inline-flex items-center gap-1">
-                          <Clock size={11} className="text-amber-400" />
+                          <Clock size={11} className="text-orange-600" />
                           {t.duration_label}
                         </span>
-                        <span className="text-amber-400 font-bold text-base">
+                        <span className="text-orange-600 font-bold text-base">
                           <Price usd={Math.floor(Number(t.adult_price))} />
                         </span>
                       </div>

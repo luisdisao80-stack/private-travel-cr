@@ -53,21 +53,21 @@ export default async function ReviewsPage() {
       <Navbar />
       <ReviewSchema googleReviews={google.reviews} />
 
-      <main className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-black pt-28 pb-20">
+      <main className="min-h-screen bg-white pt-28 pb-20">
         {/* Hero — aggregate score */}
         <section className="max-w-5xl mx-auto px-4 mb-16">
           <div className="text-center mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold tracking-[0.18em] uppercase mb-5">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 text-orange-600 text-xs font-bold tracking-[0.18em] uppercase mb-5">
               <Star size={12} className="fill-amber-400" />
               Trusted by travelers
             </span>
-            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight leading-[1.05] mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold text-blue-900 tracking-tight leading-[1.05] mb-4">
               What travelers say about{" "}
-              <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
+              <span className="text-orange-600">
                 Private Travel CR
               </span>
             </h1>
-            <p className="max-w-2xl mx-auto text-gray-400 text-base md:text-lg leading-relaxed">
+            <p className="max-w-2xl mx-auto text-slate-500 text-base md:text-lg leading-relaxed">
               Real reviews from real customers across Google, TripAdvisor, and Reddit — quoted in full, with links back to the original sources.
             </p>
           </div>
@@ -79,7 +79,7 @@ export default async function ReviewsPage() {
               href={reviewStats.google.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 text-center hover:border-amber-500/50 transition-all hover:shadow-xl hover:shadow-amber-500/10"
+              className="group bg-white border border-slate-200 rounded-2xl p-6 text-center hover:border-orange-300 transition-all hover:shadow-xl hover:shadow-orange-600/10"
             >
               <GoogleGLogo size={36} className="mx-auto mb-3" />
               <div className="flex items-center justify-center gap-1 mb-2">
@@ -87,11 +87,11 @@ export default async function ReviewsPage() {
                   <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <div className="text-3xl font-bold text-white">{liveRating.toFixed(1)}</div>
-              <div className="text-sm text-gray-400 mt-1">
+              <div className="text-3xl font-bold text-blue-900">{liveRating.toFixed(1)}</div>
+              <div className="text-sm text-slate-500 mt-1">
                 {liveCount}+ Google reviews
               </div>
-              <div className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-amber-400 group-hover:gap-2 transition-all">
+              <div className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-orange-600 group-hover:gap-2 transition-all">
                 Read on Google
                 <ExternalLink size={11} />
               </div>
@@ -102,7 +102,7 @@ export default async function ReviewsPage() {
               href="https://www.tripadvisor.com/Attraction_Review-g309226-d25394648-Reviews-Private_Travel_Costa_Rica-La_Fortuna_de_San_Carlos_Arenal_Volcano_National_Park_.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 text-center hover:border-amber-500/50 transition-all hover:shadow-xl hover:shadow-amber-500/10"
+              className="group bg-white border border-slate-200 rounded-2xl p-6 text-center hover:border-orange-300 transition-all hover:shadow-xl hover:shadow-orange-600/10"
             >
               <div className="flex items-center justify-center mb-3 h-9">
                 <Award size={36} className="text-emerald-400" />
@@ -112,9 +112,9 @@ export default async function ReviewsPage() {
                   <Star key={i} size={16} className="fill-emerald-400 text-emerald-400" />
                 ))}
               </div>
-              <div className="text-xl font-bold text-white">Travellers&apos; Choice</div>
-              <div className="text-sm text-gray-400 mt-1">TripAdvisor 2025</div>
-              <div className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-amber-400 group-hover:gap-2 transition-all">
+              <div className="text-xl font-bold text-blue-900">Travellers&apos; Choice</div>
+              <div className="text-sm text-slate-500 mt-1">TripAdvisor 2025</div>
+              <div className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-orange-600 group-hover:gap-2 transition-all">
                 Read on TripAdvisor
                 <ExternalLink size={11} />
               </div>
@@ -125,7 +125,7 @@ export default async function ReviewsPage() {
               href="https://www.reddit.com/r/CostaRicaTravel/comments/1cexxjl/amazing_private_transportation/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 text-center hover:border-amber-500/50 transition-all hover:shadow-xl hover:shadow-amber-500/10"
+              className="group bg-white border border-slate-200 rounded-2xl p-6 text-center hover:border-orange-300 transition-all hover:shadow-xl hover:shadow-orange-600/10"
             >
               <div className="flex items-center justify-center mb-3 h-9">
                 <span
@@ -138,9 +138,9 @@ export default async function ReviewsPage() {
                   <Star key={i} size={16} className="fill-orange-400 text-orange-400" />
                 ))}
               </div>
-              <div className="text-xl font-bold text-white">Recommended</div>
-              <div className="text-sm text-gray-400 mt-1">r/CostaRicaTravel threads</div>
-              <div className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-amber-400 group-hover:gap-2 transition-all">
+              <div className="text-xl font-bold text-blue-900">Recommended</div>
+              <div className="text-sm text-slate-500 mt-1">r/CostaRicaTravel threads</div>
+              <div className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-orange-600 group-hover:gap-2 transition-all">
                 Read on Reddit
                 <ExternalLink size={11} />
               </div>
@@ -151,10 +151,10 @@ export default async function ReviewsPage() {
         {/* Curated written reviews — TripAdvisor + Google quoted in full */}
         <section className="max-w-5xl mx-auto px-4 mb-20">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight mb-3">
+            <h2 className="text-2xl md:text-4xl font-bold text-blue-900 tracking-tight leading-tight mb-3">
               Written reviews from Google &amp; TripAdvisor
             </h2>
-            <p className="text-gray-400 text-sm md:text-base">
+            <p className="text-slate-500 text-sm md:text-base">
               Quoted verbatim with the original reviewer&apos;s name and date.
             </p>
           </div>
@@ -163,7 +163,7 @@ export default async function ReviewsPage() {
             {curatedReviews.map((r) => (
               <article
                 key={r.id}
-                className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl p-6 md:p-7"
+                className="bg-white border border-slate-200 rounded-2xl p-6 md:p-7"
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-1">
@@ -171,19 +171,19 @@ export default async function ReviewsPage() {
                       <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold tracking-wider uppercase text-gray-400">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-[10px] font-bold tracking-wider uppercase text-slate-500">
                     {r.source === "google" ? "Google" : "TripAdvisor"}
                   </span>
                 </div>
-                <h3 className="text-base md:text-lg font-bold text-white leading-snug mb-2">
+                <h3 className="text-base md:text-lg font-bold text-blue-900 leading-snug mb-2">
                   {r.title}
                 </h3>
-                <p className="text-sm text-gray-300 leading-relaxed mb-4">
+                <p className="text-sm text-slate-600 leading-relaxed mb-4">
                   &ldquo;{r.body}&rdquo;
                 </p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/5 text-xs text-gray-500">
+                <div className="flex items-center justify-between pt-4 border-t border-slate-200 text-xs text-slate-500">
                   <span>
-                    <span className="text-gray-300 font-semibold">{r.author}</span>
+                    <span className="text-slate-600 font-semibold">{r.author}</span>
                     {r.location ? ` · ${r.location}` : ""}
                   </span>
                   <span>{r.date}</span>
@@ -198,17 +198,17 @@ export default async function ReviewsPage() {
 
         {/* Ready to book CTA */}
         <section className="max-w-3xl mx-auto px-4 mt-16">
-          <div className="bg-gradient-to-br from-amber-500/20 to-amber-500/5 border border-amber-500/40 rounded-3xl p-8 md:p-10 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+          <div className="bg-gradient-to-br from-orange-100 to-amber-500/5 border border-orange-300 rounded-3xl p-8 md:p-10 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-blue-900 mb-3">
               Ready to join them?
             </h2>
-            <p className="text-gray-300 mb-6 max-w-xl mx-auto">
+            <p className="text-slate-600 mb-6 max-w-xl mx-auto">
               Browse 1,200+ private shuttle routes across Costa Rica or get a custom quote on WhatsApp.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/routes"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition-colors shadow-2xl shadow-amber-500/30"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm transition-colors shadow-2xl shadow-orange-600/25"
               >
                 Browse routes
               </Link>

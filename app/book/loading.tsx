@@ -9,9 +9,9 @@ export default function Loading() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-black flex items-center justify-center pt-24">
-        <div className="flex flex-col items-center gap-4 text-gray-400">
-          <Loader2 size={32} className="text-amber-400 animate-spin" />
+      <main className="min-h-screen bg-white flex items-center justify-center pt-24">
+        <div className="flex flex-col items-center gap-4 text-slate-500">
+          <Loader2 size={32} className="text-orange-600 animate-spin" />
           <p className="text-sm">Loading your route…</p>
         </div>
       </main>

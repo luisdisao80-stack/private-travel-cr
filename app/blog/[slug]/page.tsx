@@ -225,12 +225,12 @@ export default async function BlogPostPage({
         </>
       )}
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
+      <main className="min-h-screen bg-slate-50 pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-4">
           {/* Back link */}
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-amber-400 text-sm hover:text-amber-300 mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-orange-600 text-sm hover:text-orange-700 mb-8 transition-colors"
           >
             <ArrowLeft size={16} />
             Back to blog
@@ -239,20 +239,20 @@ export default async function BlogPostPage({
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className="text-xs text-amber-400 bg-amber-500/10 px-3 py-1 rounded uppercase tracking-wider font-medium">
+              <span className="text-xs text-orange-600 bg-orange-50 px-3 py-1 rounded uppercase tracking-wider font-medium">
                 {post.category}
               </span>
-              <span className="flex items-center gap-1 text-xs text-gray-500">
+              <span className="flex items-center gap-1 text-xs text-slate-500">
                 <Clock size={12} />
                 {post.readTime} min read
               </span>
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight leading-tight">
+            <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4 tracking-tight leading-tight">
               {post.title}
             </h1>
 
-            <p className="text-sm text-gray-500 flex items-center gap-1">
+            <p className="text-sm text-slate-500 flex items-center gap-1">
               <Calendar size={12} />
               {new Date(post.date).toLocaleDateString("en-US", {
                 year: "numeric",
@@ -292,11 +292,11 @@ export default async function BlogPostPage({
           <AuthorBox />
 
           {/* CTA */}
-          <div className="mt-12 p-6 md:p-8 bg-amber-500/5 border border-amber-500/30 rounded-2xl text-center">
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+          <div className="mt-12 p-6 md:p-8 bg-orange-50 border border-slate-200 rounded-2xl text-center">
+            <h3 className="text-xl md:text-2xl font-bold text-blue-900 mb-2">
               Need a private shuttle in Costa Rica?
             </h3>
-            <p className="text-gray-400 text-sm md:text-base mb-4">
+            <p className="text-slate-500 text-sm md:text-base mb-4">
               Door-to-door{" "}
               {/* Contextual internal link on every blog post → the money
                   page. Exact-keyword anchor reinforces ranking. For posts
@@ -306,7 +306,7 @@ export default async function BlogPostPage({
                   GSC (2026-07) showed the generic queries stuck at ~pos 10. */}
               <Link
                 href={routeCta.href}
-                className="text-amber-400 font-semibold underline-offset-4 hover:underline"
+                className="text-orange-600 font-semibold underline-offset-4 hover:underline"
               >
                 {routeCta.anchor}
               </Link>{" "}
@@ -314,7 +314,7 @@ export default async function BlogPostPage({
             </p>
             <Link
               href="/book"
-              className="inline-block bg-amber-500 hover:bg-amber-600 text-black font-bold px-8 py-3 rounded-lg transition-colors"
+              className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-3 rounded-lg transition-colors"
             >
               Get a Quote
             </Link>

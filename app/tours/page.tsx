@@ -56,32 +56,32 @@ export default async function ToursPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950">
+      <main className="min-h-screen bg-slate-50">
         {/* Hero */}
         <section className="pt-32 pb-12 px-4">
           <div className="max-w-5xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-              <MapPin size={14} className="text-amber-400" />
-              <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+              <MapPin size={14} className="text-orange-600" />
+              <span className="text-xs font-semibold text-orange-600 uppercase tracking-wider">
                 La Fortuna · Arenal
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
-              The 10 best tours in <span className="text-amber-400">La Fortuna</span>, Costa Rica (2026)
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-900 mb-4 tracking-tight">
+              The 10 best tours in <span className="text-orange-600">La Fortuna</span>, Costa Rica (2026)
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
               Volcano hikes, hanging bridges, waterfall swims, wildlife floats, and
               the legendary Río Celeste — all bookable online in 2 minutes. From
               $77/adult. Free hotel pickup, bilingual guides, taxes included.
             </p>
-            <p className="mt-4 text-sm text-gray-500 max-w-2xl mx-auto">
+            <p className="mt-4 text-sm text-slate-500 max-w-2xl mx-auto">
               Listed prices are for shared small-group departures. Want it
               private for your group?{" "}
               <a
                 href="https://wa.me/50688271225"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-400 hover:text-amber-300 underline underline-offset-2"
+                className="text-orange-600 hover:text-orange-700 underline underline-offset-2"
               >
                 Message us on WhatsApp
               </a>{" "}
@@ -98,7 +98,7 @@ export default async function ToursPage() {
               if (!items || items.length === 0) return null;
               return (
                 <div key={cat}>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 pb-3 border-b border-amber-500/20">
+                  <h2 className="text-2xl md:text-3xl font-bold text-blue-900 mb-6 pb-3 border-b border-slate-200">
                     {CATEGORY_LABELS[cat] || cat}
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -114,17 +114,17 @@ export default async function ToursPage() {
 
         {/* CTA */}
         <section className="pb-20 px-4">
-          <div className="max-w-3xl mx-auto rounded-2xl bg-amber-500/5 border border-amber-500/30 p-8 md:p-10 text-center">
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+          <div className="max-w-3xl mx-auto rounded-2xl bg-orange-50 border border-slate-200 p-8 md:p-10 text-center">
+            <h3 className="text-2xl md:text-3xl font-bold text-blue-900 mb-3">
               Need a shuttle too?
             </h3>
-            <p className="text-gray-400 mb-5">
+            <p className="text-slate-500 mb-5">
               We pick you up from any airport, hotel, or beach town in Costa Rica.
               Book a shuttle + tour together and save time on coordination.
             </p>
             <Link
               href="/routes"
-              className="inline-block bg-amber-500 hover:bg-amber-600 text-black font-bold px-8 py-3 rounded-lg transition-colors"
+              className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-3 rounded-lg transition-colors"
             >
               See Shuttle Routes
             </Link>
@@ -141,7 +141,7 @@ function TourCard({ tour }: { tour: Awaited<ReturnType<typeof getAllTours>>[numb
   return (
     <Link
       href={`/tours/${tour.slug}`}
-      className="group rounded-2xl bg-gray-900/40 border border-white/10 hover:border-amber-500/40 overflow-hidden transition-all hover:-translate-y-1"
+      className="group rounded-2xl bg-white/40 border border-slate-200 hover:border-orange-300 overflow-hidden transition-all hover:-translate-y-1"
     >
       <div className="relative w-full h-48 bg-gradient-to-br from-amber-900 to-amber-600 overflow-hidden">
         {tour.hero_image ? (
@@ -154,43 +154,43 @@ function TourCard({ tour }: { tour: Awaited<ReturnType<typeof getAllTours>>[numb
           />
         ) : null}
         {tour.is_featured ? (
-          <span className="absolute top-3 left-3 inline-block px-2.5 py-1 rounded-full bg-amber-500 text-black text-[10px] font-bold uppercase tracking-wider">
+          <span className="absolute top-3 left-3 inline-block px-2.5 py-1 rounded-full bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider">
             Most popular
           </span>
         ) : null}
       </div>
       <div className="p-5">
-        <h3 className="text-lg font-bold text-white mb-2 leading-tight group-hover:text-amber-400 transition-colors">
+        <h3 className="text-lg font-bold text-blue-900 mb-2 leading-tight group-hover:text-orange-600 transition-colors">
           {tour.name}
         </h3>
         {tour.short_description ? (
-          <p className="text-sm text-gray-400 leading-relaxed mb-4 line-clamp-3">
+          <p className="text-sm text-slate-500 leading-relaxed mb-4 line-clamp-3">
             {tour.short_description}
           </p>
         ) : null}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 mb-4">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 mb-4">
           <span className="inline-flex items-center gap-1">
-            <Clock size={12} className="text-amber-400" />
+            <Clock size={12} className="text-orange-600" />
             {tour.duration_label}
           </span>
           {tour.min_age ? (
             <span className="inline-flex items-center gap-1">
-              <Users size={12} className="text-amber-400" />
+              <Users size={12} className="text-orange-600" />
               {tour.min_age}+ yrs
             </span>
           ) : null}
         </div>
-        <div className="flex items-end justify-between pt-3 border-t border-white/5">
+        <div className="flex items-end justify-between pt-3 border-t border-slate-200">
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-gray-500">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">
               From
             </div>
-            <div className="text-2xl font-bold text-amber-400 leading-tight">
+            <div className="text-2xl font-bold text-orange-600 leading-tight">
               <Price usd={Math.floor(Number(tour.adult_price))} />
             </div>
-            <div className="text-[10px] text-green-400 mt-0.5">Taxes included</div>
+            <div className="text-[10px] text-green-700 mt-0.5">Taxes included</div>
           </div>
-          <span className="text-amber-400 text-sm font-semibold">View →</span>
+          <span className="text-orange-600 text-sm font-semibold">View →</span>
         </div>
       </div>
     </Link>

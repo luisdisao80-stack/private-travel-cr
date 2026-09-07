@@ -46,30 +46,30 @@ export default function PrivacyPolicyPage() {
   const business = siteConfig.business;
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-white text-slate-600">
       <Navbar />
       <section className="pt-28 pb-20 px-4">
         <div className="max-w-3xl mx-auto">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm text-amber-400 hover:text-amber-300 mb-6"
+            className="inline-flex items-center gap-1.5 text-sm text-orange-600 hover:text-orange-700 mb-6"
           >
             <ArrowLeft size={14} />
             Back to Home
           </Link>
 
           <div className="flex items-center gap-3 mb-2">
-            <Shield className="text-amber-400" size={28} />
+            <Shield className="text-orange-600" size={28} />
             <h1 className="text-3xl md:text-4xl font-bold">Privacy Policy</h1>
           </div>
-          <p className="text-xs text-gray-500 mb-10">Last updated: {LAST_UPDATED}</p>
+          <p className="text-xs text-slate-500 mb-10">Last updated: {LAST_UPDATED}</p>
 
-          <div className="space-y-8 text-gray-300 leading-relaxed">
+          <div className="space-y-8 text-slate-600 leading-relaxed">
             <section>
               <p>
                 {siteConfig.name} (&quot;we&quot;, &quot;us&quot;) respects your privacy. This policy explains
                 what personal information we collect when you visit{" "}
-                <Link href="/" className="text-amber-400 hover:text-amber-300">
+                <Link href="/" className="text-orange-600 hover:text-orange-700">
                   {siteConfig.siteUrl}
                 </Link>{" "}
                 or book one of our private shuttle services, why we collect it, how we use it, and
@@ -78,7 +78,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">1. Information we collect</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">1. Information we collect</h2>
               <p className="mb-2">When you book a trip we ask for:</p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Full name, email address, phone number (with country code)</li>
@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">2. How we use it</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">2. How we use it</h2>
               <ul className="list-disc pl-6 space-y-1">
                 <li>To provide the shuttle service you booked (assign a driver, coordinate pickup).</li>
                 <li>To send booking confirmations, pickup reminders, and post-trip follow-ups by email and WhatsApp.</li>
@@ -116,7 +116,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">3. Who we share it with</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">3. Who we share it with</h2>
               <p className="mb-2">
                 We do not sell your personal data. We share it only with the service providers that
                 make the booking possible:
@@ -136,7 +136,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">4. Cookies and tracking</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">4. Cookies and tracking</h2>
               <p className="mb-2">We use two kinds of cookies / similar storage:</p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>
@@ -152,13 +152,13 @@ export default function PrivacyPolicyPage() {
               </ul>
               <p className="mt-3">
                 You can decline analytics cookies from the banner that appears on your first visit,
-                or by clearing the <code className="text-amber-300">ptcr_cookie_consent</code> key
+                or by clearing the <code className="text-orange-600">ptcr_cookie_consent</code> key
                 in localStorage and reloading.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">5. How long we keep it</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">5. How long we keep it</h2>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Booking records: <strong>7 years</strong> (Costa Rican tax requirement).</li>
                 <li>Analytics data: <strong>14 months</strong> (Google Analytics default).</li>
@@ -167,7 +167,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">6. Your rights</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">6. Your rights</h2>
               <p className="mb-2">
                 Wherever you live, you can ask us to:
               </p>
@@ -182,12 +182,12 @@ export default function PrivacyPolicyPage() {
                 the right to lodge a complaint with your local data-protection authority.
               </p>
               <p className="mt-3">
-                To exercise any of these, write to <a className="text-amber-400 hover:text-amber-300" href={`mailto:${business.email}`}>{business.email}</a> from the same email address you used to book. We respond within 30 days.
+                To exercise any of these, write to <a className="text-orange-600 hover:text-orange-700" href={`mailto:${business.email}`}>{business.email}</a> from the same email address you used to book. We respond within 30 days.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">7. Children</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">7. Children</h2>
               <p>
                 Our services are intended for adults booking on behalf of themselves or their
                 travel group, which may include children. We do not knowingly collect personal data
@@ -197,7 +197,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">8. International transfers</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">8. International transfers</h2>
               <p>
                 Some of our service providers (Supabase, Resend, Vercel, Google) process data in the
                 United States. By using the site, you consent to your personal data being processed
@@ -207,7 +207,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">9. Changes to this policy</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">9. Changes to this policy</h2>
               <p>
                 We may update this policy occasionally. When we do, we&apos;ll change the
                 &quot;Last updated&quot; date at the top. Material changes will be flagged via
@@ -216,16 +216,16 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-white mb-3">10. Contact</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">10. Contact</h2>
               <p>
                 Questions about this policy or your data?{" "}
-                <a className="text-amber-400 hover:text-amber-300" href={`mailto:${business.email}`}>{business.email}</a>{" "}
+                <a className="text-orange-600 hover:text-orange-700" href={`mailto:${business.email}`}>{business.email}</a>{" "}
                 or WhatsApp{" "}
-                <a className="text-amber-400 hover:text-amber-300" href={business.whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <a className="text-orange-600 hover:text-orange-700" href={business.whatsappUrl} target="_blank" rel="noopener noreferrer">
                   {business.phone}
                 </a>.
               </p>
-              <p className="mt-3 text-sm text-gray-400">
+              <p className="mt-3 text-sm text-slate-500">
                 {siteConfig.name} · {business.address.city}, {business.address.region}, {business.address.countryName}
               </p>
             </section>

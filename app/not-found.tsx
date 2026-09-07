@@ -26,18 +26,18 @@ const RESCUE_LINKS = [
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col">
+    <main className="min-h-screen bg-white text-slate-600 flex flex-col">
       <Navbar />
 
       <section className="flex-1 flex items-center justify-center px-4 pt-32 pb-24">
         <div className="max-w-xl mx-auto text-center">
-          <div className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent mb-4">
+          <div className="text-7xl md:text-8xl font-bold text-orange-600 mb-4">
             404
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-3">
+          <h1 className="text-2xl md:text-3xl font-bold text-blue-900 mb-3">
             This page took a wrong turn
           </h1>
-          <p className="text-white/70 mb-10 leading-relaxed">
+          <p className="text-slate-600 mb-10 leading-relaxed">
             The page you&apos;re looking for doesn&apos;t exist or has moved.
             Let&apos;s get you back on the road — here are the most useful
             places to go next.
@@ -48,9 +48,9 @@ export default function NotFound() {
               <Link
                 key={label}
                 href={href}
-                className="flex items-center justify-center gap-2 px-4 py-4 rounded-xl border border-amber-500/20 bg-zinc-950/50 hover:border-amber-500/50 hover:bg-amber-500/5 transition-colors font-semibold text-sm"
+                className="flex items-center justify-center gap-2 px-4 py-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:border-orange-300 hover:bg-orange-50 transition-colors font-semibold text-sm"
               >
-                <Icon className="w-4 h-4 text-amber-400" />
+                <Icon className="w-4 h-4 text-orange-600" />
                 {label}
               </Link>
             ))}
@@ -60,7 +60,7 @@ export default function NotFound() {
             href={siteConfig.business.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-amber-400 text-black font-bold hover:bg-amber-300 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-orange-600 text-white font-bold hover:bg-orange-700 transition-colors"
           >
             <MessageCircle className="w-5 h-5" />
             WhatsApp Diego directly
