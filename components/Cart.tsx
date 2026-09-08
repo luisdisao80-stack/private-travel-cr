@@ -14,6 +14,7 @@ import {
   ShoppingCart,
   ArrowRight,
   Plane,
+  Route,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/CartContext";
@@ -317,6 +318,18 @@ export default function Cart() {
                               </span>
                             )}
                           </div>
+                          {/* Travel time (Diego 2026-09-07): la duración ya
+                              venía en cada item del carrito (sale en el
+                              email y el PDF) pero el drawer no la mostraba. */}
+                          {item.duration && (
+                            <div className="flex items-center gap-1.5">
+                              <Route size={12} className="text-orange-600/70" />
+                              <span>
+                                {lang === "es" ? "Tiempo de viaje: " : "Travel time: "}
+                                <span className="font-medium text-slate-600">{item.duration}</span>
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Pickup / Dropoff with vehicle photo */}
