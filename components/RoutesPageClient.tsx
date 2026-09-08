@@ -134,7 +134,11 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
           the section's bottom edge. overflow-hidden was clipping the third
           suggestion in half. NextImage `fill` + object-cover keeps the bg
           contained without needing overflow-hidden on the section. */}
-      <section className="relative w-full">
+      {/* `isolate`: la foto usa -z-[1] y, sin un stacking context propio, se
+          pintaba detrás del bg-white del <main> — el hero salía gris en vez
+          de mostrar la foto de portada (mismo bug que ya corregimos en /book,
+          reportado por Diego 2026-09-07). */}
+      <section className="relative isolate w-full">
         {/* eslint-disable-next-line jsx-a11y/alt-text */}
         {/* 50 y no 65: la foto de origen subió a 3840 px, y con sizes=100vw
             una pantalla retina pide justo ese tamaño. A 65 serían ~500 KB
@@ -148,8 +152,9 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
           quality={50}
           className="object-cover object-center -z-[1]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />
+        {/* Degradado más suave (antes /80-/70-/100) para que la foto de la
+            van con el Arenal se vea de verdad, como en /book. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/60 z-[1]" />
 
         <div className="relative z-10 container mx-auto px-4 pt-24 pb-6 md:pt-24 md:pb-8">
           <div className="max-w-5xl mx-auto text-center">
@@ -192,7 +197,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible"
+              className="bg-white border-2 border-orange-500 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible"
             >
               <h2 className="text-xl md:text-2xl font-bold text-blue-900 mb-5">
                 {lang === "en" ? "Where are you headed?" : "¿A dónde vas?"}
