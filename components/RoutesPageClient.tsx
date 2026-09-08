@@ -503,7 +503,9 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-slate-200"
+                // Marco naranja: pedido de Diego 2026-09-07, igual que el
+                // cuadro de búsqueda y la tarjeta de confianza del home.
+                className="flex items-center gap-3 p-4 rounded-2xl bg-white border-2 border-orange-500"
               >
                 <div
                   style={{ width: "44px", height: "44px" }}

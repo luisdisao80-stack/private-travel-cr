@@ -306,16 +306,18 @@ export default function LocationInput({
         >
           {suggestions.map((s, idx) => {
             // Highlighted row = current keyboard target. Rendered with
-            // an amber background so the visitor can see at a glance
+            // a green background so the visitor can see at a glance
             // which suggestion Enter is about to commit. Hover still
-            // works — mouseenter updates highlightIndex so the amber
+            // works — mouseenter updates highlightIndex so the green
             // follows the pointer, keeping mouse + keyboard in sync.
+            // Verde y no naranja: pedido de Diego 2026-09-07 — el
+            // naranja claro se veía "rosado" y no transmitía selección.
             const isActive = idx === highlightIndex;
             const rowClass =
               "w-full flex items-center gap-3 text-left px-4 py-3 transition-colors text-sm border-b border-slate-100 last:border-b-0 " +
               (isActive
-                ? "bg-orange-50 text-slate-900"
-                : "text-slate-700 hover:bg-orange-50/60");
+                ? "bg-green-100 text-slate-900"
+                : "text-slate-700 hover:bg-green-100/60");
 
             if (s.kind === "location") {
               const airport = isAirport(s.loc);
