@@ -219,7 +219,7 @@ export default function AboutPage() {
             <article
               itemScope
               itemType="https://schema.org/Person"
-              className="relative p-8 rounded-2xl border border-slate-200 bg-slate-50/50"
+              className="relative p-8 rounded-2xl border-2 border-orange-500 bg-white"
             >
               <div className="flex items-center gap-4 mb-5">
                 <div
@@ -249,7 +249,7 @@ export default function AboutPage() {
             <article
               itemScope
               itemType="https://schema.org/Person"
-              className="relative p-8 rounded-2xl border border-slate-200 bg-slate-50/50"
+              className="relative p-8 rounded-2xl border-2 border-orange-500 bg-white"
             >
               <div className="flex items-center gap-4 mb-5">
                 <div
@@ -310,7 +310,7 @@ export default function AboutPage() {
             ].map(({ icon: Icon, key }) => (
               <div
                 key={key}
-                className="p-5 rounded-xl border border-slate-200 bg-slate-50/50"
+                className="p-5 rounded-xl border-2 border-orange-500 bg-white"
               >
                 <div
                   style={{ width: "40px", height: "40px" }}
@@ -346,7 +346,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="relative p-8 rounded-2xl border border-slate-200 bg-slate-50/50">
+            <div className="relative p-8 rounded-2xl border-2 border-orange-500 bg-white">
               <div className="w-12 h-12 mb-6 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center">
                 <Heart className="w-6 h-6 text-orange-600" />
               </div>
@@ -356,7 +356,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="relative p-8 rounded-2xl border border-slate-200 bg-slate-50/50">
+            <div className="relative p-8 rounded-2xl border-2 border-orange-500 bg-white">
               <div className="w-12 h-12 mb-6 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center">
                 <Compass className="w-6 h-6 text-orange-600" />
               </div>
@@ -366,7 +366,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="relative p-8 rounded-2xl border border-slate-200 bg-slate-50/50">
+            <div className="relative p-8 rounded-2xl border-2 border-orange-500 bg-white">
               <div className="w-12 h-12 mb-6 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center">
                 <MapPin className="w-6 h-6 text-orange-600" />
               </div>
