@@ -105,7 +105,10 @@ export default function Footer() {
                  para que el srcset tenga una variante nitida en pantallas 3x. */
               width={292}
               height={128}
-              className="h-16 w-auto mb-4"
+              /* Caja negra detras del logo (pedido de Diego 2026-09-07):
+                 el arte dorado se pierde sobre el fondo claro del footer,
+                 igual que pasaba en el Navbar. */
+              className="h-16 w-auto mb-4 rounded-lg bg-black px-3 py-1.5"
               loading="lazy"
             />
             <p className="text-slate-500 text-sm leading-relaxed mb-4">
