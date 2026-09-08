@@ -177,7 +177,9 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-black/60 border border-white/10 hover:border-orange-400/40 backdrop-blur-sm transition-colors mb-6"
+              // Pill blanco y no negro (Diego 2026-09-07): mismo estilo
+              // que el del Hero de portada para el tema claro.
+              className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/95 border border-gray-200 hover:border-orange-400/40 backdrop-blur-sm transition-colors mb-6 shadow-lg shadow-black/20"
             >
               <GoogleGLogo size={20} className="shrink-0" />
               <div className="flex items-center gap-1">
@@ -185,8 +187,8 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
                   <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <span className="text-sm text-white">
-                <strong>{reviewStats.google.rating.toFixed(1)}</strong>{" "}
+              <span className="text-sm text-gray-600">
+                <strong className="text-blue-900">{reviewStats.google.rating.toFixed(1)}</strong>{" "}
                 {lang === "en" ? "on Google Reviews" : "en Google Reviews"}
               </span>
               <ExternalLink size={12} className="text-slate-400" />

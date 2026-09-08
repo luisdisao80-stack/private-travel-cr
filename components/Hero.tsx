@@ -325,7 +325,7 @@ export default function Hero({
             href={reviewStats.google.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-10 md:mb-12 shadow-2xl shadow-black/40"
+            className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-white/95 border border-gray-200 hover:border-amber-400 backdrop-blur-sm transition-colors mb-10 md:mb-12 shadow-2xl shadow-black/40"
           >
             <GoogleGLogo size={32} className="shrink-0" />
             <div className="flex flex-col items-start gap-1">
@@ -333,18 +333,18 @@ export default function Hero({
                 {[1, 2, 3, 4, 5].map((i) => (
                   <Star key={i} size={20} className="fill-amber-400 text-amber-400" />
                 ))}
-                <span className="ml-2 text-base md:text-lg font-bold text-white">
+                <span className="ml-2 text-base md:text-lg font-bold text-blue-900">
                   {(liveGoogleRating ?? reviewStats.google.rating).toFixed(1)}
                 </span>
               </div>
-              <span className="text-xs md:text-sm text-gray-300">
-                <strong className="text-white">
+              <span className="text-xs md:text-sm text-gray-600">
+                <strong className="text-blue-900">
                   {liveGoogleCount ?? reviewStats.google.count}+
                 </strong>{" "}
                 Google Reviews
               </span>
             </div>
-            <ExternalLink size={14} className="text-white/40" />
+            <ExternalLink size={14} className="text-gray-400" />
           </a>
 
           <div
