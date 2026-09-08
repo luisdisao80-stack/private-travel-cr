@@ -250,7 +250,7 @@ export default async function CostaRicaAirportTransfersPage() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-white text-slate-600">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -259,13 +259,13 @@ export default async function CostaRicaAirportTransfersPage() {
 
       {/* HERO */}
       <section className="relative pt-32 pb-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-orange-50 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-orange-50 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-amber-500/30 bg-amber-500/5">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-slate-200 bg-orange-50">
             <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+            <span className="text-xs font-semibold tracking-widest text-orange-600 uppercase">
               ⭐ {rating.toFixed(1)} · {reviewCount}+ Google Reviews
             </span>
           </div>
@@ -273,16 +273,16 @@ export default async function CostaRicaAirportTransfersPage() {
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 tracking-tight">
             Costa Rica
             <br />
-            <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-orange-600">
               Airport Transfers
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8">
             Private door-to-door transfers from{" "}
-            <strong className="text-white">SJO</strong> and{" "}
-            <strong className="text-white">LIR</strong> airports from{" "}
-            <strong className="text-white">$110 USD</strong>. Meet &amp; greet at
+            <strong className="text-slate-900">SJO</strong> and{" "}
+            <strong className="text-slate-900">LIR</strong> airports from{" "}
+            <strong className="text-slate-900">$110 USD</strong>. Meet &amp; greet at
             arrivals, flight tracking, and your own bilingual driver. One flat
             price per vehicle — not per person.
           </p>
@@ -290,7 +290,7 @@ export default async function CostaRicaAirportTransfersPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/book"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-amber-400 text-black font-bold text-base hover:bg-amber-300 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-orange-600 text-white font-bold text-base hover:bg-orange-700 transition-colors"
             >
               Get Instant Quote
               <ArrowRight className="w-5 h-5" />
@@ -299,7 +299,7 @@ export default async function CostaRicaAirportTransfersPage() {
               href={siteConfig.business.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/20 text-white font-bold text-base hover:bg-white/5 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-orange-600 text-orange-600 font-bold text-base hover:bg-orange-50 transition-colors"
             >
               <MessageCircle className="w-5 h-5" />
               WhatsApp Diego
@@ -309,12 +309,12 @@ export default async function CostaRicaAirportTransfersPage() {
       </section>
 
       {/* WHAT IS AN AIRPORT TRANSFER */}
-      <section className="px-4 py-16 border-t border-amber-500/10">
+      <section className="px-4 py-16 border-t border-slate-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-6 text-center">
             Private airport transfers in Costa Rica
           </h2>
-          <div className="prose prose-invert max-w-none text-white/80 leading-relaxed text-lg space-y-4">
+          <div className="prose prose-invert max-w-none text-slate-600 leading-relaxed text-lg space-y-4">
             <p>
               A Costa Rica airport transfer is a private, pre-booked ride from
               the airport straight to your hotel — no shared vans, no other
@@ -326,16 +326,16 @@ export default async function CostaRicaAirportTransfersPage() {
             </p>
             <p>
               We operate from both of Costa Rica&apos;s international airports:{" "}
-              <strong className="text-white">SJO</strong> (Juan Santamaría, San
-              José) and <strong className="text-white">LIR</strong> (Daniel
+              <strong className="text-slate-900">SJO</strong> (Juan Santamaría, San
+              José) and <strong className="text-slate-900">LIR</strong> (Daniel
               Oduber, Liberia). From SJO most travelers head to La Fortuna,
               Monteverde, Manuel Antonio, or San José; from LIR it&apos;s a short hop
               to the Guanacaste beaches like Tamarindo, Papagayo and Conchal.
             </p>
             <p>
-              Unlike a shared shuttle (about <strong className="text-amber-400">$55 per person</strong>{" "}
+              Unlike a shared shuttle (about <strong className="text-orange-600">$55 per person</strong>{" "}
               with multiple stops) or an airport taxi, a private transfer is
-              priced <strong className="text-amber-400">per vehicle</strong> — the
+              priced <strong className="text-orange-600">per vehicle</strong> — the
               same total cost whether you&apos;re 1 traveler or 5. For couples,
               families and groups it&apos;s usually the best value and always the
               fastest, most comfortable option.
@@ -345,29 +345,29 @@ export default async function CostaRicaAirportTransfersPage() {
       </section>
 
       {/* PRICES */}
-      <section className="px-4 py-16 border-t border-amber-500/10 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
+      <section className="px-4 py-16 border-t border-slate-200 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+            <span className="text-xs font-semibold tracking-widest text-orange-600 uppercase">
               2026 Rates · All Taxes Included
             </span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-white">
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-blue-900">
               Costa Rica airport transfer prices
             </h2>
-            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+            <p className="mt-4 text-slate-500 max-w-2xl mx-auto">
               Per vehicle, not per person. Same price for 1 or 5 passengers in a
               standard van. Larger vans for groups of 6+ are also available.
             </p>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-amber-500/20 bg-zinc-950/50">
+          <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50/50">
             <table className="w-full text-sm md:text-base">
               <thead>
-                <tr className="border-b border-amber-500/20 bg-amber-500/5">
-                  <th className="text-left p-4 text-amber-400 font-semibold">Airport</th>
-                  <th className="text-left p-4 text-amber-400 font-semibold">Destination</th>
-                  <th className="text-right p-4 text-amber-400 font-semibold">From (USD)</th>
-                  <th className="text-right p-4 text-amber-400 font-semibold hidden md:table-cell">
+                <tr className="border-b border-slate-200 bg-orange-50">
+                  <th className="text-left p-4 text-orange-600 font-semibold">Airport</th>
+                  <th className="text-left p-4 text-orange-600 font-semibold">Destination</th>
+                  <th className="text-right p-4 text-orange-600 font-semibold">From (USD)</th>
+                  <th className="text-right p-4 text-orange-600 font-semibold hidden md:table-cell">
                     Drive time
                   </th>
                 </tr>
@@ -376,21 +376,21 @@ export default async function CostaRicaAirportTransfersPage() {
                 {AIRPORT_ROUTES.map((r) => (
                   <tr
                     key={`${r.airport}-${r.to}`}
-                    className="border-b border-white/5 hover:bg-amber-500/5 transition-colors"
+                    className="border-b border-slate-200 hover:bg-orange-50 transition-colors"
                   >
-                    <td className="p-4 text-white/80">{r.airport}</td>
-                    <td className="p-4 text-white font-medium">
+                    <td className="p-4 text-slate-600">{r.airport}</td>
+                    <td className="p-4 text-slate-900 font-medium">
                       <Link
                         href={`/private-shuttle/${r.slug}`}
-                        className="hover:text-amber-400 transition-colors"
+                        className="hover:text-orange-600 transition-colors"
                       >
                         {r.to}
                       </Link>
                     </td>
-                    <td className="p-4 text-right text-amber-400 font-bold">
+                    <td className="p-4 text-right text-orange-600 font-bold">
                       ${r.price}
                     </td>
-                    <td className="p-4 text-right text-white/60 hidden md:table-cell">
+                    <td className="p-4 text-right text-slate-500 hidden md:table-cell">
                       {r.duration}
                     </td>
                   </tr>
@@ -399,9 +399,9 @@ export default async function CostaRicaAirportTransfersPage() {
             </table>
           </div>
 
-          <p className="mt-6 text-center text-sm text-white/60">
+          <p className="mt-6 text-center text-sm text-slate-500">
             Flying somewhere else?{" "}
-            <Link href="/routes" className="text-amber-400 hover:underline font-medium">
+            <Link href="/routes" className="text-orange-600 hover:underline font-medium">
               Browse all airport routes →
             </Link>
           </p>
@@ -409,44 +409,44 @@ export default async function CostaRicaAirportTransfersPage() {
       </section>
 
       {/* SJO vs LIR */}
-      <section className="px-4 py-16 border-t border-amber-500/10">
+      <section className="px-4 py-16 border-t border-slate-200">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center">
             Transfers from both Costa Rica airports
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-2xl border border-amber-500/20 bg-zinc-950/50">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50">
               <div className="flex items-center gap-2 mb-3">
-                <Plane className="w-5 h-5 text-amber-400" />
-                <h3 className="text-xl font-bold text-white">SJO — San José (Juan Santamaría)</h3>
+                <Plane className="w-5 h-5 text-orange-600" />
+                <h3 className="text-xl font-bold text-blue-900">SJO — San José (Juan Santamaría)</h3>
               </div>
-              <p className="text-white/70 leading-relaxed mb-4">
+              <p className="text-slate-600 leading-relaxed mb-4">
                 Costa Rica&apos;s main international gateway, in the Central Valley
                 near Alajuela. Best for La Fortuna/Arenal, Monteverde, Manuel
                 Antonio, the Caribbean coast, and San José city. Most transfers
                 to the top destinations take 3 to 4.5 hours.
               </p>
               <div className="flex flex-wrap gap-2">
-                <Link href="/private-shuttle/sjo-to-la-fortuna" className="text-xs px-3 py-1.5 rounded-full border border-amber-500/20 text-amber-400 hover:bg-amber-500/10 transition">SJO → La Fortuna</Link>
-                <Link href="/private-shuttle/sjo-to-manuel-antonio" className="text-xs px-3 py-1.5 rounded-full border border-amber-500/20 text-amber-400 hover:bg-amber-500/10 transition">SJO → Manuel Antonio</Link>
-                <Link href="/private-shuttle/sjo-to-monteverde" className="text-xs px-3 py-1.5 rounded-full border border-amber-500/20 text-amber-400 hover:bg-amber-500/10 transition">SJO → Monteverde</Link>
+                <Link href="/private-shuttle/sjo-to-la-fortuna" className="text-xs px-3 py-1.5 rounded-full border border-slate-200 text-orange-600 hover:bg-orange-50 transition">SJO → La Fortuna</Link>
+                <Link href="/private-shuttle/sjo-to-manuel-antonio" className="text-xs px-3 py-1.5 rounded-full border border-slate-200 text-orange-600 hover:bg-orange-50 transition">SJO → Manuel Antonio</Link>
+                <Link href="/private-shuttle/sjo-to-monteverde" className="text-xs px-3 py-1.5 rounded-full border border-slate-200 text-orange-600 hover:bg-orange-50 transition">SJO → Monteverde</Link>
               </div>
             </div>
-            <div className="p-6 rounded-2xl border border-amber-500/20 bg-zinc-950/50">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50">
               <div className="flex items-center gap-2 mb-3">
-                <Plane className="w-5 h-5 text-amber-400" />
-                <h3 className="text-xl font-bold text-white">LIR — Liberia (Daniel Oduber)</h3>
+                <Plane className="w-5 h-5 text-orange-600" />
+                <h3 className="text-xl font-bold text-blue-900">LIR — Liberia (Daniel Oduber)</h3>
               </div>
-              <p className="text-white/70 leading-relaxed mb-4">
+              <p className="text-slate-600 leading-relaxed mb-4">
                 The gateway to Guanacaste&apos;s Pacific beaches. If your trip is
                 focused on the northwest coast, flying into LIR saves hours of
                 driving — Tamarindo, Papagayo and Conchal are just 1 to 1.5 hours
                 away.
               </p>
               <div className="flex flex-wrap gap-2">
-                <Link href="/private-shuttle/lir-liberia-int-airport-to-tamarindo" className="text-xs px-3 py-1.5 rounded-full border border-amber-500/20 text-amber-400 hover:bg-amber-500/10 transition">LIR → Tamarindo</Link>
-                <Link href="/private-shuttle/lir-to-papagayo" className="text-xs px-3 py-1.5 rounded-full border border-amber-500/20 text-amber-400 hover:bg-amber-500/10 transition">LIR → Papagayo</Link>
-                <Link href="/private-shuttle/lir-to-la-fortuna" className="text-xs px-3 py-1.5 rounded-full border border-amber-500/20 text-amber-400 hover:bg-amber-500/10 transition">LIR → La Fortuna</Link>
+                <Link href="/private-shuttle/lir-liberia-int-airport-to-tamarindo" className="text-xs px-3 py-1.5 rounded-full border border-slate-200 text-orange-600 hover:bg-orange-50 transition">LIR → Tamarindo</Link>
+                <Link href="/private-shuttle/lir-to-papagayo" className="text-xs px-3 py-1.5 rounded-full border border-slate-200 text-orange-600 hover:bg-orange-50 transition">LIR → Papagayo</Link>
+                <Link href="/private-shuttle/lir-to-la-fortuna" className="text-xs px-3 py-1.5 rounded-full border border-slate-200 text-orange-600 hover:bg-orange-50 transition">LIR → La Fortuna</Link>
               </div>
             </div>
           </div>
@@ -454,16 +454,16 @@ export default async function CostaRicaAirportTransfersPage() {
       </section>
 
       {/* THE FLEET */}
-      <section className="px-4 py-16 border-t border-amber-500/10 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
+      <section className="px-4 py-16 border-t border-slate-200 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+            <span className="text-xs font-semibold tracking-widest text-orange-600 uppercase">
               Modern 2024+ Fleet · Air-Conditioned
             </span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-white">
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-blue-900">
               The vehicles for your airport transfer
             </h2>
-            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+            <p className="mt-4 text-slate-500 max-w-2xl mx-auto">
               Every transfer runs in a clean, modern, air-conditioned vehicle
               sized to your group — with plenty of luggage space for a full
               flight&apos;s worth of bags.
@@ -474,7 +474,7 @@ export default async function CostaRicaAirportTransfersPage() {
             {VEHICLES.map((v) => (
               <div
                 key={v.name}
-                className="rounded-2xl border border-amber-500/20 bg-zinc-950/50 overflow-hidden"
+                className="rounded-2xl border border-slate-200 bg-slate-50/50 overflow-hidden"
               >
                 <div className="relative h-48 bg-white p-4">
                   <img
@@ -485,31 +485,31 @@ export default async function CostaRicaAirportTransfersPage() {
                     loading="lazy"
                     className="w-full h-full object-contain"
                   />
-                  <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500 text-black text-xs font-bold tracking-wider shadow-lg">
+                  <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-orange-600 text-white text-xs font-bold tracking-wider shadow-lg">
                     {v.badge}
                   </div>
-                  <div className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-sm border border-white/10">
-                    <Users className="w-3.5 h-3.5 text-amber-400" />
+                  <div className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-sm border border-white/20">
+                    <Users className="w-3.5 h-3.5 text-orange-600" />
                     <span className="text-white text-sm font-medium">{v.pax}</span>
                   </div>
                 </div>
                 <div className="p-6">
-                  <div className="text-amber-400 text-xs tracking-widest font-medium mb-1">
+                  <div className="text-orange-600 text-xs tracking-widest font-medium mb-1">
                     {v.model}
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-3">{v.name}</h3>
+                  <h3 className="text-2xl font-bold text-blue-900 mb-3">{v.name}</h3>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-xs text-white/50 uppercase tracking-wider">
+                      <div className="text-xs text-slate-500 uppercase tracking-wider">
                         From
                       </div>
-                      <div className="text-2xl font-bold text-white">
+                      <div className="text-2xl font-bold text-blue-900">
                         ${v.priceFrom}
                       </div>
                     </div>
                     <Link
                       href="/fleet"
-                      className="text-amber-400 text-sm flex items-center gap-1 hover:gap-2 transition-all font-medium"
+                      className="text-orange-600 text-sm flex items-center gap-1 hover:gap-2 transition-all font-medium"
                     >
                       View details
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -520,13 +520,13 @@ export default async function CostaRicaAirportTransfersPage() {
             ))}
           </div>
 
-          <p className="mt-8 text-center text-sm text-white/60">
+          <p className="mt-8 text-center text-sm text-slate-500">
             Traveling with more than 12 passengers?{" "}
             <a
               href={siteConfig.business.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-400 hover:underline font-medium"
+              className="text-orange-600 hover:underline font-medium"
             >
               Message Diego on WhatsApp for a custom quote →
             </a>
@@ -535,21 +535,21 @@ export default async function CostaRicaAirportTransfersPage() {
       </section>
 
       {/* WHAT'S INCLUDED */}
-      <section className="px-4 py-16 border-t border-amber-500/10">
+      <section className="px-4 py-16 border-t border-slate-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-12 text-center">
             What&apos;s included in every airport transfer
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {INCLUDED_FEATURES.map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex items-start gap-3 p-5 rounded-xl border border-amber-500/10 bg-zinc-950/50"
+                className="flex items-start gap-3 p-5 rounded-xl border border-slate-200 bg-slate-50/50"
               >
-                <div className="rounded-lg bg-amber-500/10 border border-amber-500/30 p-2 shrink-0">
-                  <Icon className="w-5 h-5 text-amber-400" />
+                <div className="rounded-lg bg-orange-50 border border-slate-200 p-2 shrink-0">
+                  <Icon className="w-5 h-5 text-orange-600" />
                 </div>
-                <p className="text-white/80 leading-relaxed pt-0.5">{label}</p>
+                <p className="text-slate-600 leading-relaxed pt-0.5">{label}</p>
               </div>
             ))}
           </div>
@@ -557,44 +557,44 @@ export default async function CostaRicaAirportTransfersPage() {
       </section>
 
       {/* COMPARISON */}
-      <section className="px-4 py-16 border-t border-amber-500/10 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent">
+      <section className="px-4 py-16 border-t border-slate-200 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center">
             Airport transfer vs other options
           </h2>
 
           <div className="space-y-4">
-            <div className="p-6 rounded-2xl border border-amber-500/30 bg-amber-500/5">
-              <h3 className="text-xl font-bold text-amber-400 mb-2 flex items-center gap-2">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-orange-50">
+              <h3 className="text-xl font-bold text-orange-600 mb-2 flex items-center gap-2">
                 <Check className="w-5 h-5" /> Private airport transfer
               </h3>
-              <p className="text-white/80">
-                <strong className="text-white">Best for groups of 2+, families, first-time visitors.</strong>{" "}
+              <p className="text-slate-600">
+                <strong className="text-slate-900">Best for groups of 2+, families, first-time visitors.</strong>{" "}
                 Meet &amp; greet, direct door-to-door, flight tracking. From $110.
                 Same total price for 1 or 5 passengers.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl border border-white/10 bg-zinc-950/50">
-              <h3 className="text-xl font-bold text-white/90 mb-2">Shared shuttle</h3>
-              <p className="text-white/70">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50">
+              <h3 className="text-xl font-bold text-slate-700 mb-2">Shared shuttle</h3>
+              <p className="text-slate-600">
                 ~$55 per person. Shared van with multiple hotel stops — can add
                 1-2 hours to your trip. Good for solo travelers on a budget.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl border border-white/10 bg-zinc-950/50">
-              <h3 className="text-xl font-bold text-white/90 mb-2">Airport taxi</h3>
-              <p className="text-white/70">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50">
+              <h3 className="text-xl font-bold text-slate-700 mb-2">Airport taxi</h3>
+              <p className="text-slate-600">
                 Official red taxis are fine for short hops, but for long routes
                 they often cost more than a private transfer (SJO → La Fortuna
                 runs $250-300) with no flight tracking or fixed price.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl border border-white/10 bg-zinc-950/50">
-              <h3 className="text-xl font-bold text-white/90 mb-2">Rental car</h3>
-              <p className="text-white/70">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50">
+              <h3 className="text-xl font-bold text-slate-700 mb-2">Rental car</h3>
+              <p className="text-slate-600">
                 $450-700 all-in for a week after mandatory insurance. Best for
                 confident drivers, but jet-lagged arrival driving on unfamiliar
                 mountain roads is a lot to take on the first day.
@@ -602,11 +602,11 @@ export default async function CostaRicaAirportTransfersPage() {
             </div>
           </div>
 
-          <p className="mt-6 text-center text-sm text-white/60">
+          <p className="mt-6 text-center text-sm text-slate-500">
             Want a deeper comparison?{" "}
             <Link
               href="/blog/costa-rica-transportation-guide-2026"
-              className="text-amber-400 hover:underline font-medium"
+              className="text-orange-600 hover:underline font-medium"
             >
               Read our full Costa Rica transportation guide →
             </Link>
@@ -615,33 +615,33 @@ export default async function CostaRicaAirportTransfersPage() {
       </section>
 
       {/* TRUST */}
-      <section className="px-4 py-16 border-t border-amber-500/10">
+      <section className="px-4 py-16 border-t border-slate-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center">
             Why travelers choose Private Travel CR
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl border border-white/10 bg-zinc-950/50 text-center">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 text-center">
               <Star className="w-8 h-8 text-amber-400 fill-amber-400 mx-auto mb-3" />
-              <div className="text-3xl font-bold text-white mb-1">
+              <div className="text-3xl font-bold text-blue-900 mb-1">
                 {rating.toFixed(1)}/5
               </div>
-              <p className="text-white/60 text-sm">
+              <p className="text-slate-500 text-sm">
                 {reviewCount}+ Google reviews · TripAdvisor Travelers&apos; Choice 2025
               </p>
             </div>
-            <div className="p-6 rounded-2xl border border-white/10 bg-zinc-950/50 text-center">
-              <ShieldCheck className="w-8 h-8 text-amber-400 mx-auto mb-3" />
-              <div className="text-3xl font-bold text-white mb-1">ICT Licensed</div>
-              <p className="text-white/60 text-sm">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 text-center">
+              <ShieldCheck className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+              <div className="text-3xl font-bold text-blue-900 mb-1">ICT Licensed</div>
+              <p className="text-slate-500 text-sm">
                 License #3205-2022 · Insured through INS, Costa Rica&apos;s
                 national insurer
               </p>
             </div>
-            <div className="p-6 rounded-2xl border border-white/10 bg-zinc-950/50 text-center">
-              <Phone className="w-8 h-8 text-amber-400 mx-auto mb-3" />
-              <div className="text-3xl font-bold text-white mb-1">Diego replies</div>
-              <p className="text-white/60 text-sm">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 text-center">
+              <Phone className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+              <div className="text-3xl font-bold text-blue-900 mb-1">Diego replies</div>
+              <p className="text-slate-500 text-sm">
                 Founder-led — every WhatsApp answered personally by Diego,
                 20+ years in Costa Rica tourism
               </p>
@@ -651,24 +651,24 @@ export default async function CostaRicaAirportTransfersPage() {
       </section>
 
       {/* FAQ */}
-      <section className="px-4 py-16 border-t border-amber-500/10 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
+      <section className="px-4 py-16 border-t border-slate-200 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center">
             Costa Rica airport transfer FAQs
           </h2>
           <div className="space-y-4">
             {FAQS.map((f) => (
               <details
                 key={f.q}
-                className="group rounded-xl border border-amber-500/10 bg-zinc-950/50 overflow-hidden"
+                className="group rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden"
               >
-                <summary className="cursor-pointer list-none flex items-center justify-between p-5 hover:bg-amber-500/5 transition-colors">
-                  <h3 className="font-semibold text-white pr-4">{f.q}</h3>
-                  <span className="shrink-0 text-amber-400 transition-transform duration-300 group-open:rotate-45 text-xl leading-none">
+                <summary className="cursor-pointer list-none flex items-center justify-between p-5 hover:bg-orange-50 transition-colors">
+                  <h3 className="font-semibold text-slate-900 pr-4">{f.q}</h3>
+                  <span className="shrink-0 text-orange-600 transition-transform duration-300 group-open:rotate-45 text-xl leading-none">
                     +
                   </span>
                 </summary>
-                <div className="px-5 pb-5 text-white/70 leading-relaxed">{f.a}</div>
+                <div className="px-5 pb-5 text-slate-600 leading-relaxed">{f.a}</div>
               </details>
             ))}
           </div>
@@ -678,20 +678,20 @@ export default async function CostaRicaAirportTransfersPage() {
       {/* CTA */}
       <section className="px-4 py-20">
         <div className="max-w-3xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-zinc-950 to-zinc-950 p-8 md:p-12 text-center">
-            <div className="absolute -top-32 -right-32 w-96 h-96 bg-amber-500/20 rounded-full blur-[100px] pointer-events-none" />
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-orange-50 p-8 md:p-12 text-center">
+            <div className="absolute -top-32 -right-32 w-96 h-96 bg-orange-100 rounded-full blur-[100px] pointer-events-none" />
             <div className="relative">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
                 Ready to book your airport transfer?
               </h2>
-              <p className="text-lg text-white/70 max-w-xl mx-auto mb-8">
+              <p className="text-lg text-slate-600 max-w-xl mx-auto mb-8">
                 Instant quote in under a minute. Confirm with a card payment.
                 Driver waiting at arrivals when you land.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   href="/book"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-amber-400 text-black font-bold text-base hover:bg-amber-300 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-orange-600 text-white font-bold text-base hover:bg-orange-700 transition-colors"
                 >
                   Get Quote Now
                   <ArrowRight className="w-5 h-5" />
@@ -700,7 +700,7 @@ export default async function CostaRicaAirportTransfersPage() {
                   href={siteConfig.business.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/20 text-white font-bold text-base hover:bg-white/5 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-orange-600 text-orange-600 font-bold text-base hover:bg-orange-50 transition-colors"
                 >
                   <MessageCircle className="w-5 h-5" />
                   WhatsApp +506 8633-4133

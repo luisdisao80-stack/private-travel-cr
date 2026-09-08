@@ -32,25 +32,25 @@ export default function BlogHighlights({ posts }: Props) {
   return (
     <section
       id="blog-highlights"
-      className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
+      className="relative py-24 px-4 bg-white overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(245,158,11,0.08),transparent_70%)]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <div className="reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-5">
-            <BookOpen size={14} className="text-amber-400" />
-            <span className="text-xs font-bold tracking-[0.18em] uppercase text-amber-400">
+          <div className="reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-5">
+            <BookOpen size={14} className="text-orange-600" />
+            <span className="text-xs font-bold tracking-[0.18em] uppercase text-orange-600">
               {eyebrow}
             </span>
           </div>
 
-          <h2 className="reveal reveal-d2 text-3xl md:text-5xl font-bold text-white tracking-tight leading-[1.05] mb-4">
+          <h2 className="reveal reveal-d2 text-3xl md:text-5xl font-bold text-blue-900 tracking-tight leading-[1.05] mb-4">
             {heading}
           </h2>
 
-          <p className="reveal reveal-d3 max-w-2xl mx-auto text-gray-400 text-sm md:text-base leading-relaxed">
+          <p className="reveal reveal-d3 max-w-2xl mx-auto text-slate-500 text-sm md:text-base leading-relaxed">
             {subhead}
           </p>
         </div>
@@ -64,10 +64,10 @@ export default function BlogHighlights({ posts }: Props) {
             >
               <Link
                 href={`/blog/${post.slug}`}
-                className="block h-full bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all hover:shadow-2xl hover:shadow-amber-500/10"
+                className="block h-full bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-orange-300 transition-all hover:shadow-2xl hover:shadow-orange-600/10"
               >
                 {/* Image */}
-                <div className="relative w-full aspect-[16/10] overflow-hidden bg-black">
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100">
                   {post.image ? (
                     <NextImage
                       src={post.image}
@@ -80,7 +80,7 @@ export default function BlogHighlights({ posts }: Props) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   {/* Category pill */}
                   {post.category ? (
-                    <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-sm border border-amber-500/30 text-[10px] font-bold tracking-wider uppercase text-amber-300">
+                    <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 text-[10px] font-bold tracking-wider uppercase text-orange-400">
                       {post.category}
                     </span>
                   ) : null}
@@ -88,18 +88,18 @@ export default function BlogHighlights({ posts }: Props) {
 
                 {/* Body */}
                 <div className="p-5 md:p-6 flex flex-col gap-3">
-                  <h3 className="text-base md:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-amber-300 transition-colors">
+                  <h3 className="text-base md:text-lg font-bold text-blue-900 leading-snug line-clamp-2 group-hover:text-orange-700 transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed line-clamp-3">
+                  <p className="text-sm text-slate-500 leading-relaxed line-clamp-3">
                     {post.description}
                   </p>
-                  <div className="flex items-center justify-between pt-3 mt-auto border-t border-white/5">
-                    <span className="inline-flex items-center gap-1.5 text-xs text-gray-500">
+                  <div className="flex items-center justify-between pt-3 mt-auto border-t border-slate-200">
+                    <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
                       <Clock size={12} />
                       {post.readTime} {readTime}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 group-hover:gap-2 transition-all">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-orange-600 group-hover:gap-2 transition-all">
                       {readMore}
                       <ArrowRight size={12} />
                     </span>
@@ -114,7 +114,7 @@ export default function BlogHighlights({ posts }: Props) {
         <div className="reveal text-center mt-10 md:mt-12">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 hover:bg-amber-500/10 border border-white/10 hover:border-amber-500/40 text-white font-semibold text-sm transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-50 hover:bg-orange-50 border border-slate-200 hover:border-orange-300 text-slate-900 font-semibold text-sm transition-all"
           >
             {seeAll}
             <ArrowRight size={14} />

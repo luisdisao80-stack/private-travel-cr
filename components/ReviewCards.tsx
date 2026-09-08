@@ -41,7 +41,7 @@ function normalizeGoogle(g: GoogleReview): UnifiedReview {
 }
 
 const GoogleBadge = () => (
-  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-blue-300/80">
+  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-blue-700/80">
     <svg viewBox="0 0 24 24" className="w-3 h-3" aria-hidden="true">
       <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
       <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -53,7 +53,7 @@ const GoogleBadge = () => (
 );
 
 const TripAdvisorBadge = () => (
-  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-300/80">
+  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-600">
     <svg viewBox="0 0 24 24" className="w-3 h-3" aria-hidden="true">
       <circle cx="12" cy="12" r="11" fill="#34E0A1" />
       <circle cx="8.5" cy="13" r="2.5" fill="#000" />
@@ -94,12 +94,12 @@ export default function ReviewCards({ googleReviews = [] }: Props) {
         // was misleading anyway — read the body, click the button.
         <article
           key={r.id}
-          className="flex flex-col rounded-2xl bg-gradient-to-br from-gray-900/70 to-black/70 border border-white/10 p-6 backdrop-blur-sm"
+          className="flex flex-col rounded-2xl bg-white shadow-sm border border-slate-200 p-6 backdrop-blur-sm"
         >
           {/* Source + date */}
           <div className="flex items-center justify-between mb-3">
             {r.source === "google" ? <GoogleBadge /> : <TripAdvisorBadge />}
-            <span className="text-[10px] uppercase tracking-wider text-gray-500">
+            <span className="text-[10px] uppercase tracking-wider text-slate-500">
               {r.date}
             </span>
           </div>
@@ -117,7 +117,7 @@ export default function ReviewCards({ googleReviews = [] }: Props) {
 
           {/* Optional title (TripAdvisor has them, Google doesn't) */}
           {r.title ? (
-            <h3 className="text-base font-bold text-white mb-2 leading-snug line-clamp-2">
+            <h3 className="text-base font-bold text-blue-900 mb-2 leading-snug line-clamp-2">
               {r.title}
             </h3>
           ) : null}
@@ -126,7 +126,7 @@ export default function ReviewCards({ googleReviews = [] }: Props) {
           <ExpandableReviewBody text={r.body} />
 
           {/* Author */}
-          <div className="pt-3 border-t border-white/5 flex items-center gap-3">
+          <div className="pt-3 border-t border-slate-200 flex items-center gap-3">
             {r.authorPhoto ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -139,9 +139,9 @@ export default function ReviewCards({ googleReviews = [] }: Props) {
               />
             ) : null}
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-white truncate">{r.author}</p>
+              <p className="text-sm font-semibold text-slate-900 truncate">{r.author}</p>
               {r.location ? (
-                <p className="text-xs text-gray-500 truncate">{r.location}</p>
+                <p className="text-xs text-slate-500 truncate">{r.location}</p>
               ) : null}
             </div>
           </div>

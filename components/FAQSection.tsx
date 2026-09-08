@@ -25,27 +25,27 @@ export default function FAQSection() {
     <section
       id="faq"
       key={lang}
-      className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
+      className="relative py-24 px-4 bg-white overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.08),transparent_70%)]" />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Header */}
         <div className="reveal text-center mb-16">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-            <span className="text-amber-400 text-sm font-medium tracking-wider">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+            <span className="text-orange-600 text-sm font-medium tracking-wider">
               {t.faq.badge}
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-bold text-blue-900 mb-4 tracking-tight">
             {t.faq.titlePart1}
-            <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="block text-orange-600">
               {t.faq.titlePart2}
             </span>
           </h2>
 
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
             {t.faq.subtitle}
           </p>
         </div>
@@ -58,10 +58,10 @@ export default function FAQSection() {
               className={`reveal reveal-d${Math.min(index + 1, 4)} group`}
             >
               <div
-                className={`bg-gradient-to-br from-gray-900/80 to-black border rounded-2xl transition-all duration-300 ${
+                className={`bg-white shadow-sm border rounded-2xl transition-all duration-300 ${
                   openIndex === index
-                    ? "border-amber-500/40"
-                    : "border-white/5 hover:border-white/20"
+                    ? "border-orange-300"
+                    : "border-slate-200 hover:border-slate-300"
                 }`}
               >
                 <button
@@ -75,20 +75,20 @@ export default function FAQSection() {
                       style={{ width: "36px", height: "36px" }}
                       className={`rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                         openIndex === index
-                          ? "bg-amber-500/20 border border-amber-500/40"
-                          : "bg-white/5 border border-white/10"
+                          ? "bg-orange-100 border border-orange-300"
+                          : "bg-slate-50 border border-slate-200"
                       }`}
                     >
                       <HelpCircle
                         size={18}
                         className={
-                          openIndex === index ? "text-amber-400" : "text-gray-400"
+                          openIndex === index ? "text-orange-600" : "text-slate-500"
                         }
                       />
                     </div>
                     <h3
                       className={`font-semibold pt-1.5 transition-colors ${
-                        openIndex === index ? "text-amber-400" : "text-white"
+                        openIndex === index ? "text-orange-600" : "text-slate-900"
                       }`}
                     >
                       {faq.question}
@@ -105,7 +105,7 @@ export default function FAQSection() {
                     <ChevronDown
                       size={20}
                       className={
-                        openIndex === index ? "text-amber-400" : "text-gray-500"
+                        openIndex === index ? "text-orange-600" : "text-slate-500"
                       }
                     />
                   </div>
@@ -127,7 +127,7 @@ export default function FAQSection() {
                 >
                   <div className="overflow-hidden">
                     <div className="px-6 pb-6 pl-20">
-                      <p className="text-gray-300 leading-relaxed">
+                      <p className="text-slate-600 leading-relaxed">
                         {faq.answer}
                       </p>
                     </div>
@@ -140,15 +140,15 @@ export default function FAQSection() {
 
         {/* CTA */}
         <div className="reveal mt-12 text-center">
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 px-6 py-4 rounded-2xl bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30">
-            <MessageCircle size={24} className="text-amber-400 flex-shrink-0" />
-            <p className="text-gray-300 text-sm">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 px-6 py-4 rounded-2xl bg-gradient-to-br from-orange-50 to-amber-600/5 border border-slate-200">
+            <MessageCircle size={24} className="text-orange-600 flex-shrink-0" />
+            <p className="text-slate-600 text-sm">
               {t.faq.ctaText}{" "}
               <a
                 href={`https://wa.me/50686334133?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-400 hover:text-amber-300 font-semibold"
+                className="text-orange-600 hover:text-orange-700 font-semibold"
               >
                 {t.faq.ctaLink}
               </a>

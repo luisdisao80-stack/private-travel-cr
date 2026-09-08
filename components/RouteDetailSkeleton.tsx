@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 function Bar({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`bg-gray-800/60 rounded-md animate-pulse ${className}`}
+      className={`bg-slate-100/60 rounded-md animate-pulse ${className}`}
     />
   );
 }
@@ -18,7 +18,7 @@ export default function RouteDetailSkeleton() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
+      <main className="min-h-screen bg-slate-50 pt-24 pb-16">
         <div className="max-w-5xl mx-auto px-4">
           {/* Breadcrumb */}
           <Bar className="h-4 w-64 mb-6" />
@@ -36,20 +36,20 @@ export default function RouteDetailSkeleton() {
           </section>
 
           {/* Price cards */}
-          <section className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-6 md:p-8 mb-12">
+          <section className="bg-orange-50 border border-slate-200 rounded-2xl p-6 md:p-8 mb-12">
             <Bar className="h-8 w-2/3 mb-6" />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-gray-900/50 rounded-xl p-4 h-44">
+              <div className="bg-white rounded-xl p-4 h-44">
                 <Bar className="h-24 w-full mb-3" />
                 <Bar className="h-3 w-2/3 mb-2" />
                 <Bar className="h-7 w-1/2" />
               </div>
-              <div className="bg-gray-900/50 rounded-xl p-4 h-44">
+              <div className="bg-white rounded-xl p-4 h-44">
                 <Bar className="h-24 w-full mb-3" />
                 <Bar className="h-3 w-2/3 mb-2" />
                 <Bar className="h-7 w-1/2" />
               </div>
-              <div className="bg-gray-900/50 rounded-xl p-4 h-44">
+              <div className="bg-white rounded-xl p-4 h-44">
                 <Bar className="h-24 w-full mb-3" />
                 <Bar className="h-3 w-2/3 mb-2" />
                 <Bar className="h-7 w-1/2" />

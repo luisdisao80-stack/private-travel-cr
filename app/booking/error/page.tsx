@@ -34,35 +34,35 @@ export default async function BookingErrorPage({
 }) {
   const { orderNumber, reason } = await searchParams;
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-white text-slate-600">
       <Navbar />
       <div className="pt-24">
         <WizardProgress current="checkout" />
       </div>
       <section className="pt-10 pb-20 px-4">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-gradient-to-br from-red-500/10 to-amber-500/5 border border-red-500/30 rounded-3xl p-8 md:p-12 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/15 border border-red-500/40 mb-6">
-              <XCircle size={36} className="text-red-400" />
+          <div className="bg-red-50 border border-red-200 rounded-3xl p-8 md:p-12 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 border border-red-300 mb-6">
+              <XCircle size={36} className="text-red-600" />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-3">Payment Issue</h1>
-            <p className="text-gray-300 mb-8">{reasonText(reason)}</p>
+            <p className="text-slate-600 mb-8">{reasonText(reason)}</p>
 
             {orderNumber ? (
-              <div className="bg-black/40 border border-amber-500/20 rounded-2xl p-4 text-sm mb-8">
-                <span className="text-gray-400">Reference: </span>
-                <span className="font-mono text-amber-400">{orderNumber}</span>
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm mb-8">
+                <span className="text-slate-500">Reference: </span>
+                <span className="font-mono text-orange-600">{orderNumber}</span>
               </div>
             ) : null}
 
-            <p className="text-gray-400 mb-6 text-sm">
+            <p className="text-slate-500 mb-6 text-sm">
               You can try again or contact us directly — we&apos;re happy to take the booking by WhatsApp.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/book"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold transition"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold transition"
               >
                 Try again
               </Link>
@@ -70,15 +70,15 @@ export default async function BookingErrorPage({
                 href="https://wa.me/50686334133"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold transition"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-slate-900 font-semibold transition"
               >
                 <MessageCircle size={16} />
                 Chat on WhatsApp
               </a>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-white/5">
-              <Link href="/" className="text-amber-400 hover:text-amber-300 text-sm">
+            <div className="mt-8 pt-6 border-t border-slate-200">
+              <Link href="/" className="text-orange-600 hover:text-orange-700 text-sm">
                 ← Back to home
               </Link>
             </div>

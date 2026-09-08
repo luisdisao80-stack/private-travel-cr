@@ -61,33 +61,33 @@ export default async function HotelsIndexPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
+      <main className="min-h-screen bg-slate-50 pt-24 pb-16">
         <div className="max-w-5xl mx-auto px-4">
           {/* Header */}
           <section className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-              <Building2 size={14} className="text-amber-400" />
-              <span className="text-amber-400 text-sm font-medium tracking-wider">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+              <Building2 size={14} className="text-orange-600" />
+              <span className="text-orange-600 text-sm font-medium tracking-wider">
                 HOTEL SHUTTLE SERVICE
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-blue-900 mb-4">
               Private Shuttles to 140+ Costa Rica Hotels
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-slate-500 text-lg max-w-2xl mx-auto">
               Pickup at the hotel entrance, bilingual drivers, fixed all-inclusive
               pricing. Select your hotel below for routes and instant quotes.
             </p>
           </section>
 
           {hotels.length === 0 ? (
-            <div className="bg-gray-900/50 border border-white/10 rounded-2xl p-8 text-center text-gray-400">
+            <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500">
               No hotels published yet — check back soon.
             </div>
           ) : (
             cities.map((city) => (
               <section key={city} className="mb-10">
-                <h2 className="text-xs text-amber-400 font-semibold tracking-[0.2em] uppercase mb-3 flex items-center gap-2">
+                <h2 className="text-xs text-orange-600 font-semibold tracking-[0.2em] uppercase mb-3 flex items-center gap-2">
                   <MapPin size={14} />
                   {city}
                 </h2>
@@ -96,21 +96,21 @@ export default async function HotelsIndexPage() {
                     <Link
                       key={h.id}
                       href={`/hotels/${h.slug}`}
-                      className="group flex items-start justify-between gap-4 bg-gray-900/50 border border-white/10 hover:border-amber-500/40 rounded-xl p-5 transition"
+                      className="group flex items-start justify-between gap-4 bg-white border border-slate-200 hover:border-orange-300 rounded-xl p-5 transition"
                     >
                       <div className="min-w-0 flex-1">
-                        <div className="text-white font-semibold mb-1">
+                        <div className="text-slate-900 font-semibold mb-1">
                           {h.name}
                         </div>
                         {h.description ? (
-                          <p className="text-xs text-gray-400 line-clamp-2">
+                          <p className="text-xs text-slate-500 line-clamp-2">
                             {h.description}
                           </p>
                         ) : null}
                       </div>
                       <ArrowRight
                         size={16}
-                        className="text-amber-400 shrink-0 mt-1 group-hover:translate-x-1 transition-transform"
+                        className="text-orange-600 shrink-0 mt-1 group-hover:translate-x-1 transition-transform"
                       />
                     </Link>
                   ))}
@@ -120,11 +120,11 @@ export default async function HotelsIndexPage() {
           )}
 
           {/* CTA */}
-          <section className="mt-12 bg-gradient-to-br from-amber-500/20 to-amber-500/10 border border-amber-500/40 rounded-2xl p-8 text-center">
-            <h2 className="text-2xl font-bold text-white mb-3">
+          <section className="mt-12 bg-gradient-to-br from-orange-100 to-orange-50 border border-orange-300 rounded-2xl p-8 text-center">
+            <h2 className="text-2xl font-bold text-blue-900 mb-3">
               Your hotel isn&apos;t listed?
             </h2>
-            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+            <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
               We pick up at every hotel in Costa Rica. Send us a WhatsApp with
               your hotel name and we&apos;ll quote your transfer.
             </p>

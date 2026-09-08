@@ -57,7 +57,7 @@ export default function CurrencySelector() {
             ? `Change display currency, current ${active.code}`
             : `Cambiar moneda, actual ${active.code}`
         }
-        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/40 border border-amber-500/20 backdrop-blur-sm text-xs font-bold tracking-wider text-gray-200 hover:text-white hover:border-amber-500/40 transition-colors"
+        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 backdrop-blur-sm text-xs font-bold tracking-wider text-slate-700 hover:text-orange-600 hover:border-orange-500/60 transition-colors"
       >
         <span className="text-sm leading-none" aria-hidden="true">
           {active.flag}
@@ -75,11 +75,11 @@ export default function CurrencySelector() {
       <>
         {open ? (
           <div
-            className="pop-in absolute right-0 mt-2 w-56 rounded-2xl bg-black/95 border border-amber-500/30 backdrop-blur-xl shadow-2xl shadow-black/60 z-50 overflow-hidden"
+            className="pop-in absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-slate-200 backdrop-blur-xl shadow-2xl shadow-slate-900/15 z-50 overflow-hidden"
             role="listbox"
             aria-label={heading}
           >
-            <div className="px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-amber-400 font-bold border-b border-amber-500/15">
+            <div className="px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-orange-600 font-bold border-b border-slate-200">
               {heading}
             </div>
             <ul className="py-1">
@@ -98,8 +98,8 @@ export default function CurrencySelector() {
                       className={
                         "w-full flex items-center gap-2.5 px-3 py-2 text-left text-sm transition-colors " +
                         (isActive
-                          ? "bg-amber-500/10 text-amber-300"
-                          : "text-gray-200 hover:bg-white/5 hover:text-white")
+                          ? "bg-orange-50 text-orange-700"
+                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-900")
                       }
                     >
                       <span
@@ -110,17 +110,17 @@ export default function CurrencySelector() {
                       </span>
                       <span className="flex-1">
                         <span className="font-semibold mr-1">{c.code}</span>
-                        <span className="text-[11px] text-gray-400">
+                        <span className="text-[11px] text-slate-400">
                           {c.symbol}
                         </span>
                       </span>
-                      <span className="text-[11px] text-gray-500 truncate max-w-[90px]">
+                      <span className="text-[11px] text-slate-500 truncate max-w-[90px]">
                         {c.label}
                       </span>
                       {isActive ? (
                         <Check
                           size={12}
-                          className="text-amber-400 shrink-0"
+                          className="text-orange-600 shrink-0"
                           strokeWidth={3}
                         />
                       ) : null}
@@ -129,7 +129,7 @@ export default function CurrencySelector() {
                 );
               })}
             </ul>
-            <div className="px-3 py-2 border-t border-amber-500/15 text-[10px] text-gray-500 leading-snug">
+            <div className="px-3 py-2 border-t border-slate-200 text-[10px] text-slate-500 leading-snug">
               {disclaimer}
             </div>
           </div>

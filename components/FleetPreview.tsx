@@ -44,24 +44,24 @@ export default function FleetPreview() {
     <section
       id="flota"
       key={lang}
-      className="relative py-24 px-4 bg-gradient-to-br from-gray-950 via-black to-gray-950 overflow-hidden"
+      className="relative py-24 px-4 bg-slate-50 overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.1),transparent_60%)]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="reveal text-center mb-12">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-            <span className="text-amber-400 text-sm font-medium tracking-wider">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+            <span className="text-orange-600 text-sm font-medium tracking-wider">
               {t.fleet.badge}
             </span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-bold text-blue-900 mb-4 tracking-tight">
             {t.fleet.titlePart1}
-            <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-orange-600">
               {" "}{t.fleet.titlePart2}
             </span>
           </h2>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
             {t.fleet.subtitle}
           </p>
         </div>
@@ -73,7 +73,7 @@ export default function FleetPreview() {
               className={`reveal reveal-d${Math.min(index + 1, 4)}`}
             >
               <Link href="/fleet" className="group block">
-                <div className="relative bg-gradient-to-br from-gray-900 to-black border border-amber-500/20 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-500">
+                <div className="relative bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-orange-300 transition-all duration-500">
 
                   <div className="relative h-48 md:h-56 overflow-hidden bg-white p-4">
                     {/* LCP perf: esta seccion vive muy por debajo del fold,
@@ -101,39 +101,39 @@ export default function FleetPreview() {
                     />
 
                     {vehicle.badge && (
-                      <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500 text-black text-xs font-bold tracking-wider shadow-lg">
+                      <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-orange-600 text-white text-xs font-bold tracking-wider shadow-lg">
                         {vehicle.badge}
                       </div>
                     )}
 
-                    <div className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-sm border border-white/10">
-                      <Users size={14} className="text-amber-400" />
+                    <div className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-sm border border-white/20">
+                      <Users size={14} className="text-orange-600" />
                       <span className="text-white text-sm font-medium">{vehicle.paxRange}</span>
                     </div>
                   </div>
 
                   <div className="p-6">
-                    <div className="text-amber-400 text-xs tracking-widest font-medium mb-1">
+                    <div className="text-orange-600 text-xs tracking-widest font-medium mb-1">
                       {vehicle.model.toUpperCase()}
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-amber-400 transition-colors">
+                    <h3 className="text-2xl font-bold text-blue-900 mb-3 group-hover:text-orange-600 transition-colors">
                       {vehicle.name}
                     </h3>
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-xs text-gray-500 uppercase tracking-wider">
+                        <div className="text-xs text-slate-500 uppercase tracking-wider">
                           {t.fleet.from}
                         </div>
-                        <div className="text-2xl font-bold text-white">
+                        <div className="text-2xl font-bold text-blue-900">
                           <Price usd={vehicle.priceFrom} />
                         </div>
-                        <div className="text-[10px] text-gray-500 mt-0.5">
+                        <div className="text-[10px] text-slate-500 mt-0.5">
                           {lang === "en" ? "Taxes included" : "Impuestos incluidos"}
                         </div>
                       </div>
 
-                      <span className="text-amber-400 text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                      <span className="text-orange-600 text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
                         {lang === "en" ? "View details" : "Ver detalles"}
                         <ArrowRight size={14} />
                       </span>
@@ -145,8 +145,8 @@ export default function FleetPreview() {
           ))}
         </div>
 
-        <div className="reveal mb-8 mx-auto max-w-3xl rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 text-center">
-          <p className="text-sm md:text-base text-gray-300">
+        <div className="reveal mb-8 mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-orange-50 p-5 text-center">
+          <p className="text-sm md:text-base text-slate-600">
             {lang === "en"
               ? "Traveling with more than 12 passengers? Contact us for a custom quote:"
               : "¿Viajan más de 12 personas? Contáctanos para una cotización personalizada:"}
@@ -156,14 +156,14 @@ export default function FleetPreview() {
               href="https://wa.me/50686334133"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 hover:bg-green-500/20 transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-600/40 text-green-700 hover:bg-green-100 transition-colors text-sm font-medium"
             >
               <MessageCircle size={14} />
               WhatsApp
             </a>
             <a
               href="mailto:info@privatetravelcr.com"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-slate-200 text-orange-600 hover:bg-orange-50 transition-colors text-sm font-medium"
             >
               <Mail size={14} />
               info@privatetravelcr.com
@@ -173,7 +173,7 @@ export default function FleetPreview() {
 
         <div className="reveal reveal-d2 text-center">
           <Link href="/fleet">
-            <Button className="bg-amber-500 hover:bg-amber-600 text-black font-bold h-12 px-8">
+            <Button className="bg-orange-600 hover:bg-orange-700 text-white font-bold h-12 px-8">
               {lang === "en" ? "View Full Fleet" : "Ver Toda la Flota"}
               <ArrowRight size={18} className="ml-2" />
             </Button>

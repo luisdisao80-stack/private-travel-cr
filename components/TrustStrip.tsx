@@ -65,9 +65,11 @@ export default function TrustStrip() {
   return (
     <section
       aria-label={isEn ? "Trust signals" : "Señales de confianza"}
-      className="relative py-12 md:py-16 px-4 bg-gradient-to-b from-black via-gray-950 to-black border-y border-amber-500/10"
+      className="relative py-12 md:py-16 px-4 bg-slate-50"
     >
-      <div className="max-w-6xl mx-auto">
+      {/* Pedido de Diego 2026-09-07: la franja va dentro de una tarjeta
+          resaltada con relieve (sombra) y borde naranja, como en el mock. */}
+      <div className="max-w-6xl mx-auto bg-white border-2 border-orange-500 rounded-3xl shadow-xl shadow-orange-500/10 px-6 py-8 md:px-10 md:py-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {BADGES.map(({ Icon, titleEn, titleEs, subEn, subEs }, i) => (
             <div
@@ -76,15 +78,15 @@ export default function TrustStrip() {
             >
               <div
                 style={{ width: "56px", height: "56px" }}
-                className="rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0"
+                className="rounded-2xl bg-orange-50 border border-slate-200 flex items-center justify-center shrink-0"
               >
-                <Icon size={26} className="text-amber-400" />
+                <Icon size={26} className="text-orange-600" />
               </div>
               <div>
-                <div className="text-sm md:text-base font-bold text-white leading-tight">
+                <div className="text-sm md:text-base font-bold text-blue-900 leading-tight">
                   {isEn ? titleEn : titleEs}
                 </div>
-                <div className="text-[11px] md:text-xs text-gray-400 leading-snug mt-1 max-w-[180px] mx-auto">
+                <div className="text-[11px] md:text-xs text-slate-500 leading-snug mt-1 max-w-[180px] mx-auto">
                   {isEn ? subEn : subEs}
                 </div>
               </div>

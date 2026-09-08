@@ -51,7 +51,7 @@ export default async function BookTourPage({
   const quote = quoteTour(tour, { adults, children });
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950">
+    <main className="min-h-screen bg-slate-50">
       <Navbar />
       <div className="pt-24">
         <TourCheckoutClient

@@ -34,7 +34,7 @@ export default function Price({ usd, className, showUsdHint }: Props) {
     return (
       <span className={className}>
         {display}
-        <span className="text-[0.75em] text-gray-400 ml-1">
+        <span className="text-[0.75em] text-slate-500 ml-1">
           (≈ ${usd} USD)
         </span>
       </span>

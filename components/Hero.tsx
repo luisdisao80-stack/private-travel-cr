@@ -296,7 +296,7 @@ export default function Hero({
       />
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/75 z-[1]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.25),transparent_50%)] z-[2]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(234,88,12,0.25),transparent_50%)] z-[2]" />
 
       <div className="relative z-10 container mx-auto px-4 py-20 md:py-24">
         <div className="max-w-4xl mx-auto text-center">
@@ -310,7 +310,7 @@ export default function Hero({
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 md:mb-8 tracking-tight leading-[1.1]"
           >
             {t.hero.titlePart1}{" "}
-            <span className="block bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent mt-2 md:mt-3">
+            <span className="block text-orange-500 mt-2 md:mt-3">
               {t.hero.titlePart2}
             </span>
           </h1>
@@ -325,7 +325,7 @@ export default function Hero({
             href={reviewStats.google.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 backdrop-blur-sm transition-colors mb-10 md:mb-12 shadow-2xl shadow-black/40"
+            className="inline-flex items-center gap-4 px-7 py-4 rounded-full bg-white/95 border border-gray-200 hover:border-amber-400 backdrop-blur-sm transition-colors mb-10 md:mb-12 shadow-2xl shadow-black/40"
           >
             <GoogleGLogo size={32} className="shrink-0" />
             <div className="flex flex-col items-start gap-1">
@@ -333,24 +333,24 @@ export default function Hero({
                 {[1, 2, 3, 4, 5].map((i) => (
                   <Star key={i} size={20} className="fill-amber-400 text-amber-400" />
                 ))}
-                <span className="ml-2 text-base md:text-lg font-bold text-white">
+                <span className="ml-2 text-base md:text-lg font-bold text-blue-900">
                   {(liveGoogleRating ?? reviewStats.google.rating).toFixed(1)}
                 </span>
               </div>
-              <span className="text-xs md:text-sm text-gray-300">
-                <strong className="text-white">
+              <span className="text-xs md:text-sm text-gray-600">
+                <strong className="text-blue-900">
                   {liveGoogleCount ?? reviewStats.google.count}+
                 </strong>{" "}
                 Google Reviews
               </span>
             </div>
-            <ExternalLink size={14} className="text-white/40" />
+            <ExternalLink size={14} className="text-gray-400" />
           </a>
 
           <div
-            className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 text-left overflow-visible"
+            className="bg-white border-2 border-orange-500 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/25 text-left overflow-visible"
           >
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-5 text-center">
+            <h2 className="text-xl md:text-2xl font-bold text-blue-900 mb-5 text-center">
               {lang === "en" ? "Where are you headed?" : "¿A dónde vas?"}
             </h2>
 
@@ -401,7 +401,7 @@ export default function Hero({
                 }}
                 aria-label={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
                 title={lang === "en" ? "Swap pickup and drop-off" : "Intercambiar origen y destino"}
-                className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-amber-500/30 bg-black/60 hover:bg-amber-500/20 hover:border-amber-500/60 text-amber-400 transition-colors"
+                className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-slate-300 bg-white hover:bg-orange-50 hover:border-orange-500 text-orange-600 transition-colors"
               >
                 <ArrowLeftRight size={16} className="hidden md:block" />
                 <ArrowLeftRight size={16} className="rotate-90 md:hidden" />
@@ -429,6 +429,12 @@ export default function Hero({
               className="mt-3"
             />
 
+            {/* Pedido de Diego 2026-09-07: al inicio se ven origen/destino
+                y pasajeros; el precio y el botón aparecen hasta que la
+                ruta esté escogida (ambos campos con texto). */}
+            {pickup.trim().length > 0 && dropoff.trim().length > 0 && (
+              <>
+
             {overCapacity && (
               <BigGroupNotice
                 totalPax={totalPax}
@@ -452,7 +458,7 @@ export default function Hero({
             />
 
             {resolveError && (
-              <div className="mt-3 rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-2.5 text-center text-xs text-amber-200">
+              <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-center text-xs text-amber-800">
                 {lang === "en"
                   ? `We don't recognize that ${resolveError === "pickup" ? "pickup" : "drop-off"} location. Pick one from the dropdown so we can quote it.`
                   : `No reconocemos ese ${resolveError === "pickup" ? "punto de recogida" : "destino"}. Escogé uno de la lista para cotizarlo.`}
@@ -460,7 +466,7 @@ export default function Hero({
             )}
 
             {(sameLocationError || rawSameLocation) && (
-              <div className="mt-3 rounded-lg border border-red-400/40 bg-red-500/10 px-4 py-2.5 text-center text-xs text-red-200">
+              <div className="mt-3 rounded-lg border border-red-300 bg-red-50 px-4 py-2.5 text-center text-xs text-red-700">
                 {lang === "en"
                   ? "Pickup and drop-off can't be the same place. Please pick a different drop-off location."
                   : "El origen y el destino no pueden ser iguales. Elegí un destino diferente."}
@@ -485,7 +491,7 @@ export default function Hero({
                     : "El origen y el destino no pueden ser iguales"
                   : undefined
               }
-              className="mt-4 w-full inline-flex items-center justify-center gap-2 h-12 md:h-14 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"
+              className="mt-4 w-full inline-flex items-center justify-center gap-2 h-12 md:h-14 px-6 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm md:text-base shadow-lg shadow-orange-600/25 hover:shadow-orange-600/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"
             >
               {isPending ? (
                 <>
@@ -512,7 +518,7 @@ export default function Hero({
                 brinco que reportó Diego el 2026-09-05. Escondida con
                 `invisible` (no con `hidden`) sigue ocupando su lugar. */}
             <p
-              className={`mt-2 text-center text-[11px] text-gray-400 ${
+              className={`mt-2 text-center text-[11px] text-slate-500 ${
                 canAddToCart ? "" : "invisible"
               }`}
               aria-hidden={!canAddToCart}
@@ -522,18 +528,20 @@ export default function Hero({
                 ? "Pick your date and time at checkout."
                 : "Elegís fecha y hora en el checkout."}
             </p>
+              </>
+            )}
 
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-slate-200 text-xs text-slate-500">
               <span className="flex items-center gap-1.5">
-                <Zap size={12} className="text-amber-400" />
+                <Zap size={12} className="text-orange-600" />
                 {lang === "en" ? "Instant pricing" : "Precio al instante"}
               </span>
               <span className="flex items-center gap-1.5">
-                <Shield size={12} className="text-amber-400" />
+                <Shield size={12} className="text-orange-600" />
                 {lang === "en" ? "Free cancellation" : "Cancelación gratis"}
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 size={12} className="text-amber-400" />
+                <CheckCircle2 size={12} className="text-orange-600" />
                 {lang === "en" ? "No hidden fees" : "Sin cargos ocultos"}
               </span>
             </div>

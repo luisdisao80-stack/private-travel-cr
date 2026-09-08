@@ -130,7 +130,7 @@ export default function RouteDetail({
     .filter((r): r is { route: Route; href: string } => r.href !== null);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
+    <main className="min-h-screen bg-slate-50 pt-24 pb-16">
       <RouteSchema route={route} basePath={basePath} />
       <BreadcrumbSchema
         items={[
@@ -144,24 +144,24 @@ export default function RouteDetail({
       />
       <FAQSchema faqs={allFAQs} />
       <div className="max-w-5xl mx-auto px-4">
-        <nav className="text-sm text-gray-500 mb-6">
-          <Link href="/" className="hover:text-amber-400">Home</Link>
+        <nav className="text-sm text-slate-500 mb-6">
+          <Link href="/" className="hover:text-orange-600">Home</Link>
           {" / "}
-          <Link href={basePath === "/private-shuttle" ? "/routes" : "/routes"} className="hover:text-amber-400">
+          <Link href={basePath === "/private-shuttle" ? "/routes" : "/routes"} className="hover:text-orange-600">
             Routes
           </Link>
           {" / "}
-          <span className="text-gray-300">{originName} to {destName}</span>
+          <span className="text-slate-600">{originName} to {destName}</span>
         </nav>
 
         <section className="mb-12">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-            <span className="text-amber-400 text-sm font-medium tracking-wider">PRIVATE SHUTTLE</span>
+          <div className="inline-block px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+            <span className="text-orange-600 text-sm font-medium tracking-wider">PRIVATE SHUTTLE</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-            {originName} <span className="text-amber-400">to</span> {destName}
+          <h1 className="text-4xl md:text-5xl font-bold text-blue-900 mb-4 leading-tight">
+            {originName} <span className="text-orange-600">to</span> {destName}
           </h1>
-          <div className="flex flex-wrap items-center gap-4 text-gray-300 mb-6">
+          <div className="flex flex-wrap items-center gap-4 text-slate-600 mb-6">
             {/* Rating badge — 5.0 stars + review count. Puts the trust
                 signal in the hero where every visitor sees it, matching
                 how competitors lead their route pages. Visible only; the
@@ -173,32 +173,32 @@ export default function RouteDetail({
                   <Star key={i} size={15} className="fill-amber-400 text-amber-400" strokeWidth={0} />
                 ))}
               </span>
-              <span className="font-semibold text-white">
+              <span className="font-semibold text-slate-900">
                 {siteConfig.business.rating.googleStars.toFixed(1)}
               </span>
-              <span className="text-gray-400">
+              <span className="text-slate-500">
                 ({siteConfig.business.rating.googleReviews}+ reviews)
               </span>
             </span>
             {route.duracion ? (
               <span className="flex items-center gap-2 text-sm">
-                <Clock size={16} className="text-amber-400" />
+                <Clock size={16} className="text-orange-600" />
                 {route.duracion}
               </span>
             ) : null}
             <span className="flex items-center gap-2 text-sm">
-              <Users size={16} className="text-amber-400" />
+              <Users size={16} className="text-orange-600" />
               1-12 passengers
             </span>
             <span className="flex items-center gap-2 text-sm">
-              <Car size={16} className="text-amber-400" />
+              <Car size={16} className="text-orange-600" />
               Door-to-door
             </span>
           </div>
         </section>
 
-        <section className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/30 rounded-2xl p-6 md:p-8 mb-12">
-          <h2 className="text-2xl font-bold text-white mb-6">
+        <section className="bg-gradient-to-br from-orange-50 to-amber-500/5 border border-slate-200 rounded-2xl p-6 md:p-8 mb-12">
+          <h2 className="text-2xl font-bold text-blue-900 mb-6">
             How much does a private shuttle from {originName} to {destName} cost?
           </h2>
           {/* La reserva, acá mismo. Va ARRIBA de las tarjetas de tramo
@@ -226,7 +226,7 @@ export default function RouteDetail({
             stops={getStopsForRoute(route.origen, route.destino)}
           />
 
-          <p className="text-sm text-gray-400 mt-6 mb-3">
+          <p className="text-sm text-slate-500 mt-6 mb-3">
             All prices for this route, by group size:
           </p>
           {/* Vehicle/PAX tier cards. Clarity recordings (2026-06-03) showed
@@ -247,49 +247,49 @@ export default function RouteDetail({
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <Link
               href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&adults=2&direct=1`}
-              className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
+              className="bg-white rounded-xl p-4 text-center hover:bg-white/70 hover:ring-2 hover:ring-orange-500/40 transition cursor-pointer"
             >
               <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
                 <img src="/staria.webp" alt="Hyundai Staria" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
               </div>
-              <div className="text-xs text-gray-400 mb-1">1-5 PAX · Hyundai Staria</div>
-              <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio1a6 ?? 0} /></div>
+              <div className="text-xs text-slate-500 mb-1">1-5 PAX · Hyundai Staria</div>
+              <div className="text-2xl font-bold text-orange-600"><Price usd={route.precio1a6 ?? 0} /></div>
             </Link>
             {route.precio7a9 ? (
               <Link
                 href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&adults=6&direct=1`}
-                className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
+                className="bg-white rounded-xl p-4 text-center hover:bg-white/70 hover:ring-2 hover:ring-orange-500/40 transition cursor-pointer"
               >
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
                   <img src="/hiace.png" alt="Toyota Hiace" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
-                <div className="text-xs text-gray-400 mb-1">6-9 PAX · Toyota Hiace</div>
-                <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio7a9 ?? 0} /></div>
+                <div className="text-xs text-slate-500 mb-1">6-9 PAX · Toyota Hiace</div>
+                <div className="text-2xl font-bold text-orange-600"><Price usd={route.precio7a9 ?? 0} /></div>
               </Link>
             ) : null}
             {route.precio10a12 ? (
               <Link
                 href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&adults=10&direct=1`}
-                className="bg-gray-900/50 rounded-xl p-4 text-center hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
+                className="bg-white rounded-xl p-4 text-center hover:bg-white/70 hover:ring-2 hover:ring-orange-500/40 transition cursor-pointer"
               >
                 <div className="bg-white rounded-lg p-2 mb-3 h-24 flex items-center justify-center">
                   <img src="/maxus-v90.webp" alt="Maxus V90" width={200} height={120} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
                 </div>
-                <div className="text-xs text-gray-400 mb-1">10-12 PAX · Maxus V90</div>
-                <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio10a12 ?? 0} /></div>
+                <div className="text-xs text-slate-500 mb-1">10-12 PAX · Maxus V90</div>
+                <div className="text-2xl font-bold text-orange-600"><Price usd={route.precio10a12 ?? 0} /></div>
               </Link>
             ) : null}
             {route.precio13a18 ? (
               <Link
                 href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&adults=13&direct=1`}
-                className="bg-gray-900/50 rounded-xl p-4 text-center sm:col-span-2 md:col-span-3 hover:bg-gray-900/70 hover:ring-2 hover:ring-amber-500/40 transition cursor-pointer"
+                className="bg-white rounded-xl p-4 text-center sm:col-span-2 md:col-span-3 hover:bg-white/70 hover:ring-2 hover:ring-orange-500/40 transition cursor-pointer"
               >
-                <div className="text-xs text-gray-400 mb-1">13-18 PAX</div>
-                <div className="text-2xl font-bold text-amber-400"><Price usd={route.precio13a18 ?? 0} /></div>
+                <div className="text-xs text-slate-500 mb-1">13-18 PAX</div>
+                <div className="text-2xl font-bold text-orange-600"><Price usd={route.precio13a18 ?? 0} /></div>
               </Link>
             ) : null}
           </div>
-          <p className="text-xs text-gray-400 mb-6">Prices in USD per vehicle. All-inclusive: A/C, WiFi, water, child seats, door-to-door.</p>
+          <p className="text-xs text-slate-500 mb-6">Prices in USD per vehicle. All-inclusive: A/C, WiFi, water, child seats, door-to-door.</p>
           {/* El "Book Now" grande se lo llevó el widget de arriba: acá
               abajo quedan las dos salidas que el widget NO cubre —el
               formulario largo (VIP, paradas extra, dirección exacta,
@@ -298,7 +298,7 @@ export default function RouteDetail({
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
-              className="flex-1 border border-amber-500/40 bg-black/30 hover:bg-amber-500/10 text-amber-300 font-bold py-3 px-6 rounded-xl text-center transition"
+              className="flex-1 border border-orange-300 bg-white hover:bg-orange-50 text-orange-600 font-bold py-3 px-6 rounded-xl text-center transition"
             >
               Customize this trip
             </Link>
@@ -326,22 +326,22 @@ export default function RouteDetail({
 
         {route.journey_description ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-blue-900 mb-4">
               How is the drive from {originName} to {destName}?
             </h2>
-            <p className="text-gray-300 leading-relaxed">{route.journey_description}</p>
+            <p className="text-slate-600 leading-relaxed">{route.journey_description}</p>
           </section>
         ) : null}
 
         {points.length > 0 ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-blue-900 mb-4">
               What can you see between {originName} and {destName}?
             </h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {points.map((p, i) => (
-                <div key={i} className="flex items-start gap-2 text-gray-300">
-                  <MapPin size={18} className="text-amber-400 mt-0.5 flex-shrink-0" />
+                <div key={i} className="flex items-start gap-2 text-slate-600">
+                  <MapPin size={18} className="text-orange-600 mt-0.5 flex-shrink-0" />
                   <span>{p}</span>
                 </div>
               ))}
@@ -351,56 +351,56 @@ export default function RouteDetail({
 
         {route.road_type ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-blue-900 mb-4">
               How are the road conditions from {originName} to {destName}?
             </h2>
-            <p className="text-gray-300 leading-relaxed">{route.road_type}</p>
+            <p className="text-slate-600 leading-relaxed">{route.road_type}</p>
           </section>
         ) : null}
 
         {route.traveler_tip ? (
-          <section className="mb-10 bg-amber-500/5 border-l-4 border-amber-500 rounded-r-xl p-6">
-            <h3 className="text-lg font-bold text-amber-400 mb-2">Traveler Tip</h3>
-            <p className="text-gray-300 leading-relaxed">{route.traveler_tip}</p>
+          <section className="mb-10 bg-orange-50 border-l-4 border-orange-600 rounded-r-xl p-6">
+            <h3 className="text-lg font-bold text-orange-600 mb-2">Traveler Tip</h3>
+            <p className="text-slate-600 leading-relaxed">{route.traveler_tip}</p>
           </section>
         ) : null}
 
         {route.family_info ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-blue-900 mb-4">
               Is the shuttle from {originName} to {destName} family-friendly?
             </h2>
-            <p className="text-gray-300 leading-relaxed">{route.family_info}</p>
+            <p className="text-slate-600 leading-relaxed">{route.family_info}</p>
           </section>
         ) : null}
 
         {route.budget_tip ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">Budget breakdown</h2>
-            <p className="text-gray-300 leading-relaxed">{route.budget_tip}</p>
+            <h2 className="text-2xl font-bold text-blue-900 mb-4">Budget breakdown</h2>
+            <p className="text-slate-600 leading-relaxed">{route.budget_tip}</p>
           </section>
         ) : null}
 
         {route.google_maps_note ? (
-          <section className="mb-10 bg-gray-900/50 border border-gray-800 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-white mb-2">About travel times</h3>
-            <p className="text-gray-300 text-sm leading-relaxed">{route.google_maps_note}</p>
+          <section className="mb-10 bg-white border border-slate-200 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-blue-900 mb-2">About travel times</h3>
+            <p className="text-slate-600 text-sm leading-relaxed">{route.google_maps_note}</p>
           </section>
         ) : null}
 
         {route.late_night_info ? (
           <section className="mb-10">
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-blue-900 mb-4">
               Is the shuttle from {originName} to {destName} available 24/7?
             </h2>
-            <p className="text-gray-300 leading-relaxed">{route.late_night_info}</p>
+            <p className="text-slate-600 leading-relaxed">{route.late_night_info}</p>
           </section>
         ) : null}
 
         {route.local_recommendation ? (
-          <section className="mb-10 bg-amber-500/5 border-l-4 border-amber-500 rounded-r-xl p-6">
-            <h3 className="text-lg font-bold text-amber-400 mb-2">Local insider tip</h3>
-            <p className="text-gray-300 leading-relaxed">{route.local_recommendation}</p>
+          <section className="mb-10 bg-orange-50 border-l-4 border-orange-600 rounded-r-xl p-6">
+            <h3 className="text-lg font-bold text-orange-600 mb-2">Local insider tip</h3>
+            <p className="text-slate-600 leading-relaxed">{route.local_recommendation}</p>
           </section>
         ) : null}
 
@@ -409,10 +409,10 @@ export default function RouteDetail({
             without JS. */}
         <section className="mb-12" aria-labelledby="route-faq-heading">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-              <HelpCircle size={20} className="text-amber-400" />
+            <div className="w-10 h-10 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center">
+              <HelpCircle size={20} className="text-orange-600" />
             </div>
-            <h2 id="route-faq-heading" className="text-2xl font-bold text-white">
+            <h2 id="route-faq-heading" className="text-2xl font-bold text-blue-900">
               Frequently asked about {originName} → {destName}
             </h2>
           </div>
@@ -423,18 +423,18 @@ export default function RouteDetail({
                 // First Q&A opens by default so the page lands with visible
                 // content; the rest stay collapsed but in the DOM.
                 open={i === 0}
-                className="group bg-gradient-to-br from-gray-900/80 to-black border border-white/5 hover:border-white/20 rounded-2xl overflow-hidden transition-colors open:border-amber-500/40"
+                className="group bg-white shadow-sm border border-slate-200 hover:border-slate-300 rounded-2xl overflow-hidden transition-colors open:border-orange-300"
               >
-                <summary className="cursor-pointer list-none flex items-center justify-between gap-4 p-5 text-white font-semibold group-open:text-amber-400 [&::-webkit-details-marker]:hidden">
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-4 p-5 text-slate-900 font-semibold group-open:text-orange-600 [&::-webkit-details-marker]:hidden">
                   <span>{faq.question}</span>
                   <span
                     aria-hidden="true"
-                    className="shrink-0 text-amber-400 transition-transform duration-300 group-open:rotate-45 text-xl leading-none"
+                    className="shrink-0 text-orange-600 transition-transform duration-300 group-open:rotate-45 text-xl leading-none"
                   >
                     +
                   </span>
                 </summary>
-                <div className="px-5 pb-5 text-gray-300 leading-relaxed">
+                <div className="px-5 pb-5 text-slate-600 leading-relaxed">
                   {faq.answer}
                 </div>
               </details>
@@ -449,14 +449,14 @@ export default function RouteDetail({
         {destinationHotels.length > 0 ? (
           <section className="mb-12" aria-labelledby="dest-hotels-heading">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-                <Building2 size={20} className="text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center">
+                <Building2 size={20} className="text-orange-600" />
               </div>
-              <h2 id="dest-hotels-heading" className="text-2xl font-bold text-white">
+              <h2 id="dest-hotels-heading" className="text-2xl font-bold text-blue-900">
                 Top hotels in {destName}
               </h2>
             </div>
-            <p className="text-gray-400 text-sm mb-6">
+            <p className="text-slate-500 text-sm mb-6">
               We pick up at any of these properties. Click for shuttle pricing from {destName} to anywhere in Costa Rica.
             </p>
             <div className="grid md:grid-cols-2 gap-4">
@@ -464,17 +464,17 @@ export default function RouteDetail({
                 <Link
                   key={h.id}
                   href={`/hotels/${h.slug}`}
-                  className="group flex items-center justify-between bg-gray-900/50 border border-amber-500/10 hover:border-amber-500/40 rounded-xl p-5 transition"
+                  className="group flex items-center justify-between bg-white border border-slate-200 hover:border-orange-300 rounded-xl p-5 transition"
                 >
                   <div className="min-w-0 pr-4 flex-1">
-                    <div className="text-white font-semibold mb-1 truncate">
+                    <div className="text-slate-900 font-semibold mb-1 truncate">
                       {h.name}
                     </div>
-                    <div className="text-xs text-gray-500">{h.city}</div>
+                    <div className="text-xs text-slate-500">{h.city}</div>
                   </div>
                   <ArrowRight
                     size={16}
-                    className="text-amber-400 shrink-0 group-hover:translate-x-1 transition-transform"
+                    className="text-orange-600 shrink-0 group-hover:translate-x-1 transition-transform"
                   />
                 </Link>
               ))}
@@ -486,19 +486,19 @@ export default function RouteDetail({
           <section className="mb-12">
             <Link
               href={`/shuttle-to/${destinationHub.slug}`}
-              className="group flex items-center justify-between bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/30 hover:border-amber-500/50 rounded-2xl p-6 transition"
+              className="group flex items-center justify-between bg-gradient-to-br from-orange-50 to-amber-500/5 border border-slate-200 hover:border-orange-300 rounded-2xl p-6 transition"
             >
               <div className="pr-4">
-                <div className="text-white font-bold text-lg mb-1">
+                <div className="text-blue-900 font-bold text-lg mb-1">
                   See every shuttle to {destName}
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-slate-500">
                   Compare all routes and prices into {destName} on one page.
                 </div>
               </div>
               <ArrowRight
                 size={20}
-                className="text-amber-400 shrink-0 group-hover:translate-x-1 transition-transform"
+                className="text-orange-600 shrink-0 group-hover:translate-x-1 transition-transform"
               />
             </Link>
           </section>
@@ -513,23 +513,23 @@ export default function RouteDetail({
                 siendo cierta: en sjo-to-la-fortuna las tarjetas habrían dicho
                 "San Jose Airport" y "La Fortuna" sueltos, sin decir de dónde a
                 dónde. Va el par completo. */}
-            <h2 className="text-2xl font-bold text-white mb-6">Popular routes</h2>
+            <h2 className="text-2xl font-bold text-blue-900 mb-6">Popular routes</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {linkedRelated.map(({ route: r, href }) => (
                 <Link
                   key={r.id}
                   href={href}
-                  className="group flex items-center justify-between bg-gray-900/50 border border-amber-500/10 hover:border-amber-500/40 rounded-xl p-5 transition"
+                  className="group flex items-center justify-between bg-white border border-slate-200 hover:border-orange-300 rounded-xl p-5 transition"
                 >
                   <div>
-                    <div className="text-xs text-amber-400 mb-1">{r.duracion}</div>
-                    <div className="text-white font-medium">
-                      {displayLocation(r.origen)} <span className="text-gray-500">→</span> {displayLocation(r.destino)}
+                    <div className="text-xs text-orange-600 mb-1">{r.duracion}</div>
+                    <div className="text-slate-900 font-medium">
+                      {displayLocation(r.origen)} <span className="text-slate-500">→</span> {displayLocation(r.destino)}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-amber-400 font-bold"><Price usd={r.precio1a6 ?? 0} /></div>
-                    <ArrowRight size={16} className="text-gray-500 ml-auto mt-1 group-hover:text-amber-400 transition" />
+                    <div className="text-orange-600 font-bold"><Price usd={r.precio1a6 ?? 0} /></div>
+                    <ArrowRight size={16} className="text-slate-500 ml-auto mt-1 group-hover:text-orange-600 transition" />
                   </div>
                 </Link>
               ))}
@@ -544,12 +544,12 @@ export default function RouteDetail({
             more topical context for ranking the route page. */}
         <RelatedArticles posts={relatedArticles} heading="Plan your trip" />
 
-        <section className="bg-gradient-to-br from-amber-500/20 to-amber-500/10 border border-amber-500/40 rounded-2xl p-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Ready to book?</h2>
-          <p className="text-gray-300 mb-6">Get your private shuttle from {originName} to {destName} starting at ${route.precio1a6} USD</p>
+        <section className="bg-gradient-to-br from-orange-100 to-orange-50 border border-orange-300 rounded-2xl p-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-blue-900 mb-3">Ready to book?</h2>
+          <p className="text-slate-600 mb-6">Get your private shuttle from {originName} to {destName} starting at ${route.precio1a6} USD</p>
           <Link
             href={`/book?from=${encodeURIComponent(route.origen)}&to=${encodeURIComponent(route.destino)}&direct=1`}
-            className="inline-block bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-8 rounded-xl transition"
+            className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-xl transition"
           >
             Book Now
           </Link>

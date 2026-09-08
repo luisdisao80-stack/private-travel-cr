@@ -95,36 +95,36 @@ export default async function AirportToLaFortunaPage() {
   const rating = google.rating;
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-white text-slate-600">
       <Navbar />
 
       {/* HERO */}
       <section className="relative pt-32 pb-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-orange-50 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-orange-50 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-amber-500/30 bg-amber-500/5">
-            <Mountain className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-slate-200 bg-orange-50">
+            <Mountain className="w-3.5 h-3.5 text-orange-600" />
+            <span className="text-xs font-semibold tracking-widest text-orange-600 uppercase">
               Costa Rica&apos;s most popular route
             </span>
           </div>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 tracking-tight">
             Airport to{" "}
-            <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-orange-600">
               La Fortuna
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed mb-4">
-            Private door-to-door shuttle from <strong className="text-white">SJO</strong> or{" "}
-            <strong className="text-white">LIR</strong> airport to La Fortuna / Arenal Volcano.
-            From <strong className="text-amber-400">$220 USD</strong> per vehicle. 3-hour drive.
+          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-4">
+            Private door-to-door shuttle from <strong className="text-slate-900">SJO</strong> or{" "}
+            <strong className="text-slate-900">LIR</strong> airport to La Fortuna / Arenal Volcano.
+            From <strong className="text-orange-600">$220 USD</strong> per vehicle. 3-hour drive.
           </p>
 
-          <p className="text-sm text-white/60 max-w-xl mx-auto mb-8">
+          <p className="text-sm text-slate-500 max-w-xl mx-auto mb-8">
             ⭐ {rating.toFixed(1)} · {reviewCount}+ Google reviews · ICT licensed · Flight
             tracking included · Free child seats
           </p>
@@ -132,14 +132,14 @@ export default async function AirportToLaFortunaPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/book?from=sjo&to=la-fortuna&direct=1"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-amber-400 text-black font-bold text-base hover:bg-amber-300 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-orange-600 text-white font-bold text-base hover:bg-orange-700 transition-colors"
             >
               Book SJO → La Fortuna
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
               href="/book?from=lir&to=la-fortuna&direct=1"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/20 text-white font-bold text-base hover:bg-white/5 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-orange-600 text-orange-600 font-bold text-base hover:bg-orange-50 transition-colors"
             >
               Book LIR → La Fortuna
               <ArrowRight className="w-5 h-5" />
@@ -149,19 +149,19 @@ export default async function AirportToLaFortunaPage() {
       </section>
 
       {/* INTRO */}
-      <section className="px-4 py-16 border-t border-amber-500/10">
+      <section className="px-4 py-16 border-t border-slate-200">
         <div className="max-w-3xl mx-auto">
-          <div className="prose prose-invert max-w-none text-white/80 leading-relaxed text-lg space-y-4">
+          <div className="prose prose-invert max-w-none text-slate-600 leading-relaxed text-lg space-y-4">
             <p>
               La Fortuna — the gateway town to Arenal Volcano National Park — is
-              about a <strong className="text-white">3-hour drive from San José International Airport (SJO)</strong>{" "}
-              and also <strong className="text-white">3 hours from Liberia Airport (LIR)</strong>.
+              about a <strong className="text-slate-900">3-hour drive from San José International Airport (SJO)</strong>{" "}
+              and also <strong className="text-slate-900">3 hours from Liberia Airport (LIR)</strong>.
               Both routes are scenic mountain drives. There&apos;s no airport in
               La Fortuna itself, so 99% of travelers arrive by private shuttle,
               shared shuttle, or rental car.
             </p>
             <p>
-              We run private shuttles from <strong className="text-amber-400">both airports</strong>{" "}
+              We run private shuttles from <strong className="text-orange-600">both airports</strong>{" "}
               to every hotel in the La Fortuna area — Tabacón, Nayara, The Springs,
               Arenal Observatory, Arenal Manoa, Lomas del Volcán, and 25+ other
               properties. Door-to-door means we pick you up at the airport
@@ -173,46 +173,46 @@ export default async function AirportToLaFortunaPage() {
       </section>
 
       {/* WHICH AIRPORT */}
-      <section className="px-4 py-16 border-t border-amber-500/10 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
+      <section className="px-4 py-16 border-t border-slate-200 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center">
             Which airport should you fly into?
           </h2>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* SJO */}
-            <div className="p-8 rounded-2xl border border-amber-500/30 bg-amber-500/5">
+            <div className="p-8 rounded-2xl border border-slate-200 bg-orange-50">
               <div className="flex items-center gap-3 mb-4">
-                <Plane className="w-7 h-7 text-amber-400" />
+                <Plane className="w-7 h-7 text-orange-600" />
                 <div>
-                  <div className="text-xs tracking-widest text-amber-400 font-semibold uppercase">
+                  <div className="text-xs tracking-widest text-orange-600 font-semibold uppercase">
                     Most popular
                   </div>
-                  <h3 className="text-2xl font-bold text-white">
+                  <h3 className="text-2xl font-bold text-blue-900">
                     SJO — San José
                   </h3>
                 </div>
               </div>
-              <p className="text-white/70 leading-relaxed mb-5">
+              <p className="text-slate-600 leading-relaxed mb-5">
                 Juan Santamaría International Airport (SJO) is Costa Rica&apos;s
                 main international gateway, located near San José in Alajuela.
                 Most flights from the US, Canada, and Europe arrive here.
               </p>
-              <ul className="space-y-2 text-sm text-white/80">
+              <ul className="space-y-2 text-sm text-slate-600">
                 <li className="flex items-start gap-2">
-                  <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <Clock className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
                   <span>
                     <strong>Drive time:</strong> ~3 hours to La Fortuna
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
                   <span>
                     <strong>Route:</strong> Highway 1 → Naranjo → Ciudad Quesada → La Fortuna
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-green-700 shrink-0 mt-0.5" />
                   <span>
                     Most international flights, more flight options
                   </span>
@@ -221,38 +221,38 @@ export default async function AirportToLaFortunaPage() {
             </div>
 
             {/* LIR */}
-            <div className="p-8 rounded-2xl border border-white/10 bg-zinc-950/50">
+            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50/50">
               <div className="flex items-center gap-3 mb-4">
-                <Plane className="w-7 h-7 text-amber-400" />
+                <Plane className="w-7 h-7 text-orange-600" />
                 <div>
-                  <div className="text-xs tracking-widest text-amber-400 font-semibold uppercase">
+                  <div className="text-xs tracking-widest text-orange-600 font-semibold uppercase">
                     Alternative
                   </div>
-                  <h3 className="text-2xl font-bold text-white">
+                  <h3 className="text-2xl font-bold text-blue-900">
                     LIR — Liberia
                   </h3>
                 </div>
               </div>
-              <p className="text-white/70 leading-relaxed mb-5">
+              <p className="text-slate-600 leading-relaxed mb-5">
                 Daniel Oduber International Airport (LIR) is in Guanacaste,
                 northwest Costa Rica. Smaller than SJO but ideal if you&apos;re
                 combining La Fortuna with the Guanacaste beaches.
               </p>
-              <ul className="space-y-2 text-sm text-white/80">
+              <ul className="space-y-2 text-sm text-slate-600">
                 <li className="flex items-start gap-2">
-                  <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <Clock className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
                   <span>
                     <strong>Drive time:</strong> ~3 hours to La Fortuna
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
                   <span>
                     <strong>Route:</strong> Cañas → Tilarán → Lake Arenal → La Fortuna
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-green-700 shrink-0 mt-0.5" />
                   <span>
                     Best if also visiting Tamarindo, Papagayo, Conchal
                   </span>
@@ -264,16 +264,16 @@ export default async function AirportToLaFortunaPage() {
       </section>
 
       {/* PRICING */}
-      <section className="px-4 py-16 border-t border-amber-500/10">
+      <section className="px-4 py-16 border-t border-slate-200">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+            <span className="text-xs font-semibold tracking-widest text-orange-600 uppercase">
               2026 prices · All taxes included
             </span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-white">
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-blue-900">
               Pricing — airport to La Fortuna
             </h2>
-            <p className="mt-3 text-white/60">
+            <p className="mt-3 text-slate-500">
               Per vehicle, not per person. Same price for 1 or up to 5 passengers
               in a standard van.
             </p>
@@ -281,25 +281,25 @@ export default async function AirportToLaFortunaPage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* SJO PRICING */}
-            <div className="rounded-2xl border border-amber-500/20 bg-zinc-950/50 overflow-hidden">
-              <div className="p-5 bg-amber-500/5 border-b border-amber-500/20">
-                <h3 className="font-bold text-amber-400 text-lg">SJO → La Fortuna</h3>
-                <p className="text-sm text-white/60">3-hour drive · 130 km</p>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50/50 overflow-hidden">
+              <div className="p-5 bg-orange-50 border-b border-slate-200">
+                <h3 className="font-bold text-orange-600 text-lg">SJO → La Fortuna</h3>
+                <p className="text-sm text-slate-500">3-hour drive · 130 km</p>
               </div>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-white/5">
-                    <th className="text-left p-4 text-white/60 font-medium">Vehicle</th>
-                    <th className="text-left p-4 text-white/60 font-medium">Pax</th>
-                    <th className="text-right p-4 text-white/60 font-medium">Price</th>
+                  <tr className="border-b border-slate-200">
+                    <th className="text-left p-4 text-slate-500 font-medium">Vehicle</th>
+                    <th className="text-left p-4 text-slate-500 font-medium">Pax</th>
+                    <th className="text-right p-4 text-slate-500 font-medium">Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   {VEHICLE_PRICING_SJO.map((v) => (
-                    <tr key={v.vehicle} className="border-b border-white/5">
-                      <td className="p-4 text-white">{v.vehicle}</td>
-                      <td className="p-4 text-white/70">{v.pax}</td>
-                      <td className="p-4 text-right text-amber-400 font-bold">
+                    <tr key={v.vehicle} className="border-b border-slate-200">
+                      <td className="p-4 text-slate-900">{v.vehicle}</td>
+                      <td className="p-4 text-slate-600">{v.pax}</td>
+                      <td className="p-4 text-right text-orange-600 font-bold">
                         ${v.price}
                       </td>
                     </tr>
@@ -309,25 +309,25 @@ export default async function AirportToLaFortunaPage() {
             </div>
 
             {/* LIR PRICING */}
-            <div className="rounded-2xl border border-amber-500/20 bg-zinc-950/50 overflow-hidden">
-              <div className="p-5 bg-amber-500/5 border-b border-amber-500/20">
-                <h3 className="font-bold text-amber-400 text-lg">LIR → La Fortuna</h3>
-                <p className="text-sm text-white/60">3-hour drive · 145 km</p>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50/50 overflow-hidden">
+              <div className="p-5 bg-orange-50 border-b border-slate-200">
+                <h3 className="font-bold text-orange-600 text-lg">LIR → La Fortuna</h3>
+                <p className="text-sm text-slate-500">3-hour drive · 145 km</p>
               </div>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-white/5">
-                    <th className="text-left p-4 text-white/60 font-medium">Vehicle</th>
-                    <th className="text-left p-4 text-white/60 font-medium">Pax</th>
-                    <th className="text-right p-4 text-white/60 font-medium">Price</th>
+                  <tr className="border-b border-slate-200">
+                    <th className="text-left p-4 text-slate-500 font-medium">Vehicle</th>
+                    <th className="text-left p-4 text-slate-500 font-medium">Pax</th>
+                    <th className="text-right p-4 text-slate-500 font-medium">Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   {VEHICLE_PRICING_LIR.map((v) => (
-                    <tr key={v.vehicle} className="border-b border-white/5">
-                      <td className="p-4 text-white">{v.vehicle}</td>
-                      <td className="p-4 text-white/70">{v.pax}</td>
-                      <td className="p-4 text-right text-amber-400 font-bold">
+                    <tr key={v.vehicle} className="border-b border-slate-200">
+                      <td className="p-4 text-slate-900">{v.vehicle}</td>
+                      <td className="p-4 text-slate-600">{v.pax}</td>
+                      <td className="p-4 text-right text-orange-600 font-bold">
                         ${v.price}
                       </td>
                     </tr>
@@ -337,7 +337,7 @@ export default async function AirportToLaFortunaPage() {
             </div>
           </div>
 
-          <p className="mt-6 text-center text-sm text-white/60">
+          <p className="mt-6 text-center text-sm text-slate-500">
             VIP service (+$80) adds a 1-2 hour scenic stop (waterfall, viewpoint,
             coffee farm), welcome kit (local snacks + sparkling water), and
             concierge driver recommendations.
@@ -346,9 +346,9 @@ export default async function AirportToLaFortunaPage() {
       </section>
 
       {/* WHAT'S INCLUDED */}
-      <section className="px-4 py-16 border-t border-amber-500/10 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent">
+      <section className="px-4 py-16 border-t border-slate-200 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center">
             What&apos;s included in your airport transfer
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -362,12 +362,12 @@ export default async function AirportToLaFortunaPage() {
             ].map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex items-start gap-3 p-5 rounded-xl border border-amber-500/10 bg-zinc-950/50"
+                className="flex items-start gap-3 p-5 rounded-xl border border-slate-200 bg-slate-50/50"
               >
-                <div className="rounded-lg bg-amber-500/10 border border-amber-500/30 p-2 shrink-0">
-                  <Icon className="w-5 h-5 text-amber-400" />
+                <div className="rounded-lg bg-orange-50 border border-slate-200 p-2 shrink-0">
+                  <Icon className="w-5 h-5 text-orange-600" />
                 </div>
-                <p className="text-white/80 leading-relaxed pt-0.5">{label}</p>
+                <p className="text-slate-600 leading-relaxed pt-0.5">{label}</p>
               </div>
             ))}
           </div>
@@ -375,14 +375,14 @@ export default async function AirportToLaFortunaPage() {
       </section>
 
       {/* THE DRIVE */}
-      <section className="px-4 py-16 border-t border-amber-500/10">
+      <section className="px-4 py-16 border-t border-slate-200">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-8 text-center">
             What to expect on the drive
           </h2>
-          <div className="space-y-6 text-white/80 leading-relaxed text-lg">
+          <div className="space-y-6 text-slate-600 leading-relaxed text-lg">
             <p>
-              <strong className="text-white">From SJO:</strong> the route leaves
+              <strong className="text-slate-900">From SJO:</strong> the route leaves
               Alajuela on Costa Rica&apos;s main north-south highway, climbs
               through the coffee plantations of Naranjo and Zarcero (famous for
               its topiary park), and descends into the Northern Plains. The
@@ -391,7 +391,7 @@ export default async function AirportToLaFortunaPage() {
               horizon about 30 minutes before reaching La Fortuna.
             </p>
             <p>
-              <strong className="text-white">From LIR:</strong> the route heads
+              <strong className="text-slate-900">From LIR:</strong> the route heads
               east through Cañas and Tilarán, then circles the northern shore of
               Lake Arenal — one of the most scenic stretches of road in Costa
               Rica, with constant volcano views across the water. The drive
@@ -408,12 +408,12 @@ export default async function AirportToLaFortunaPage() {
       </section>
 
       {/* HOTELS WE SERVE */}
-      <section className="px-4 py-16 border-t border-amber-500/10 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
+      <section className="px-4 py-16 border-t border-slate-200 bg-gradient-to-b from-amber-500/[0.02] to-transparent">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-3 text-center">
             We drop off at every La Fortuna hotel
           </h2>
-          <p className="text-white/60 text-center mb-10">
+          <p className="text-slate-500 text-center mb-10">
             Including these flagship properties — and 50+ others.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -434,7 +434,7 @@ export default async function AirportToLaFortunaPage() {
               <Link
                 key={h.slug}
                 href={`/hotels/${h.slug}`}
-                className="rounded-xl border border-amber-500/10 bg-zinc-950/50 hover:border-amber-500/40 px-4 py-3 text-sm text-white/80 hover:text-amber-400 transition-colors"
+                className="rounded-xl border border-slate-200 bg-slate-50/50 hover:border-orange-300 px-4 py-3 text-sm text-slate-600 hover:text-orange-600 transition-colors"
               >
                 {h.name} →
               </Link>
@@ -444,9 +444,9 @@ export default async function AirportToLaFortunaPage() {
       </section>
 
       {/* FAQ */}
-      <section className="px-4 py-16 border-t border-amber-500/10">
+      <section className="px-4 py-16 border-t border-slate-200">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center">
             Airport to La Fortuna FAQs
           </h2>
           <div className="space-y-4">
@@ -486,15 +486,15 @@ export default async function AirportToLaFortunaPage() {
             ].map((f) => (
               <details
                 key={f.q}
-                className="group rounded-xl border border-amber-500/10 bg-zinc-950/50 overflow-hidden"
+                className="group rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden"
               >
-                <summary className="cursor-pointer list-none flex items-center justify-between p-5 hover:bg-amber-500/5 transition-colors">
-                  <h3 className="font-semibold text-white pr-4">{f.q}</h3>
-                  <span className="shrink-0 text-amber-400 transition-transform duration-300 group-open:rotate-45 text-xl leading-none">
+                <summary className="cursor-pointer list-none flex items-center justify-between p-5 hover:bg-orange-50 transition-colors">
+                  <h3 className="font-semibold text-slate-900 pr-4">{f.q}</h3>
+                  <span className="shrink-0 text-orange-600 transition-transform duration-300 group-open:rotate-45 text-xl leading-none">
                     +
                   </span>
                 </summary>
-                <div className="px-5 pb-5 text-white/70 leading-relaxed">{f.a}</div>
+                <div className="px-5 pb-5 text-slate-600 leading-relaxed">{f.a}</div>
               </details>
             ))}
           </div>
@@ -504,20 +504,20 @@ export default async function AirportToLaFortunaPage() {
       {/* CTA */}
       <section className="px-4 py-20">
         <div className="max-w-3xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-zinc-950 to-zinc-950 p-8 md:p-12 text-center">
-            <div className="absolute -top-32 -right-32 w-96 h-96 bg-amber-500/20 rounded-full blur-[100px] pointer-events-none" />
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-orange-50 p-8 md:p-12 text-center">
+            <div className="absolute -top-32 -right-32 w-96 h-96 bg-orange-100 rounded-full blur-[100px] pointer-events-none" />
             <div className="relative">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
                 Book your airport transfer to La Fortuna
               </h2>
-              <p className="text-lg text-white/70 max-w-xl mx-auto mb-8">
+              <p className="text-lg text-slate-600 max-w-xl mx-auto mb-8">
                 Instant quote. Confirm with a card payment. Driver waiting at
                 arrivals on the day of your flight.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   href="/book"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-amber-400 text-black font-bold text-base hover:bg-amber-300 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-orange-600 text-white font-bold text-base hover:bg-orange-700 transition-colors"
                 >
                   Get Quote Now
                   <ArrowRight className="w-5 h-5" />
@@ -526,7 +526,7 @@ export default async function AirportToLaFortunaPage() {
                   href={siteConfig.business.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/20 text-white font-bold text-base hover:bg-white/5 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-orange-600 text-orange-600 font-bold text-base hover:bg-orange-50 transition-colors"
                 >
                   <MessageCircle className="w-5 h-5" />
                   WhatsApp Diego

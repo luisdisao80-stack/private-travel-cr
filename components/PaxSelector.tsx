@@ -54,7 +54,7 @@ function PaxStepper({
   incLabel: string;
 }) {
   const btn =
-    "inline-flex items-center justify-center w-8 h-8 rounded-full border border-amber-500/30 bg-black/60 text-amber-400 transition-colors hover:bg-amber-500/20 hover:border-amber-500/60 disabled:opacity-25 disabled:cursor-not-allowed disabled:hover:bg-black/60 disabled:hover:border-amber-500/30";
+    "inline-flex items-center justify-center w-8 h-8 rounded-full border border-slate-300 bg-white text-orange-600 transition-colors hover:bg-orange-50 hover:border-orange-500 disabled:opacity-25 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-slate-300";
   return (
     // En celular cada contador ocupa su propia fila con la etiqueta a la
     // izquierda y los botones a la derecha (`justify-between`): los dos
@@ -62,8 +62,8 @@ function PaxStepper({
     // fuera de la pantalla. Desde `sm` sí caben en una sola línea.
     <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start sm:gap-2">
       <div className="leading-tight">
-        <div className="text-xs font-medium text-gray-300">{label}</div>
-        <div className="text-[10px] text-gray-500">{hint}</div>
+        <div className="text-xs font-medium text-slate-700">{label}</div>
+        <div className="text-[10px] text-slate-500">{hint}</div>
       </div>
       <div className="flex items-center gap-1.5">
         <button type="button" onClick={onDec} disabled={!canDec} aria-label={decLabel} className={btn}>
@@ -71,7 +71,7 @@ function PaxStepper({
         </button>
         <span
           aria-live="polite"
-          className="w-5 text-center text-sm font-bold text-white tabular-nums"
+          className="w-5 text-center text-sm font-bold text-slate-900 tabular-nums"
         >
           {value}
         </span>
@@ -120,10 +120,10 @@ export default function PaxSelector({
     // somos" → "cuánto cuesta". Botones +/- en vez de un campo de número
     // porque en celular escribir un dígito abre el teclado y tapa media
     // pantalla.
-    <div className={`rounded-xl border border-white/10 bg-black/40 px-4 py-3 ${className}`}>
+    <div className={`rounded-xl border border-orange-300 bg-slate-50 px-4 py-3 ${className}`}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex items-center gap-2 text-sm font-medium text-gray-200">
-          <Users size={15} className="text-amber-400" />
+        <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+          <Users size={15} className="text-orange-600" />
           {lang === "en" ? "How many passengers?" : "¿Cuántos pasajeros?"}
         </div>
         <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-4">
@@ -193,7 +193,7 @@ export function BigGroupNotice({
 
   return (
     <div
-      className={`rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-center text-xs text-amber-200 ${className}`}
+      className={`rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-center text-xs text-amber-800 ${className}`}
     >
       <p>
         {lang === "en"

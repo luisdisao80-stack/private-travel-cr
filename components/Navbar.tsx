@@ -39,7 +39,7 @@ export default function Navbar() {
     // `motion.nav` y por eso el navbar arrastraba framer-motion al
     // bundle inicial de TODAS las páginas.
     <nav
-      className={`nav-in fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-xl border-b border-amber-500/20 py-3" : "bg-transparent py-5"}`}
+      className={`nav-in fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm py-3" : "bg-white/80 backdrop-blur border-b border-slate-200 py-5"}`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
@@ -83,7 +83,10 @@ export default function Navbar() {
               width={256}
               height={112}
               loading="eager"
-              className="h-14 w-auto group-hover:scale-105 transition-transform"
+              /* Tema claro: el arte del logo es dorado sobre transparente y se
+                 perdia sobre el nav blanco. La cajita negra redondeada replica
+                 el mock aprobado y le devuelve el contraste. */
+              className="h-14 w-auto rounded-lg bg-black px-3 py-1.5 group-hover:scale-105 transition-transform"
             />
           </Link>
 
@@ -92,7 +95,7 @@ export default function Navbar() {
               <Link
                 key={link.id}
                 href={link.href}
-                className="px-4 py-2 text-gray-300 hover:text-amber-400 transition-colors font-medium text-sm"
+                className="px-4 py-2 text-slate-700 hover:text-orange-600 transition-colors font-medium text-sm"
               >
                 {link.label}
               </Link>
@@ -104,7 +107,7 @@ export default function Navbar() {
             <CurrencySelector />
             <LanguageSwitcher />
 
-            <a href="tel:+50686334133" className="flex items-center gap-2 text-gray-300 hover:text-amber-400 transition-colors text-sm font-medium">
+            <a href="tel:+50686334133" className="flex items-center gap-2 text-slate-700 hover:text-orange-600 transition-colors text-sm font-medium">
               <Phone size={16} />
               +506 8633-4133
             </a>
@@ -121,13 +124,13 @@ export default function Navbar() {
                   variant="ghost"
                   size="icon"
                   aria-label={lang === "en" ? "Open menu" : "Abrir menú"}
-                  className="text-white hover:bg-amber-500/10 hover:text-amber-400"
+                  className="text-slate-700 hover:bg-orange-50 hover:text-orange-600"
                 >
                   <Menu size={24} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-black border-amber-500/20 text-white w-[300px] sm:w-[400px]">
-                <SheetTitle className="text-amber-400 text-xl mb-8 mt-4">
+              <SheetContent side="right" className="bg-white border-slate-200 text-slate-900 w-[300px] sm:w-[400px]">
+                <SheetTitle className="text-blue-900 text-xl mb-8 mt-4">
                   {lang === "en" ? "Menu" : "Menú"}
                 </SheetTitle>
 
@@ -137,15 +140,15 @@ export default function Navbar() {
                       key={link.id}
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="text-left px-4 py-3 text-gray-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all font-medium"
+                      className="text-left px-4 py-3 text-slate-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all font-medium"
                     >
                       {link.label}
                     </Link>
                   ))}
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-amber-500/20 space-y-4">
-                  <a href="tel:+50686334133" className="flex items-center gap-3 text-gray-300 hover:text-amber-400 transition-colors">
+                <div className="mt-8 pt-8 border-t border-slate-200 space-y-4">
+                  <a href="tel:+50686334133" className="flex items-center gap-3 text-slate-700 hover:text-orange-600 transition-colors">
                     <Phone size={18} />
                     +506 8633-4133
                   </a>

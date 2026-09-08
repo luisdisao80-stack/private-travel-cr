@@ -37,7 +37,7 @@ export default async function BookingSuccessPage({
     : null;
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-white text-slate-600">
       <ClearCartOnMount
         purchase={
           booking
@@ -55,44 +55,44 @@ export default async function BookingSuccessPage({
       </div>
       <section className="pt-10 pb-20 px-4">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-gradient-to-br from-green-500/10 to-amber-500/5 border border-green-500/30 rounded-3xl p-8 md:p-12 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/15 border border-green-500/40 mb-6">
-              <CheckCircle2 size={36} className="text-green-400" />
+          <div className="bg-green-50 border border-green-200 rounded-3xl p-8 md:p-12 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 border border-green-300 mb-6">
+              <CheckCircle2 size={36} className="text-green-700" />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-3">Booking Confirmed</h1>
-            <p className="text-gray-300 mb-8">
+            <p className="text-slate-600 mb-8">
               {booking
                 ? `Thank you, ${booking.customer_name}. We've received your payment.`
                 : "We've received your payment."}
             </p>
 
             {booking ? (
-              <div className="bg-black/40 border border-amber-500/20 rounded-2xl p-5 text-left text-sm space-y-2 mb-8">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left text-sm space-y-2 mb-8">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Order number</span>
-                  <span className="font-mono text-amber-400">{booking.order_number}</span>
+                  <span className="text-slate-500">Order number</span>
+                  <span className="font-mono text-orange-600">{booking.order_number}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Total</span>
-                  <span className="text-white font-bold">
+                  <span className="text-slate-500">Total</span>
+                  <span className="text-blue-900 font-bold">
                     ${Number(booking.total_usd).toFixed(2)} {booking.currency}
                   </span>
                 </div>
                 {booking.tilopay_auth ? (
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Auth code</span>
-                    <span className="font-mono text-gray-200">{booking.tilopay_auth}</span>
+                    <span className="text-slate-500">Auth code</span>
+                    <span className="font-mono text-slate-600">{booking.tilopay_auth}</span>
                   </div>
                 ) : null}
                 {booking.tilopay_last4 ? (
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Card</span>
-                    <span className="font-mono text-gray-200">•••• {booking.tilopay_last4}</span>
+                    <span className="text-slate-500">Card</span>
+                    <span className="font-mono text-slate-600">•••• {booking.tilopay_last4}</span>
                   </div>
                 ) : null}
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Confirmation sent to</span>
-                  <span className="text-gray-200">{booking.customer_email}</span>
+                  <span className="text-slate-500">Confirmation sent to</span>
+                  <span className="text-slate-600">{booking.customer_email}</span>
                 </div>
               </div>
             ) : null}
@@ -108,20 +108,20 @@ export default async function BookingSuccessPage({
                 )}/pdf?t=${pdfTokenFor(booking.order_number)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold transition mb-3"
+                className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold transition mb-3"
               >
                 <Download size={18} />
                 Download Booking Confirmation (PDF)
               </a>
             ) : null}
 
-            <p className="text-gray-400 mb-3 text-sm">
+            <p className="text-slate-500 mb-3 text-sm">
               We&apos;ll be in touch shortly by email and WhatsApp with the final pickup details.
             </p>
             {/* Red-tinted spam advisory — Diego asked for it to stand out
                 so customers actually notice it before they assume the
                 booking failed and message support. */}
-            <p className="text-red-400 mb-6 text-sm font-semibold">
+            <p className="text-red-600 mb-6 text-sm font-semibold">
               ⚠️ If you don&apos;t see our email within 5 minutes, please check your spam folder
               and mark{" "}
               <span className="font-mono">bookings@privatetravelcr.com</span>
@@ -133,22 +133,22 @@ export default async function BookingSuccessPage({
                 href="https://wa.me/50686334133"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold transition"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-slate-900 font-semibold transition"
               >
                 <MessageCircle size={16} />
                 Chat on WhatsApp
               </a>
               <a
                 href="mailto:info@privatetravelcr.com"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold transition"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-900 font-semibold transition"
               >
                 <Mail size={16} />
                 Email us
               </a>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-white/5">
-              <Link href="/" className="text-amber-400 hover:text-amber-300 text-sm">
+            <div className="mt-8 pt-6 border-t border-slate-200">
+              <Link href="/" className="text-orange-600 hover:text-orange-700 text-sm">
                 ← Back to home
               </Link>
             </div>

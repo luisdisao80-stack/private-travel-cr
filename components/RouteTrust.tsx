@@ -51,21 +51,21 @@ const badges = [
 export default function RouteTrust() {
   return (
     <section className="mb-12" aria-labelledby="route-trust-heading">
-      <h2 id="route-trust-heading" className="text-2xl font-bold text-white mb-6">
+      <h2 id="route-trust-heading" className="text-2xl font-bold text-blue-900 mb-6">
         Why book with Private Travel CR?
       </h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {badges.map(({ Icon, title, sub }) => (
           <div
             key={title}
-            className="flex items-start gap-3 bg-gray-900/50 border border-white/5 rounded-xl p-5"
+            className="flex items-start gap-3 bg-white border border-slate-200 rounded-xl p-5"
           >
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
-              <Icon size={20} className="text-amber-400" />
+            <div className="w-10 h-10 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center shrink-0">
+              <Icon size={20} className="text-orange-600" />
             </div>
             <div>
-              <div className="text-white font-semibold leading-tight mb-1">{title}</div>
-              <div className="text-sm text-gray-400 leading-snug">{sub}</div>
+              <div className="text-slate-900 font-semibold leading-tight mb-1">{title}</div>
+              <div className="text-sm text-slate-500 leading-snug">{sub}</div>
             </div>
           </div>
         ))}

@@ -299,17 +299,17 @@ export default function TermsPage() {
   ];
 
   return (
-    <main key={lang} className="min-h-screen bg-black">
+    <main key={lang} className="min-h-screen bg-white">
       <Navbar />
 
       {/* Hero de la pagina */}
-      <section className="relative pt-32 pb-12 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden">
+      <section className="relative pt-32 pb-12 px-4 bg-white overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.1),transparent_70%)]" />
 
         <div className="relative z-10 max-w-4xl mx-auto">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 text-sm mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 text-sm mb-8 transition-colors"
           >
             <ArrowLeft size={14} />
             {t.backHome}
@@ -321,28 +321,28 @@ export default function TermsPage() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-              <span className="text-amber-400 text-sm font-medium tracking-wider">
+            <div className="inline-block px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+              <span className="text-orange-600 text-sm font-medium tracking-wider">
                 ✦ {t.legalInfo}
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-3 tracking-tight">
+            <h1 className="text-4xl md:text-6xl font-bold text-blue-900 mb-3 tracking-tight">
               {t.title}
             </h1>
 
-            <div className="flex items-center justify-center gap-2 text-gray-400 mb-2">
+            <div className="flex items-center justify-center gap-2 text-slate-500 mb-2">
               <span className="text-3xl">{t.icon}</span>
               <span className="text-lg font-medium">{t.company}</span>
             </div>
 
-            <p className="text-sm text-gray-500">{t.lastUpdated}</p>
+            <p className="text-sm text-slate-500">{t.lastUpdated}</p>
           </motion.div>
         </div>
       </section>
 
       {/* Contenido */}
-      <section className="relative py-12 px-4 bg-black">
+      <section className="relative py-12 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           {/* Intro */}
           <motion.div
@@ -350,9 +350,9 @@ export default function TermsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30 rounded-2xl p-6 mb-10"
+            className="bg-gradient-to-br from-orange-50 to-amber-600/5 border border-slate-200 rounded-2xl p-6 mb-10"
           >
-            <p className="text-gray-300 leading-relaxed">{t.intro}</p>
+            <p className="text-slate-600 leading-relaxed">{t.intro}</p>
           </motion.div>
 
           {/* Secciones */}
@@ -364,20 +364,20 @@ export default function TermsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="bg-gradient-to-br from-gray-900/80 to-black border border-white/5 rounded-2xl p-6 md:p-8"
+                className="bg-white shadow-sm border border-slate-200 rounded-2xl p-6 md:p-8"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0 text-amber-400">
+                  <div className="w-10 h-10 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center flex-shrink-0 text-orange-600">
                     {sectionIcons[index]}
                   </div>
-                  <h2 className="text-xl md:text-2xl font-bold text-white">
+                  <h2 className="text-xl md:text-2xl font-bold text-blue-900">
                     {section.title}
                   </h2>
                 </div>
 
                 {/* Contenido simple */}
                 {section.content && (
-                  <div className="space-y-3 text-gray-300 leading-relaxed ml-13">
+                  <div className="space-y-3 text-slate-600 leading-relaxed ml-13">
                     {section.content.map((paragraph, i) => (
                       <p key={i} className="text-sm md:text-base">
                         {paragraph}
@@ -391,25 +391,25 @@ export default function TermsPage() {
                   <div className="space-y-5 ml-0 md:ml-13">
                     {section.subsections.map((sub, i) => (
                       <div key={i}>
-                        <h3 className="text-amber-400 font-semibold text-base mb-2">
+                        <h3 className="text-orange-600 font-semibold text-base mb-2">
                           {sub.subtitle}
                         </h3>
 
                         {sub.text && (
-                          <p className="text-gray-300 text-sm md:text-base leading-relaxed whitespace-pre-line">
+                          <p className="text-slate-600 text-sm md:text-base leading-relaxed whitespace-pre-line">
                             {sub.text}
                           </p>
                         )}
 
                         {sub.isTable && sub.tableRows && (
                           <div className="overflow-x-auto mt-2">
-                            <table className="w-full border border-amber-500/20 rounded-lg overflow-hidden">
-                              <thead className="bg-amber-500/10">
+                            <table className="w-full border border-slate-200 rounded-lg overflow-hidden">
+                              <thead className="bg-orange-50">
                                 <tr>
                                   {sub.tableHeaders!.map((header, hi) => (
                                     <th
                                       key={hi}
-                                      className="text-left p-3 text-amber-400 font-semibold text-sm border-b border-amber-500/20"
+                                      className="text-left p-3 text-orange-600 font-semibold text-sm border-b border-slate-200"
                                     >
                                       {header}
                                     </th>
@@ -420,12 +420,12 @@ export default function TermsPage() {
                                 {sub.tableRows.map((row, ri) => (
                                   <tr
                                     key={ri}
-                                    className="border-b border-white/5 last:border-0 hover:bg-white/5"
+                                    className="border-b border-slate-200 last:border-0 hover:bg-slate-50"
                                   >
                                     {row.map((cell, ci) => (
                                       <td
                                         key={ci}
-                                        className="p-3 text-gray-300 text-sm"
+                                        className="p-3 text-slate-600 text-sm"
                                       >
                                         {cell}
                                       </td>
@@ -446,14 +446,14 @@ export default function TermsPage() {
                   <div className="ml-0 md:ml-13 mt-4 flex flex-col gap-3">
                     <a
                       href="mailto:info@privatetravelcr.com"
-                      className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors"
+                      className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 transition-colors"
                     >
                       <Mail size={16} />
                       info@privatetravelcr.com
                     </a>
                     <a
                       href="tel:+50686334133"
-                      className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors"
+                      className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 transition-colors"
                     >
                       <Phone size={16} />
                       +506 8633-4133

@@ -65,20 +65,20 @@ export default async function PayPage({ params }: Props) {
   const totalUsd = Number(booking.total_usd || 0);
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-white text-slate-600">
       <Navbar />
 
       <section className="pt-28 pb-24 px-4">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-block mb-3 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] tracking-widest uppercase font-bold">
+            <div className="inline-block mb-3 px-3 py-1 rounded-full bg-orange-50 border border-slate-200 text-orange-600 text-[11px] tracking-widest uppercase font-bold">
               Complete your booking
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-2">
               Hi {booking.customer_name?.split(" ")[0] || "friend"},
             </h1>
-            <p className="text-white/70">
+            <p className="text-slate-600">
               Diego prepared this booking for you. Review the details and
               tap the button below to pay.
             </p>
@@ -86,24 +86,24 @@ export default async function PayPage({ params }: Props) {
 
           {/* Expired / already paid states */}
           {isAlreadyPaid && (
-            <div className="rounded-2xl border border-green-500/30 bg-green-500/10 p-6 text-center mb-6">
+            <div className="rounded-2xl border border-green-600 bg-green-50 p-6 text-center mb-6">
               <div className="text-2xl mb-2">✅</div>
-              <div className="text-lg font-bold text-green-300 mb-1">
+              <div className="text-lg font-bold text-green-700 mb-1">
                 Already paid
               </div>
-              <p className="text-sm text-white/70">
+              <p className="text-sm text-slate-600">
                 This booking (<span className="font-mono">{booking.order_number}</span>) is already confirmed. Check your inbox for the confirmation email.
               </p>
             </div>
           )}
 
           {isExpired && !isAlreadyPaid && (
-            <div className="rounded-2xl border border-red-500/40 bg-red-500/10 p-6 text-center mb-6">
+            <div className="rounded-2xl border border-red-300 bg-red-50 p-6 text-center mb-6">
               <div className="text-2xl mb-2">⏰</div>
-              <div className="text-lg font-bold text-red-300 mb-1">
+              <div className="text-lg font-bold text-red-700 mb-1">
                 This link has expired
               </div>
-              <p className="text-sm text-white/70 mb-4">
+              <p className="text-sm text-slate-600 mb-4">
                 Payment links are valid for 48 hours. Message Diego on
                 WhatsApp and he&apos;ll send you a new one.
               </p>
@@ -111,7 +111,7 @@ export default async function PayPage({ params }: Props) {
                 href="https://wa.me/50686334133"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-bold text-sm px-5 py-3 rounded-lg"
+                className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold text-sm px-5 py-3 rounded-lg"
               >
                 <MessageCircle size={16} />
                 WhatsApp Diego
@@ -120,20 +120,20 @@ export default async function PayPage({ params }: Props) {
           )}
 
           {/* Order card */}
-          <div className="rounded-2xl border border-white/10 bg-zinc-950 overflow-hidden mb-6">
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden mb-6">
             {/* Order number + total */}
-            <div className="bg-amber-500/5 border-b border-amber-500/20 p-5">
+            <div className="bg-orange-50 border-b border-slate-200 p-5">
               <div className="flex items-baseline justify-between">
-                <div className="text-[11px] uppercase tracking-widest text-amber-400 font-bold">
+                <div className="text-[11px] uppercase tracking-widest text-orange-600 font-bold">
                   Order {booking.order_number}
                 </div>
                 <div className="text-right">
-                  <div className="text-[10px] uppercase tracking-widest text-white/50">
+                  <div className="text-[10px] uppercase tracking-widest text-slate-500">
                     Total{items.length > 1 ? ` · ${items.length} trips` : ""}
                   </div>
-                  <div className="text-3xl font-bold text-white">
+                  <div className="text-3xl font-bold text-blue-900">
                     ${totalUsd.toFixed(2)}{" "}
-                    <span className="text-sm font-normal text-white/60">USD</span>
+                    <span className="text-sm font-normal text-slate-500">USD</span>
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export default async function PayPage({ params }: Props) {
             {/* Trip details — loops per trip. Multi-trip quotes stack the
                 trips vertically with dividers between them; single-trip
                 quotes render identical to the pre-multi-trip layout. */}
-            <div className="divide-y divide-white/10">
+            <div className="divide-y divide-slate-200">
               {items.map((item, idx) => (
                 <TripBlock
                   key={idx}
@@ -158,12 +158,12 @@ export default async function PayPage({ params }: Props) {
           {!isExpired && !isAlreadyPaid && (
             <>
               <PayButton token={token} totalUsd={totalUsd} />
-              <div className="text-[11px] text-white/50 text-center mt-3 flex items-center justify-center gap-1.5">
-                <ShieldCheck size={12} className="text-amber-400" />
+              <div className="text-[11px] text-slate-500 text-center mt-3 flex items-center justify-center gap-1.5">
+                <ShieldCheck size={12} className="text-orange-600" />
                 Secure payment via Tilopay · Charged in USD
               </div>
               {expiresAt && (
-                <div className="text-[11px] text-white/50 text-center mt-1">
+                <div className="text-[11px] text-slate-500 text-center mt-1">
                   Link expires{" "}
                   {new Intl.DateTimeFormat("en-US", {
                     weekday: "short",
@@ -180,14 +180,14 @@ export default async function PayPage({ params }: Props) {
 
           {/* Questions? */}
           <div className="mt-8 text-center">
-            <p className="text-sm text-white/60 mb-3">
+            <p className="text-sm text-slate-500 mb-3">
               Questions before you pay?
             </p>
             <a
               href="https://wa.me/50686334133"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-transparent hover:bg-green-500/10 text-green-400 border border-green-500/40 font-bold text-sm px-5 py-2.5 rounded-lg"
+              className="inline-flex items-center gap-2 bg-white hover:bg-green-50 text-green-700 border border-green-600/50 font-bold text-sm px-5 py-2.5 rounded-lg"
             >
               <MessageCircle size={16} />
               WhatsApp Diego directly
@@ -195,7 +195,7 @@ export default async function PayPage({ params }: Props) {
           </div>
 
           {/* Trust footer */}
-          <div className="mt-8 text-center text-[11px] text-white/40">
+          <div className="mt-8 text-center text-[11px] text-slate-400">
             <p>
               ⭐ 5.0 on Google · 200+ reviews · ICT Licensed · Fully
               insured through INS
@@ -203,7 +203,7 @@ export default async function PayPage({ params }: Props) {
             <p className="mt-1">
               <Link
                 href={siteConfig.siteUrl}
-                className="hover:text-amber-400"
+                className="hover:text-orange-600"
               >
                 privatetravelcr.com
               </Link>{" "}
@@ -241,39 +241,39 @@ function TripBlock({
     <div className="p-5 space-y-4">
       <div>
         <div className="flex items-baseline justify-between gap-3 mb-2">
-          <div className="text-[10px] uppercase tracking-widest text-amber-400 font-bold">
+          <div className="text-[10px] uppercase tracking-widest text-orange-600 font-bold">
             {isMultiTrip ? `Trip ${index + 1} of ${total}` : "Trip"} ·{" "}
             {item.serviceType === "vip" ? "VIP" : "Standard"} ·{" "}
             {item.vehicleName}
           </div>
           {isMultiTrip && perTripPrice > 0 && (
-            <div className="text-sm font-bold text-white whitespace-nowrap">
+            <div className="text-sm font-bold text-blue-900 whitespace-nowrap">
               ${perTripPrice.toFixed(2)}
-              <span className="text-[10px] font-normal text-white/60 ml-1">
+              <span className="text-[10px] font-normal text-slate-500 ml-1">
                 USD
               </span>
             </div>
           )}
         </div>
-        <div className="space-y-2 text-white">
+        <div className="space-y-2 text-slate-700">
           <div className="flex items-start gap-2">
-            <MapPin size={16} className="text-amber-400 shrink-0 mt-0.5" />
+            <MapPin size={16} className="text-orange-600 shrink-0 mt-0.5" />
             <div>
               <div className="font-bold">{item.fromName}</div>
               {item.pickupPlace && item.pickupPlace !== item.fromName && (
-                <div className="text-xs text-white/60">
+                <div className="text-xs text-slate-500">
                   {item.pickupPlace}
                 </div>
               )}
             </div>
           </div>
-          <div className="text-white/40 pl-6">↓</div>
+          <div className="text-slate-400 pl-6">↓</div>
           <div className="flex items-start gap-2">
-            <MapPin size={16} className="text-amber-400 shrink-0 mt-0.5" />
+            <MapPin size={16} className="text-orange-600 shrink-0 mt-0.5" />
             <div>
               <div className="font-bold">{item.toName}</div>
               {item.dropoffPlace && item.dropoffPlace !== item.toName && (
-                <div className="text-xs text-white/60">
+                <div className="text-xs text-slate-500">
                   {item.dropoffPlace}
                 </div>
               )}
@@ -282,7 +282,7 @@ function TripBlock({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
+      <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-200">
         <MetaRow
           icon={<Calendar size={14} />}
           label="Date"
@@ -328,11 +328,11 @@ function MetaRow({
 }) {
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-widest text-white/40 flex items-center gap-1.5 mb-0.5">
-        <span className="text-amber-400">{icon}</span>
+      <div className="text-[10px] uppercase tracking-widest text-slate-400 flex items-center gap-1.5 mb-0.5">
+        <span className="text-orange-600">{icon}</span>
         {label}
       </div>
-      <div className="text-sm text-white font-medium">{value}</div>
+      <div className="text-sm text-slate-900 font-medium">{value}</div>
     </div>
   );
 }

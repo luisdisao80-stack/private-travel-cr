@@ -396,7 +396,9 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       {/* Hero */}
       {/* overflow-visible (not -hidden) so the LocationInput dropdown can
           extend past the section bottom without getting clipped. */}
-      <section className="relative w-full">
+      {/* `isolate`: la foto usa -z-[1] y, sin un stacking context propio, se
+          iba detras del bg-white del <main> y el header quedaba gris plano. */}
+      <section className="relative isolate w-full">
         {/* 50 y no 65: la foto de origen subió a 3840 px, y con sizes=100vw
             una pantalla retina pide justo ese tamaño. A 65 serían ~500 KB
             para algo que va debajo del degradado negro de dos líneas abajo. */}
@@ -409,15 +411,17 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
           quality={50}
           className="object-cover object-center -z-[1]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black z-[1]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18),transparent_60%)] z-[2]" />
+        {/* Tema claro: antes el degradado terminaba en negro solido para
+            fundirse con la pagina oscura. Ahora la pagina es blanca, asi que
+            se aligera para que la foto se vea y el texto blanco siga legible. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/60 z-[1]" />
         <div className="relative z-10 container mx-auto px-4 pt-24 pb-10 md:pt-28 md:pb-12">
           {view === "checkout" ? (
             <div className="text-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-3">
                 {lang === "en" ? "Confirm your booking" : "Confirmá tu reserva"}
               </h1>
-              <p className="text-gray-300 text-sm md:text-base max-w-xl mx-auto">
+              <p className="text-gray-200 text-sm md:text-base max-w-xl mx-auto">
                 {lang === "en"
                   ? "Enter your details and we'll handle the rest"
                   : "Poné tus datos y del resto nos encargamos nosotros"}
@@ -432,7 +436,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-5 text-center">
                 {lang === "en" ? "Where are you headed?" : "¿A dónde vas?"}
               </h1>
-              <div className="bg-gradient-to-br from-gray-900/95 to-black/95 border border-amber-500/20 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible">
+              <div className="bg-white border-2 border-orange-500 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/50 overflow-visible">
                 <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-2">
                   <LocationInput
                     value={heroFrom}
@@ -467,7 +471,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                         ? "Swap pickup and drop-off"
                         : "Intercambiar origen y destino"
                     }
-                    className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-amber-500/30 bg-black/60 hover:bg-amber-500/20 hover:border-amber-500/60 text-amber-400 transition-colors"
+                    className="self-center shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-slate-300 bg-white hover:bg-orange-50 hover:border-orange-500 text-orange-600 transition-colors"
                   >
                     <ArrowLeftRight size={16} className="hidden md:block" />
                     <ArrowLeftRight size={16} className="rotate-90 md:hidden" />
@@ -492,6 +496,11 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   lang={lang}
                   className="mt-3"
                 />
+                {/* Pedido de Diego 2026-09-07: igual que en la home, se ven
+                    origen/destino y pasajeros; el precio y el botón
+                    aparecen cuando la ruta ya está escogida. */}
+                {heroFrom.trim().length > 0 && heroTo.trim().length > 0 && (
+                  <>
                 {/* `heroTotalPax`, NO `heroAdults`: el precio es por
                     vehículo y los niños también ocupan asiento. Con
                     adultos sueltos, 4 adultos + 3 niños cotizaba como
@@ -512,7 +521,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   />
                 ) : null}
                 {rawSameLocation || addError === "same" ? (
-                  <p className="mt-3 text-xs text-amber-300/90 text-center">
+                  <p className="mt-3 text-xs text-orange-600/90 text-center">
                     {lang === "en"
                       ? "Pickup and drop-off can't be the same place. Please pick a different drop-off location."
                       : "El origen y el destino no pueden ser iguales. Elegí un destino diferente."}
@@ -526,7 +535,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   <button
                     type="button"
                     onClick={handleQuickAdd}
-                    className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-black font-bold py-4 rounded-xl transition-colors"
+                    className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl transition-colors"
                   >
                     <ShoppingCart size={18} />
                     {items.length > 0
@@ -538,6 +547,8 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                         : "Agregar al carrito"}
                   </button>
                 ) : null}
+                  </>
+                )}
                 {/* El itinerario que se va armando, acá mismo debajo del
                     buscador.
                     Antes esta caja decía sólo "3 viajes · $670 en total":
@@ -550,13 +561,13 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     El total y el botón de pagar cierran la lista, como en
                     cualquier carrito. */}
                 {items.length > 0 ? (
-                  <div className="mt-4 overflow-hidden rounded-xl border border-amber-500/30 bg-black/40">
-                    <div className="flex items-center justify-between border-b border-amber-500/20 bg-amber-500/10 px-4 py-2.5">
+                  <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                    <div className="flex items-center justify-between border-b border-slate-200 bg-orange-50 px-4 py-2.5">
                       <div>
-                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-300">
+                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange-600">
                           {lang === "en" ? "My trip" : "Mi viaje"}
                         </div>
-                        <div className="text-sm font-bold text-white">
+                        <div className="text-sm font-bold text-blue-900">
                           {items.length}{" "}
                           {items.length === 1
                             ? lang === "en"
@@ -571,27 +582,27 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                           click hizo algo, sin robarle el lugar al
                           itinerario. */}
                       {justAdded ? (
-                        <span className="flex items-center gap-1.5 text-xs font-semibold text-green-300">
+                        <span className="flex items-center gap-1.5 text-xs font-semibold text-green-700">
                           <CheckCircle2 size={14} className="shrink-0" />
                           {lang === "en" ? "Added" : "Agregado"}
                         </span>
                       ) : null}
                     </div>
 
-                    <ul className="divide-y divide-white/10">
+                    <ul className="divide-y divide-slate-200">
                       {items.map((it, i) => (
                         <li
                           key={it.id}
                           className="flex items-start gap-3 px-4 py-3 text-left"
                         >
-                          <span className="mt-0.5 shrink-0 text-xs font-bold text-amber-400/70">
+                          <span className="mt-0.5 shrink-0 text-xs font-bold text-orange-600/70">
                             #{i + 1}
                           </span>
                           <div className="min-w-0 flex-1">
-                            <div className="text-sm font-semibold text-white break-words">
+                            <div className="text-sm font-semibold text-slate-900 break-words">
                               {it.fromName} → {it.toName}
                             </div>
-                            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-gray-400">
+                            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-500">
                               <span>
                                 {it.passengers}{" "}
                                 {it.passengers === 1
@@ -618,18 +629,18 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                                 un dato que nunca escribió. */}
                             <div className="mt-0.5 text-xs">
                               {it.date ? (
-                                <span className="text-gray-400">
+                                <span className="text-slate-500">
                                   {formatTripDate(it.date)}
                                 </span>
                               ) : (
-                                <span className="text-amber-300/80">
+                                <span className="text-orange-600/80">
                                   {lang === "en"
                                     ? "Date at checkout"
                                     : "Fecha en el pago"}
                                 </span>
                               )}
                               {it.extraStopNames?.length ? (
-                                <span className="text-amber-300/80">
+                                <span className="text-orange-600/80">
                                   {" · "}
                                   {it.extraStopNames.join(" · ")}
                                 </span>
@@ -637,7 +648,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                             </div>
                           </div>
                           <div className="flex shrink-0 items-center gap-2">
-                            <span className="text-sm font-bold text-amber-400">
+                            <span className="text-sm font-bold text-orange-600">
                               ${it.totalPrice.toLocaleString("en-US")}
                             </span>
                             <button
@@ -648,7 +659,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                                   ? `Remove ${it.fromName} to ${it.toName}`
                                   : `Quitar ${it.fromName} a ${it.toName}`
                               }
-                              className="rounded p-1 text-gray-500 transition-colors hover:bg-white/5 hover:text-red-400"
+                              className="rounded p-1 text-slate-500 transition-colors hover:bg-slate-50 hover:text-red-600"
                             >
                               <X size={14} />
                             </button>
@@ -657,11 +668,11 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                       ))}
                     </ul>
 
-                    <div className="flex items-center justify-between border-t border-amber-500/20 bg-amber-500/5 px-4 py-3">
-                      <span className="text-sm font-bold text-white">
+                    <div className="flex items-center justify-between border-t border-slate-200 bg-orange-50 px-4 py-3">
+                      <span className="text-sm font-bold text-blue-900">
                         {lang === "en" ? "Total" : "Total"}
                       </span>
-                      <span className="text-lg font-extrabold text-amber-400">
+                      <span className="text-lg font-extrabold text-orange-600">
                         ${totalPrice.toLocaleString("en-US")}
                       </span>
                     </div>
@@ -670,13 +681,13 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                       <button
                         type="button"
                         onClick={goToCheckout}
-                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 font-bold text-black transition-colors hover:bg-amber-600"
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 py-3 font-bold text-white transition-colors hover:bg-orange-700"
                       >
                         {lang === "en"
                           ? "Finish details & check out"
                           : "Completar datos y pagar"}
                       </button>
-                      <p className="mt-2 text-center text-[11px] text-gray-500">
+                      <p className="mt-2 text-center text-[11px] text-slate-500">
                         {lang === "en"
                           ? "Or search another trip above to keep adding."
                           : "O buscá otro viaje arriba para seguir agregando."}
@@ -684,17 +695,17 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     </div>
                   </div>
                 ) : null}
-                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-white/5 text-xs text-gray-400">
+                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-slate-200 text-xs text-slate-500">
                   <span className="flex items-center gap-1.5">
-                    <Zap size={12} className="text-amber-400" />
+                    <Zap size={12} className="text-orange-600" />
                     {lang === "en" ? "Instant pricing" : "Precio al instante"}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Shield size={12} className="text-amber-400" />
+                    <Shield size={12} className="text-orange-600" />
                     {lang === "en" ? "Free cancellation" : "Cancelación gratis"}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 size={12} className="text-amber-400" />
+                    <CheckCircle2 size={12} className="text-orange-600" />
                     {lang === "en" ? "No hidden fees" : "Sin cargos ocultos"}
                   </span>
                 </div>
@@ -709,7 +720,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       <section className="container mx-auto px-4 py-8 md:py-12">
         {view === "checkout" ? (
           <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_440px] gap-8 lg:gap-10">
-            <div className="min-w-0 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-gray-900/95 to-black/95 shadow-2xl shadow-black/40">
+            <div className="min-w-0 rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-black/40">
               <BookingForm
                 hotels={hotels}
                 onBack={() => {
@@ -772,7 +783,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
               <button
                 type="button"
                 onClick={() => setShowDetailedForm(true)}
-                className="w-full rounded-xl border border-white/10 bg-white/[0.02] px-4 py-4 text-center text-sm text-gray-400 transition-colors hover:border-amber-500/40 hover:text-amber-300"
+                className="w-full rounded-xl border border-slate-200 bg-white/[0.02] px-4 py-4 text-center text-sm text-slate-500 transition-colors hover:border-orange-300 hover:text-orange-700"
               >
                 {lang === "en"
                   ? "Need to customize a trip? VIP, extra stops, child seats"

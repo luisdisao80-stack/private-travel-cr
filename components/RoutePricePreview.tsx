@@ -195,7 +195,7 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
   if (state.status === "idle") {
     return (
       <PriceCardShell>
-        <p className="flex-1 text-center text-xs text-gray-400">
+        <p className="flex-1 text-center text-xs text-slate-500">
           {es
             ? "Elegí origen y destino para ver el precio."
             : "Pick a pickup and drop-off to see the price."}
@@ -218,14 +218,14 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
               mostrar van con texto transparente en vez de vacías, porque
               un div vacío colapsa a 0 y volvería a descuadrar el alto. */}
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-amber-300 font-bold">
+            <div className="text-[10px] uppercase tracking-wider text-orange-600 font-bold">
               {es ? "Desde" : "From"}
             </div>
             <div className="text-2xl font-bold leading-none">
-              <span className="inline-block h-6 w-20 animate-pulse rounded bg-white/15 align-middle" />
+              <span className="inline-block h-6 w-20 animate-pulse rounded bg-slate-200 align-middle" />
             </div>
-            <div className="mt-1 flex items-center gap-1.5 text-[10px] text-gray-400">
-              <Loader2 size={11} className="animate-spin text-amber-400" />
+            <div className="mt-1 flex items-center gap-1.5 text-[10px] text-slate-500">
+              <Loader2 size={11} className="animate-spin text-orange-600" />
               {es ? "Buscando precio…" : "Checking price…"}
             </div>
             <div className="text-[10px] text-transparent select-none" aria-hidden>
@@ -233,11 +233,11 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
             </div>
           </div>
           <div className="text-right">
-            <div className="inline-flex items-center gap-1 text-xs text-gray-300">
-              <Clock size={12} className="text-amber-400/40" />
-              <span className="inline-block h-3 w-6 animate-pulse rounded bg-white/15" />
+            <div className="inline-flex items-center gap-1 text-xs text-slate-600">
+              <Clock size={12} className="text-orange-600/40" />
+              <span className="inline-block h-3 w-6 animate-pulse rounded bg-slate-200" />
             </div>
-            <div className="text-[10px] text-gray-500 mt-1">
+            <div className="text-[10px] text-slate-500 mt-1">
               {es ? "Tiempo aprox. de viaje" : "Approx. travel time"}
             </div>
           </div>
@@ -253,7 +253,7 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
   if (state.status === "notFound") {
     return (
       <PriceCardShell>
-        <p className="flex-1 text-center text-xs text-amber-300/80">
+        <p className="flex-1 text-center text-xs text-amber-700">
           {es
             ? "Todavía no tenemos precio directo para ese par — seguí y te lo cotizamos."
             : "We don't have a direct price for that pair yet — continue and we'll quote it."}
@@ -265,7 +265,7 @@ export default function RoutePricePreview({ from, to, adults, onQuote }: Props) 
   if (state.status === "error") {
     return (
       <PriceCardShell>
-        <p className="flex-1 text-center text-xs text-red-300">
+        <p className="flex-1 text-center text-xs text-red-600">
           {es
             ? "No pudimos conectarnos para traer el precio. Revisá tu conexión e intentá de nuevo."
             : "Couldn't reach the pricing server. Check your connection and try again."}
@@ -302,7 +302,7 @@ function PriceCardShell({
       // llevan menos texto, sin tener que cuadrarle las líneas a cada uno.
       // Si algún día la tarjeta con precio crece de 99px, hay que subir
       // este número o el brinco vuelve.
-      className={`mt-4 min-h-[99px] rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 flex items-center justify-between gap-3 transition-opacity duration-150 ${
+      className={`mt-4 min-h-[99px] rounded-xl border border-orange-200 bg-orange-50 px-4 py-3 flex items-center justify-between gap-3 transition-opacity duration-150 ${
         stale ? "opacity-40" : "opacity-100"
       }`}
     >
@@ -324,16 +324,16 @@ function PriceCard({
   return (
     <PriceCardShell stale={stale}>
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-amber-300 font-bold">
+        <div className="text-[10px] uppercase tracking-wider text-orange-600 font-bold">
           {es ? "Desde" : "From"}
         </div>
-        <div className="text-2xl font-bold text-white leading-none">
+        <div className="text-2xl font-bold text-blue-900 leading-none">
           <Price usd={data.basePrice} />
         </div>
-        <div className="text-[10px] text-green-400 mt-1">
+        <div className="text-[10px] text-green-700 mt-1">
           {es ? "Impuestos incluidos" : "Taxes included"}
         </div>
-        <div className="text-[10px] text-gray-400">
+        <div className="text-[10px] text-slate-500">
           {/* El tramo sale de quote-helpers, la misma función que decide
               el precio. Antes estaba escrito acá con un ternario aparte y
               nada garantizaba que coincidiera con lo que cobrábamos. */}
@@ -342,11 +342,11 @@ function PriceCard({
         </div>
       </div>
       <div className="text-right">
-        <div className="inline-flex items-center gap-1 text-xs text-gray-300">
-          <Clock size={12} className="text-amber-400" />
+        <div className="inline-flex items-center gap-1 text-xs text-slate-600">
+          <Clock size={12} className="text-orange-600" />
           {data.duration}
         </div>
-        <div className="text-[10px] text-gray-500 mt-1">
+        <div className="text-[10px] text-slate-500 mt-1">
           {es ? "Tiempo aprox. de viaje" : "Approx. travel time"}
         </div>
       </div>

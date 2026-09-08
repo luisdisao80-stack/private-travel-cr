@@ -44,7 +44,7 @@ export default async function Home() {
   // Newest-first; BlogHighlights renders the top 3.
   const posts = getAllPosts();
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen bg-white">
       <FAQSchema />
       <ReviewSchema googleReviews={google.reviews} />
       <Navbar />

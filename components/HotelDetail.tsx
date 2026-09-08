@@ -82,38 +82,38 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
         ]}
       />
       <FAQSchema faqs={faqs} />
-      <main className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-950 pt-24 pb-16">
+      <main className="min-h-screen bg-slate-50 pt-24 pb-16">
         <div className="max-w-5xl mx-auto px-4">
           {/* Breadcrumb */}
-          <nav className="text-sm text-gray-500 mb-6">
-            <Link href="/" className="hover:text-amber-400">
+          <nav className="text-sm text-slate-500 mb-6">
+            <Link href="/" className="hover:text-orange-600">
               Home
             </Link>
             {" / "}
-            <Link href="/hotels" className="hover:text-amber-400">
+            <Link href="/hotels" className="hover:text-orange-600">
               Hotels
             </Link>
             {" / "}
-            <span className="text-gray-300">{hotel.name}</span>
+            <span className="text-slate-600">{hotel.name}</span>
           </nav>
 
           {/* Hero */}
           <section className="mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-              <Building2 size={14} className="text-amber-400" />
-              <span className="text-amber-400 text-sm font-medium tracking-wider">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+              <Building2 size={14} className="text-orange-600" />
+              <span className="text-orange-600 text-sm font-medium tracking-wider">
                 HOTEL SHUTTLE SERVICE
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-3 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-blue-900 mb-3 leading-tight">
               Private shuttle from {hotel.name}
             </h1>
-            <p className="text-gray-300 text-lg flex items-center gap-2 mb-4">
-              <MapPin size={18} className="text-amber-400" />
+            <p className="text-slate-600 text-lg flex items-center gap-2 mb-4">
+              <MapPin size={18} className="text-orange-600" />
               {hotel.city}, Costa Rica
             </p>
             {hotel.description ? (
-              <p className="text-gray-300 leading-relaxed max-w-3xl">
+              <p className="text-slate-600 leading-relaxed max-w-3xl">
                 {hotel.description}
               </p>
             ) : null}
@@ -122,9 +122,9 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
                 {hotel.amenities.map((a) => (
                   <span
                     key={a}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300 text-xs"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-xs"
                   >
-                    <CheckCircle2 size={12} className="text-amber-400" />
+                    <CheckCircle2 size={12} className="text-orange-600" />
                     {a}
                   </span>
                 ))}
@@ -135,20 +135,20 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
           {/* Shuttle pricing grid */}
           <section className="mb-12" aria-labelledby="shuttle-grid-heading">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-                <Sparkles size={20} className="text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center">
+                <Sparkles size={20} className="text-orange-600" />
               </div>
-              <h2 id="shuttle-grid-heading" className="text-2xl md:text-3xl font-bold text-white">
+              <h2 id="shuttle-grid-heading" className="text-2xl md:text-3xl font-bold text-blue-900">
                 Shuttle options from {hotel.name}
               </h2>
             </div>
-            <p className="text-gray-400 text-sm mb-6">
+            <p className="text-slate-500 text-sm mb-6">
               Door-to-door private transfers from {hotel.name}. Prices in USD per
               vehicle (1–5 passengers). Larger vehicles available on request.
             </p>
 
             {sortedRoutes.length === 0 ? (
-              <div className="bg-gray-900/50 border border-white/10 rounded-2xl p-8 text-center text-gray-400">
+              <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500">
                 No published routes from this area yet. Message us on WhatsApp
                 for a custom quote.
               </div>
@@ -158,16 +158,16 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
                   <Link
                     key={route.id}
                     href={href}
-                    className="group flex items-center justify-between bg-gray-900/50 border border-white/10 hover:border-amber-500/40 rounded-xl p-5 transition"
+                    className="group flex items-center justify-between bg-white border border-slate-200 hover:border-orange-300 rounded-xl p-5 transition"
                   >
                     <div className="min-w-0 pr-4">
-                      <div className="text-white font-semibold mb-1 truncate">
+                      <div className="text-slate-900 font-semibold mb-1 truncate">
                         To {displayLocation(route.destino)}
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-gray-400">
+                      <div className="flex items-center gap-3 text-xs text-slate-500">
                         {route.duracion ? (
                           <span className="flex items-center gap-1">
-                            <Clock size={12} className="text-amber-400/60" />
+                            <Clock size={12} className="text-orange-600/60" />
                             {route.duracion}
                           </span>
                         ) : null}
@@ -176,19 +176,19 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <div className="text-right">
-                        <div className="text-[10px] text-gray-500 leading-none">
+                        <div className="text-[10px] text-slate-500 leading-none">
                           FROM
                         </div>
-                        <div className="text-xl font-bold text-amber-400 leading-tight">
+                        <div className="text-xl font-bold text-orange-600 leading-tight">
                           <Price usd={route.precio1a6 ?? 0} />
                         </div>
-                        <div className="text-[9px] text-gray-500 leading-tight mt-0.5">
+                        <div className="text-[9px] text-slate-500 leading-tight mt-0.5">
                           taxes incl.
                         </div>
                       </div>
                       <ArrowRight
                         size={16}
-                        className="text-amber-400 group-hover:translate-x-1 transition-transform"
+                        className="text-orange-600 group-hover:translate-x-1 transition-transform"
                       />
                     </div>
                   </Link>
@@ -200,7 +200,7 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <Link
                 href={`/book?from=${encodeURIComponent(hotel.area_origen)}&direct=1`}
-                className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-6 rounded-xl text-center transition"
+                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-xl text-center transition"
               >
                 Get instant quote
               </Link>
@@ -218,10 +218,10 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
           {/* FAQs */}
           <section className="mb-12" aria-labelledby="hotel-faq-heading">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-                <HelpCircle size={20} className="text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-orange-50 border border-slate-200 flex items-center justify-center">
+                <HelpCircle size={20} className="text-orange-600" />
               </div>
-              <h2 id="hotel-faq-heading" className="text-2xl font-bold text-white">
+              <h2 id="hotel-faq-heading" className="text-2xl font-bold text-blue-900">
                 Frequently asked about shuttles from {hotel.name}
               </h2>
             </div>
@@ -230,18 +230,18 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
                 <details
                   key={i}
                   open={i === 0}
-                  className="group bg-gradient-to-br from-gray-900/80 to-black border border-white/5 hover:border-white/20 rounded-2xl overflow-hidden transition-colors open:border-amber-500/40"
+                  className="group bg-white shadow-sm border border-slate-200 hover:border-slate-300 rounded-2xl overflow-hidden transition-colors open:border-orange-300"
                 >
-                  <summary className="cursor-pointer list-none flex items-center justify-between gap-4 p-5 text-white font-semibold group-open:text-amber-400 [&::-webkit-details-marker]:hidden">
+                  <summary className="cursor-pointer list-none flex items-center justify-between gap-4 p-5 text-slate-900 font-semibold group-open:text-orange-600 [&::-webkit-details-marker]:hidden">
                     <span>{faq.question}</span>
                     <span
                       aria-hidden="true"
-                      className="shrink-0 text-amber-400 transition-transform duration-300 group-open:rotate-45 text-xl leading-none"
+                      className="shrink-0 text-orange-600 transition-transform duration-300 group-open:rotate-45 text-xl leading-none"
                     >
                       +
                     </span>
                   </summary>
-                  <div className="px-5 pb-5 text-gray-300 leading-relaxed">
+                  <div className="px-5 pb-5 text-slate-600 leading-relaxed">
                     {faq.answer}
                   </div>
                 </details>
@@ -252,7 +252,7 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
           {/* Related hotels */}
           {related.length > 0 ? (
             <section className="mb-12">
-              <h2 className="text-2xl font-bold text-white mb-6">
+              <h2 className="text-2xl font-bold text-blue-900 mb-6">
                 Other hotels in {hotel.city}
               </h2>
               <div className="grid md:grid-cols-2 gap-4">
@@ -260,17 +260,17 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
                   <Link
                     key={h.id}
                     href={`/hotels/${h.slug}`}
-                    className="group flex items-center justify-between bg-gray-900/50 border border-amber-500/10 hover:border-amber-500/40 rounded-xl p-5 transition"
+                    className="group flex items-center justify-between bg-white border border-slate-200 hover:border-orange-300 rounded-xl p-5 transition"
                   >
                     <div className="min-w-0 pr-4">
-                      <div className="text-white font-semibold mb-1 truncate">
+                      <div className="text-slate-900 font-semibold mb-1 truncate">
                         {h.name}
                       </div>
-                      <div className="text-xs text-gray-500">{h.city}</div>
+                      <div className="text-xs text-slate-500">{h.city}</div>
                     </div>
                     <ArrowRight
                       size={16}
-                      className="text-amber-400 shrink-0 group-hover:translate-x-1 transition-transform"
+                      className="text-orange-600 shrink-0 group-hover:translate-x-1 transition-transform"
                     />
                   </Link>
                 ))}
@@ -279,11 +279,11 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
           ) : null}
 
           {/* Footer CTA */}
-          <section className="bg-gradient-to-br from-amber-500/20 to-amber-500/10 border border-amber-500/40 rounded-2xl p-8 text-center">
-            <h2 className="text-2xl font-bold text-white mb-3">
+          <section className="bg-gradient-to-br from-orange-100 to-orange-50 border border-orange-300 rounded-2xl p-8 text-center">
+            <h2 className="text-2xl font-bold text-blue-900 mb-3">
               Ready to book your transfer from {hotel.name}?
             </h2>
-            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+            <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
               Instant pricing, free cancellation up to 48 hours, and a
               bilingual driver waiting in the hotel lobby. Door-to-door
               private service across all of Costa Rica.
@@ -291,7 +291,7 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href={`/book?from=${encodeURIComponent(hotel.area_origen)}&direct=1`}
-                className="bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-8 rounded-xl transition"
+                className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-xl transition"
               >
                 Get quote now
               </Link>
@@ -304,11 +304,11 @@ export default function HotelDetail({ hotel, routes, related }: Props) {
                 WhatsApp us
               </a>
             </div>
-            <p className="text-xs text-gray-500 mt-4">
+            <p className="text-xs text-slate-500 mt-4">
               Need a quote? Email{" "}
               <a
                 href={`mailto:${siteConfig.business.email}`}
-                className="text-amber-400 hover:underline"
+                className="text-orange-600 hover:underline"
               >
                 {siteConfig.business.email}
               </a>

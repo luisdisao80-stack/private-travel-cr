@@ -102,21 +102,21 @@ export default function RouteIndex({ routes }: { routes: Route[] }) {
   return (
     <section
       id="all-routes"
-      className="bg-gray-950 border-t border-white/10 py-16 px-4"
+      className="bg-slate-50 border-t border-slate-200 py-16 px-4"
       aria-labelledby="all-routes-heading"
     >
       <div className="max-w-5xl mx-auto">
-        <h2 id="all-routes-heading" className="text-3xl md:text-4xl font-bold text-white">
+        <h2 id="all-routes-heading" className="text-3xl md:text-4xl font-bold text-blue-900">
           All Costa Rica shuttle routes
         </h2>
-        <p className="mt-3 text-white/60 max-w-2xl">
+        <p className="mt-3 text-slate-500 max-w-2xl">
           Every route we publish, grouped by pickup point. Prices are per vehicle
           for 1–5 passengers and include taxes and tolls.
         </p>
 
         {topSelling.length > 0 && (
           <div className="mt-10">
-            <h3 className="text-sm font-semibold tracking-widest text-amber-400 uppercase">
+            <h3 className="text-sm font-semibold tracking-widest text-orange-600 uppercase">
               Most booked
             </h3>
             <ul className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -124,13 +124,13 @@ export default function RouteIndex({ routes }: { routes: Route[] }) {
                 <li key={route.slug}>
                   <Link
                     href={route.href}
-                    className="flex items-baseline justify-between gap-3 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/90 hover:border-amber-400/50 hover:text-white transition-colors"
+                    className="flex items-baseline justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 hover:border-orange-300 hover:text-orange-600 transition-colors"
                   >
                     <span>
                       {displayLocation(route.origen)} → {displayLocation(route.destino)}
                     </span>
                     {priceLabel(route) && (
-                      <span className="shrink-0 font-semibold text-amber-400">
+                      <span className="shrink-0 font-semibold text-orange-600">
                         {priceLabel(route)}
                       </span>
                     )}
@@ -148,7 +148,7 @@ export default function RouteIndex({ routes }: { routes: Route[] }) {
             support. This block is the missing first hop:
             /routes → destination hub → route page. */}
         <div className="mt-12">
-          <h3 className="text-sm font-semibold tracking-widest text-amber-400 uppercase">
+          <h3 className="text-sm font-semibold tracking-widest text-orange-600 uppercase">
             By destination
           </h3>
           <ul className="mt-4 flex flex-wrap gap-2">
@@ -156,7 +156,7 @@ export default function RouteIndex({ routes }: { routes: Route[] }) {
               <li key={dest.slug}>
                 <Link
                   href={`/shuttle-to/${dest.slug}`}
-                  className="inline-block rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:border-amber-400/50 hover:text-white transition-colors"
+                  className="inline-block rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 hover:border-orange-300 hover:text-orange-600 transition-colors"
                 >
                   Shuttle to {dest.name}
                 </Link>
@@ -173,16 +173,16 @@ export default function RouteIndex({ routes }: { routes: Route[] }) {
               // in the server HTML — collapsed content is still crawled.
               <details
                 key={origin}
-                className="group rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden"
+                className="group rounded-xl border border-slate-200 bg-white/[0.03] overflow-hidden"
               >
                 {/* list-none + the webkit marker rule hide the native
                     disclosure triangle so only our "+" shows — same pattern
                     as components/DestinationHub.tsx. */}
-                <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-5 py-4 text-white font-semibold hover:bg-white/5 transition-colors group-open:text-amber-400 [&::-webkit-details-marker]:hidden">
+                <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-5 py-4 text-slate-900 font-semibold hover:bg-slate-50 transition-colors group-open:text-orange-600 [&::-webkit-details-marker]:hidden">
                   <span>From {displayLocation(origin)}</span>
-                  <span className="shrink-0 text-sm font-normal text-white/50">
+                  <span className="shrink-0 text-sm font-normal text-slate-500">
                     {list.length} {list.length === 1 ? "route" : "routes"}
-                    <span className="ml-2 text-amber-400 group-open:rotate-45 inline-block transition-transform">
+                    <span className="ml-2 text-orange-600 group-open:rotate-45 inline-block transition-transform">
                       +
                     </span>
                   </span>
@@ -192,11 +192,11 @@ export default function RouteIndex({ routes }: { routes: Route[] }) {
                     <li key={route.slug}>
                       <Link
                         href={route.href}
-                        className="flex items-baseline justify-between gap-3 py-1.5 text-sm text-white/70 hover:text-amber-400 transition-colors"
+                        className="flex items-baseline justify-between gap-3 py-1.5 text-sm text-slate-600 hover:text-orange-600 transition-colors"
                       >
                         <span className="truncate">to {displayLocation(route.destino)}</span>
                         {priceLabel(route) && (
-                          <span className="shrink-0 text-white/40">{priceLabel(route)}</span>
+                          <span className="shrink-0 text-slate-400">{priceLabel(route)}</span>
                         )}
                       </Link>
                     </li>

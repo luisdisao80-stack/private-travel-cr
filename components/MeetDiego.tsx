@@ -70,12 +70,12 @@ export default function MeetDiego() {
   return (
     <section
       aria-label={isEn ? "Meet Diego — founder of Private Travel CR" : "Conocé a Diego — fundador de Private Travel CR"}
-      className="relative py-20 md:py-28 px-4 bg-gradient-to-b from-black via-gray-950 to-black border-y border-amber-500/10 overflow-hidden"
+      className="relative py-20 md:py-28 px-4 bg-white border-y border-slate-200 overflow-hidden"
     >
       {/* Subtle amber glow blob behind content for warmth */}
       <div
         aria-hidden
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-amber-500/5 blur-3xl pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-orange-50 blur-3xl pointer-events-none"
       />
 
       <div className="max-w-6xl mx-auto relative">
@@ -88,25 +88,25 @@ export default function MeetDiego() {
               the message faster — the photos then act as proof, not
               distraction. */}
           <div className="reveal order-1 lg:order-1">
-            <div className="text-xs font-bold text-amber-400 tracking-widest uppercase mb-4">
+            <div className="text-xs font-bold text-orange-600 tracking-widest uppercase mb-4">
               {isEn ? "✦ MEET DIEGO" : "✦ CONOCÉ A DIEGO"}
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-900 leading-tight mb-6">
               {isEn ? (
                 <>
                   20+ years driving<br />
-                  <span className="text-amber-400">Costa Rica.</span>
+                  <span className="text-orange-600">Costa Rica.</span>
                 </>
               ) : (
                 <>
                   20+ años manejando<br />
-                  <span className="text-amber-400">Costa Rica.</span>
+                  <span className="text-orange-600">Costa Rica.</span>
                 </>
               )}
             </h2>
 
-            <div className="space-y-4 text-white/70 text-lg leading-relaxed">
+            <div className="space-y-4 text-slate-600 text-lg leading-relaxed">
               {isEn ? (
                 <>
                   <p>
@@ -115,7 +115,7 @@ export default function MeetDiego() {
                   <p>
                     Private Travel CR isn&apos;t a platform. It&apos;s me, my cousin Anthony, and a small team of bilingual drivers I personally trained. I answer every WhatsApp myself. I still drive several routes per week from La Fortuna. When you book with us, you&apos;re not a confirmation number — you&apos;re a guest in my country.
                   </p>
-                  <p className="text-amber-300/90 italic">Pura vida.</p>
+                  <p className="text-orange-600/90 italic">Pura vida.</p>
                 </>
               ) : (
                 <>
@@ -125,18 +125,18 @@ export default function MeetDiego() {
                   <p>
                     Private Travel CR no es una plataforma. Somos yo, mi primo Anthony, y un equipo pequeño de choferes bilingües que entrené personalmente. Yo contesto cada WhatsApp. Todavía manejo varias rutas por semana desde La Fortuna. Cuando reservás con nosotros, no sos un número de confirmación — sos un huésped en mi país.
                   </p>
-                  <p className="text-amber-300/90 italic">Pura vida.</p>
+                  <p className="text-orange-600/90 italic">Pura vida.</p>
                 </>
               )}
             </div>
 
             {/* Signature + role */}
-            <div className="mt-8 flex items-end gap-4 border-t border-white/10 pt-6">
+            <div className="mt-8 flex items-end gap-4 border-t border-slate-200 pt-6">
               <div>
-                <div className="text-2xl font-bold text-white" style={{ fontFamily: "cursive" }}>
+                <div className="text-2xl font-bold text-blue-900" style={{ fontFamily: "cursive" }}>
                   Diego Salas
                 </div>
-                <div className="text-sm text-white/50 mt-1">
+                <div className="text-sm text-slate-500 mt-1">
                   {isEn ? "Founder & Lead Driver · La Fortuna" : "Fundador y Chofer Principal · La Fortuna"}
                 </div>
               </div>
@@ -146,7 +146,7 @@ export default function MeetDiego() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 px-6 rounded-xl transition"
+                className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-xl transition"
               >
                 {isEn ? "Read our story" : "Leé nuestra historia"}
               </Link>
@@ -154,7 +154,7 @@ export default function MeetDiego() {
                 href="https://wa.me/50686334133"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-semibold py-3 px-6 rounded-xl transition"
+                className="inline-flex items-center gap-2 bg-slate-50 hover:bg-slate-100 border border-slate-300 text-slate-900 font-semibold py-3 px-6 rounded-xl transition"
               >
                 <MessageCircle size={18} />
                 {isEn ? "Message Diego" : "Escribile a Diego"}
@@ -198,7 +198,7 @@ export default function MeetDiego() {
             </div>
 
             {/* Caption under collage */}
-            <p className="text-center text-white/40 text-xs mt-6 italic">
+            <p className="text-center text-slate-400 text-xs mt-6 italic">
               {isEn
                 ? "Real customers, real trips — La Fortuna, Río Celeste, and beyond."
                 : "Clientes reales, viajes reales — La Fortuna, Río Celeste y más."}

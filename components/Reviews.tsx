@@ -51,24 +51,24 @@ export default function Reviews({ googleReviews = [], liveGoogleCount, liveGoogl
   return (
     <section
       id="reseñas"
-      className="relative py-20 md:py-28 px-4 overflow-hidden bg-black"
+      className="relative py-20 md:py-28 px-4 overflow-hidden bg-white"
     >
       {/* Decorative gradients */}
       <div className="absolute inset-0 bg-gradient-to-b from-amber-500/[0.03] via-transparent to-transparent pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-amber-500/[0.04] rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-orange-600/[0.04] rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-amber-500/30 bg-amber-500/5">
-            <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-slate-200 bg-orange-50">
+            <span className="text-xs font-semibold tracking-widest text-orange-600 uppercase">
               {t.reviews.badge}
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-900 mb-4 leading-tight">
             {t.reviews.titlePart1}{" "}
-            <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-orange-600">
               {t.reviews.titlePart2}
             </span>
           </h2>
@@ -82,7 +82,7 @@ export default function Reviews({ googleReviews = [], liveGoogleCount, liveGoogl
                 strokeWidth={0}
               />
             ))}
-            <span className="ml-2 text-2xl font-bold text-white">{googleRating.toFixed(1)}</span>
+            <span className="ml-2 text-2xl font-bold text-blue-900">{googleRating.toFixed(1)}</span>
           </div>
 
           {/* Platform stats: Google + TripAdvisor */}
@@ -91,28 +91,28 @@ export default function Reviews({ googleReviews = [], liveGoogleCount, liveGoogl
               href={reviewStats.google.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-amber-400/40 hover:bg-white/10 transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 hover:border-orange-400/40 hover:bg-slate-100 transition-all"
             >
               <GoogleLogo />
-              <span className="text-sm text-white/80">
+              <span className="text-sm text-slate-600">
                 <span className="font-semibold">{googleCount}+</span>{" "}
                 {t.reviews.googleReviews}
               </span>
-              <ExternalLink className="w-3 h-3 text-white/40" />
+              <ExternalLink className="w-3 h-3 text-slate-400" />
             </a>
 
             <a
               href={reviewStats.tripadvisor.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-amber-400/40 hover:bg-white/10 transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 hover:border-orange-400/40 hover:bg-slate-100 transition-all"
             >
               <TripAdvisorLogo />
-              <span className="text-sm text-white/80">
+              <span className="text-sm text-slate-600">
                 <span className="font-semibold">{reviewStats.tripadvisor.count}</span>{" "}
                 {t.reviews.tripadvisorReviews}
               </span>
-              <ExternalLink className="w-3 h-3 text-white/40" />
+              <ExternalLink className="w-3 h-3 text-slate-400" />
             </a>
           </div>
 
@@ -123,13 +123,13 @@ export default function Reviews({ googleReviews = [], liveGoogleCount, liveGoogl
             href={reviewStats.tripadvisor.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/10 border border-amber-400/40 hover:from-amber-500/30 hover:to-amber-600/20 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-100 to-amber-600/10 border border-amber-300 hover:from-amber-500/30 hover:to-amber-600/20 transition-colors"
           >
-            <Award className="w-4 h-4 text-amber-400" />
-            <span className="text-sm font-semibold text-amber-300">
+            <Award className="w-4 h-4 text-orange-600" />
+            <span className="text-sm font-semibold text-orange-600">
               {t.reviews.travelersChoice} {reviewStats.tripadvisor.travelersChoiceYear}
             </span>
-            <ExternalLink className="w-3 h-3 text-amber-300/60" />
+            <ExternalLink className="w-3 h-3 text-orange-600/60" />
           </a>
         </div>
 
@@ -144,21 +144,21 @@ export default function Reviews({ googleReviews = [], liveGoogleCount, liveGoogl
             href={reviewStats.google.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/40 transition-all text-sm font-medium text-white"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 hover:border-orange-300 transition-all text-sm font-medium text-slate-700"
           >
             <GoogleLogo />
             {t.reviews.readOnGoogle}
-            <ExternalLink className="w-3.5 h-3.5 text-white/40" />
+            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
           </a>
           <a
             href={reviewStats.tripadvisor.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-400/40 transition-all text-sm font-medium text-white"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 hover:border-orange-300 transition-all text-sm font-medium text-slate-700"
           >
             <TripAdvisorLogo />
             {t.reviews.readOnTripadvisor}
-            <ExternalLink className="w-3.5 h-3.5 text-white/40" />
+            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
           </a>
         </div>
       </div>

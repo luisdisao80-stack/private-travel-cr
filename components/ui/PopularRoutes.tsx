@@ -33,27 +33,27 @@ export default function PopularRoutes() {
   return (
     <section
       id="rutas"
-      className="relative py-24 px-4 bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden"
+      className="relative py-24 px-4 bg-white overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.08),transparent_70%)]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="reveal text-center mb-16">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-            <span className="text-amber-400 text-sm font-medium tracking-wider">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-orange-50 border border-slate-200 mb-4">
+            <span className="text-orange-600 text-sm font-medium tracking-wider">
               ✦ RUTAS POPULARES
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-bold text-blue-900 mb-4 tracking-tight">
             Los destinos más
-            <span className="block bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="block text-orange-600">
               buscados en Costa Rica
             </span>
           </h2>
 
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
             Tarifas fijas y transparentes para las rutas más solicitadas por nuestros viajeros.
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function PopularRoutes() {
               <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/0 to-amber-600/0 group-hover:from-amber-500/30 group-hover:to-amber-600/10 rounded-2xl blur-xl transition-all duration-500" />
 
               <div
-                className="relative bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-2xl p-5 hover:border-amber-500/40 transition-all duration-300"
+                className="relative bg-white border border-slate-200 rounded-2xl p-5 hover:border-orange-300 transition-all duration-300"
                 style={{ display: "flex", flexDirection: "column", height: "100%" }}
               >
                 {/* Top */}
@@ -181,15 +181,15 @@ export default function PopularRoutes() {
 
         {/* Bottom CTA */}
         <div className="reveal mt-12 text-center">
-          <p className="text-gray-400 mb-5">
+          <p className="text-slate-500 mb-5">
             ¿No ves tu destino? Tenemos{" "}
-            <span className="text-amber-400 font-semibold">25+ rutas disponibles</span>{" "}
+            <span className="text-orange-600 font-semibold">25+ rutas disponibles</span>{" "}
             en todo Costa Rica.
           </p>
           <Button
             onClick={scrollToQuote}
             size="lg"
-            className="h-14 px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold shadow-2xl shadow-amber-500/30"
+            className="h-14 px-8 bg-orange-600 hover:bg-orange-700 text-white font-bold shadow-2xl shadow-orange-600/25"
           >
             Ver todas las rutas y cotizar
             <ArrowRight className="ml-2" size={18} />
