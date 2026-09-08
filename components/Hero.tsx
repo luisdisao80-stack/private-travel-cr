@@ -348,7 +348,7 @@ export default function Hero({
           </a>
 
           <div
-            className="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/25 text-left overflow-visible"
+            className="bg-white border-2 border-orange-500 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/25 text-left overflow-visible"
           >
             <h2 className="text-xl md:text-2xl font-bold text-blue-900 mb-5 text-center">
               {lang === "en" ? "Where are you headed?" : "¿A dónde vas?"}
