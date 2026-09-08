@@ -400,8 +400,8 @@ export default function QuoteCalculatorV2({
       ) : (
         <>
           <div className="mb-2">
-            <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-              <MapPin size={16} />
+            <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+              <MapPin size={16} className="text-orange-600" />
               <span>{es ? "Lugar de recogida" : "Pickup Location"}</span>
             </label>
             <LocationInput
@@ -441,8 +441,8 @@ export default function QuoteCalculatorV2({
           </div>
 
           <div className="mb-5 mt-2">
-            <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-              <MapPin size={16} />
+            <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+              <MapPin size={16} className="text-orange-600" />
               <span>{es ? "Lugar de destino" : "Drop-off Location"}</span>
             </label>
             <LocationInput
@@ -462,8 +462,8 @@ export default function QuoteCalculatorV2({
           accepting any free text (Airbnb, private residence, etc.). See
           components/HotelAddressAutocomplete.tsx for why. */}
       <div className="mb-5">
-        <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-          <MapPin size={16} />
+        <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+          <MapPin size={16} className="text-orange-600" />
           <span>{es ? "Dirección de recogida" : "Pickup address"}</span>
         </label>
         <HotelAddressAutocomplete
@@ -483,8 +483,8 @@ export default function QuoteCalculatorV2({
 
       {/* Specific drop-off address */}
       <div className="mb-5">
-        <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-          <MapPin size={16} />
+        <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+          <MapPin size={16} className="text-orange-600" />
           <span>{es ? "Dirección de destino" : "Drop-off address"}</span>
         </label>
         <HotelAddressAutocomplete
@@ -504,8 +504,8 @@ export default function QuoteCalculatorV2({
 
       <div className="mb-5 grid grid-cols-2 gap-3">
         <div>
-          <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-            <Calendar size={16} />
+          <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+            <Calendar size={16} className="text-orange-600" />
             <span>{es ? "Fecha" : "Date"}</span>
           </label>
           <DatePicker
@@ -517,8 +517,8 @@ export default function QuoteCalculatorV2({
           />
         </div>
         <div>
-          <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-            <Clock size={16} />
+          <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+            <Clock size={16} className="text-orange-600" />
             <span>{es ? "Hora de recogida" : "Pickup Time"}</span>
           </label>
           <select value={travelTime} onChange={(e) => setTravelTime(e.target.value)} className="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-3 py-3 focus:border-orange-600 outline-none">
@@ -537,8 +537,8 @@ export default function QuoteCalculatorV2({
 
       {requiresFlight ? (
         <div className="mb-5">
-          <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-            <Plane size={16} />
+          <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+            <Plane size={16} className="text-orange-600" />
             <span>{es ? "Número de vuelo (opcional)" : "Flight Number (optional)"}</span>
           </label>
           <input type="text" value={flightNumber} onChange={(e) => setFlightNumber(e.target.value.toUpperCase())} placeholder={es ? "ej. UA1234, AV628" : "e.g. UA1234, AV628"} className="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:border-orange-600 outline-none" />
@@ -551,8 +551,8 @@ export default function QuoteCalculatorV2({
       ) : null}
 
       <div className="mb-5">
-        <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-          <Users size={16} />
+        <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+          <Users size={16} className="text-orange-600" />
           <span>{es ? "Pasajeros" : "Passengers"}</span>
         </label>
         <div className="grid grid-cols-2 gap-3">
@@ -600,8 +600,8 @@ export default function QuoteCalculatorV2({
       </div>
 
       <div className="mb-5">
-        <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-          <MapPinned size={16} />
+        <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+          <MapPinned size={16} className="text-orange-600" />
           <span>{es ? "Paradas extra (opcional)" : "Extra Stops (optional)"}</span>
         </label>
         <select
@@ -622,8 +622,8 @@ export default function QuoteCalculatorV2({
       </div>
 
       <div className="mb-5">
-        <label className="flex items-center gap-2 text-sm text-orange-600 font-semibold mb-2">
-          <Baby size={16} />
+        <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
+          <Baby size={16} className="text-orange-600" />
           <span>{es ? "Sillas para niños (GRATIS)" : "Child Seats (FREE)"}</span>
         </label>
         <div className="grid grid-cols-3 gap-2">
@@ -652,7 +652,7 @@ export default function QuoteCalculatorV2({
       </div>
 
       <div className="mb-6">
-        <label className="text-sm text-orange-600 font-semibold mb-2 block">
+        <label className="text-sm text-blue-900 font-semibold mb-2 block">
           {es ? "Tipo de servicio" : "Service Type"}
         </label>
         <div className="grid grid-cols-2 gap-3">
