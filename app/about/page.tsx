@@ -43,8 +43,11 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 via-transparent to-transparent pointer-events-none" />
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-orange-50 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="relative max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-slate-200 bg-orange-50">
+        {/* Pedido de Diego 2026-09-07: el encabezado va enmarcado en una
+            tarjeta con borde naranja y relieve, como la franja de
+            confianza del home. */}
+        <div className="relative max-w-4xl mx-auto text-center bg-white border-2 border-orange-500 rounded-3xl shadow-xl shadow-orange-500/10 px-6 py-10 md:px-12 md:py-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-orange-300 bg-orange-50">
             <Heart className="w-3.5 h-3.5 text-orange-600" />
             <span className="text-xs font-semibold tracking-widest text-orange-600 uppercase">
               {t.about.hero.badge}
