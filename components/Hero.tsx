@@ -298,7 +298,10 @@ export default function Hero({
       <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/75 z-[1]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(234,88,12,0.25),transparent_50%)] z-[2]" />
 
-      <div className="relative z-10 container mx-auto px-4 py-20 md:py-24">
+      {/* pt-32/pt-36: la Navbar es fija y mide ~97px de alto — con menos
+          padding superior el título queda cortado debajo del menú en
+          celular (reporte de Diego 2026-09-14). */}
+      <div className="relative z-10 container mx-auto px-4 pt-32 pb-20 md:pt-36 md:pb-24">
         <div className="max-w-4xl mx-auto text-center">
           {/*
             LCP perf: drop the framer-motion fade-up on the above-the-fold
