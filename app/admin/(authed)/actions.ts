@@ -332,6 +332,84 @@ export async function updateTripAddressAction(
 }
 
 /**
+ * Eliminar UN viaje de los items[] de una reserva (Diego 2026-09-15:
+ * "que en el admin yo pueda eliminar un viaje y mandar el update en los
+ * viajes que yo les hago a los clientes"). Caso típico: cotización
+ * multi-viaje donde el cliente después dice "el tramo de vuelta ya no
+ * lo ocupamos".
+ *
+ * Recalcula total_usd sumando el totalPrice de los viajes que quedan —
+ * si la reserva está pendiente con link de pago, el link cobra el total
+ * que esté en la base al momento del clic (start-from-token lee la
+ * fila), así que el cliente paga el monto nuevo sin regenerar nada.
+ *
+ * Mismo contrato que updateTripDateTimeAction: guarda SOLO en la base,
+ * NO manda correo (la regla del 2026-06-24 — los envíos automáticos en
+ * ediciones iterativas bombardeaban al cliente). Después Diego usa el
+ * botón "Notify customer of changes" para mandar el update.
+ *
+ * Nunca borra el último viaje: una reserva con 0 viajes es basura en
+ * todos los lectores (correos, PDFs, recordatorios). Para matar la
+ * reserva completa está el cambio de status a cancelled.
+ */
+export async function deleteTripAction(formData: FormData): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
+  }
+
+  const orderNumber = String(formData.get("orderNumber") ?? "").trim();
+  const tripIndex = parseInt(String(formData.get("tripIndex") ?? ""), 10);
+  if (!orderNumber || Number.isNaN(tripIndex) || tripIndex < 0) return;
+
+  const { data: row, error: readErr } = await supabaseAdmin
+    .from("bookings")
+    .select("items")
+    .eq("order_number", orderNumber)
+    .maybeSingle();
+
+  if (readErr || !row) {
+    console.error("[admin] deleteTrip read failed:", readErr);
+    return;
+  }
+
+  const items = Array.isArray(row.items)
+    ? (row.items as Record<string, unknown>[])
+    : [];
+  if (tripIndex >= items.length) {
+    console.error(
+      `[admin] deleteTrip: tripIndex ${tripIndex} out of range for order ${orderNumber}`,
+    );
+    return;
+  }
+  if (items.length <= 1) {
+    console.error(
+      `[admin] deleteTrip: refusing to delete the only trip of ${orderNumber} — cancel the booking instead`,
+    );
+    return;
+  }
+
+  const remaining = items.filter((_, i) => i !== tripIndex);
+  const newTotal = remaining.reduce((sum, it) => {
+    const p = Number(it.totalPrice);
+    return sum + (Number.isFinite(p) ? p : 0);
+  }, 0);
+
+  const { error: writeErr } = await supabaseAdmin
+    .from("bookings")
+    .update({ items: remaining, total_usd: newTotal })
+    .eq("order_number", orderNumber);
+
+  if (writeErr) {
+    console.error("[admin] deleteTrip write failed:", writeErr);
+    return;
+  }
+
+  revalidatePath("/admin");
+  revalidatePath(`/admin/${orderNumber}`);
+  redirect(`/admin/${orderNumber}?saved=trip-deleted`);
+}
+
+/**
  * Manually fire the "your booking has been updated" email after Diego
  * edits a trip's date / time. Split out from updateTripDateTimeAction
  * on 2026-06-24 so iterative edits never accidentally email the

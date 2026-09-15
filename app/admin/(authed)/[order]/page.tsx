@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Mail, MessageCircle, Phone, Plane, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby, Send, Download } from "lucide-react";
+import { ChevronLeft, Mail, MessageCircle, Phone, Plane, Calendar, Users, Hotel, FileText, TrendingUp, Globe, MapPinned, Smartphone, Baby, Send, Download, Trash2 } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { pdfTokenFor } from "@/lib/pdf-token";
 import { getAllHotels } from "@/lib/hotels-db";
@@ -18,6 +18,7 @@ import {
   updateTripDateTimeAction,
   resendConfirmationEmailAction,
   sendTripUpdateEmailAction,
+  deleteTripAction,
 } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -36,11 +37,14 @@ export default async function AdminBookingDetailPage({
   const orderNumber = decodeURIComponent(order);
 
   // One-shot status flags set by the server actions via redirect.
-  // ?saved=trip-N → trip N was just edited (DB only, no email sent)
-  // ?sent=update  → the update notification email was just dispatched
-  const justSavedTripIdx = saved?.startsWith("trip-")
-    ? parseInt(saved.slice(5), 10)
-    : null;
+  // ?saved=trip-N       → trip N was just edited (DB only, no email sent)
+  // ?saved=trip-deleted → a trip was just removed + total recalculated
+  // ?sent=update        → the update notification email was just dispatched
+  const justDeletedTrip = saved === "trip-deleted";
+  const justSavedTripIdx =
+    !justDeletedTrip && saved?.startsWith("trip-")
+      ? parseInt(saved.slice(5), 10)
+      : null;
   const justSentUpdate = sent === "update";
 
   // Fetch the booking and the hotel list in parallel — hotels feed the
@@ -229,6 +233,18 @@ export default async function AdminBookingDetailPage({
         <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">
           Trips ({items.length})
         </h2>
+        {/* One-shot banner after deleteTripAction redirects back with
+            ?saved=trip-deleted. Mirrors the per-trip date/time banner:
+            confirms the DB change and points at the notify button, since
+            deletes (like edits) never auto-email the customer. */}
+        {justDeletedTrip && (
+          <div className="mb-4 rounded-md border border-green-500/40 bg-green-500/10 px-3 py-2 text-xs text-green-200 leading-relaxed">
+            ✅ <strong>Trip deleted.</strong> The total has been
+            recalculated with the remaining trips. The customer has NOT
+            been notified yet — use &ldquo;Notify customer of
+            changes&rdquo; below to send the updated details.
+          </div>
+        )}
         {items.length === 0 ? (
           <p className="text-sm text-gray-500">No trip items found.</p>
         ) : (
@@ -387,6 +403,49 @@ export default async function AdminBookingDetailPage({
                       </div>
                     )}
                   </details>
+
+                  {/* Delete this trip — Diego 2026-09-15: multi-trip
+                      quotes where the customer drops a leg ("la vuelta
+                      ya no la ocupamos"). The <details> wrapper doubles
+                      as the confirmation step (open, then click the red
+                      button) with zero client JS — same pattern as the
+                      date/time editor above. Hidden on single-trip
+                      bookings: deleting the only trip would leave a
+                      husk; the server action refuses it too. Silent
+                      save, notify via the button below — same contract
+                      as every other trip edit on this page. */}
+                  {items.length > 1 && (
+                    <details className="mt-3 border-t border-zinc-900 pt-3">
+                      <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-gray-500 hover:text-red-400 transition-colors select-none">
+                        Delete this trip
+                      </summary>
+                      <form
+                        action={deleteTripAction}
+                        className="mt-3 flex flex-wrap items-center gap-3"
+                      >
+                        <input
+                          type="hidden"
+                          name="orderNumber"
+                          value={data.order_number}
+                        />
+                        <input type="hidden" name="tripIndex" value={idx} />
+                        <button
+                          type="submit"
+                          className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-4 py-2 rounded-md transition-colors"
+                        >
+                          <Trash2 size={12} />
+                          Yes, delete this trip
+                        </button>
+                        <span className="text-[10px] text-gray-500 ml-1 leading-relaxed">
+                          Removes this trip and recalculates the total with
+                          the remaining trips. The customer is{" "}
+                          <strong className="text-amber-300">NOT</strong>{" "}
+                          emailed automatically — use &ldquo;Notify customer
+                          of changes&rdquo; below when you&apos;re ready.
+                        </span>
+                      </form>
+                    </details>
+                  )}
                 </div>
               );
             })}
@@ -439,7 +498,7 @@ export default async function AdminBookingDetailPage({
           right after an edit so it visually pulls Diego's eye to it. */}
       <div
         className={`border rounded-xl p-5 mt-6 transition-colors ${
-          justSavedTripIdx !== null && !justSentUpdate
+          (justSavedTripIdx !== null || justDeletedTrip) && !justSentUpdate
             ? "bg-green-500/5 border-green-500/40"
             : "bg-zinc-950 border-zinc-900"
         }`}
