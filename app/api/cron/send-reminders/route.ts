@@ -16,7 +16,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { Resend } from "resend";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { escapeHtml, emailHeadHtml } from "@/lib/email";
+import { escapeHtml, emailHeadHtml, sendPaymentRequestEmail } from "@/lib/email";
+import { generatePaymentToken } from "@/lib/payment-token";
+import { isPickupWithinLeadTime } from "@/lib/booking-rules";
+import { siteConfig } from "@/lib/site-config";
 import type { CartItem } from "@/lib/CartContext";
 
 export const runtime = "nodejs";
@@ -25,6 +28,15 @@ export const maxDuration = 60;
 
 const REMINDER_WINDOW_MIN = 60; // Cron runs hourly, so each cron handles a 60-min window.
 const REMINDER_TARGET_HOURS = 24;
+
+// ── Recuperación de pagos que quedaron a medias ──────────────────────────
+// Esperar al menos 1 h antes de escribir: puede estar pagando en Tilopay
+// en este momento (o reintentando con otra tarjeta). Más de 72 h y ya no
+// se rescata — a esas alturas el correo llega como spam de una compra que
+// el cliente ya descartó.
+const RECOVERY_DELAY_MIN = 60;
+const RECOVERY_MAX_AGE_HOURS = 72;
+const RECOVERY_TOKEN_HOURS = 48; // misma vigencia que los links del admin
 
 function isAuthorized(req: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;
@@ -326,5 +338,134 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ checked: rows?.length ?? 0, sent, skipped, errors });
+  // ── Recuperación de pagos abandonados (Diego 2026-09-15: "si por algún
+  // motivo no pudo pagar ese día, que le llegue el correo con la
+  // información para pagar") ─────────────────────────────────────────────
+  //
+  // Cuando alguien reserva desde la web, /api/payment/start crea la fila
+  // "pending" y lo redirige a Tilopay. Si cierra la pestaña, se le cae el
+  // internet o le rechazan la tarjeta (status rejected/failed), la fila
+  // queda ahí y nadie le escribe. Este bloque la rescata: le genera el
+  // mismo payment_token que usan las cotizaciones del admin y le manda el
+  // correo "Complete your booking" con el botón de pago (/pay/[token]).
+  //
+  // Idempotencia SIN columna nueva: el propio payment_token es la marca
+  // de "ya se le escribió". Las reservas de la web nacen sin token; las
+  // del admin nacen con token (y por eso el filtro is null también las
+  // excluye — a esas el correo de pago les llegó al crearlas).
+  const nowIso = (msAgo: number) => new Date(now - msAgo).toISOString();
+  const { data: abandonedRows, error: abandonedErr } = await supabaseAdmin
+    .from("bookings")
+    .select("order_number, customer_name, customer_email, items, total_usd, status, created_at")
+    .in("status", ["pending", "rejected", "failed"])
+    .is("payment_token", null)
+    .gte("created_at", nowIso(RECOVERY_MAX_AGE_HOURS * 3_600_000))
+    .lte("created_at", nowIso(RECOVERY_DELAY_MIN * 60_000))
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  let recoverySent = 0;
+  let recoverySkipped = 0;
+  const recoveryErrors: { order: string; error: string }[] = [];
+
+  if (abandonedErr) {
+    console.error("[cron/recovery] fetch failed:", abandonedErr);
+  } else if ((abandonedRows ?? []).length > 0) {
+    // Cada clic en "pagar" crea una fila NUEVA con otro número de orden.
+    // Si el mismo correo ya tiene una reserva aprobada reciente, casi
+    // seguro reintentó y pagó: mandarle un link de pago sería invitarlo
+    // a pagar DOS veces. A esas filas se les pone token (para que salgan
+    // de la lista de candidatas) pero no se les manda nada.
+    const { data: paidRows } = await supabaseAdmin
+      .from("bookings")
+      .select("customer_email")
+      .eq("status", "approved")
+      .gte("created_at", nowIso((RECOVERY_MAX_AGE_HOURS + 24) * 3_600_000))
+      .limit(500);
+    const paidEmails = new Set(
+      (paidRows ?? []).map((r) => String(r.customer_email || "").toLowerCase()),
+    );
+    // Y si la misma persona abandonó dos veces (dos filas pendientes),
+    // solo se le escribe por la más reciente — el orden descendente de
+    // arriba garantiza que esa se procesa primero.
+    const emailedThisRun = new Set<string>();
+
+    for (const row of abandonedRows ?? []) {
+      const items = (row.items as CartItem[]) || [];
+      const earliest = earliestPickup(items);
+      // Sin hora de recogida válida, con la recogida ya pasada o a menos
+      // de 12 h (regla de lead time: ya no hay chance de coordinar chofer
+      // por la web), no se manda nada. La fila envejece sola fuera de la
+      // ventana de 72 h.
+      if (!earliest || !isPickupWithinLeadTime(earliest)) {
+        recoverySkipped++;
+        continue;
+      }
+
+      const email = String(row.customer_email || "").trim();
+      const emailKey = email.toLowerCase();
+      const token = generatePaymentToken();
+      const expiresAt = new Date(now + RECOVERY_TOKEN_HOURS * 3_600_000);
+
+      // El token se estampa ANTES de mandar el correo: es la marca de
+      // idempotencia. Si el envío luego falla, la fila ya no se reintenta
+      // sola, pero Diego puede reenviar el link desde el admin (botón
+      // "Resend payment link"). El `.is(null)` extra evita doble correo
+      // si dos crons llegaran a correr a la vez.
+      const { error: stampErr } = await supabaseAdmin
+        .from("bookings")
+        .update({
+          payment_token: token,
+          token_expires_at: expiresAt.toISOString(),
+        })
+        .eq("order_number", row.order_number)
+        .is("payment_token", null);
+      if (stampErr) {
+        recoveryErrors.push({
+          order: row.order_number,
+          error: stampErr.message,
+        });
+        continue;
+      }
+
+      if (!email || paidEmails.has(emailKey) || emailedThisRun.has(emailKey)) {
+        recoverySkipped++;
+        continue;
+      }
+
+      try {
+        await sendPaymentRequestEmail({
+          orderNumber: row.order_number,
+          customerName: row.customer_name || "there",
+          customerEmail: email,
+          totalUsd: Number(row.total_usd),
+          items: items as unknown as Parameters<
+            typeof sendPaymentRequestEmail
+          >[0]["items"],
+          payUrl: `${siteConfig.siteUrl}/pay/${token}`,
+          expiresAt,
+        });
+        emailedThisRun.add(emailKey);
+        recoverySent++;
+      } catch (e) {
+        recoveryErrors.push({
+          order: row.order_number,
+          error: e instanceof Error ? e.message : String(e),
+        });
+      }
+    }
+  }
+
+  return NextResponse.json({
+    checked: rows?.length ?? 0,
+    sent,
+    skipped,
+    errors,
+    recovery: {
+      checked: abandonedRows?.length ?? 0,
+      sent: recoverySent,
+      skipped: recoverySkipped,
+      errors: recoveryErrors,
+    },
+  });
 }

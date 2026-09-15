@@ -1,6 +1,5 @@
 "use server";
 
-import { randomBytes } from "node:crypto";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { clearAdminSession, isAdminAuthed } from "@/lib/admin-auth";
@@ -11,6 +10,7 @@ import {
   sendPaymentRequestEmail,
 } from "@/lib/email";
 import { siteConfig } from "@/lib/site-config";
+import { generatePaymentToken } from "@/lib/payment-token";
 import type { CartItem } from "@/lib/CartContext";
 
 export async function logoutAction(): Promise<void> {
@@ -474,16 +474,9 @@ export async function resendConfirmationEmailAction(
   revalidatePath(`/admin/${orderNumber}`);
 }
 
-// Generate a URL-safe token, 24 chars of base64url. Space is ~144 bits
-// so guessing a valid token is effectively impossible (well beyond the
-// number of ongoing bookings we'd ever have live at once).
-function generatePaymentToken(): string {
-  return randomBytes(18)
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-}
+// generatePaymentToken se movió a lib/payment-token.ts — el cron de
+// recuperación de pagos abandonados también lo necesita y este archivo
+// ("use server") solo puede exportar funciones async.
 
 async function nextBookingOrderNumber(): Promise<string> {
   const { data, error } = await supabaseAdmin.rpc("next_booking_number");
