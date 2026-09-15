@@ -564,7 +564,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                   <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
                     <div className="flex items-center justify-between border-b border-slate-200 bg-orange-50 px-4 py-2.5">
                       <div>
-                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange-600">
+                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-900">
                           {lang === "en" ? "My trip" : "Mi viaje"}
                         </div>
                         <div className="text-sm font-bold text-blue-900">
@@ -595,7 +595,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                           key={it.id}
                           className="flex items-start gap-3 px-4 py-3 text-left"
                         >
-                          <span className="mt-0.5 shrink-0 text-xs font-bold text-orange-600/70">
+                          <span className="mt-0.5 shrink-0 text-xs font-bold text-blue-900/70">
                             #{i + 1}
                           </span>
                           <div className="min-w-0 flex-1">
@@ -633,14 +633,14 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                                   {formatTripDate(it.date)}
                                 </span>
                               ) : (
-                                <span className="text-orange-600/80">
+                                <span className="text-blue-900/70">
                                   {lang === "en"
                                     ? "Date at checkout"
                                     : "Fecha en el pago"}
                                 </span>
                               )}
                               {it.extraStopNames?.length ? (
-                                <span className="text-orange-600/80">
+                                <span className="text-blue-900/70">
                                   {" · "}
                                   {it.extraStopNames.join(" · ")}
                                 </span>
@@ -648,7 +648,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                             </div>
                           </div>
                           <div className="flex shrink-0 items-center gap-2">
-                            <span className="text-sm font-bold text-orange-600">
+                            <span className="text-sm font-bold text-blue-900">
                               ${it.totalPrice.toLocaleString("en-US")}
                             </span>
                             <button
@@ -672,7 +672,7 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                       <span className="text-sm font-bold text-blue-900">
                         {lang === "en" ? "Total" : "Total"}
                       </span>
-                      <span className="text-lg font-extrabold text-orange-600">
+                      <span className="text-lg font-extrabold text-blue-900">
                         ${totalPrice.toLocaleString("en-US")}
                       </span>
                     </div>
