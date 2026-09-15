@@ -23,7 +23,18 @@ export async function GET(req: NextRequest) {
     const txn = Array.isArray(result.response) ? result.response[0] : undefined;
 
     if (txn && isApproved(txn)) {
-      await supabaseAdmin
+      // El callback puede dispararse VARIAS veces para la misma orden:
+      // Tilopay redirige al cliente aquí, a veces también hace POST por
+      // su cuenta, y el cliente puede refrescar o reabrir la página de
+      // éxito desde el historial. Antes cada disparo re-mandaba los
+      // correos — Diego y el cliente recibían la confirmación duplicada
+      // con ~10 min de diferencia (reporte 2026-09-15).
+      //
+      // El `.neq("status", "approved")` convierte el update en un
+      // "claim" atómico: solo el PRIMER disparo encuentra la fila sin
+      // aprobar y recibe filas de vuelta en el .select(); los repetidos
+      // no matchean nada y saltan directo al redirect sin correos.
+      const { data: claimed } = await supabaseAdmin
         .from("bookings")
         .update({
           status: "approved",
@@ -34,7 +45,16 @@ export async function GET(req: NextRequest) {
           tilopay_last4: txn.last || null,
           consulted_at: new Date().toISOString(),
         })
-        .eq("order_number", orderNumber);
+        .eq("order_number", orderNumber)
+        .neq("status", "approved")
+        .select("order_number");
+
+      const isFirstApproval = (claimed ?? []).length > 0;
+      if (!isFirstApproval) {
+        return NextResponse.redirect(
+          `${origin}/booking/success?orderNumber=${encodeURIComponent(orderNumber)}`
+        );
+      }
 
       // Fire confirmation emails to the customer and the business. We swallow
       // failures so a flaky email provider can't block the redirect.
@@ -68,6 +88,11 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // Mismo guard que arriba pero al revés: un callback tardío o
+    // duplicado que venga con resultado "rechazado" no debe pisar una
+    // reserva que otro disparo ya dejó aprobada (pasa cuando el cliente
+    // reintenta el pago y el aviso del intento fallido llega después
+    // del bueno).
     await supabaseAdmin
       .from("bookings")
       .update({
@@ -76,7 +101,8 @@ export async function GET(req: NextRequest) {
         tilopay_response: txn?.response || result.message || "rejected",
         consulted_at: new Date().toISOString(),
       })
-      .eq("order_number", orderNumber);
+      .eq("order_number", orderNumber)
+      .neq("status", "approved");
     return NextResponse.redirect(
       `${origin}/booking/error?orderNumber=${encodeURIComponent(orderNumber)}&reason=rejected`
     );
