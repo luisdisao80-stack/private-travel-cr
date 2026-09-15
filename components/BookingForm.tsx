@@ -25,7 +25,7 @@ import type { Hotel } from "@/lib/types";
 import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
 import {
-  isAirport,
+  flightInfoNeeded,
   VIP_EXTRA_USD,
   nightSurchargeFor,
   computeTripTotal,
@@ -179,7 +179,8 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
     .map((it, idx) => ({ it, idx }))
     .filter(
       ({ it }) =>
-        isAirport(it.fromName) && !(it.flightNumber && it.flightNumber.trim().length > 0),
+        flightInfoNeeded(it.fromName, it.pickupPlace) &&
+        !(it.flightNumber && it.flightNumber.trim().length > 0),
     );
 
   // Primer viaje incompleto (sin fecha, sin hora, sin pasajeros o con
@@ -706,8 +707,6 @@ function TripConfigCard({
 }: TripConfigCardProps) {
   const { lang } = useLanguage();
   const es = lang === "es";
-  const showFlight = isAirport(item.fromName);
-
   // Late-night pickup surcharge (11 PM–5 AM) is part of both service tiers,
   // so the card prices the customer picks between already reflect what will
   // be charged. It's a pure function of the trip's pickup time.
@@ -736,6 +735,11 @@ function TripConfigCard({
     item.dropoffPlace && item.dropoffPlace !== item.toName ? item.dropoffPlace : "",
   );
   const [flightNumberValue, setFlightNumberValue] = useState(item.flightNumber ?? "");
+
+  // Vuelo: solo si la recogida es EN el aeropuerto. Reactivo a lo que el
+  // cliente escribe en "Pickup address" — si pone un hotel, el campo de
+  // vuelo desaparece al instante (ver flightInfoNeeded en quote-helpers).
+  const showFlight = flightInfoNeeded(item.fromName, pickupValue);
 
   // `passengers` en el CartItem es el TOTAL (adultos + niños), igual que
   // lo guarda QuoteCalculatorV2. Los adultos son la resta.

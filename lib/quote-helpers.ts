@@ -53,6 +53,22 @@ export function isAirport(locationName: string): boolean {
   return AIRPORT_NAMES.includes(locationName);
 }
 
+// ¿Hace falta pedir número/hora de vuelo? Solo cuando la recogida es EN el
+// aeropuerto. Una ruta puede salir de la zona del aeropuerto pero recoger en
+// un hotel cercano (ej. Marriott Belén usa las rutas de SJO) — en ese caso el
+// cliente no viene llegando en avión y pedirle vuelo confunde (Diego
+// 2026-09-15). Si escribió una dirección de recogida distinta al aeropuerto,
+// no se pide vuelo; si la dejó vacía (o menciona el aeropuerto), sí.
+export function flightInfoNeeded(
+  fromName: string,
+  pickupPlace?: string | null,
+): boolean {
+  if (!isAirport(fromName)) return false;
+  const p = (pickupPlace ?? "").trim();
+  if (!p || p === fromName) return true;
+  return /aeropuerto|airport|\bsjo\b|\blir\b|santamar|oduber/i.test(p);
+}
+
 // Tier boundaries (set 2026-06-11): Staria caps at 5, Hiace covers 6-9.
 // The Supabase column names `precio1a6` and `precio7a9` are now misleading
 // labels (precio1a6 actually holds the 1-5 price, precio7a9 holds the

@@ -12,7 +12,7 @@ import {
   getVehicleForPax,
   getVehicleName,
   formatDuration,
-  isAirport,
+  flightInfoNeeded,
 } from "@/lib/quote-helpers";
 import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -274,7 +274,11 @@ export default function QuoteCalculatorV2({
     pickupTime: travelTime,
   });
   const vehicle = getVehicleForPax(totalPax || 1);
-  const requiresFlight = (from && isAirport(from)) || (to && isAirport(to));
+  // Solo pedimos vuelo cuando la RECOGIDA es en el aeropuerto. Si la ruta
+  // sale de la zona del aeropuerto pero recogen en un hotel (ej. Marriott
+  // Belén usa las rutas de SJO), el cliente no viene llegando en avión —
+  // pedirle vuelo confunde (Diego 2026-09-15).
+  const requiresFlight = Boolean(from) && flightInfoNeeded(from, pickupAddress);
   const totalChildSeats = infantSeats + convertibleSeats + boosterSeats;
   const timeLabel = TIME_OPTIONS.find(t => t.value === travelTime)?.label || travelTime;
 
