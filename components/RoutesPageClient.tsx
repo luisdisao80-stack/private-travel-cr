@@ -91,7 +91,14 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
     [routes]
   );
 
-  const hasSearch = pickup.trim().length > 0 || dropoff.trim().length > 0;
+  // Los resultados solo se muestran con AMBOS campos llenos. Antes bastaba
+  // uno, pero con solo el pick-up la lista mostraba todas las rutas de ese
+  // origen y parecía que la página no había reaccionado a lo que escribiste
+  // (Diego, 2026-09-16). Con un solo campo mostramos un hint que pide el
+  // dato que falta.
+  const hasSearch = pickup.trim().length > 0 && dropoff.trim().length > 0;
+  const hasPartialSearch =
+    !hasSearch && (pickup.trim().length > 0 || dropoff.trim().length > 0);
 
   const filteredRoutes = useMemo(() => {
     if (!hasSearch) return [];
@@ -263,6 +270,24 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
           </div>
         </div>
       </section>
+
+      {/* Con un solo campo lleno, pedimos el que falta en vez de quedarnos
+          en silencio (la lista ya no se muestra hasta tener ambos). */}
+      {hasPartialSearch && (
+        <section className="container mx-auto px-4 py-10 md:py-14">
+          <div className="max-w-5xl mx-auto text-center">
+            <p className="text-blue-900 font-semibold text-lg">
+              {pickup.trim().length > 0
+                ? lang === "en"
+                  ? "Great! Now choose your destination to see vehicles and prices."
+                  : "¡Perfecto! Ahora elegí el destino para ver las busetas y los precios."
+                : lang === "en"
+                  ? "Great! Now choose your pick-up to see vehicles and prices."
+                  : "¡Perfecto! Ahora elegí el origen para ver las busetas y los precios."}
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* SEARCH RESULTS — only visible when searching */}
       {hasSearch && (
