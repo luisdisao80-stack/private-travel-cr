@@ -1258,6 +1258,11 @@ function TripConfigCard({
             }
             inputClassName="w-full bg-white border border-slate-300 text-slate-900 rounded-md h-10 px-3 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
           />
+          <p className="text-[11px] text-slate-500">
+            {es
+              ? "Escriba la dirección tal cual. Para varias paradas sepárelas con +"
+              : "Type the address as-is. For multiple stops, separate them with +"}
+          </p>
         </div>
 
         <div className="space-y-1.5">
@@ -1277,6 +1282,11 @@ function TripConfigCard({
             }
             inputClassName="w-full bg-white border border-slate-300 text-slate-900 rounded-md h-10 px-3 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
           />
+          <p className="text-[11px] text-slate-500">
+            {es
+              ? "¿Dos hoteles? Escríbalos separados con + (Hotel A + Hotel B)"
+              : "Two hotels? Separate them with + (Hotel A + Hotel B)"}
+          </p>
         </div>
 
         {showFlight ? (

@@ -47,6 +47,35 @@ type Props = {
 
 type Suggestion = { hotel: Hotel; score: number };
 
+// Multi-stop support. Real reported issue (Diego, 2026-09-26): a customer
+// needed TWO hotels in the drop-off field and could not get them to stick.
+// Two things were fighting him:
+//   1. highlightIndex started at 0, so a suggestion was ALWAYS pre-selected
+//      and Enter silently replaced the whole field with one hotel name.
+//   2. commitHotel() overwrote the entire value, so picking the second
+//      hotel erased the first.
+// Fix: " + " is the separator between stops, and only the LAST segment is
+// ever autocompleted or replaced. Typing "Arenal Springs + Magic Mountain"
+// autocompletes "Magic Mountain" and leaves "Arenal Springs" untouched.
+// Visitors who never type a "+" get plain free text, exactly as before.
+const SEGMENT_SEPARATOR = " + ";
+const SEGMENT_SPLIT_RE = /\s*\+\s*/;
+
+/** The part of the field the visitor is currently typing — everything
+ *  after the last "+". Used as the autocomplete query so earlier stops
+ *  don't pollute the match. */
+function lastSegment(value: string): string {
+  const parts = value.split(SEGMENT_SPLIT_RE);
+  return parts[parts.length - 1] ?? "";
+}
+
+/** Swap only the segment being typed, preserving every earlier stop. */
+function replaceLastSegment(value: string, replacement: string): string {
+  const parts = value.split(SEGMENT_SPLIT_RE);
+  parts[parts.length - 1] = replacement;
+  return parts.join(SEGMENT_SEPARATOR);
+}
+
 // Strip diacritics so "Belén" matches "belen", "Peñas" matches "penas",
 // etc. Same pattern as lib/locations.ts matchScore — kept local because
 // we're matching against hotel names+cities, not the location DB names
@@ -103,10 +132,11 @@ export default function HotelAddressAutocomplete({
   inputClassName = "w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:border-orange-600 outline-none",
 }: Props) {
   const [open, setOpen] = useState(false);
-  // Pre-highlight the top match so "type marriott, hit Enter" is a
-  // one-hand action — same UX pattern as LocationInput's Enter-commits
-  // flow. Reset to 0 whenever the visible list changes.
-  const [highlightIndex, setHighlightIndex] = useState(0);
+  // -1 = nothing highlighted. We deliberately do NOT pre-select the top
+  // match: this field is free text first and a hotel picker second, so
+  // guessing on the visitor's behalf loses real addresses. A hotel is
+  // only committed when the visitor arrows onto a row or clicks it.
+  const [highlightIndex, setHighlightIndex] = useState(-1);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Debounce the value used for filtering so a fast typer doesn't
@@ -120,7 +150,9 @@ export default function HotelAddressAutocomplete({
   }, [value]);
 
   const suggestions = useMemo<Suggestion[]>(() => {
-    const query = debouncedValue.trim();
+    // Match only the stop currently being typed, so an already-entered
+    // first hotel doesn't skew (or zero out) the ranking for the second.
+    const query = lastSegment(debouncedValue).trim();
     if (!query) return [];
     return hotels
       .map<Suggestion>((hotel) => {
@@ -135,13 +167,20 @@ export default function HotelAddressAutocomplete({
       .slice(0, 7);
   }, [debouncedValue, hotels, contextArea]);
 
-  // Reset the keyboard highlight to the top match every time the
-  // suggestion list changes — otherwise pressing Enter after typing
-  // another letter could commit whatever row happened to sit at that
-  // index in the previous list. Same defensive reset LocationInput does.
+  // Clear the keyboard highlight whenever the QUERY changes — otherwise
+  // pressing Enter after typing another letter could commit whatever row
+  // happened to sit at that index in the previous list.
+  //
+  // Keyed on the query string, NOT on the `suggestions` array identity.
+  // Callers pass `hotels` as a fresh array on some renders (BookingForm
+  // defaults the prop to `[]`), which makes the useMemo recompute and
+  // hand back a new array every render — depending on that identity meant
+  // the highlight was wiped on every keystroke-triggered re-render, so
+  // ArrowDown could never stick. A string key is stable across renders.
+  const queryKey = lastSegment(debouncedValue).trim().toLowerCase();
   useEffect(() => {
-    setHighlightIndex(0);
-  }, [suggestions]);
+    setHighlightIndex(-1);
+  }, [queryKey]);
 
   // Close on outside click. `mousedown` (not `click`) so the input's
   // onMouseDown on a suggestion still fires — the button uses
@@ -157,7 +196,9 @@ export default function HotelAddressAutocomplete({
   }, []);
 
   function commitHotel(hotel: Hotel) {
-    onChange(hotel.name);
+    // Replace only the stop being typed. Anything the visitor entered
+    // before a "+" survives, which is what makes two-hotel drop-offs work.
+    onChange(replaceLastSegment(value, hotel.name));
     onHotelPick?.(hotel);
     setOpen(false);
   }
@@ -181,20 +222,29 @@ export default function HotelAddressAutocomplete({
           if (!open || suggestions.length === 0) return;
           if (e.key === "ArrowDown") {
             e.preventDefault();
+            // From -1 this lands on 0, so the first ArrowDown selects the
+            // top match — opt-in, instead of it being selected already.
             setHighlightIndex((i) => (i + 1) % suggestions.length);
           } else if (e.key === "ArrowUp") {
             e.preventDefault();
-            setHighlightIndex(
-              (i) => (i - 1 + suggestions.length) % suggestions.length,
+            setHighlightIndex((i) =>
+              i < 0 ? suggestions.length - 1 : (i - 1 + suggestions.length) % suggestions.length,
             );
           } else if (e.key === "Enter") {
-            // Only intercept Enter when the dropdown is open AND there's
-            // a highlighted match. Otherwise let default form behavior
-            // through (submits) — an unrelated free-text address like
-            // "Casa Amarilla" produces zero suggestions and Enter falls
-            // back to the browser default.
+            // Enter commits ONLY a row the visitor deliberately moved to
+            // (ArrowDown or hover). With nothing highlighted we just close
+            // the dropdown and keep the typed text verbatim.
+            //
+            // This is the multi-hotel bug: Enter used to fall back to
+            // `suggestions[0]` and overwrite the whole field with a single
+            // canonical hotel name, so a customer entering two drop-off
+            // hotels watched their text get swallowed.
             e.preventDefault();
-            const target = suggestions[highlightIndex] ?? suggestions[0];
+            if (highlightIndex < 0) {
+              setOpen(false);
+              return;
+            }
+            const target = suggestions[highlightIndex];
             if (target) commitHotel(target.hotel);
           } else if (e.key === "Escape") {
             setOpen(false);
