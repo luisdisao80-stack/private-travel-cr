@@ -387,6 +387,18 @@ export default function RouteBookingWidget({
               <div className="text-[11px] text-slate-500">
                 {en ? "per vehicle, not per person" : "por vehículo, no por persona"}
               </div>
+              {/* Anclaje por persona. $320 en frío no dice nada; "$80 por
+                  persona" sí, porque es el número contra el que el visitante
+                  compara (shared shuttle ~$60/pax, taxi mucho más). Solo
+                  desde 2 pax — con 1 la división repite el total. `~` y
+                  redondeo porque es una referencia, no una tarifa: el cobro
+                  sigue siendo por vehículo, como dice la línea de arriba. */}
+              {totalPax >= 2 ? (
+                <div className="text-[11px] font-semibold text-green-700">
+                  ~<Price usd={Math.round(price / totalPax)} />{" "}
+                  {en ? "per person" : "por persona"}
+                </div>
+              ) : null}
             </div>
           </div>
 

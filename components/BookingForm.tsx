@@ -15,7 +15,10 @@ import {
   ArrowDown,
   Trash2,
   ShieldCheck,
+  Star,
 } from "lucide-react";
+import GoogleGLogo from "@/components/GoogleGLogo";
+import { reviewStats } from "@/lib/reviews-data";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -634,6 +637,44 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
             ))}
           </ul>
         </div>
+      ) : null}
+
+      {/* Social proof at the moment of maximum anxiety. The trust checklist
+          above says what WE claim; this says what CUSTOMERS say — a rating
+          badge (live count lives in the Hero; here the curated stats are
+          enough) plus one short real quote. Sits closest to the Pay button
+          on purpose: last thing read before the card comes out. The quote
+          is TripAdvisor-sourced (curated list carries author + date), the
+          badge links to the Google listing — both labeled honestly. */}
+      {items.length > 0 && totalPrice > 0 ? (
+        <a
+          href={reviewStats.google.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block rounded-xl border border-slate-200 bg-white/40 px-4 py-3 transition-colors hover:border-amber-400"
+        >
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <GoogleGLogo size={18} className="shrink-0" />
+            <span className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Star key={i} size={12} className="fill-amber-400 text-amber-400" />
+              ))}
+            </span>
+            <span className="text-xs font-semibold text-slate-900">
+              {reviewStats.google.rating.toFixed(1)} ·{" "}
+              {reviewStats.google.count}+{" "}
+              {es ? "reseñas en Google" : "Google reviews"}
+            </span>
+          </div>
+          <p className="mt-2 text-xs italic text-slate-600 leading-snug">
+            &ldquo;Absolutely brilliant transfer company. Very comfortable
+            cars and delightful drivers who were incredibly prompt.&rdquo;
+          </p>
+          <p className="mt-1 text-[11px] text-slate-500">
+            — Adsie65, {es ? "Reino Unido" : "United Kingdom"} · TripAdvisor,{" "}
+            {es ? "ene 2026" : "Jan 2026"}
+          </p>
+        </a>
       ) : null}
 
       <Button
