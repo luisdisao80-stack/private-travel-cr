@@ -616,17 +616,24 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
             </span>
           </div>
           <ul className="space-y-1.5">
+            {/* Redacción de aversión a la pérdida (2026-09-26): cada punto
+                nombra el MIEDO concreto y lo desactiva, en vez de listar
+                features en frío. Todas las promesas salen de las FAQs y
+                los términos reales (cancelación 48h, monitoreo de vuelo)
+                — acá no se promete nada que Diego no cumpla ya. */}
             {(lang === "es"
               ? [
+                  "¿Vuelo atrasado? Lo monitoreamos — tu chofer se ajusta y te espera sin costo extra",
+                  "¿Cambio de planes? Cancelación gratis hasta 48 horas antes del viaje",
                   "Con licencia y seguro — transporte turístico certificado por el ICT",
-                  "Seguimiento de vuelo gratis y soporte 24/7 por WhatsApp",
-                  "Sillas para niños gratis · agua y WiFi a bordo",
+                  "Sillas para niños gratis · agua y WiFi a bordo · soporte 24/7 por WhatsApp",
                   "Pago seguro — tus datos de tarjeta nunca pasan por nuestros servidores",
                 ]
               : [
+                  "Flight delayed? We track it — your driver adjusts and waits at no extra charge",
+                  "Change of plans? Free cancellation up to 48 hours before your trip",
                   "Licensed & insured — ICT-certified tourist transport",
-                  "Free flight tracking & 24/7 WhatsApp support",
-                  "Free child seats · water and WiFi on board",
+                  "Free child seats · water and WiFi on board · 24/7 WhatsApp support",
                   "Secure payment — card details never touch our servers",
                 ]
             ).map((item) => (

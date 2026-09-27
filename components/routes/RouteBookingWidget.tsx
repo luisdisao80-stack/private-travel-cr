@@ -12,6 +12,7 @@ import {
   Car,
   MapPinned,
   Info,
+  ShieldCheck,
 } from "lucide-react";
 import { DatePicker } from "@/components/ui/date-picker";
 import PaxSelector, {
@@ -431,6 +432,21 @@ export default function RouteBookingWidget({
                 : "Elegí la fecha para agregar el viaje"}
             </p>
           ) : null}
+
+          {/* Aversión a la pérdida, pegada al botón de compromiso. El
+              visitante no compra un shuttle: compra NO quedarse varado si
+              el vuelo se atrasa y NO perder la plata si cambian los
+              planes. Las dos promesas son las REALES de las FAQs y los
+              términos (cancelación 48h, monitoreo de vuelo) — nada que
+              después genere un reclamo a Diego. */}
+          <p className="mt-3 flex items-start justify-center gap-1.5 text-center text-[11px] leading-snug text-slate-500">
+            <ShieldCheck size={13} className="mt-0.5 shrink-0 text-green-700" />
+            <span>
+              {en
+                ? "Free cancellation up to 48h before · Flight late? Your driver adjusts and waits at no charge"
+                : "Cancelación gratis hasta 48h antes · ¿Vuelo atrasado? Tu chofer se ajusta y te espera sin costo"}
+            </span>
+          </p>
         </>
       )}
     </div>
