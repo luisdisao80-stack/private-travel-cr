@@ -97,6 +97,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // El script inline de <head> marca <html data-consent> ANTES de que
+      // React hidrate (para esconder el banner de cookies a quien ya eligió).
+      // React ve un atributo que el servidor no mandó, lo trata como error de
+      // hidratación y reconstruye la página entera en el cliente — eso
+      // retrasaba el pintado y arruinaba el LCP para visitantes recurrentes.
+      // suppressHydrationWarning le dice a React que los atributos de ESTE
+      // elemento pueden diferir a propósito (patrón estándar para atributos
+      // puestos por scripts inline, p. ej. next-themes). Solo aplica al tag
+      // <html>, no a sus hijos.
+      suppressHydrationWarning
       className={cn(
         "h-full",
         "antialiased",
