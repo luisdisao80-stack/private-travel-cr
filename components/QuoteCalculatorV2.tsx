@@ -43,6 +43,13 @@ type Props = {
   // the previous SJO -> Herradura route — a confusing desync.
   heroFrom?: string;
   heroTo?: string;
+  // Pasajeros del buscador de arriba. Sin esto, el buscador cotizaba
+  // $325 para 6 personas y este formulario, justo debajo en la MISMA
+  // página, seguía mostrando el precio de 2 pasajeros (tarifa 1-5).
+  // Diego lo reportó el 2026-09-27 con captura de La Fortuna → Playa
+  // Hermosa: arriba $325, abajo $280.
+  heroAdults?: number;
+  heroChildren?: number;
 };
 const WHATSAPP_NUMBER = "50686334133";
 // Se movió a lib/quote-helpers.ts (EXTRA_STOP_PRICE_USD) porque ahora el
@@ -69,6 +76,8 @@ export default function QuoteCalculatorV2({
   hotels = [],
   heroFrom,
   heroTo,
+  heroAdults,
+  heroChildren,
 }: Props) {
   const { addItem: cartAddItem, itemCount: cartItemCount } = useCart();
   const { lang } = useLanguage();
@@ -165,6 +174,22 @@ export default function QuoteCalculatorV2({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [heroTo]);
+  // Los pasajeros bajan igual que heroFrom/heroTo: cuando el visitante
+  // cambia el contador del buscador de arriba, este formulario se
+  // actualiza; si edita los campos de ACÁ, el efecto no se dispara
+  // (el prop no cambió) y su elección se respeta.
+  useEffect(() => {
+    if (heroAdults !== undefined && String(heroAdults) !== adultsStr) {
+      setAdultsStr(String(heroAdults));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heroAdults]);
+  useEffect(() => {
+    if (heroChildren !== undefined && String(heroChildren) !== childrenStr) {
+      setChildrenStr(String(heroChildren));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heroChildren]);
   const [adultsStr, setAdultsStr] = useState("2");
   const [childrenStr, setChildrenStr] = useState("0");
   const [serviceType, setServiceType] = useState<"standard" | "vip">("standard");

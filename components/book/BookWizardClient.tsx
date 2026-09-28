@@ -801,6 +801,11 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                 hotels={hotels}
                 heroFrom={heroFrom}
                 heroTo={heroTo}
+                /* Los pasajeros también bajan — sin esto el buscador
+                   cotizaba 6 pax y este formulario mostraba el precio de
+                   2 justo debajo (Diego, 2026-09-27, con captura). */
+                heroAdults={heroAdults}
+                heroChildren={heroChildren}
               />
             )}
           </div>
