@@ -28,6 +28,15 @@ function buildAutoFAQs(route: Route, originName: string, destName: string): Rout
       question: `How much does a private shuttle from ${originName} to ${destName} cost?`,
       answer: `Private shuttle from ${originName} to ${destName} starts at $${route.precio1a6} USD per vehicle (1-5 passengers). The price is per vehicle, not per person — everyone in your group travels together for the same flat rate. Larger vehicles for 6-18 passengers are available at higher tiers.`,
     },
+    // "Best way to get" Q&A — mirrors the on-page transport-comparison
+    // section so the answer also lands in the FAQ schema. GSC (2026-10)
+    // shows these pages pull most impressions from question queries
+    // ("how to get from san jose airport to la fortuna" and friends)
+    // while sitting on page 2; this targets that intent directly.
+    {
+      question: `What is the best way to get from ${originName} to ${destName}?`,
+      answer: `You can travel from ${originName} to ${destName} by private shuttle, shared shuttle, rental car, or public bus. A private shuttle is the most comfortable option: door-to-door service from $${route.precio1a6} USD per vehicle, departing on your schedule with no extra stops. Shared shuttles are cheaper for solo travelers but run on fixed timetables with multiple hotel stops. A rental car gives you flexibility but adds mandatory insurance costs and unfamiliar mountain roads. The public bus is the cheapest option but much slower, usually requiring transfers.`,
+    },
   ];
   if (route.duracion) {
     baseList.push({
@@ -323,6 +332,76 @@ export default function RouteDetail({
           originName={originName}
           destName={destName}
         />
+
+        {/* Transport-options comparison — the H2 is the literal question
+            cluster these pages already rank for on Google page 2 ("how to
+            get from san jose airport to la fortuna": 850+ impressions in
+            GSC, 2026-Q3) but had ZERO content answering. A real <table>
+            because Google favors comparison tables for "how to get / best
+            way" queries (featured-snippet material). Prices for the non-
+            shuttle options are honest country-wide ranges, so the section
+            is safe to render on every route. */}
+        {route.precio1a6 ? (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold text-blue-900 mb-4">
+              How to get from {originName} to {destName}
+            </h2>
+            <p className="text-slate-600 leading-relaxed mb-6">
+              There are four main ways to travel from {originName} to {destName}: private
+              shuttle, shared shuttle, rental car, or public bus. Here is how they compare
+              on price, travel time, and comfort:
+            </p>
+            <div className="overflow-x-auto mb-6 rounded-xl border border-slate-200">
+              <table className="w-full min-w-[640px] bg-white text-sm">
+                <thead>
+                  <tr className="bg-orange-50 text-left text-blue-900">
+                    <th scope="col" className="p-4 font-semibold">Option</th>
+                    <th scope="col" className="p-4 font-semibold">Price</th>
+                    <th scope="col" className="p-4 font-semibold">Travel time</th>
+                    <th scope="col" className="p-4 font-semibold">Door-to-door</th>
+                    <th scope="col" className="p-4 font-semibold">Best for</th>
+                  </tr>
+                </thead>
+                <tbody className="text-slate-600">
+                  <tr className="border-t border-slate-200 bg-orange-50/40">
+                    <td className="p-4 font-semibold text-slate-900">Private shuttle</td>
+                    <td className="p-4">From ${route.precio1a6} per vehicle (1-5 people)</td>
+                    <td className="p-4">{route.duracion ? `About ${route.duracion} — direct, no stops` : "Direct, no stops"}</td>
+                    <td className="p-4">Yes — any address</td>
+                    <td className="p-4">Families, groups, airport arrivals</td>
+                  </tr>
+                  <tr className="border-t border-slate-200">
+                    <td className="p-4 font-semibold text-slate-900">Shared shuttle</td>
+                    <td className="p-4">$55–$99 per person</td>
+                    <td className="p-4">Longer — fixed schedule, multiple hotel stops</td>
+                    <td className="p-4">Hotel-to-hotel only</td>
+                    <td className="p-4">Solo travelers on a tight budget</td>
+                  </tr>
+                  <tr className="border-t border-slate-200">
+                    <td className="p-4 font-semibold text-slate-900">Rental car</td>
+                    <td className="p-4">$60–$120+ per day + mandatory insurance</td>
+                    <td className="p-4">Similar drive, but you navigate yourself</td>
+                    <td className="p-4">Yes — you drive</td>
+                    <td className="p-4">Long stays with many day trips</td>
+                  </tr>
+                  <tr className="border-t border-slate-200">
+                    <td className="p-4 font-semibold text-slate-900">Public bus</td>
+                    <td className="p-4">$5–$15 per person</td>
+                    <td className="p-4">Much longer — transfers and waiting between buses</td>
+                    <td className="p-4">No — terminal to terminal</td>
+                    <td className="p-4">Backpackers with light luggage</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-slate-600 leading-relaxed">
+              For 3 or more travelers, a private shuttle usually works out to about the
+              same per person as a shared shuttle: from ${route.precio1a6} per vehicle, a
+              group of 4 pays roughly ${Math.ceil(route.precio1a6 / 4)} per person — with
+              door-to-door pickup, your own departure time, and no stops along the way.
+            </p>
+          </section>
+        ) : null}
 
         {route.journey_description ? (
           <section className="mb-10">
