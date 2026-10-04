@@ -1299,6 +1299,7 @@ function TripConfigCard({
             onChange={setPickup}
             hotels={hotels}
             contextArea={item.fromName}
+            showSuggestions={false}
             placeholder={
               es
                 ? `Hotel, Airbnb o dirección en ${item.fromName}`
@@ -1323,6 +1324,7 @@ function TripConfigCard({
             onChange={setDropoff}
             hotels={hotels}
             contextArea={item.toName}
+            showSuggestions={false}
             placeholder={
               es
                 ? `Hotel, Airbnb o dirección en ${item.toName}`

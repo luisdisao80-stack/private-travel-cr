@@ -486,10 +486,10 @@ export default function QuoteCalculatorV2({
         </>
       )}
 
-      {/* Specific pickup address (hotel, Airbnb, exact street) — the
-          autocomplete surfaces matching hotels from the DB while still
-          accepting any free text (Airbnb, private residence, etc.). See
-          components/HotelAddressAutocomplete.tsx for why. */}
+      {/* Specific pickup address (hotel, Airbnb, exact street). Free text
+          only — suggestions OFF since 2026-10-04: Diego reported the hotel
+          dropdown confused customers mid-typing, so the customer flow is
+          plain typing; the admin panel keeps suggestions. */}
       <div className="mb-5">
         <label className="flex items-center gap-2 text-sm text-blue-900 font-semibold mb-2">
           <MapPin size={16} className="text-orange-600" />
@@ -501,6 +501,7 @@ export default function QuoteCalculatorV2({
           onHotelPick={handlePickupHotel}
           hotels={hotels}
           contextArea={from}
+          showSuggestions={false}
           placeholder={
             es ? "Hotel, Airbnb o dirección exacta..." : "Hotel, Airbnb, or exact address..."
           }
@@ -522,6 +523,7 @@ export default function QuoteCalculatorV2({
           onHotelPick={handleDropoffHotel}
           hotels={hotels}
           contextArea={to}
+          showSuggestions={false}
           placeholder={
             es ? "Hotel, Airbnb o dirección exacta..." : "Hotel, Airbnb, or exact address..."
           }

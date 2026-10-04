@@ -43,6 +43,12 @@ type Props = {
    *  local look-and-feel (QuoteCalculatorV2 uses a heavier field style
    *  than BookingForm's shadcn <Input>, so we don't hard-code anything). */
   inputClassName?: string;
+  /** When false, the field is pure free text: no dropdown, no hotel
+   *  suggestions. Diego (2026-10-04) asked to turn suggestions OFF in the
+   *  customer-facing booking flow because the dropdown was confusing
+   *  customers mid-typing; the admin panel keeps them ON (default true)
+   *  since there they speed up finding canonical hotel names. */
+  showSuggestions?: boolean;
 };
 
 type Suggestion = { hotel: Hotel; score: number };
@@ -130,6 +136,7 @@ export default function HotelAddressAutocomplete({
   contextArea,
   className = "relative w-full",
   inputClassName = "w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:border-orange-600 outline-none",
+  showSuggestions = true,
 }: Props) {
   const [open, setOpen] = useState(false);
   // -1 = nothing highlighted. We deliberately do NOT pre-select the top
@@ -150,6 +157,10 @@ export default function HotelAddressAutocomplete({
   }, [value]);
 
   const suggestions = useMemo<Suggestion[]>(() => {
+    // Suggestions disabled → the memo short-circuits and the dropdown,
+    // keyboard navigation, and hotel commits all become no-ops. The input
+    // keeps working as plain free text (multi-stop "+" text included).
+    if (!showSuggestions) return [];
     // Match only the stop currently being typed, so an already-entered
     // first hotel doesn't skew (or zero out) the ranking for the second.
     const query = lastSegment(debouncedValue).trim();
@@ -165,7 +176,7 @@ export default function HotelAddressAutocomplete({
       .filter((s) => s.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, 7);
-  }, [debouncedValue, hotels, contextArea]);
+  }, [debouncedValue, hotels, contextArea, showSuggestions]);
 
   // Clear the keyboard highlight whenever the QUERY changes — otherwise
   // pressing Enter after typing another letter could commit whatever row
