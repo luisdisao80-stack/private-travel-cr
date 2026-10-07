@@ -17,7 +17,7 @@ export default function TermsPage() {
       title: "Terms and Conditions",
       icon: "📜",
       company: "Private Travel Costa Rica",
-      lastUpdated: "Last Updated: August 27, 2026",
+      lastUpdated: "Last Updated: October 7, 2026",
       intro: "Welcome to Private Travel Costa Rica. By accessing our website, booking our services, or communicating with us, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully, as they define your rights and responsibilities.",
       sections: [
         {
@@ -87,6 +87,10 @@ export default function TermsPage() {
               subtitle: "4.4 Personal Belongings",
               text: "Any personal belongings, luggage, or valuables left in the vehicle or at tour locations remain the sole responsibility of the client.",
             },
+            {
+              subtitle: "4.5 Pets & Animals",
+              text: "Private Travel Costa Rica does NOT transport pets or animals of any kind in our vehicles. If a booking is made for a trip involving the transportation of an animal, Private Travel Costa Rica reserves the right to cancel the reservation with a full refund. Certified service animals required by passengers with disabilities may be considered only with prior written approval before booking.",
+            },
           ],
         },
         {
@@ -152,7 +156,7 @@ export default function TermsPage() {
       title: "Términos y Condiciones",
       icon: "📜",
       company: "Private Travel Costa Rica",
-      lastUpdated: "Última Actualización: 27 de Agosto, 2026",
+      lastUpdated: "Última Actualización: 7 de Octubre, 2026",
       intro: "Bienvenido a Private Travel Costa Rica. Al acceder a nuestro sitio web, reservar nuestros servicios o comunicarse con nosotros, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Léalos cuidadosamente, ya que definen sus derechos y responsabilidades.",
       sections: [
         {
@@ -221,6 +225,10 @@ export default function TermsPage() {
             {
               subtitle: "4.4 Pertenencias Personales",
               text: "Cualquier pertenencia personal, equipaje u objetos de valor dejados en el vehículo o en ubicaciones de tour permanecen como responsabilidad única del cliente.",
+            },
+            {
+              subtitle: "4.5 Mascotas y Animales",
+              text: "Private Travel Costa Rica NO transporta mascotas ni animales de ningún tipo en nuestros vehículos. Si se realiza una reserva para un viaje que involucre el transporte de un animal, Private Travel Costa Rica se reserva el derecho de cancelar la reserva con reembolso completo. Los animales de servicio certificados requeridos por pasajeros con discapacidad podrán considerarse únicamente con aprobación previa por escrito antes de reservar.",
             },
           ],
         },
