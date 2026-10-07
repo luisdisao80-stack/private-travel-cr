@@ -12,6 +12,7 @@ import {
   pickupAt,
 } from "@/components/admin/booking-helpers";
 import EditableTripAddresses from "@/components/admin/EditableTripAddresses";
+import EditableTripFlight from "@/components/admin/EditableTripFlight";
 import ResendConfirmationButton from "@/components/admin/ResendConfirmationButton";
 import {
   updateBookingStatusAction,
@@ -297,12 +298,16 @@ export default async function AdminBookingDetailPage({
                       hotels={hotels}
                     />
 
-                    {it.flightNumber && (
-                      <div className="inline-flex items-center gap-1.5">
-                        <Plane size={12} className="text-gray-500" />
-                        Flight {it.flightNumber}
-                      </div>
-                    )}
+                    {/* Flight number — inline-editable, always rendered
+                        (even when the customer booked without one) so
+                        Diego can add it when the client sends it later
+                        by email/WhatsApp. DB-only save, same contract as
+                        the address editor above. */}
+                    <EditableTripFlight
+                      orderNumber={data.order_number}
+                      tripIndex={idx}
+                      flightNumber={it.flightNumber ?? ""}
+                    />
                     {/* Child-seat request line — was missing from this
                         view entirely, so Diego never saw what the
                         customer asked for and only found out at pickup.

@@ -332,6 +332,87 @@ export async function updateTripAddressAction(
 }
 
 /**
+ * Edit the flight number of a single trip inside a booking's items[]
+ * JSONB (Diego 2026-10-06: "en el admin necesito poder modificar el
+ * numero de vuelo"). Customers often book without a flight number and
+ * send it later by email/WhatsApp — before this action the only way to
+ * record it was raw SQL against the JSONB items column.
+ *
+ * Same contract as updateTripAddressAction: DB-only save, no email is
+ * sent (the 2026-06-24 rule — auto-sends on iterative edits bombard the
+ * customer). Diego uses "Resend confirmation" / "Notify customer of
+ * changes" when he wants the customer to see the updated details.
+ *
+ * Also keeps the legacy top-level bookings.flight_number column in sync
+ * (first trip that has a flight), mirroring what createQuoteAction does
+ * on insert, so the header "Flight" row and any legacy reader stay
+ * consistent with the per-trip values.
+ */
+export async function updateTripFlightAction(
+  formData: FormData,
+): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
+  }
+
+  const orderNumber = String(formData.get("orderNumber") ?? "").trim();
+  const tripIndex = parseInt(String(formData.get("tripIndex") ?? ""), 10);
+  // Uppercase for consistency with airline convention ("dl 619" → "DL 619");
+  // empty string is legal and means "clear the flight number".
+  const newValue = String(formData.get("newValue") ?? "")
+    .trim()
+    .toUpperCase();
+
+  if (!orderNumber || Number.isNaN(tripIndex) || tripIndex < 0) return;
+
+  const { data: row, error: readErr } = await supabaseAdmin
+    .from("bookings")
+    .select("items")
+    .eq("order_number", orderNumber)
+    .maybeSingle();
+
+  if (readErr || !row) {
+    console.error("[admin] updateTripFlight read failed:", readErr);
+    return;
+  }
+
+  const items = Array.isArray(row.items)
+    ? (row.items as Record<string, unknown>[])
+    : [];
+  if (tripIndex >= items.length) {
+    console.error(
+      `[admin] updateTripFlight: tripIndex ${tripIndex} out of range for order ${orderNumber}`,
+    );
+    return;
+  }
+
+  // Spread keeps every other trip field untouched (dates, addresses,
+  // child seats, service tier). undefined drops the key on serialize,
+  // which is how trips without a flight are stored by the booking flow.
+  items[tripIndex] = {
+    ...items[tripIndex],
+    flightNumber: newValue || undefined,
+  };
+
+  const firstFlight =
+    (items.find((t) => t.flightNumber)?.flightNumber as string | undefined) ??
+    null;
+
+  const { error: writeErr } = await supabaseAdmin
+    .from("bookings")
+    .update({ items, flight_number: firstFlight })
+    .eq("order_number", orderNumber);
+
+  if (writeErr) {
+    console.error("[admin] updateTripFlight write failed:", writeErr);
+    return;
+  }
+
+  revalidatePath("/admin");
+  revalidatePath(`/admin/${orderNumber}`);
+}
+
+/**
  * Eliminar UN viaje de los items[] de una reserva (Diego 2026-09-15:
  * "que en el admin yo pueda eliminar un viaje y mandar el update en los
  * viajes que yo les hago a los clientes"). Caso típico: cotización
