@@ -746,22 +746,22 @@ export default function QuoteCalculatorV2({
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-slate-600">
                 {(es
                   ? [
-                      "Ruta directa, puerta a puerta",
+                      "Servicio privado, puerta a puerta",
                       "Chofer profesional bilingüe",
                       "WiFi a bordo y agua embotellada",
                       "Sillas para niños sin costo, si las pedís",
                       "Seguimiento de vuelo y seguro completo",
                       "Paradas rápidas para baño, snacks o súper",
-                      "Sin desvíos, sin sorpresas",
+                      "Solo tu grupo, sin otros pasajeros",
                     ]
                   : [
-                      "Direct route, door-to-door",
+                      "Private door-to-door service",
                       "Bilingual professional driver",
                       "Onboard WiFi & bottled water",
                       "Free child seats on request",
                       "Flight tracking & full insurance",
                       "Quick stops for bathroom, snacks or groceries",
-                      "No detours, no surprises",
+                      "Just your group — no other passengers",
                     ]
                 ).map((line) => (
                   <li key={line} className="flex items-start gap-1.5">

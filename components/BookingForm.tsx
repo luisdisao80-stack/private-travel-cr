@@ -1209,8 +1209,8 @@ function TripConfigCard({
             tagline={es ? "Rápido y eficiente" : "Fast & efficient"}
             description={
               es
-                ? "Viaje privado directo — con paradas rápidas si las necesitás"
-                : "Private direct ride — quick stops whenever you need them"
+                ? "Viaje privado puerta a puerta — con paradas rápidas si las necesitás"
+                : "Private door-to-door ride — quick stops whenever you need them"
             }
             priceUsd={standardPrice}
             selected={item.serviceType === "standard"}
@@ -1218,7 +1218,7 @@ function TripConfigCard({
             features={
               es
                 ? [
-                    "Ruta directa, sin desvíos",
+                    "Solo tu grupo, sin otros pasajeros",
                     "Servicio puerta a puerta",
                     "Chofer profesional bilingüe",
                     "WiFi a bordo y agua embotellada",
@@ -1227,7 +1227,7 @@ function TripConfigCard({
                     "Paradas rápidas para baño, snacks o súper",
                   ]
                 : [
-                    "Direct route, no detours",
+                    "Just your group — no other passengers",
                     "Door-to-door service",
                     "Bilingual professional driver",
                     "Onboard WiFi & bottled water",

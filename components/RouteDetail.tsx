@@ -366,7 +366,7 @@ export default function RouteDetail({
                   <tr className="border-t border-slate-200 bg-orange-50/40">
                     <td className="p-4 font-semibold text-slate-900">Private shuttle</td>
                     <td className="p-4">From ${route.precio1a6} per vehicle (1-5 people)</td>
-                    <td className="p-4">{route.duracion ? `About ${route.duracion} — direct, with free quick stops (bathroom, snacks, groceries)` : "Direct, with free quick stops (bathroom, snacks, groceries)"}</td>
+                    <td className="p-4">{route.duracion ? `About ${route.duracion} — just your group, with free quick stops (bathroom, snacks, groceries)` : "Just your group, with free quick stops (bathroom, snacks, groceries)"}</td>
                     <td className="p-4">Yes — any address</td>
                     <td className="p-4">Families, groups, airport arrivals</td>
                   </tr>
