@@ -1209,8 +1209,8 @@ function TripConfigCard({
             tagline={es ? "Rápido y eficiente" : "Fast & efficient"}
             description={
               es
-                ? "Viaje privado directo — sin paradas, sin esperas"
-                : "Private direct ride — no stops, no waiting"
+                ? "Viaje privado directo — con paradas rápidas si las necesitás"
+                : "Private direct ride — quick stops whenever you need them"
             }
             priceUsd={standardPrice}
             selected={item.serviceType === "standard"}
@@ -1224,6 +1224,7 @@ function TripConfigCard({
                     "WiFi a bordo y agua embotellada",
                     "Sillas para niños gratis a pedido",
                     "Seguimiento de vuelo y seguro completo",
+                    "Paradas rápidas para baño, snacks o súper",
                   ]
                 : [
                     "Direct route, no detours",
@@ -1232,6 +1233,7 @@ function TripConfigCard({
                     "Onboard WiFi & bottled water",
                     "Free child seats on request",
                     "Flight tracking & full insurance",
+                    "Quick stops for bathroom, snacks or groceries",
                   ]
             }
             ideal={

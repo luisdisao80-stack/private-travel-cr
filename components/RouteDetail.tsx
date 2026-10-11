@@ -366,7 +366,7 @@ export default function RouteDetail({
                   <tr className="border-t border-slate-200 bg-orange-50/40">
                     <td className="p-4 font-semibold text-slate-900">Private shuttle</td>
                     <td className="p-4">From ${route.precio1a6} per vehicle (1-5 people)</td>
-                    <td className="p-4">{route.duracion ? `About ${route.duracion} — direct, no stops` : "Direct, no stops"}</td>
+                    <td className="p-4">{route.duracion ? `About ${route.duracion} — direct, with free quick stops (bathroom, snacks, groceries)` : "Direct, with free quick stops (bathroom, snacks, groceries)"}</td>
                     <td className="p-4">Yes — any address</td>
                     <td className="p-4">Families, groups, airport arrivals</td>
                   </tr>
@@ -398,7 +398,8 @@ export default function RouteDetail({
               For 3 or more travelers, a private shuttle usually works out to about the
               same per person as a shared shuttle: from ${route.precio1a6} per vehicle, a
               group of 4 pays roughly ${Math.ceil(route.precio1a6 / 4)} per person — with
-              door-to-door pickup, your own departure time, and no stops along the way.
+              door-to-door pickup, your own departure time, and free quick stops for
+              bathroom breaks, snacks or groceries whenever you need them.
             </p>
           </section>
         ) : null}

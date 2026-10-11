@@ -751,6 +751,7 @@ export default function QuoteCalculatorV2({
                       "WiFi a bordo y agua embotellada",
                       "Sillas para niños sin costo, si las pedís",
                       "Seguimiento de vuelo y seguro completo",
+                      "Paradas rápidas para baño, snacks o súper",
                       "Sin desvíos, sin sorpresas",
                     ]
                   : [
@@ -759,6 +760,7 @@ export default function QuoteCalculatorV2({
                       "Onboard WiFi & bottled water",
                       "Free child seats on request",
                       "Flight tracking & full insurance",
+                      "Quick stops for bathroom, snacks or groceries",
                       "No detours, no surprises",
                     ]
                 ).map((line) => (
