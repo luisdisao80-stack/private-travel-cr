@@ -2,6 +2,7 @@
 title: "The 12 Best Beaches in Costa Rica (2026): A Local's Honest Ranking"
 description: "I've driven guests to every coast in Costa Rica. Here are the 12 best beaches — by region — with real swim safety, kid-friendliness, and how to get there."
 date: "2026-06-01"
+updated: "2026-10-12"
 author: "Diego Salas Oviedo"
 category: "Beaches"
 readTime: 14
@@ -59,6 +60,8 @@ The most "lived-in" beach town in Guanacaste — Ticos vacation here, not just t
 - **Best time:** December–April.
 - **How to get there:** ~25 min from LIR.
 
+> **Flying into Liberia?** We run private shuttles from LIR to every beach in Guanacaste — [Conchal from $135](/private-shuttle/lir-liberia-int-airport-to-conchal), [Tamarindo from $135](/private-shuttle/lir-liberia-int-airport-to-tamarindo), [Playa Hermosa from $110](/private-shuttle/lir-liberia-int-airport-to-playa-hermosa), [Playas del Coco from $110](/private-shuttle/lir-liberia-int-airport-to-playas-del-coco). Prices are per vehicle (up to 6 people), not per person. [Get an instant quote →](/book)
+
 ## Pacific Coast — Nicoya Peninsula (the bohemian middle)
 
 The Nicoya Peninsula is harder to reach — that's why it's stayed beautiful. You either take a ferry from Puntarenas, drive the long way around, or fly into Tambor. Most travelers come for **Santa Teresa** or **Nosara**.
@@ -82,6 +85,8 @@ Nosara is the spiritual cousin of Santa Teresa — yoga, surfing, smoothie bowls
 - **Kid-friendly:** Yes for the more developed end of the beach with surf schools.
 - **Best time:** December–April.
 - **How to get there:** ~2.5h from LIR or 5h from SJO.
+
+> **Headed to the peninsula?** No ferry needed with a private shuttle — [LIR to Santa Teresa from $350](/private-shuttle/lir-liberia-int-airport-to-santa-teresa), [SJO to Santa Teresa from $375](/private-shuttle/sjo-juan-santamaria-int-airport-to-santa-teresa), [LIR to Nosara from $240](/private-shuttle/lir-to-nosara). Per vehicle, door to door. [Get an instant quote →](/book)
 
 ## Pacific Coast — Central Pacific (Manuel Antonio & Jacó)
 
@@ -107,6 +112,8 @@ Not the calm one in Guanacaste — this is a **serious surf beach** with consist
 - **Best time:** Year-round for surf; March–May for biggest swells.
 - **How to get there:** 1h 15min from SJO, or 5 min south of Jacó.
 
+> **Book your ride to the Central Pacific:** [SJO to Manuel Antonio from $220](/private-shuttle/sjo-to-manuel-antonio) (3 hours door to door) or [SJO to Jacó from $175](/private-shuttle/sjo-juan-santamaria-int-airport-to-jaco). Free child seats and flight tracking included. [Get an instant quote →](/book)
+
 ## Pacific Coast — South Pacific (Dominical, Uvita, Osa)
 
 The South Pacific is wilder, greener, and emptier. Less hotel infrastructure, more nature. If you've been to Costa Rica before and want something off the main loop, this is it.
@@ -131,6 +138,8 @@ A natural sandbar that forms the shape of a whale's tail at low tide — visible
 - **Best time:** Time the **whale's tail sandbar** with low tide. Whales: late July–October.
 - **How to get there:** ~4h from SJO.
 
+> **Going south?** Private shuttles from San José: [SJO to Uvita from $335](/private-shuttle/sjo-juan-santamaria-int-airport-to-uvita) or [SJO to Dominical from $305](/private-shuttle/sjo-juan-santamaria-int-airport-to-dominical). Per vehicle, with free stops for photos along the coastal highway. [Get an instant quote →](/book)
+
 ## Caribbean Coast (Limón)
 
 The Caribbean is the underrated half of Costa Rica. The flight from anywhere else in the country is short, but the cultural distance is huge — Afro-Caribbean food, reggae, slower pace, coconut palms instead of cacti. The water is warmer and clearer than the Pacific. **Best time is September and October**, ironically — when the Pacific is at its rainiest, the Caribbean has its dry "veranillo."
@@ -154,6 +163,8 @@ If I had to name **the prettiest beach in Costa Rica**, it might be Punta Uva. W
 - **Kid-friendly:** Yes, strongly.
 - **Best time:** September–October, February–April.
 - **How to get there:** ~5h from SJO. We run [shuttles to Puerto Viejo](/private-shuttle/sjo-to-puerto-viejo), 10 minutes from Punta Uva.
+
+> **Caribbean-bound?** [SJO to Puerto Viejo from $330](/private-shuttle/sjo-to-puerto-viejo) — about 4.5 hours, and we drop you at your hotel anywhere between Cahuita and Punta Uva. [Get an instant quote →](/book)
 
 ## A practical regional summary
 
