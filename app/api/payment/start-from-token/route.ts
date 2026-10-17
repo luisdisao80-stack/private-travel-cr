@@ -92,12 +92,22 @@ export async function POST(req: NextRequest) {
   const origin = siteOrigin(req);
   const { first, last } = splitName(booking.customer_name ?? "Customer");
 
+  // Tilopay exige un número de orden ÚNICO por intento de pago: el primer
+  // intento (aunque la tarjeta salga declinada) "quema" el número, y todo
+  // reintento con el mismo número responde "duplicate order number"
+  // (reporte Erin Rudwall PTCR-1931, 2026-10-16). El flujo público no
+  // sufre esto porque crea fila + número nuevos en cada intento; aquí la
+  // reserva ya existe, así que a Tilopay le mandamos un alias único por
+  // intento (PTCR-XXXX-R<base36>) y el callback recibe el número real
+  // aparte (param `bk`) para actualizar la fila correcta.
+  const attemptOrderNumber = `${orderNumber}-R${Date.now().toString(36)}`;
+
   try {
     const result = await processPayment({
       amount: Number(booking.total_usd),
       currency: "USD",
-      orderNumber,
-      redirect: `${origin}/api/payment/callback?orderNumber=${encodeURIComponent(orderNumber)}`,
+      orderNumber: attemptOrderNumber,
+      redirect: `${origin}/api/payment/callback?orderNumber=${encodeURIComponent(attemptOrderNumber)}&bk=${encodeURIComponent(orderNumber)}`,
       customer: {
         firstName: first,
         lastName: last,

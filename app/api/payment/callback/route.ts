@@ -18,6 +18,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(`${origin}/booking/error?reason=missing_order`);
   }
 
+  // Los pagos por link de pago (start-from-token) usan un alias único por
+  // intento en Tilopay (PTCR-XXXX-R<base36>) porque Tilopay rechaza
+  // números de orden repetidos ("duplicate order number"). En ese flujo
+  // `orderNumber` es el alias (solo sirve para consultar en Tilopay) y
+  // `bk` trae el número real de la reserva en la tabla bookings. En el
+  // flujo público no viene `bk` y ambos son el mismo.
+  const bookingOrder = req.nextUrl.searchParams.get("bk") || orderNumber;
+
   try {
     const result = await consultTransaction(orderNumber);
     const txn = Array.isArray(result.response) ? result.response[0] : undefined;
@@ -45,14 +53,14 @@ export async function GET(req: NextRequest) {
           tilopay_last4: txn.last || null,
           consulted_at: new Date().toISOString(),
         })
-        .eq("order_number", orderNumber)
+        .eq("order_number", bookingOrder)
         .neq("status", "approved")
         .select("order_number");
 
       const isFirstApproval = (claimed ?? []).length > 0;
       if (!isFirstApproval) {
         return NextResponse.redirect(
-          `${origin}/booking/success?orderNumber=${encodeURIComponent(orderNumber)}`
+          `${origin}/booking/success?orderNumber=${encodeURIComponent(bookingOrder)}`
         );
       }
 
@@ -64,7 +72,7 @@ export async function GET(req: NextRequest) {
           .select(
             "order_number, customer_name, customer_email, customer_phone, total_usd, items, tilopay_auth, tilopay_last4, notes"
           )
-          .eq("order_number", orderNumber)
+          .eq("order_number", bookingOrder)
           .maybeSingle();
         if (booking) {
           await sendBookingEmails({
@@ -84,7 +92,7 @@ export async function GET(req: NextRequest) {
       }
 
       return NextResponse.redirect(
-        `${origin}/booking/success?orderNumber=${encodeURIComponent(orderNumber)}`
+        `${origin}/booking/success?orderNumber=${encodeURIComponent(bookingOrder)}`
       );
     }
 
@@ -101,15 +109,15 @@ export async function GET(req: NextRequest) {
         tilopay_response: txn?.response || result.message || "rejected",
         consulted_at: new Date().toISOString(),
       })
-      .eq("order_number", orderNumber)
+      .eq("order_number", bookingOrder)
       .neq("status", "approved");
     return NextResponse.redirect(
-      `${origin}/booking/error?orderNumber=${encodeURIComponent(orderNumber)}&reason=rejected`
+      `${origin}/booking/error?orderNumber=${encodeURIComponent(bookingOrder)}&reason=rejected`
     );
   } catch (e) {
     console.error("[payment/callback] consult failed:", e);
     return NextResponse.redirect(
-      `${origin}/booking/error?orderNumber=${encodeURIComponent(orderNumber)}&reason=consult_error`
+      `${origin}/booking/error?orderNumber=${encodeURIComponent(bookingOrder)}&reason=consult_error`
     );
   }
 }
