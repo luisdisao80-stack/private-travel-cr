@@ -936,7 +936,73 @@ export default function QuoteCalculatorV2({
             );
           })()}
         </div>
-      ) : null}
+      ) : (
+        /* Antes esto era `null`: si lo escrito en origen/destino no
+           calzaba EXACTO con una ubicación de la lista (texto tecleado a
+           mano sin tocar la sugerencia, o con/sin tilde), el visitante
+           podía llenar dirección, fecha, hora, pasajeros, sillas y tipo
+           de servicio… y al final no aparecía NADA: ni precio, ni botón,
+           ni mensaje. Neil Tuller lo reportó DOS veces el 2026-10-20
+           ("after I put in all the details, I didn't see a way to submit
+           it") y otro cliente lo describió como "la página se congela".
+           El formulario nunca debe terminar en un callejón sin salida:
+           siempre se pinta algo que diga qué hacer. */
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-6 text-center">
+          {(() => {
+            const f = from.trim();
+            const t = to.trim();
+            if (f && t && f.toLowerCase() === t.toLowerCase()) {
+              return (
+                <p className="text-sm text-orange-600">
+                  {es
+                    ? "El origen y el destino no pueden ser el mismo lugar. Elegí un destino diferente."
+                    : "Pickup and drop-off can't be the same place. Please pick a different drop-off."}
+                </p>
+              );
+            }
+            if (f && t) {
+              // Hay texto en ambos campos pero al menos uno no es una
+              // ubicación confirmada de la lista.
+              const fromOk = locationSet.has(from);
+              const toOk = locationSet.has(to);
+              const which = !fromOk && !toOk
+                ? (es ? "el origen y el destino" : "your pickup and drop-off")
+                : !fromOk
+                  ? (es ? "el origen" : "your pickup location")
+                  : (es ? "el destino" : "your drop-off location");
+              return (
+                <>
+                  <p className="text-sm text-slate-600 mb-1">
+                    {es
+                      ? `Para ver el precio y continuar, elegí ${which} de la lista de sugerencias (tocá una opción mientras escribís).`
+                      : `To see the price and continue, pick ${which} from the suggestion list (tap an option while typing).`}
+                  </p>
+                  <p className="text-xs text-slate-500 mb-4">
+                    {es
+                      ? "¿No aparece tu lugar en la lista? Escribinos y te cotizamos al instante."
+                      : "Can't find your place in the list? Message us and we'll quote it right away."}
+                  </p>
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg"
+                  >
+                    <span>{es ? "Cotizar por WhatsApp" : "Get a quote on WhatsApp"}</span>
+                  </a>
+                </>
+              );
+            }
+            return (
+              <p className="text-sm text-slate-500">
+                {es
+                  ? "Elegí el origen y el destino arriba para ver el precio y continuar."
+                  : "Pick your pickup and drop-off above to see the price and continue."}
+              </p>
+            );
+          })()}
+        </div>
+      )}
     </div>
   );
 }

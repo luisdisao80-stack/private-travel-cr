@@ -146,7 +146,7 @@ export function isAirport(dbName: string): boolean {
 // query and the haystacks so the user can type with or without accents
 // and get the same matches either way — keyboard input on phones often
 // drops the accent layer entirely.
-function stripDiacritics(s: string): string {
+export function stripDiacritics(s: string): string {
   return s.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 }
 

@@ -9,6 +9,7 @@ import {
   isAirport,
   matchScore,
   priorityScore,
+  stripDiacritics,
 } from "@/lib/locations";
 
 type LocationInputProps = {
@@ -46,11 +47,16 @@ type Suggestion =
 // Matches a query against a hotel by name + city. Returns same scoring
 // shape as locations.matchScore so the two streams sort together.
 function hotelMatchScore(hotel: Hotel, query: string): number {
-  const q = query.toLowerCase().trim();
+  // Sin tildes en ambos lados, igual que matchScore de locations: los
+  // teclados de celular suelen soltar "belen" y el hotel en la BD se
+  // llama "Hacienda Belén" — sin esto, el cliente no veía su hotel en
+  // la lista y terminaba tecleándolo a mano (el callejón sin salida que
+  // reportó Neil Tuller el 2026-10-20).
+  const q = stripDiacritics(query.toLowerCase().trim());
   if (!q) return 1;
 
-  const name = hotel.name.toLowerCase();
-  const city = hotel.city.toLowerCase();
+  const name = stripDiacritics(hotel.name.toLowerCase());
+  const city = stripDiacritics(hotel.city.toLowerCase());
 
   if (name === q || city === q) return 1000;
   if (name.startsWith(q)) return 500;
