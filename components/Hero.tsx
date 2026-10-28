@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowRight, ArrowLeftRight, Star, ExternalLink, Shield, Zap, CheckCircle2, Loader2, ShoppingCart } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useCart } from "@/lib/CartContext";
 import { reviewStats } from "@/lib/reviews-data";
-import { resolveLocation } from "@/lib/locations";
+import { resolveLocationWithHotels } from "@/lib/locations";
 import { popularDirectUrl } from "@/lib/popular-route-slugs";
 import { getVehicleForPax, getVehicleName, MAX_TOTAL_PAX } from "@/lib/quote-helpers";
 import GoogleGLogo from "@/components/GoogleGLogo";
@@ -108,9 +108,22 @@ export default function Hero({
   //   - the same-location guard catches "fortuna" vs "La Fortuna"
   //     resolving to one row, which used to produce a dead-end
   //     "Custom route" nothing-state.
-  const resolveEndpoints = (): { from: string; to: string } | null => {
-    const resolvedPickup = resolveLocation(pickup, locations);
-    const resolvedDropoff = resolveLocation(dropoff, locations);
+  //   - hotel names typed in full also resolve: "tabacon resort" maps to
+  //     the hotel's area_origen even when the visitor never clicked the
+  //     dropdown suggestion. Antes esto era resolveLocation (solo zonas) y
+  //     el nombre del hotel viajaba crudo a /book — Diego lo reportó el
+  //     2026-10-28: "tabacon resort to san jose airport dice que la ruta
+  //     no existe".
+  const resolveEndpoints = (): {
+    from: string;
+    to: string;
+    fromHotel: import("@/lib/types").Hotel | null;
+    toHotel: import("@/lib/types").Hotel | null;
+  } | null => {
+    const pickupRes = resolveLocationWithHotels(pickup, locations, hotels);
+    const dropoffRes = resolveLocationWithHotels(dropoff, locations, hotels);
+    const resolvedPickup = pickupRes.name;
+    const resolvedDropoff = dropoffRes.name;
     if (!resolvedPickup) {
       setResolveError("pickup");
       return null;
@@ -130,8 +143,30 @@ export default function Hero({
       return null;
     }
     setSameLocationError(false);
-    return { from: resolvedPickup, to: resolvedDropoff };
+    // El hotel clickeado en el dropdown manda; si no hubo click pero el
+    // texto libre resolvió a un hotel, usamos ese para pre-llenar la
+    // dirección de recogida igual que si lo hubieran tocado.
+    return {
+      from: resolvedPickup,
+      to: resolvedDropoff,
+      fromHotel: pickupHotel ?? pickupRes.hotel,
+      toHotel: dropoffHotel ?? dropoffRes.hotel,
+    };
   };
+
+  // Lo que la tarjeta de precio consulta mientras el visitante escribe.
+  // Resuelto con el MISMO criterio que el submit (zonas + alias + hoteles):
+  // antes recibía el texto crudo, y "tabacon resort" escrito a mano (sin
+  // tocar la sugerencia) devolvía "no tenemos precio para ese par" aunque
+  // la ruta existiera.
+  const previewFrom = useMemo(
+    () => resolveLocationWithHotels(pickup, locations, hotels).name,
+    [pickup, locations, hotels],
+  );
+  const previewTo = useMemo(
+    () => resolveLocationWithHotels(dropoff, locations, hotels).name,
+    [dropoff, locations, hotels],
+  );
 
   // Nuevo flujo principal (Diego, 2026-08): "en vez de Continue to booking
   // mejor que diga Add to cart y al final sea donde el cliente ponga los
@@ -154,10 +189,11 @@ export default function Hero({
       pickupTime: "",
       passengers: totalPax,
       children,
-      // Sólo cuando el visitante eligió un hotel del autocomplete;
-      // si no, dejamos el campo vacío para que el checkout lo pida.
-      pickupPlace: pickupHotel?.name,
-      dropoffPlace: dropoffHotel?.name,
+      // Cuando el visitante eligió un hotel del autocomplete — o escribió
+      // su nombre completo y el resolver lo reconoció — lo pre-llenamos;
+      // si no, el campo queda vacío para que el checkout lo pida.
+      pickupPlace: resolved.fromHotel?.name,
+      dropoffPlace: resolved.toHotel?.name,
       vehicleId,
       vehicleName: getVehicleName(vehicleId),
       serviceType: "standard",
@@ -207,18 +243,18 @@ export default function Hero({
     const paxIsDefault =
       adults === DEFAULT_ADULTS && children === DEFAULT_CHILDREN;
     const directUrl =
-      pickupHotel || dropoffHotel || !paxIsDefault
+      resolved.fromHotel || resolved.toHotel || !paxIsDefault
         ? null
         : popularDirectUrl(resolvedPickup, resolvedDropoff);
 
-    // Build URL with hotel names if user picked hotel suggestions. The
-    // /book wizard reads these to pre-fill the pickup/dropoff address
-    // fields in the checkout step.
+    // Build URL with hotel names if user picked hotel suggestions (or the
+    // resolver matched a typed hotel name). The /book wizard reads these
+    // to pre-fill the pickup/dropoff address fields in the checkout step.
     const params = new URLSearchParams();
     params.set("from", resolvedPickup);
     params.set("to", resolvedDropoff);
-    if (pickupHotel) params.set("pickupHotel", pickupHotel.name);
-    if (dropoffHotel) params.set("dropoffHotel", dropoffHotel.name);
+    if (resolved.fromHotel) params.set("pickupHotel", resolved.fromHotel.name);
+    if (resolved.toHotel) params.set("dropoffHotel", resolved.toHotel.name);
     // `adults` acá es el grupo TOTAL, no sólo los adultos: es lo que el
     // endpoint de precio espera para elegir el tramo de vehículo (mismo
     // criterio que usan las tarjetas de tramo en RouteDetail).
@@ -227,7 +263,8 @@ export default function Hero({
     // param, otherwise the redirect strips the query string and the hotel
     // context is lost before QuoteCalculator can read it. Un conteo de
     // pasajeros distinto al default necesita el mismo trato.
-    if (pickupHotel || dropoffHotel || !paxIsDefault) params.set("direct", "1");
+    if (resolved.fromHotel || resolved.toHotel || !paxIsDefault)
+      params.set("direct", "1");
 
     const target = directUrl ?? `/book?${params.toString()}`;
 
@@ -454,8 +491,8 @@ export default function Hero({
                 por vehículo, y un niño ocupa un asiento igual que un
                 adulto, así que para elegir el tramo cuentan los dos. */}
             <RoutePricePreview
-              from={pickup}
-              to={dropoff}
+              from={previewFrom}
+              to={previewTo}
               adults={totalPax}
               onQuote={handleQuote}
             />

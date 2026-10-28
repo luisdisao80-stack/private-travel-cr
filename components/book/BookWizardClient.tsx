@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import NextImage from "next/image";
 import { ArrowLeftRight, CheckCircle2, Shield, X, Zap, ShoppingCart } from "lucide-react";
@@ -18,7 +18,7 @@ import PaxSelector, {
 } from "@/components/PaxSelector";
 import { useCart } from "@/lib/CartContext";
 import { useLanguage } from "@/lib/LanguageContext";
-import { resolveLocation } from "@/lib/locations";
+import { resolveLocationWithHotels } from "@/lib/locations";
 import { getVehicleForPax, getVehicleName, MAX_TOTAL_PAX } from "@/lib/quote-helpers";
 import type { Hotel } from "@/lib/types";
 
@@ -104,6 +104,19 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
   const [heroAdults, setHeroAdults] = useState(seededAdults);
   const [heroChildren, setHeroChildren] = useState(DEFAULT_CHILDREN);
   const heroTotalPax = heroAdults + heroChildren;
+
+  // Lo que la tarjeta de precio consulta mientras el visitante escribe,
+  // resuelto con el mismo criterio que el quick-add (zonas + alias +
+  // hoteles). Antes recibía el texto crudo y un hotel escrito a mano
+  // devolvía "no tenemos precio para ese par" aunque la ruta existiera.
+  const previewFrom = useMemo(
+    () => resolveLocationWithHotels(heroFrom, locations, hotels).name,
+    [heroFrom, locations, hotels],
+  );
+  const previewTo = useMemo(
+    () => resolveLocationWithHotels(heroTo, locations, hotels).name,
+    [heroTo, locations, hotels],
+  );
 
   const pushRouteParams = (
     from: string,
@@ -214,8 +227,15 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
 
   const handleQuickAdd = () => {
     if (!canQuickAdd || !heroQuote) return;
-    const from = resolveLocation(heroFrom, locations);
-    const to = resolveLocation(heroTo, locations);
+    // Zonas + alias + HOTELES: "tabacon resort" escrito a mano (sin tocar
+    // la sugerencia) resuelve al area_origen del hotel, igual que en el
+    // hero de la home. Diego, 2026-10-28: "dice que la ruta no existe".
+    const fromRes = resolveLocationWithHotels(heroFrom, locations, hotels);
+    const toRes = resolveLocationWithHotels(heroTo, locations, hotels);
+    const from = fromRes.name;
+    const to = toRes.name;
+    const fromHotel = heroPickupHotel ?? fromRes.hotel;
+    const toHotel = heroDropoffHotel ?? toRes.hotel;
     // El guard de igualdad se repite sobre los nombres YA resueltos:
     // "fortuna" y "La Fortuna" son textos distintos pero la misma fila.
     if (!from || !to || from.toLowerCase() === to.toLowerCase()) {
@@ -235,8 +255,8 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
       pickupTime: "",
       passengers: heroTotalPax,
       children: heroChildren,
-      pickupPlace: heroPickupHotel?.name,
-      dropoffPlace: heroDropoffHotel?.name,
+      pickupPlace: fromHotel?.name,
+      dropoffPlace: toHotel?.name,
       vehicleId,
       vehicleName: getVehicleName(vehicleId),
       serviceType: "standard",
@@ -506,8 +526,8 @@ export default function BookWizardClient({ locations, hotels = [] }: Props) {
                     adultos sueltos, 4 adultos + 3 niños cotizaba como
                     Staria y llegaban 7 personas a un carro de 5. */}
                 <RoutePricePreview
-                  from={heroFrom}
-                  to={heroTo}
+                  from={previewFrom}
+                  to={previewTo}
                   adults={heroTotalPax}
                   onQuote={handleHeroQuote}
                 />

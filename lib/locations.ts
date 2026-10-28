@@ -1,3 +1,5 @@
+import type { Hotel } from "./types";
+
 // Display + búsqueda para las locations del cotizador.
 //
 // Las locations en Supabase guardan nombres "oficiales" largos como
@@ -212,6 +214,85 @@ export function resolveLocation(input: string, locations: string[]): string {
 // Boost score para que aeropuertos siempre queden arriba ante empates.
 export function priorityScore(dbName: string): number {
   return isAirport(dbName) ? 50 : 0;
+}
+
+// Matchea una query contra un hotel por nombre + ciudad. Devuelve la misma
+// escala que matchScore para que las dos corrientes se ordenen juntas en el
+// dropdown. Vivía dentro de LocationInput.tsx; se movió acá cuando
+// resolveLocationWithHotels necesitó el mismo scoring — dos copias habrían
+// quedado a la deriva (mismo motivo por el que resolveLocation vive acá).
+export function hotelMatchScore(
+  hotel: Pick<Hotel, "name" | "city">,
+  query: string,
+): number {
+  // Sin tildes en ambos lados, igual que matchScore de locations: los
+  // teclados de celular suelen soltar "belen" y el hotel en la BD se
+  // llama "Hacienda Belén" — sin esto, el cliente no veía su hotel en
+  // la lista y terminaba tecleándolo a mano (el callejón sin salida que
+  // reportó Neil Tuller el 2026-10-20).
+  const q = stripDiacritics(query.toLowerCase().trim());
+  if (!q) return 1;
+
+  const name = stripDiacritics(hotel.name.toLowerCase());
+  const city = stripDiacritics(hotel.city.toLowerCase());
+
+  if (name === q || city === q) return 1000;
+  if (name.startsWith(q)) return 500;
+  if (city.startsWith(q)) return 450;
+  if (name.includes(q)) return 200;
+  if (city.includes(q)) return 150;
+
+  const tokens = q.split(/\s+/);
+  if (tokens.length > 1) {
+    if (tokens.every((t) => name.includes(t) || city.includes(t))) return 100;
+  }
+  return 0;
+}
+
+/**
+ * resolveLocation, pero que también entiende nombres de hotel.
+ *
+ * Diego reportó (2026-10-28): "tabacon resort to san jose airport dice que
+ * la ruta no existe". El visitante escribe el nombre de su hotel SIN tocar
+ * la sugerencia del dropdown, y resolveLocation solo compara contra las
+ * zonas de `routes` — "tabacon resort" no es ninguna zona, así que el texto
+ * crudo viajaba a la API de precios y volvía "found: false". El dropdown ya
+ * sabía mapear Tabacón → "La Fortuna (Arenal)", pero solo si lo CLICKEABAS.
+ *
+ * Esta versión intenta primero las locations (con sus alias, igual que
+ * siempre) y, si un hotel calza mejor, devuelve su area_origen más el hotel
+ * para que el caller pueda pre-llenar la dirección de recogida. El empate lo
+ * gana la location con el mismo margen de -5 que usa el dropdown, para que
+ * escribir "jw marriott" resuelva igual acá que tocando la sugerencia.
+ *
+ * Si nada calza, devuelve el texto tal cual (igual que resolveLocation) y
+ * que el llamador decida qué mostrar.
+ */
+export function resolveLocationWithHotels(
+  input: string,
+  locations: string[],
+  hotels: Hotel[],
+): { name: string; hotel: Hotel | null } {
+  const trimmed = input.trim();
+  if (!trimmed) return { name: "", hotel: null };
+  if (locations.includes(trimmed)) return { name: trimmed, hotel: null };
+
+  const bestLoc = locations
+    .map((l) => ({ l, s: matchScore(l, trimmed) }))
+    .filter((x) => x.s > 0)
+    .sort((a, b) => b.s - a.s)[0];
+  const bestHotel = hotels
+    .map((h) => ({ h, s: hotelMatchScore(h, trimmed) }))
+    .filter((x) => x.s > 0)
+    .sort((a, b) => b.s - a.s)[0];
+
+  if (bestLoc && (!bestHotel || bestLoc.s >= bestHotel.s - 5)) {
+    return { name: bestLoc.l, hotel: null };
+  }
+  if (bestHotel) {
+    return { name: bestHotel.h.area_origen, hotel: bestHotel.h };
+  }
+  return { name: trimmed, hotel: null };
 }
 
 function escapeRegExp(s: string): string {
