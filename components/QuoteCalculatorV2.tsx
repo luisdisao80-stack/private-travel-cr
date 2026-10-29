@@ -227,7 +227,7 @@ export default function QuoteCalculatorV2({
   const timeOptionsFiltered = useMemo(() => {
     if (!isPickingEarliestDate) return TIME_OPTIONS;
     // On the earliest allowed calendar day, some slots (early morning)
-    // are still inside the 12h window. Hide those from the dropdown so
+    // are still inside the lead-time window. Hide those from the dropdown so
     // the visitor can only pick from what's actually bookable.
     return TIME_OPTIONS.filter((opt) => {
       const pickup = parseCostaRicaPickup(travelDate, opt.value);

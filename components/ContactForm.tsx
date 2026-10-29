@@ -278,7 +278,7 @@ export default function ContactForm({ embedded = false }: ContactFormProps) {
                     // Block past dates in the calendar. Without this the
                     // visitor could pick yesterday and fire a WhatsApp
                     // message with an impossible date. Using the same
-                    // 12h-lead-time helper as the booking form so the two
+                    // lead-time helper as the booking form so the two
                     // pickers stay in sync.
                     minDate={getMinPickupCRDate()}
                   />

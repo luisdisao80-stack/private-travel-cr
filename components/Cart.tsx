@@ -83,9 +83,9 @@ export default function Cart() {
   };
 
   // Cart-side pre-validation. BookingForm has always enforced these
-  // rules (12h lead time, flight-number-for-airport-pickup, no same-same
+  // rules (lead time, flight-number-for-airport-pickup, no same-same
   // route), but the cart drawer used to only check items.length > 0 —
-  // so a visitor with a stale cart (12h window closed overnight) or a
+  // so a visitor with a stale cart (lead-time window closed overnight) or a
   // half-configured trip would hit Continue, land on checkout, and see
   // the Pay button silently disabled with no clear reason. Now we
   // surface the specific issue right here so they can fix it before

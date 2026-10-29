@@ -253,7 +253,7 @@ export default function RouteBookingWidget({
           onChange={setDate}
           placeholder={en ? "Select date..." : "Elegí la fecha..."}
           lang={en ? "en" : "es"}
-          // Nadie puede escoger un día que ya no cumple las 12 horas de
+          // Nadie puede escoger un día que ya no cumple las horas mínimas de
           // anticipación: mejor esconder el día que dejar que llene todo
           // y que el checkout lo rebote al final.
           minDate={getMinPickupCRDate()}

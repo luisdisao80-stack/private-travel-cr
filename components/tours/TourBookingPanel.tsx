@@ -51,7 +51,7 @@ export default function TourBookingPanel({ tour }: Props) {
   const hasTime = Boolean(timeSlot);
   const hasDate = Boolean(date);
 
-  // 12h lead-time — same rule as shuttle bookings. See lib/booking-rules.ts.
+  // Lead-time — same rule as shuttle bookings. See lib/booking-rules.ts.
   // Tours: `date` is YYYY-MM-DD and `timeSlot` is "HH:MM" (departure).
   const minPickupCRDate = getMinPickupCRDate();
   const minPickupCRIsoDate = new Intl.DateTimeFormat("en-CA", {

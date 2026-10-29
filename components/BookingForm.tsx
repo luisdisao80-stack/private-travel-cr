@@ -138,7 +138,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 12h lead-time guard. In practice the calculator already blocks bad
+  // lead-time guard. In practice the calculator already blocks bad
   // slots at pick time, but a cart hydrated from localStorage could hold
   // a trip that was valid yesterday and isn't anymore. Also protects
   // against a visitor sitting on the checkout screen until the window
@@ -805,7 +805,7 @@ function TripConfigCard({
   const [repriceFailed, setRepriceFailed] = useState(false);
   const [repricing, setRepricing] = useState(false);
 
-  // Regla de 12h (lib/booking-rules.ts). Mismos tres puntos de acuerdo que
+  // Regla de anticipación (lib/booking-rules.ts). Mismos tres puntos de acuerdo que
   // el calculador: `minDate` del picker, filtro de horarios y validación.
   const minPickupCRDate = getMinPickupCRDate();
   const minPickupCRIsoDate = new Intl.DateTimeFormat("en-CA", {
@@ -967,7 +967,7 @@ function TripConfigCard({
     // Si la hora ya elegida deja de ser válida para la fecha nueva
     // (movió el viaje al primer día permitido), la limpiamos para que el
     // gate de "falta la hora" se dispare en vez de dejar pasar un pickup
-    // dentro de la ventana de 12h.
+    // dentro de la ventana de anticipación.
     const pickup = parseCostaRicaPickup(value, item.pickupTime);
     const timeStillValid =
       !item.pickupTime || !pickup || isPickupWithinLeadTime(pickup);

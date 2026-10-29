@@ -81,7 +81,7 @@ export default function TourCheckoutClient({ tour, booking }: Props) {
   const phoneDigits = phoneLocal.replace(/\D/g, "");
 
   // Rare edge case: the visitor sat on the checkout page long enough
-  // for the 12h window to close on the tour departure they'd already
+  // for the lead-time window to close on the tour departure they'd already
   // chosen upstream. Block the submit and surface a WhatsApp escape.
   const tourPickup = parseCostaRicaPickup(booking.date, booking.time);
   const leadTimeOk = tourPickup ? isPickupWithinLeadTime(tourPickup) : true;

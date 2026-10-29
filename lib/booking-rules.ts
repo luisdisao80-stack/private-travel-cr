@@ -5,10 +5,11 @@
  * Change MIN_LEAD_TIME_HOURS to adjust the threshold — one knob, three
  * enforcement points stay in sync.
  *
- * Why 12h: Diego (business owner) was getting bookings at 10pm for 6am
- * next-day pickups. That's not enough time to reliably confirm a driver.
- * Customers who genuinely need a same-day short-notice trip are routed
- * to WhatsApp so Diego can accept them manually.
+ * Why 18h (was 12h until 2026-10-29): Diego (business owner) was getting
+ * bookings at 10pm for 6am next-day pickups. 12h still left too little
+ * runway to reliably confirm a driver, so the threshold was raised to 18h.
+ * Customers who genuinely need a short-notice trip are routed to WhatsApp
+ * so Diego can accept them manually.
  *
  * Bypasses (do NOT enforce here):
  *   - Admin quotes (`createQuoteAction`) — Diego uses that surface to
@@ -17,7 +18,7 @@
  *     booking CREATION, not at payment time.
  */
 
-export const MIN_LEAD_TIME_HOURS = 12;
+export const MIN_LEAD_TIME_HOURS = 18;
 export const WHATSAPP_URGENT_URL = "https://wa.me/50686334133";
 
 /**
@@ -29,14 +30,14 @@ export const WHATSAPP_URGENT_URL_EN =
   WHATSAPP_URGENT_URL +
   "?text=" +
   encodeURIComponent(
-    "Hi! I need a trip in less than 12 hours, can you help?",
+    "Hi! I need a trip in less than 18 hours, can you help?",
   );
 
 export const WHATSAPP_URGENT_URL_ES =
   WHATSAPP_URGENT_URL +
   "?text=" +
   encodeURIComponent(
-    "Hola! Necesito un viaje en menos de 12 horas, ¿pueden ayudarme?",
+    "Hola! Necesito un viaje en menos de 18 horas, ¿pueden ayudarme?",
   );
 
 /**
@@ -107,8 +108,8 @@ export function getMinPickupCRDate(): Date {
  *   - the CR-local pair via `parseCostaRicaPickup` — call that first
  *     and pass the resulting Date here.
  *
- * A pickup exactly 12h out is allowed (>=, not >). Returning `true` means
- * the booking passes the rule.
+ * A pickup exactly MIN_LEAD_TIME_HOURS out is allowed (>=, not >).
+ * Returning `true` means the booking passes the rule.
  */
 export function isPickupWithinLeadTime(pickup: string | Date): boolean {
   const pickupDate = pickup instanceof Date ? pickup : new Date(pickup);
@@ -140,7 +141,7 @@ export function isFirstTripLeadTimeOk(
  * cheaply); the client picks the right one from useLanguage().
  */
 export const LEAD_TIME_MESSAGE_EN =
-  "⏰ Bookings require at least 12 hours' notice. For urgent trips, WhatsApp us at +506 8633-4133 — we'll do our best to accommodate.";
+  "⏰ Bookings require at least 18 hours' notice. For urgent trips, WhatsApp us at +506 8633-4133 — we'll do our best to accommodate.";
 
 export const LEAD_TIME_MESSAGE_ES =
-  "⏰ Las reservas requieren mínimo 12 horas de anticipación. Para viajes urgentes, escríbenos por WhatsApp al +506 8633-4133 — haremos lo posible.";
+  "⏰ Las reservas requieren mínimo 18 horas de anticipación. Para viajes urgentes, escríbenos por WhatsApp al +506 8633-4133 — haremos lo posible.";
