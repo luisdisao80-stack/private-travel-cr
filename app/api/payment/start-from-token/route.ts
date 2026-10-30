@@ -111,7 +111,14 @@ export async function POST(req: NextRequest) {
       customer: {
         firstName: first,
         lastName: last,
-        email: booking.customer_email ?? "",
+        // Tilopay REQUIRES billToEmail — rechaza el processPayment si va
+        // vacío ("Payment provider error" reporte Betsabe Diaz PTCR-2118,
+        // 2026-10-29). Las reservas admin creadas desde WhatsApp pueden no
+        // tener email del cliente; usamos el del negocio como respaldo para
+        // que el cobro proceda (el recibo de Tilopay nos llega a nosotros y
+        // se reenvía por WhatsApp).
+        email:
+          (booking.customer_email ?? "").trim() || "info@privatetravelcr.com",
         phone: (booking.customer_phone ?? "").replace(/\D/g, "").slice(-12) || "00000000",
       },
     });

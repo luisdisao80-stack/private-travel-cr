@@ -866,22 +866,29 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
     contentType: "text/calendar; charset=utf-8; method=PUBLISH",
   };
 
+  // Las reservas admin creadas desde WhatsApp pueden no tener email del
+  // cliente (columna NOT NULL → string vacío). Resend rechaza `to`/`replyTo`
+  // vacíos, y sin este guard el aviso interno a Diego también se caería.
+  const customerTo = (data.customerEmail || "").trim();
+
   // Fire both in parallel; one failing must not stop the other.
   const [customerRes, internalRes] = await Promise.allSettled([
-    resend.emails.send({
-      from,
-      to: data.customerEmail,
-      subject: `Booking Confirmed · ${data.orderNumber}`,
-      html: customerHtml,
-      replyTo: businessReplyTo,
-      attachments: [icsAttachment],
-    }),
+    customerTo
+      ? resend.emails.send({
+          from,
+          to: customerTo,
+          subject: `Booking Confirmed · ${data.orderNumber}`,
+          html: customerHtml,
+          replyTo: businessReplyTo,
+          attachments: [icsAttachment],
+        })
+      : Promise.resolve(null),
     resend.emails.send({
       from,
       to: businessRecipients,
       subject: `🚐 New booking · ${data.orderNumber} · $${data.totalUsd.toFixed(2)} USD`,
       html: internalHtml,
-      replyTo: data.customerEmail,
+      replyTo: customerTo || businessReplyTo,
       // Same .ics goes to every internal recipient — Diego asked for the
       // 'Add to Calendar' chip in his Gmail. Before this it was customer-
       // only, so the operator had to manually copy trip dates into the
@@ -893,6 +900,10 @@ export async function sendBookingEmails(data: BookingEmailInput): Promise<void> 
 
   if (customerRes.status === "rejected") {
     console.error("[email] customer send failed:", customerRes.reason);
+  } else if (customerRes.value === null) {
+    console.warn(
+      `[email] booking ${data.orderNumber} has no customer email — confirmation goes out by WhatsApp`,
+    );
   } else if (customerRes.value.error) {
     console.error("[email] customer send error:", customerRes.value.error);
   }
@@ -927,6 +938,12 @@ export async function sendBookingCustomerEmailOnly(
   if (!resend) {
     console.warn(
       "[email] RESEND_API_KEY not set — skipping customer-only booking email",
+    );
+    return;
+  }
+  if (!(data.customerEmail || "").trim()) {
+    console.warn(
+      `[email] booking ${data.orderNumber} has no customer email — skipping customer-only resend`,
     );
     return;
   }
