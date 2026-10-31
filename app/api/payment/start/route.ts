@@ -6,7 +6,10 @@ import { getTourBySlug, quoteTour } from "@/lib/tours-db";
 import type { CartItem } from "@/lib/CartContext";
 import {
   LEAD_TIME_MESSAGE_EN,
+  PEAK_SEASON_MESSAGE_EN,
   isPickupWithinLeadTime,
+  isPeakSeasonPaxOk,
+  isCartPeakSeasonOk,
   parseCostaRicaPickup,
 } from "@/lib/booking-rules";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
@@ -245,6 +248,30 @@ export async function POST(req: NextRequest) {
           })();
     if (firstPickup && !isPickupWithinLeadTime(firstPickup)) {
       return NextResponse.json({ error: LEAD_TIME_MESSAGE_EN }, { status: 400 });
+    }
+  }
+
+  // Temporada alta navideña (22–30 dic): máximo 5 pax por reserva web —
+  // ver lib/booking-rules.ts. Misma filosofía que el lead time: el
+  // cliente ya lo bloquea, así que un rechazo aquí es una request
+  // armada fuera de la UI. Los quotes de admin no pasan por esta ruta.
+  {
+    const peakOk =
+      body.kind === "tour"
+        ? (() => {
+            const t = (body as TourBody).tour;
+            const pax = (Number(t?.adults) || 0) + (Number(t?.children) || 0);
+            return isPeakSeasonPaxOk(t?.date, pax);
+          })()
+        : (() => {
+            const items = (body as ShuttleBody).items;
+            return !Array.isArray(items) || isCartPeakSeasonOk(items);
+          })();
+    if (!peakOk) {
+      return NextResponse.json(
+        { error: PEAK_SEASON_MESSAGE_EN },
+        { status: 400 },
+      );
     }
   }
 

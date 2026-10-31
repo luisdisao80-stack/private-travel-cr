@@ -43,6 +43,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { formatPrice } from "@/lib/currency";
 import {
   isFirstTripLeadTimeOk,
+  isCartPeakSeasonOk,
   isPickupWithinLeadTime,
   parseCostaRicaPickup,
   getMinPickupCRDate,
@@ -50,6 +51,8 @@ import {
   MIN_LEAD_TIME_HOURS,
   LEAD_TIME_MESSAGE_EN,
   LEAD_TIME_MESSAGE_ES,
+  PEAK_SEASON_MESSAGE_EN,
+  PEAK_SEASON_MESSAGE_ES,
   WHATSAPP_URGENT_URL_EN,
   WHATSAPP_URGENT_URL_ES,
 } from "@/lib/booking-rules";
@@ -145,6 +148,10 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
   // closes on them.
   const firstTripLeadTimeOk = isFirstTripLeadTimeOk(items);
 
+  // Temporada alta navideña (22–30 dic): máx 5 pax por reserva web.
+  // Ver lib/booking-rules.ts — grupos más grandes van a WhatsApp.
+  const peakSeasonOk = isCartPeakSeasonOk(items);
+
   // Tilopay charges USD — that's the only number the bank sees. Show
   // the converted approximation parenthetically when the visitor is
   // browsing in a different currency, so they understand the rate
@@ -217,6 +224,7 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
     // que entran por el quick-add del hero nacen así a propósito.
     incompleteTrip === null &&
     firstTripLeadTimeOk &&
+    peakSeasonOk &&
     acceptedTerms;
 
   const handleSubmit = async () => {
@@ -521,6 +529,22 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
               {lang === "es" ? "Escríbenos por WhatsApp" : "WhatsApp us"}
             </a>
           )}
+        </div>
+      )}
+
+      {firstTripLeadTimeOk && !peakSeasonOk && items.length > 0 && (
+        <div className="rounded-lg border border-orange-500/50 bg-orange-50 px-4 py-3 text-xs text-amber-900">
+          <p className="leading-snug mb-2">
+            {lang === "es" ? PEAK_SEASON_MESSAGE_ES : PEAK_SEASON_MESSAGE_EN}
+          </p>
+          <a
+            href={lang === "es" ? WHATSAPP_URGENT_URL_ES : WHATSAPP_URGENT_URL_EN}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-slate-900 font-semibold text-xs px-3 py-1.5 transition-colors"
+          >
+            {lang === "es" ? "Escríbenos por WhatsApp" : "WhatsApp us"}
+          </a>
         </div>
       )}
 

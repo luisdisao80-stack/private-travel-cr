@@ -24,8 +24,11 @@ import { formatPrice } from "@/lib/currency";
 import { isAirport } from "@/lib/quote-helpers";
 import {
   isFirstTripLeadTimeOk,
+  isCartPeakSeasonOk,
   LEAD_TIME_MESSAGE_EN,
   LEAD_TIME_MESSAGE_ES,
+  PEAK_SEASON_MESSAGE_EN,
+  PEAK_SEASON_MESSAGE_ES,
   WHATSAPP_URGENT_URL_EN,
   WHATSAPP_URGENT_URL_ES,
 } from "@/lib/booking-rules";
@@ -91,6 +94,9 @@ export default function Cart() {
   // surface the specific issue right here so they can fix it before
   // even leaving the drawer.
   const leadTimeOk = isFirstTripLeadTimeOk(items);
+  // Temporada alta navideña (22–30 dic): máx 5 pax por reserva web —
+  // grupos más grandes van a WhatsApp. Ver lib/booking-rules.ts.
+  const peakSeasonOk = isCartPeakSeasonOk(items);
   const airportMissingFlightIndex = items.findIndex(
     (it) =>
       isAirport(it.fromName) &&
@@ -112,6 +118,7 @@ export default function Cart() {
   // it takes precedence with the WhatsApp fallback CTA.
   type CartIssue =
     | { kind: "leadTime" }
+    | { kind: "peakSeason" }
     | { kind: "missingFlight"; tripIndex: number; fromName: string }
     | { kind: "missingSchedule"; tripIndex: number }
     | { kind: "sameRoute"; tripIndex: number };
@@ -120,6 +127,8 @@ export default function Cart() {
   if (items.length > 0) {
     if (!leadTimeOk) {
       cartIssue = { kind: "leadTime" };
+    } else if (!peakSeasonOk) {
+      cartIssue = { kind: "peakSeason" };
     } else if (sameRouteIndex !== -1) {
       cartIssue = { kind: "sameRoute", tripIndex: sameRouteIndex };
     } else if (missingScheduleIndex !== -1) {
@@ -147,9 +156,13 @@ export default function Cart() {
   // gate quedó desincronizado. Con el hero agregando al carrito, un
   // SJO → La Fortuna (el par más vendido) nacía SIEMPRE sin vuelo y se
   // hubiera trabado acá sin manera de arreglarlo.
+  // `peakSeason` también bloquea: el checkout no puede partir el grupo —
+  // la única salida es coordinar por WhatsApp.
   const blockingIssue =
     cartIssue &&
-    (cartIssue.kind === "leadTime" || cartIssue.kind === "sameRoute");
+    (cartIssue.kind === "leadTime" ||
+      cartIssue.kind === "peakSeason" ||
+      cartIssue.kind === "sameRoute");
   const isCartValid = items.length > 0 && !blockingIssue;
 
   const handleContinue = () => {
@@ -497,6 +510,29 @@ export default function Cart() {
                         </a>
                       </>
                     )}
+                    {cartIssue.kind === "peakSeason" && (
+                      <>
+                        <p className="leading-snug mb-2">
+                          {lang === "es"
+                            ? PEAK_SEASON_MESSAGE_ES
+                            : PEAK_SEASON_MESSAGE_EN}
+                        </p>
+                        <a
+                          href={
+                            lang === "es"
+                              ? WHATSAPP_URGENT_URL_ES
+                              : WHATSAPP_URGENT_URL_EN
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-slate-900 font-semibold text-xs px-3 py-1.5 transition-colors"
+                        >
+                          {lang === "es"
+                            ? "Escríbenos por WhatsApp"
+                            : "WhatsApp us"}
+                        </a>
+                      </>
+                    )}
                     {cartIssue.kind === "missingSchedule" && (
                       <p className="leading-snug">
                         {lang === "es"
@@ -528,7 +564,11 @@ export default function Cart() {
                       ? lang === "es"
                         ? "El horario de reserva ya pasó — usá WhatsApp"
                         : "Lead time expired — use WhatsApp"
-                      : cartIssue?.kind === "sameRoute"
+                      : cartIssue?.kind === "peakSeason"
+                        ? lang === "es"
+                          ? "Grupo grande en fechas pico — usá WhatsApp"
+                          : "Large group on peak dates — use WhatsApp"
+                        : cartIssue?.kind === "sameRoute"
                         ? lang === "es"
                           ? "Origen y destino son iguales en un viaje"
                           : "Pickup and drop-off are the same on a trip"

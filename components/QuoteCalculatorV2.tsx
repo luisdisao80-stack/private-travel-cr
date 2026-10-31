@@ -26,6 +26,9 @@ import {
   WHATSAPP_URGENT_URL_ES,
   LEAD_TIME_MESSAGE_EN,
   LEAD_TIME_MESSAGE_ES,
+  PEAK_SEASON_MESSAGE_EN,
+  PEAK_SEASON_MESSAGE_ES,
+  isPeakSeasonPaxOk,
   getMinPickupCRDate,
   getMinPickupDate,
   parseCostaRicaPickup,
@@ -248,6 +251,11 @@ export default function QuoteCalculatorV2({
   const pickedPickup = parseCostaRicaPickup(travelDate, travelTime);
   const pickupTooSoon =
     pickedPickup !== null && !isPickupWithinLeadTime(pickedPickup);
+
+  // Temporada alta navideña (22–30 dic): máximo 5 pax por reserva web.
+  // Ver lib/booking-rules.ts — grupos grandes van a WhatsApp.
+  const peakPaxBlocked =
+    totalPax > 0 && !isPeakSeasonPaxOk(travelDate, totalPax);
 
   // Set-lookup for O(1) validity checks. If the visitor is halfway
   // through typing ("m", "man", "manu"...) `from` isn't a DB location
@@ -850,13 +858,29 @@ export default function QuoteCalculatorV2({
             const missingDate = !travelDate;
             const missingTime = !travelTime;
             const missingPax = totalPax < 1;
-            const canAdd = !missingPax && !pickupTooSoon;
+            const canAdd = !missingPax && !pickupTooSoon && !peakPaxBlocked;
             return (
               <>
                 {pickupTooSoon && (
                   <div className="mb-3 rounded-lg border border-orange-500/50 bg-orange-50 px-4 py-3 text-xs text-amber-900">
                     <p className="leading-snug mb-2">
                       {lang === "en" ? LEAD_TIME_MESSAGE_EN : LEAD_TIME_MESSAGE_ES}
+                    </p>
+                    <a
+                      href={lang === "en" ? WHATSAPP_URGENT_URL_EN : WHATSAPP_URGENT_URL_ES}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-md bg-green-600 hover:bg-green-500 text-slate-900 font-semibold text-xs px-3 py-1.5 transition-colors"
+                    >
+                      {lang === "en" ? "WhatsApp us" : "Escríbenos por WhatsApp"}
+                    </a>
+                  </div>
+                )}
+                {/* Temporada alta navideña: grupos >5 pax van a WhatsApp. */}
+                {!pickupTooSoon && peakPaxBlocked && (
+                  <div className="mb-3 rounded-lg border border-orange-500/50 bg-orange-50 px-4 py-3 text-xs text-amber-900">
+                    <p className="leading-snug mb-2">
+                      {lang === "en" ? PEAK_SEASON_MESSAGE_EN : PEAK_SEASON_MESSAGE_ES}
                     </p>
                     <a
                       href={lang === "en" ? WHATSAPP_URGENT_URL_EN : WHATSAPP_URGENT_URL_ES}

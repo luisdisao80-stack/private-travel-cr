@@ -145,3 +145,65 @@ export const LEAD_TIME_MESSAGE_EN =
 
 export const LEAD_TIME_MESSAGE_ES =
   "⏰ Las reservas requieren mínimo 18 horas de anticipación. Para viajes urgentes, escríbenos por WhatsApp al +506 8633-4133 — haremos lo posible.";
+
+/* ------------------------------------------------------------------ */
+/* Temporada alta navideña (22–30 de diciembre)                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Regla pedida por Diego (2026-10-31): del 22 al 30 de diciembre la
+ * página solo acepta reservas de hasta 5 pasajeros (lo que cabe en la
+ * Hyundai Staria). Grupos más grandes deben escribir por WhatsApp para
+ * que Diego confirme disponibilidad de las busetas grandes antes de
+ * cobrar. Aplica TODOS los años (se compara solo mes/día) — si algún
+ * diciembre no hace falta, se quita este bloque o se sube el máximo.
+ *
+ * Igual que la regla de 18 h, se aplica en tres puntos: cotizador,
+ * checkout (cart + form) y el endpoint que crea la reserva.
+ * Los quotes de admin (createQuoteAction / scripts) NO pasan por aquí
+ * a propósito — Diego acepta grupos grandes manualmente.
+ */
+export const PEAK_SEASON_MAX_PAX = 5;
+
+/** true si la fecha "YYYY-MM-DD" cae del 22 al 30 de diciembre (cualquier año). */
+export function isPeakSeasonDate(date: string | undefined | null): boolean {
+  if (!date) return false;
+  const parts = date.split("-").map((s) => parseInt(s, 10));
+  if (parts.length < 3) return false;
+  const [, m, d] = parts;
+  if (Number.isNaN(m) || Number.isNaN(d)) return false;
+  return m === 12 && d >= 22 && d <= 30;
+}
+
+/**
+ * true si el grupo pasa la regla: en fechas pico el total de pasajeros
+ * no puede superar PEAK_SEASON_MAX_PAX. Permisivo sin fecha (otros
+ * validadores piden la fecha primero).
+ */
+export function isPeakSeasonPaxOk(
+  date: string | undefined | null,
+  totalPax: number,
+): boolean {
+  if (!isPeakSeasonDate(date)) return true;
+  return totalPax <= PEAK_SEASON_MAX_PAX;
+}
+
+/**
+ * Versión para el carrito: revisa TODOS los viajes (no solo el primero —
+ * cualquier tramo en fechas pico con un grupo grande necesita buseta
+ * grande ese día). `passengers` en CartItem ya incluye a los niños.
+ */
+export function isCartPeakSeasonOk(
+  items: ReadonlyArray<{ date?: string; passengers?: number }>,
+): boolean {
+  if (!items || items.length === 0) return true;
+  return items.every((it) =>
+    isPeakSeasonPaxOk(it.date, Number(it.passengers) || 0),
+  );
+}
+
+export const PEAK_SEASON_MESSAGE_EN =
+  "🎄 Dec 22–30 is our peak season: online booking is limited to 5 passengers. For larger groups, WhatsApp us at +506 8633-4133 and we'll arrange it personally.";
+
+export const PEAK_SEASON_MESSAGE_ES =
+  "🎄 Del 22 al 30 de diciembre es temporada alta: la reserva en línea es máximo para 5 pasajeros. Para grupos más grandes, escríbenos por WhatsApp al +506 8633-4133 y lo coordinamos personalmente.";
