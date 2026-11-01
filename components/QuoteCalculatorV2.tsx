@@ -553,6 +553,7 @@ export default function QuoteCalculatorV2({
             placeholder={es ? "Elegí la fecha..." : "Select date..."}
             lang={lang}
             minDate={minPickupCRDate}
+            disablePeakSeason
           />
         </div>
         <div>

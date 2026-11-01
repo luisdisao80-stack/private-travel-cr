@@ -141,6 +141,7 @@ export default function TourBookingPanel({ tour }: Props) {
           onChange={setDate}
           placeholder="Select a date..."
           minDate={minPickupCRDate}
+          disablePeakSeason
         />
       </div>
 

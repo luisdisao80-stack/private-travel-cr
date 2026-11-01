@@ -257,6 +257,8 @@ export default function RouteBookingWidget({
           // anticipación: mejor esconder el día que dejar que llene todo
           // y que el checkout lo rebote al final.
           minDate={getMinPickupCRDate()}
+          // 22–30 dic: sold out en línea (regla de Diego 2026-11-01).
+          disablePeakSeason
         />
       </div>
 

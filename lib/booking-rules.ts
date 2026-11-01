@@ -151,19 +151,22 @@ export const LEAD_TIME_MESSAGE_ES =
 /* ------------------------------------------------------------------ */
 
 /**
- * Regla pedida por Diego (2026-10-31): del 22 al 30 de diciembre la
- * página solo acepta reservas de hasta 5 pasajeros (lo que cabe en la
- * Hyundai Staria). Grupos más grandes deben escribir por WhatsApp para
- * que Diego confirme disponibilidad de las busetas grandes antes de
- * cobrar. Aplica TODOS los años (se compara solo mes/día) — si algún
- * diciembre no hace falta, se quita este bloque o se sube el máximo.
+ * Regla actualizada por Diego (2026-11-01): del 22 al 30 de diciembre
+ * la página NO acepta reservas en línea de NINGÚN tamaño de grupo —
+ * sold out total. El cliente debe escribir por WhatsApp para consultar
+ * disponibilidad y Diego decide manualmente. (Supersede la regla
+ * anterior del 2026-10-31 que solo limitaba a 5 pasajeros.)
+ * Aplica TODOS los años (se compara solo mes/día) — si algún diciembre
+ * no hace falta, se quita este bloque.
  *
  * Igual que la regla de 18 h, se aplica en tres puntos: cotizador,
- * checkout (cart + form) y el endpoint que crea la reserva.
+ * checkout (cart + form) y el endpoint que crea la reserva. Además el
+ * calendario (DatePicker) deshabilita visualmente esos días en las
+ * superficies públicas vía isPeakSeasonCalendarDate().
  * Los quotes de admin (createQuoteAction / scripts) NO pasan por aquí
- * a propósito — Diego acepta grupos grandes manualmente.
+ * a propósito — Diego acepta reservas en esas fechas manualmente.
  */
-export const PEAK_SEASON_MAX_PAX = 5;
+export const PEAK_SEASON_MAX_PAX = 5; // ya no se usa para validar (bloqueo total); se conserva por compatibilidad
 
 /** true si la fecha "YYYY-MM-DD" cae del 22 al 30 de diciembre (cualquier año). */
 export function isPeakSeasonDate(date: string | undefined | null): boolean {
@@ -176,22 +179,30 @@ export function isPeakSeasonDate(date: string | undefined | null): boolean {
 }
 
 /**
- * true si el grupo pasa la regla: en fechas pico el total de pasajeros
- * no puede superar PEAK_SEASON_MAX_PAX. Permisivo sin fecha (otros
- * validadores piden la fecha primero).
+ * Versión Date (para el calendario): true si el día cae del 22 al 30
+ * de diciembre de cualquier año. El DatePicker la usa como matcher de
+ * `disabled` para pintar esos días en gris en las superficies públicas.
+ */
+export function isPeakSeasonCalendarDate(d: Date): boolean {
+  return d.getMonth() === 11 && d.getDate() >= 22 && d.getDate() <= 30;
+}
+
+/**
+ * true si la reserva pasa la regla. Desde 2026-11-01 el bloqueo es
+ * TOTAL: cualquier fecha pico falla sin importar el número de
+ * pasajeros (el parámetro se conserva para no romper a los llamadores).
+ * Permisivo sin fecha (otros validadores piden la fecha primero).
  */
 export function isPeakSeasonPaxOk(
   date: string | undefined | null,
-  totalPax: number,
+  _totalPax: number,
 ): boolean {
-  if (!isPeakSeasonDate(date)) return true;
-  return totalPax <= PEAK_SEASON_MAX_PAX;
+  return !isPeakSeasonDate(date);
 }
 
 /**
  * Versión para el carrito: revisa TODOS los viajes (no solo el primero —
- * cualquier tramo en fechas pico con un grupo grande necesita buseta
- * grande ese día). `passengers` en CartItem ya incluye a los niños.
+ * cualquier tramo en fechas pico bloquea el checkout completo).
  */
 export function isCartPeakSeasonOk(
   items: ReadonlyArray<{ date?: string; passengers?: number }>,
@@ -203,7 +214,7 @@ export function isCartPeakSeasonOk(
 }
 
 export const PEAK_SEASON_MESSAGE_EN =
-  "🎄 Dec 22–30 is our peak season: online booking is limited to 5 passengers. For larger groups, WhatsApp us at +506 8633-4133 and we'll arrange it personally.";
+  "🎄 Dec 22–30 we are SOLD OUT for online booking. WhatsApp us at +506 8633-4133 to ask about availability — we may still be able to help.";
 
 export const PEAK_SEASON_MESSAGE_ES =
-  "🎄 Del 22 al 30 de diciembre es temporada alta: la reserva en línea es máximo para 5 pasajeros. Para grupos más grandes, escríbenos por WhatsApp al +506 8633-4133 y lo coordinamos personalmente.";
+  "🎄 Del 22 al 30 de diciembre estamos SOLD OUT para reservas en línea. Escríbenos por WhatsApp al +506 8633-4133 para consultar disponibilidad — puede que aún podamos ayudarte.";

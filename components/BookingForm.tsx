@@ -1078,6 +1078,7 @@ function TripConfigCard({
               placeholder={lang === "es" ? "Elegí la fecha…" : "Select date…"}
               lang={lang === "es" ? "es" : "en"}
               minDate={minPickupCRDate}
+              disablePeakSeason
               className={
                 item.date
                   ? "h-10"

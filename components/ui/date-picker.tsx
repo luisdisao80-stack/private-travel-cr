@@ -8,6 +8,7 @@ import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-reac
 
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { isPeakSeasonCalendarDate } from "@/lib/booking-rules";
 
 type DatePickerProps = {
   value?: string;
@@ -16,6 +17,12 @@ type DatePickerProps = {
   lang?: "en" | "es";
   minDate?: Date;
   className?: string;
+  /**
+   * Public booking surfaces pass true so Dec 22–30 (sold out online)
+   * shows greyed-out in the calendar. Admin surfaces leave it off —
+   * Diego accepts those dates manually.
+   */
+  disablePeakSeason?: boolean;
 };
 
 export function DatePicker({
@@ -25,6 +32,7 @@ export function DatePicker({
   lang = "en",
   minDate,
   className,
+  disablePeakSeason = false,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -67,7 +75,11 @@ export function DatePicker({
             onChange(iso);
             setOpen(false);
           }}
-          disabled={{ before: today }}
+          disabled={
+            disablePeakSeason
+              ? [{ before: today }, (d: Date) => isPeakSeasonCalendarDate(d)]
+              : { before: today }
+          }
           locale={locale}
           showOutsideDays
           // Month + year dropdowns so customers booking far ahead (e.g.
