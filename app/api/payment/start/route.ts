@@ -251,7 +251,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Temporada alta navideña (22–30 dic): máximo 5 pax por reserva web —
+  // Temporada alta navideña (22–30 dic): sold out total en reservas web —
   // ver lib/booking-rules.ts. Misma filosofía que el lead time: el
   // cliente ya lo bloquea, así que un rechazo aquí es una request
   // armada fuera de la UI. Los quotes de admin no pasan por esta ruta.
