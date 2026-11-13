@@ -103,7 +103,7 @@ For a typical 7-night itinerary — **SJO → La Fortuna → Monteverde → Manu
 - [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna): ~$220 (up to 5 passengers, door-to-door, ~3 hours)
 - [La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde): ~$255 (~3.5 hours via Cañas)
 - [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio): ~$310 (~5 hours)
-- [Manuel Antonio → SJO](/routes/manuel-antonio-quepos-to-san-jose-downtown): ~$220 (~3 hours)
+- [Manuel Antonio → SJO](/routes/manuel-antonio-quepos-to-san-jose-downtown): ~$250 (~3 hours)
 
 **Total: about $1,005 for the whole trip**, regardless of whether you're 2 people or 5.
 
