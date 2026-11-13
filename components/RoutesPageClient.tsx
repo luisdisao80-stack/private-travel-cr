@@ -255,7 +255,7 @@ export default function RoutesPageClient({ routes, hotels = [] }: Props) {
               <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 pt-5 border-t border-slate-200 text-xs text-slate-500">
                 <span className="flex items-center gap-1.5">
                   <Zap size={12} className="text-orange-600" />
-                  {lang === "en" ? "Stripe payment processor" : "Procesador de pagos Stripe"}
+                  {lang === "en" ? "Secure card payment" : "Pago seguro con tarjeta"}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Shield size={12} className="text-orange-600" />

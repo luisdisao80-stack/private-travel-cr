@@ -12,7 +12,7 @@ import Price from "@/components/Price";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "The 10 Best Tours in La Fortuna, Costa Rica (2026) | Private Travel CR",
+  title: "The 10 Best Tours in La Fortuna, Costa Rica (2026)",
   description:
     "The 10 best tours in La Fortuna for 2026 — Arenal Volcano hike, La Fortuna Waterfall, Mistico Hanging Bridges, Río Celeste, Caño Negro wildlife, and Sarapiquí rafting. From $77/adult. Free hotel pickup. Bilingual guides. Taxes included.",
   alternates: { canonical: "/tours" },
