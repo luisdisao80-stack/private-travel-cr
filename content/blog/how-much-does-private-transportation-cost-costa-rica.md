@@ -38,11 +38,11 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 
 | Destination | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| [Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | **$135** | $175 | 1 h 15 min |
-| [Papagayo Peninsula](/private-shuttle/lir-to-papagayo) | **$110** | $140 | 30 min |
-| [Playa Conchal](/private-shuttle/lir-liberia-int-airport-to-conchal) | **$135** | $175 | 1 h |
-| [Playa Flamingo](/private-shuttle/lir-liberia-int-airport-to-flamingo) | **$135** | $175 | 1 h |
-| Playa Hermosa | **$110** | $140 | 30 min |
+| [Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | **$150** | $190 | 1 h 15 min |
+| [Papagayo Peninsula](/private-shuttle/lir-to-papagayo) | **$125** | $160 | 30 min |
+| [Playa Conchal](/private-shuttle/lir-liberia-int-airport-to-conchal) | **$150** | $190 | 1 h |
+| [Playa Flamingo](/private-shuttle/lir-liberia-int-airport-to-flamingo) | **$150** | $190 | 1 h |
+| Playa Hermosa | **$125** | $160 | 30 min |
 | [La Fortuna](/private-shuttle/lir-to-la-fortuna) | **$225** | $280 | 3 h |
 | [Monteverde](/private-shuttle/lir-to-monteverde) | **$230** | $275 | 3 h |
 | [Santa Teresa](/private-shuttle/lir-liberia-int-airport-to-santa-teresa) | **$350** | $395 | 4 h |
@@ -84,10 +84,10 @@ Everyone plans the arrival transfer and forgets the departure one. It's the same
 
 | Route | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
-| [Papagayo → LIR Airport](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) | **$110** | $140 | 30 min |
-| [Tamarindo → LIR Airport](/private-shuttle/tamarindo-to-lir-liberia-int-airport) | **$135** | $175 | 1 h 15 min |
-| [Playa Conchal → LIR Airport](/private-shuttle/conchal-to-lir-liberia-int-airport) | **$135** | $175 | 1 h |
-| [Playa Flamingo → LIR Airport](/private-shuttle/flamingo-to-lir-liberia-int-airport) | **$135** | $175 | 1 h |
+| [Papagayo → LIR Airport](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) | **$125** | $160 | 30 min |
+| [Tamarindo → LIR Airport](/private-shuttle/tamarindo-to-lir-liberia-int-airport) | **$150** | $190 | 1 h 15 min |
+| [Playa Conchal → LIR Airport](/private-shuttle/conchal-to-lir-liberia-int-airport) | **$150** | $190 | 1 h |
+| [Playa Flamingo → LIR Airport](/private-shuttle/flamingo-to-lir-liberia-int-airport) | **$150** | $190 | 1 h |
 | [La Fortuna → LIR Airport](/private-shuttle/la-fortuna-to-lir) | **$225** | $280 | 3 h |
 | [Jacó → LIR Airport](/private-shuttle/jaco-to-lir-liberia-int-airport) | **$300** | $345 | 3 h 30 min |
 | [Santa Teresa → LIR Airport](/private-shuttle/santa-teresa-to-lir-liberia-int-airport) | **$350** | $395 | 5 h |

@@ -15,9 +15,9 @@ export const siteConfig = {
   // an active hook ("Skip the rental car") and keeps the price/reviews
   // anchor, trimmed under 160 chars so Google shows the whole line.
   descriptionEN:
-    "Skip the rental car. Private door-to-door shuttles from SJO & LIR to La Fortuna, Manuel Antonio, Monteverde — from $135. 5.0 stars. Book in 60 seconds.",
+    "Skip the rental car. Private door-to-door shuttles from SJO & LIR to La Fortuna, Manuel Antonio, Monteverde — from $125. 5.0 stars. Book in 60 seconds.",
   descriptionES:
-    "Olvídate del rent-a-car. Shuttles privados puerta a puerta desde SJO y LIR a La Fortuna, Manuel Antonio, Monteverde — desde $135. 5.0 estrellas. Reserva en 60 seg.",
+    "Olvídate del rent-a-car. Shuttles privados puerta a puerta desde SJO y LIR a La Fortuna, Manuel Antonio, Monteverde — desde $125. 5.0 estrellas. Reserva en 60 seg.",
 
   // Datos del negocio (para Schema.org y contacto)
   business: {

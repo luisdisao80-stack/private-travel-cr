@@ -26,7 +26,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: "Costa Rica Private Shuttles from $135 — Door-to-Door | 2026",
+    default: "Costa Rica Private Shuttles from $125 — Door-to-Door | 2026",
     template: "%s | Private Travel CR",
   },
   description: siteConfig.descriptionEN,
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Costa Rica Private Shuttles from $135 — Door-to-Door | 2026",
+    title: "Costa Rica Private Shuttles from $125 — Door-to-Door | 2026",
     description: siteConfig.descriptionEN,
     url: siteConfig.siteUrl,
     siteName: siteConfig.name,
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Costa Rica Private Shuttles from $135 — Door-to-Door | 2026",
+    title: "Costa Rica Private Shuttles from $125 — Door-to-Door | 2026",
     description: siteConfig.descriptionEN,
     images: [siteConfig.ogImage],
   },

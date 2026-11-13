@@ -28,7 +28,7 @@ The famous "shell beach" — the sand is literally crushed seashells instead of 
 - **Swim safety:** Good. Gentle waves, no major rip currents on the south end. Snorkeling is decent at the north rocks.
 - **Kid-friendly:** Yes — one of the best in Costa Rica for small kids.
 - **Best time:** December–April for guaranteed sun, July for a green-season window.
-- **How to get there:** ~1h from Liberia airport. We have direct [shuttles from LIR to Conchal](/private-shuttle/lir-liberia-int-airport-to-conchal) for $135 per vehicle. Coming from San José instead is a much longer day — [SJO to Conchal](/private-shuttle/sjo-juan-santamaria-int-airport-to-conchal) is about 5 hours — so fly into LIR if Conchal is your main stop.
+- **How to get there:** ~1h from Liberia airport. We have direct [shuttles from LIR to Conchal](/private-shuttle/lir-liberia-int-airport-to-conchal) for $150 per vehicle. Coming from San José instead is a much longer day — [SJO to Conchal](/private-shuttle/sjo-juan-santamaria-int-airport-to-conchal) is about 5 hours — so fly into LIR if Conchal is your main stop.
 
 ### 2. Playa Tamarindo
 
@@ -38,7 +38,7 @@ The most famous beach town in Costa Rica. Wide golden sand, reliable surf, walka
 - **Swim safety:** Good in the middle of the bay, **riptides at the north end** near the river mouth. Don't swim there.
 - **Kid-friendly:** Yes — surf schools take kids as young as 6.
 - **Best time:** December–April (dry, busy), or May–June for the same weather minus 30% on hotels.
-- **How to get there:** 1h 15min from LIR — [LIR to Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) is $135, or [SJO to Tamarindo](/private-shuttle/sjo-to-tamarindo) is $345 and a 5-hour day. See our full [Liberia airport to Tamarindo guide](/blog/liberia-airport-to-tamarindo) for all the options.
+- **How to get there:** 1h 15min from LIR — [LIR to Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) is $150, or [SJO to Tamarindo](/private-shuttle/sjo-to-tamarindo) is $345 and a 5-hour day. See our full [Liberia airport to Tamarindo guide](/blog/liberia-airport-to-tamarindo) for all the options.
 
 ### 3. Playa Hermosa (Guanacaste)
 
@@ -60,7 +60,7 @@ The most "lived-in" beach town in Guanacaste — Ticos vacation here, not just t
 - **Best time:** December–April.
 - **How to get there:** ~25 min from LIR.
 
-> **Flying into Liberia?** We run private shuttles from LIR to every beach in Guanacaste — [Conchal from $135](/private-shuttle/lir-liberia-int-airport-to-conchal), [Tamarindo from $135](/private-shuttle/lir-liberia-int-airport-to-tamarindo), [Playa Hermosa from $110](/private-shuttle/lir-liberia-int-airport-to-playa-hermosa), [Playas del Coco from $110](/private-shuttle/lir-liberia-int-airport-to-playas-del-coco). Prices are per vehicle (up to 6 people), not per person. [Get an instant quote →](/book)
+> **Flying into Liberia?** We run private shuttles from LIR to every beach in Guanacaste — [Conchal from $150](/private-shuttle/lir-liberia-int-airport-to-conchal), [Tamarindo from $150](/private-shuttle/lir-liberia-int-airport-to-tamarindo), [Playa Hermosa from $125](/private-shuttle/lir-liberia-int-airport-to-playa-hermosa), [Playas del Coco from $125](/private-shuttle/lir-liberia-int-airport-to-playas-del-coco). Prices are per vehicle (up to 6 people), not per person. [Get an instant quote →](/book)
 
 ## Pacific Coast — Nicoya Peninsula (the bohemian middle)
 

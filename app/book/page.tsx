@@ -8,9 +8,9 @@ import { getAllLocations, getRouteByLocations } from "@/lib/routes-db";
 import { getAllHotels } from "@/lib/hotels-db";
 
 export const metadata = {
-  title: "Book Private Shuttle Costa Rica — Instant Quote from $135",
+  title: "Book Private Shuttle Costa Rica — Instant Quote from $125",
   description:
-    "Book your private shuttle in Costa Rica in under 5 minutes. Door-to-door SJO/LIR transfers from $135, free child seats, instant confirmation. ⭐ 5.0 · 200+ Google reviews.",
+    "Book your private shuttle in Costa Rica in under 5 minutes. Door-to-door SJO/LIR transfers from $125, free child seats, instant confirmation. ⭐ 5.0 · 200+ Google reviews.",
   // Canonical points at the bare /book URL so the ?from=&to=&direct= query
   // variants (used for deep links into the wizard) don't get indexed as
   // separate thin pages competing with each other.

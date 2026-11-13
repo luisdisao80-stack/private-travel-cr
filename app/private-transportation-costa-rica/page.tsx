@@ -43,12 +43,12 @@ import { getGoogleReviews } from "@/lib/google-reviews";
 // verbatim, and keeps the price visible.
 
 export const metadata: Metadata = {
-  title: "Costa Rica Private Transportation & Shuttles from $135",
+  title: "Costa Rica Private Transportation & Shuttles from $125",
   // 154 chars — the previous one ran 231 and Google cut it before the
   // reviews. Leads with the two phrasings travelers actually type
   // ("private transportation", "airport shuttle") and keeps the price.
   description:
-    "Private transportation and airport shuttles across Costa Rica from $135 per vehicle. Bilingual driver, door-to-door from SJO and LIR. ⭐ 5.0 · 200+ reviews.",
+    "Private transportation and airport shuttles across Costa Rica from $125 per vehicle. Bilingual driver, door-to-door from SJO and LIR. ⭐ 5.0 · 200+ reviews.",
   keywords: [
     "private transportation costa rica",
     "private transportation in costa rica",
@@ -72,9 +72,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/private-transportation-costa-rica" },
   openGraph: {
-    title: "Private Transportation & Private Drivers in Costa Rica from $135",
+    title: "Private Transportation & Private Drivers in Costa Rica from $125",
     description:
-      "Private transportation with your own bilingual private driver across Costa Rica. From $135 USD. ⭐ 5.0 · 200+ reviews · ICT licensed · free child seats · instant booking.",
+      "Private transportation with your own bilingual private driver across Costa Rica. From $125 USD. ⭐ 5.0 · 200+ reviews · ICT licensed · free child seats · instant booking.",
     url: `${siteConfig.siteUrl}/private-transportation-costa-rica`,
     siteName: siteConfig.name,
     type: "website",
@@ -90,9 +90,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Private Transportation in Costa Rica from $135",
+    title: "Private Transportation in Costa Rica from $125",
     description:
-      "Door-to-door private transportation across Costa Rica. From $135 USD. ⭐ 5.0 · 200+ reviews.",
+      "Door-to-door private transportation across Costa Rica. From $125 USD. ⭐ 5.0 · 200+ reviews.",
     images: [siteConfig.ogImage],
   },
 };
@@ -161,7 +161,7 @@ const VEHICLES = [
 const FAQS = [
   {
     q: "How much does private transportation cost in Costa Rica?",
-    a: "Private transportation in Costa Rica starts at $135 USD per vehicle for short routes (e.g. LIR Airport to Tamarindo) and goes up to ~$420 USD for the longest popular routes (SJO Airport to Papagayo Peninsula). Most popular routes are between $220-$260. The price is per vehicle, not per person, so the cost stays the same for groups of 1 to 5 in a standard van.",
+    a: "Private transportation in Costa Rica starts at $125 USD per vehicle for short routes (e.g. LIR Airport to Papagayo Peninsula) and goes up to ~$420 USD for the longest popular routes (SJO Airport to Papagayo Peninsula). Most popular routes are between $220-$260. The price is per vehicle, not per person, so the cost stays the same for groups of 1 to 5 in a standard van.",
   },
   {
     q: "Is private transportation worth it vs. a shared shuttle?",
@@ -305,7 +305,7 @@ export default async function PrivateTransportationCostaRicaPage() {
           </h1>
 
           <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8">
-            Door-to-door private transfers from <strong className="text-slate-900">$135 USD</strong>.
+            Door-to-door private transfers from <strong className="text-slate-900">$125 USD</strong>.
             Modern vehicles, your own private bilingual driver, flight tracking
             included. One flat price per vehicle — not per person.
           </p>
@@ -602,7 +602,7 @@ export default async function PrivateTransportationCostaRicaPage() {
               </h3>
               <p className="text-slate-600">
                 <strong className="text-slate-900">Best for groups of 2+, families, honeymooners.</strong>{" "}
-                Door-to-door, direct route, ~3 h SJO → La Fortuna. From $135.
+                Door-to-door, direct route, ~3 h SJO → La Fortuna. From $125.
                 Same total price for 1 or 5 passengers.
               </p>
             </div>

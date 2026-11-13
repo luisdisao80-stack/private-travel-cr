@@ -13,9 +13,9 @@ export const metadata: Metadata = {
   // "private transfers costa rica", "costa rica private transfers" with high
   // impressions but 1-4% CTR. New copy front-loads price + rating + the exact
   // SERP query phrasing to lift CTR closer to the 3-5% industry baseline.
-  title: "Costa Rica Private Transfers — 1,200+ Routes from $135",
+  title: "Costa Rica Private Transfers — 1,200+ Routes from $125",
   description:
-    "All private transportation routes in Costa Rica. From $135 — SJO/LIR airport transfers to La Fortuna, Tamarindo, Manuel Antonio, Monteverde. Door-to-door, free child seats, ⭐ 5.0 · 200+ Google reviews.",
+    "All private transportation routes in Costa Rica. From $125 — SJO/LIR airport transfers to La Fortuna, Tamarindo, Manuel Antonio, Monteverde. Door-to-door, free child seats, ⭐ 5.0 · 200+ Google reviews.",
   keywords: [
     "Costa Rica private transportation",
     "Costa Rica private transfers",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/routes" },
   openGraph: {
-    title: "Costa Rica Private Transfers — 1,200+ Routes from $135",
+    title: "Costa Rica Private Transfers — 1,200+ Routes from $125",
     description:
       "Door-to-door private transportation across Costa Rica. Instant quote, fixed 2026 prices, free child seats.",
     url: "/routes",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Costa Rica Private Transfers — 1,200+ Routes from $135",
+    title: "Costa Rica Private Transfers — 1,200+ Routes from $125",
     description:
       "Door-to-door private transportation across Costa Rica. Instant quote, fixed 2026 prices.",
     images: ["/og-image.jpg"],

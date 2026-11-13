@@ -39,7 +39,7 @@ We drive guests to Tamarindo from every major hub. Here's the honest breakdown:
 
 The rental car alternative looks cheaper on paper, but most travelers don't actually want to drive 4–5 hours after an overnight flight, navigate Costa Rica's signage (which is sparse), and pay 2026 insurance prices on top.
 
-**And the way back.** Every one of these runs in reverse at the same price — [Tamarindo → LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) ($135, 1h15) is the one almost everybody needs, and [Tamarindo → SJO](/private-shuttle/tamarindo-to-sjo-juan-santamaria-int-airport) ($345, 5 h) is the one to plan carefully around a morning flight. Book the departure at the same time as the arrival; it's the single most common thing guests forget.
+**And the way back.** Every one of these runs in reverse at the same price — [Tamarindo → LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) ($150, 1h15) is the one almost everybody needs, and [Tamarindo → SJO](/private-shuttle/tamarindo-to-sjo-juan-santamaria-int-airport) ($345, 5 h) is the one to plan carefully around a morning flight. Book the departure at the same time as the arrival; it's the single most common thing guests forget.
 
 ## Best time to visit Tamarindo
 

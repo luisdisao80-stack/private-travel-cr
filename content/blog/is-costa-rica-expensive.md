@@ -103,7 +103,7 @@ $5–15 per intercity trip. Safe and reliable, but slow (transfers in San José 
 
 ### Private shuttle: priced per vehicle, not per person
 
-A private transfer runs **$110–450 per vehicle** depending on distance. The math that surprises people: because it's per vehicle, a group of 4 often pays the **same or less per person than a shared shuttle** — while leaving on their own schedule, stopping for photos and food, and skipping other people's hotel pickups.
+A private transfer runs **$125–450 per vehicle** depending on distance. The math that surprises people: because it's per vehicle, a group of 4 often pays the **same or less per person than a shared shuttle** — while leaving on their own schedule, stopping for photos and food, and skipping other people's hotel pickups.
 
 Real 2026 examples (per vehicle, 1–5 passengers, taxes included):
 
@@ -111,7 +111,7 @@ Real 2026 examples (per vehicle, 1–5 passengers, taxes included):
 |---|---|---|
 | [SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna) | $220 | 3 h |
 | [SJO Airport → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | $220 | 3 h |
-| [LIR Airport → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | $135 | 1 h 15 min |
+| [LIR Airport → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | $150 | 1 h 15 min |
 | [La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 | 3.5 h |
 | [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) | $310 | 4 h |
 

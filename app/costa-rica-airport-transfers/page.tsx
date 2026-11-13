@@ -40,9 +40,9 @@ import { getGoogleReviews } from "@/lib/google-reviews";
 // page 1 and convert the buyer intent into bookings.
 
 export const metadata: Metadata = {
-  title: "Costa Rica Airport Transfers from $110 | SJO & LIR Private Transfer",
+  title: "Costa Rica Airport Transfers from $125 | SJO & LIR Private Transfer",
   description:
-    "Private Costa Rica airport transfers from SJO (San José) and LIR (Liberia) from $110 USD. Meet & greet at arrivals, flight tracking, door-to-door to La Fortuna, Tamarindo, Manuel Antonio & more. ⭐ 5.0 · 200+ Google reviews.",
+    "Private Costa Rica airport transfers from SJO (San José) and LIR (Liberia) from $125 USD. Meet & greet at arrivals, flight tracking, door-to-door to La Fortuna, Tamarindo, Manuel Antonio & more. ⭐ 5.0 · 200+ Google reviews.",
   keywords: [
     "costa rica airport transfers",
     "costa rica airport transfer",
@@ -62,9 +62,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/costa-rica-airport-transfers" },
   openGraph: {
-    title: "Costa Rica Airport Transfers from $110 — SJO & LIR Private Transfer",
+    title: "Costa Rica Airport Transfers from $125 — SJO & LIR Private Transfer",
     description:
-      "Private airport transfers from SJO and LIR with meet & greet, flight tracking and door-to-door service. From $110 USD. ⭐ 5.0 · 200+ reviews · ICT licensed.",
+      "Private airport transfers from SJO and LIR with meet & greet, flight tracking and door-to-door service. From $125 USD. ⭐ 5.0 · 200+ reviews · ICT licensed.",
     url: `${siteConfig.siteUrl}/costa-rica-airport-transfers`,
     siteName: siteConfig.name,
     type: "website",
@@ -80,9 +80,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Costa Rica Airport Transfers from $110 | SJO & LIR",
+    title: "Costa Rica Airport Transfers from $125 | SJO & LIR",
     description:
-      "Private door-to-door airport transfers from SJO and LIR. Meet & greet, flight tracking. From $110 USD. ⭐ 5.0 · 200+ reviews.",
+      "Private door-to-door airport transfers from SJO and LIR. Meet & greet, flight tracking. From $125 USD. ⭐ 5.0 · 200+ reviews.",
     images: [siteConfig.ogImage],
   },
 };
@@ -150,7 +150,7 @@ const VEHICLES = [
 const FAQS = [
   {
     q: "How much does an airport transfer cost in Costa Rica?",
-    a: "Costa Rica airport transfers start at $110 USD per vehicle for the shortest routes (e.g. LIR Airport to Papagayo Peninsula) and range up to ~$375 USD for the longest cross-country transfers (e.g. SJO Airport to Santa Teresa). Most popular airport routes are between $135 and $345. The price is per vehicle, not per person, so 1 to 5 passengers pay the same in a standard van.",
+    a: "Costa Rica airport transfers start at $125 USD per vehicle for the shortest routes (e.g. LIR Airport to Papagayo Peninsula) and range up to ~$375 USD for the longest cross-country transfers (e.g. SJO Airport to Santa Teresa). Most popular airport routes are between $135 and $345. The price is per vehicle, not per person, so 1 to 5 passengers pay the same in a standard van.",
   },
   {
     q: "Which airport should I fly into — SJO or LIR?",
@@ -282,7 +282,7 @@ export default async function CostaRicaAirportTransfersPage() {
             Private door-to-door transfers from{" "}
             <strong className="text-slate-900">SJO</strong> and{" "}
             <strong className="text-slate-900">LIR</strong> airports from{" "}
-            <strong className="text-slate-900">$110 USD</strong>. Meet &amp; greet at
+            <strong className="text-slate-900">$125 USD</strong>. Meet &amp; greet at
             arrivals, flight tracking, and your own bilingual driver. One flat
             price per vehicle — not per person.
           </p>
@@ -570,7 +570,7 @@ export default async function CostaRicaAirportTransfersPage() {
               </h3>
               <p className="text-slate-600">
                 <strong className="text-slate-900">Best for groups of 2+, families, first-time visitors.</strong>{" "}
-                Meet &amp; greet, direct door-to-door, flight tracking. From $110.
+                Meet &amp; greet, direct door-to-door, flight tracking. From $125.
                 Same total price for 1 or 5 passengers.
               </p>
             </div>

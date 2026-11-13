@@ -1,6 +1,6 @@
 ---
 title: "How Much Does a Costa Rica Shuttle Cost? 2026 Prices"
-description: "2026 rates from a Costa Rican operator: SJO–La Fortuna $220, LIR–Tamarindo $135, La Fortuna–Monteverde $255. Per vehicle, taxes in, no hidden fees."
+description: "2026 rates from a Costa Rican operator: SJO–La Fortuna $220, LIR–Tamarindo $150, La Fortuna–Monteverde $255. Per vehicle, taxes in, no hidden fees."
 date: "2026-05-29"
 updated: "2026-09-03"
 author: "Diego Salas Oviedo"
@@ -57,7 +57,7 @@ All prices below are for **1–5 passengers in a standard van** and include all 
 
 | Destination | 1–5 pax | Duration |
 |---|---|---|
-| Tamarindo | $135 | 1h15min |
+| Tamarindo | $150 | 1h15min |
 | Nosara | $240 | 2h30min |
 | La Fortuna | $225 | 3h |
 | Monteverde | $230 | 3h30min |

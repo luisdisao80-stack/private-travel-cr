@@ -18,7 +18,7 @@ If you're thinking "**can we actually do Costa Rica with kids?**" — yes. It's 
 - **Best ages for Costa Rica:** 4 and up, honestly. Under 3 is fine but you're carrying strollers and dealing with jet lag in a way that limits what you do.
 - **Best regions with kids:** La Fortuna (Arenal), Manuel Antonio, Guanacaste beaches (Tamarindo / Papagayo). In that order.
 - **How long:** 7–10 nights. Under 5 you're exhausted. Over 12 nights, kids get bored.
-- **Getting around:** private shuttle for airport transfers and long moves ($135–$345 per vehicle, not per person). Rent a car ONLY if you're confident on Costa Rica roads (they're rough).
+- **Getting around:** private shuttle for airport transfers and long moves ($125–$345 per vehicle, not per person). Rent a car ONLY if you're confident on Costa Rica roads (they're rough).
 - **Best time:** December–April is high season and dry. May–November is green season — cheaper, greener, more rain but usually just afternoon storms. **We take families year-round.**
 
 Now the real detail.
@@ -111,9 +111,9 @@ Where to stay:
 - **[JW Marriott Guanacaste](/hotels/jw-marriott-guanacaste)** — huge pool, quiet beach.
 - **Wyndham Tamarindo** — walkable to Tamarindo town, mid-range.
 
-How to get there: **[LIR to Tamarindo $135](/private-shuttle/lir-liberia-int-airport-to-tamarindo)**, [LIR to Papagayo $110](/private-shuttle/lir-to-papagayo), [LIR to Conchal $135](/private-shuttle/lir-liberia-int-airport-to-conchal). This is where flying into LIR instead of SJO saves you a lot of driving time.
+How to get there: **[LIR to Tamarindo $150](/private-shuttle/lir-liberia-int-airport-to-tamarindo)**, [LIR to Papagayo $125](/private-shuttle/lir-to-papagayo), [LIR to Conchal $150](/private-shuttle/lir-liberia-int-airport-to-conchal). This is where flying into LIR instead of SJO saves you a lot of driving time.
 
-Going home is the same price in reverse — [Papagayo to LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) ($110, 30 min), [Tamarindo to LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) ($135, 1h15), [Conchal to LIR](/private-shuttle/conchal-to-lir-liberia-int-airport) ($135, 1 h). With kids, book the departure transfer when you book the arrival one. Nobody wants to be arranging a ride at 9 p.m. the night before a 6 a.m. flight.
+Going home is the same price in reverse — [Papagayo to LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) ($125, 30 min), [Tamarindo to LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) ($150, 1h15), [Conchal to LIR](/private-shuttle/conchal-to-lir-liberia-int-airport) ($150, 1 h). With kids, book the departure transfer when you book the arrival one. Nobody wants to be arranging a ride at 9 p.m. the night before a 6 a.m. flight.
 
 ## The classic 7-day family itinerary (works for most)
 
