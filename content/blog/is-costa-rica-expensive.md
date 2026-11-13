@@ -110,7 +110,7 @@ Real 2026 examples (per vehicle, 1–5 passengers, taxes included):
 | Route | Price | Drive time |
 |---|---|---|
 | [SJO Airport → La Fortuna](/private-shuttle/sjo-to-la-fortuna) | $220 | 3 h |
-| [SJO Airport → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | $220 | 3 h |
+| [SJO Airport → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | $230 | 3 h |
 | [LIR Airport → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | $150 | 1 h 15 min |
 | [La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 | 3.5 h |
 | [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) | $310 | 4 h |

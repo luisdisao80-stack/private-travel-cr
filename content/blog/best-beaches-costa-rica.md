@@ -112,7 +112,7 @@ Not the calm one in Guanacaste — this is a **serious surf beach** with consist
 - **Best time:** Year-round for surf; March–May for biggest swells.
 - **How to get there:** 1h 15min from SJO, or 5 min south of Jacó.
 
-> **Book your ride to the Central Pacific:** [SJO to Manuel Antonio from $220](/private-shuttle/sjo-to-manuel-antonio) (3 hours door to door) or [SJO to Jacó from $175](/private-shuttle/sjo-juan-santamaria-int-airport-to-jaco). Free child seats and flight tracking included. [Get an instant quote →](/book)
+> **Book your ride to the Central Pacific:** [SJO to Manuel Antonio from $230](/private-shuttle/sjo-to-manuel-antonio) (3 hours door to door) or [SJO to Jacó from $175](/private-shuttle/sjo-juan-santamaria-int-airport-to-jaco). Free child seats and flight tracking included. [Get an instant quote →](/book)
 
 ## Pacific Coast — South Pacific (Dominical, Uvita, Osa)
 

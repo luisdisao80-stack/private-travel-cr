@@ -46,8 +46,8 @@ All prices below are for **1–5 passengers in a standard van** and include all 
 | Destination | 1–5 pax | Duration |
 |---|---|---|
 | La Fortuna | $220 | 3h |
-| Monteverde | $220 | 4h |
-| Manuel Antonio | $220 | 3h |
+| Monteverde | $230 | 4h |
+| Manuel Antonio | $230 | 3h |
 | Tamarindo | $345 | 5h |
 | Jacó | $175 | 1h30min |
 | Puerto Viejo | $320 | 4h30min |

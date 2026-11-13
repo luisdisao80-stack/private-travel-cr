@@ -36,15 +36,15 @@ Most travelers end up using a combination of 2–3 of these on a single trip. He
 | Route | 1–5 pax | 6–9 pax | Time |
 |---|---|---|---|
 | [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna) | $220 | $275 | 3 h |
-| [SJO → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | $220 | $275 | 3 h |
-| [SJO → Monteverde](/private-shuttle/sjo-to-monteverde) | $220 | $265 | 4 h |
+| [SJO → Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | $230 | $290 | 3 h |
+| [SJO → Monteverde](/private-shuttle/sjo-to-monteverde) | $230 | $290 | 4 h |
 | [SJO → Tamarindo](/private-shuttle/sjo-to-tamarindo) | $345 | $390 | 5 h |
 | [LIR → Tamarindo](/private-shuttle/lir-liberia-int-airport-to-tamarindo) | $150 | $190 | 1 h 15 min |
 | [LIR → La Fortuna](/private-shuttle/lir-to-la-fortuna) | $225 | $280 | 3 h |
 | [La Fortuna ↔ Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 | $300 | 3.5 h |
 | [La Fortuna ↔ Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio) | $330 | $375 | 4 h 30 min |
 | [La Fortuna → SJO](/private-shuttle/la-fortuna-to-sjo) | $220 | $275 | 3 h |
-| [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | $220 | $275 | 3 h |
+| [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | $230 | $290 | 3 h |
 | [Tamarindo → LIR](/private-shuttle/tamarindo-to-lir-liberia-int-airport) | $150 | $190 | 1 h 15 min |
 | [Papagayo → LIR](/private-shuttle/papagayo-peninsula-guanacaste-to-lir-liberia-int-airport) | $125 | $160 | 30 min |
 
@@ -201,7 +201,7 @@ Here's how I'd advise most travelers based on group size and itinerary.
 
 - **SJO → Drake Bay:** Sansa flight ($120 × 2 = $240) — saves 6 hours.
 - **Drake Bay → Manuel Antonio:** taxi-boat + private shuttle combo (we can coordinate).
-- **Manuel Antonio → SJO:** private shuttle ($220).
+- **Manuel Antonio → SJO:** private shuttle ($230).
 
 ### 14-day road trip, visiting non-touristed places
 

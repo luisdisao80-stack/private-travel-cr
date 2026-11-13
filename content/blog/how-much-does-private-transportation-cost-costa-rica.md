@@ -23,8 +23,8 @@ All prices are per **vehicle** (not per person), include taxes, and assume a sta
 | Destination | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
 | [La Fortuna (Arenal)](/private-shuttle/sjo-to-la-fortuna) | **$220** | $275 | 3 h |
-| [Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | **$220** | $275 | 3 h |
-| [Monteverde](/private-shuttle/sjo-to-monteverde) | **$220** | $265 | 4 h |
+| [Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) | **$230** | $290 | 3 h |
+| [Monteverde](/private-shuttle/sjo-to-monteverde) | **$230** | $290 | 4 h |
 | [Jacó](/private-shuttle/sjo-juan-santamaria-int-airport-to-jaco) | **$175** | $190 | 1 h 30 min |
 | [Tamarindo](/private-shuttle/sjo-to-tamarindo) | **$345** | $390 | 5 h |
 | [Santa Teresa](/private-shuttle/sjo-juan-santamaria-int-airport-to-santa-teresa) | **$375** | $420 | 5 h |
@@ -73,8 +73,8 @@ Everyone plans the arrival transfer and forgets the departure one. It's the same
 | Route | 1–5 pax | 6–9 pax | Drive time |
 |---|---|---|---|
 | [La Fortuna → SJO Airport](/private-shuttle/la-fortuna-to-sjo) | **$220** | $275 | 3 h |
-| [Manuel Antonio → SJO Airport](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | **$220** | $275 | 3 h |
-| [Monteverde → SJO Airport](/private-shuttle/monteverde-to-sjo) | **$220** | $265 | 4 h |
+| [Manuel Antonio → SJO Airport](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | **$230** | $290 | 3 h |
+| [Monteverde → SJO Airport](/private-shuttle/monteverde-to-sjo) | **$230** | $290 | 4 h |
 | [Jacó → SJO Airport](/private-shuttle/jaco-to-sjo-juan-santamaria-int-airport) | **$175** | $190 | 1 h 30 min |
 | [Puerto Viejo → SJO Airport](/private-shuttle/puerto-viejo-to-sjo-juan-santamaria-int-airport) | **$320** | $365 | 4 h 30 min |
 | [Tamarindo → SJO Airport](/private-shuttle/tamarindo-to-sjo-juan-santamaria-int-airport) | **$345** | $390 | 5 h |
@@ -227,7 +227,7 @@ For a classic 10-day Costa Rica trip (SJO → La Fortuna → Monteverde → Manu
 | [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna) | $220 |
 | [La Fortuna → Monteverde](/private-shuttle/la-fortuna-to-monteverde) | $255 |
 | [Monteverde → Manuel Antonio](/private-shuttle/monteverde-to-manuel-antonio) | $310 |
-| [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | $220 |
+| [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport) | $230 |
 | **Total** | **$1,005** |
 
 That's ~$250 per person for a family of 4 — for a stress-free, door-to-door private experience across the entire trip.

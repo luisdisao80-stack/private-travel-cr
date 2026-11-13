@@ -85,8 +85,8 @@ If you're flying into the country's other airport — Daniel Oduber Internationa
 The flight home is where the timing actually bites, because there's no recovering from a missed international departure. Same routes, same prices, in reverse:
 
 - **[La Fortuna → SJO](/private-shuttle/la-fortuna-to-sjo):** $220, 3 hours
-- **[Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport):** $220, 3 hours
-- **[Monteverde → SJO](/private-shuttle/monteverde-to-sjo):** $220, 4 hours (the first 35 km down Route 606 are paved but slow and winding)
+- **[Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport):** $230, 3 hours
+- **[Monteverde → SJO](/private-shuttle/monteverde-to-sjo):** $230, 4 hours (the first 35 km down Route 606 are paved but slow and winding)
 - **[Jacó → SJO](/private-shuttle/jaco-to-sjo-juan-santamaria-int-airport):** $175, 1 hour 30 min
 - **[Puerto Viejo → SJO](/private-shuttle/puerto-viejo-to-sjo-juan-santamaria-int-airport):** $320, 4 hours 30 min
 - **[Tamarindo → SJO](/private-shuttle/tamarindo-to-sjo-juan-santamaria-int-airport):** $345, 5 hours
@@ -101,4 +101,4 @@ Late flight? Lost bag? Sudden change of plans? **Message us on WhatsApp before y
 
 If you're flying into SJO and want to skip the hassle of the arrival hall, [book a private shuttle](/routes) and we'll handle everything from the moment you clear customs to the moment you check into your hotel.
 
-The three pickups we do most from SJO arrivals: [SJO → La Fortuna ($220)](/private-shuttle/sjo-to-la-fortuna), [SJO → Manuel Antonio ($220)](/private-shuttle/sjo-to-manuel-antonio), and [SJO → Monteverde ($220)](/private-shuttle/sjo-to-monteverde).
+The three pickups we do most from SJO arrivals: [SJO → La Fortuna ($220)](/private-shuttle/sjo-to-la-fortuna), [SJO → Manuel Antonio ($230)](/private-shuttle/sjo-to-manuel-antonio), and [SJO → Monteverde ($230)](/private-shuttle/sjo-to-monteverde).

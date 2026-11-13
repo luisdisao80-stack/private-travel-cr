@@ -52,7 +52,7 @@ The honest comparison, based on a typical 7-day couple's trip:
 **Option B — Private shuttles (couple, 3 transfers + 2 day-tours):**
 - [SJO → La Fortuna](/private-shuttle/sjo-to-la-fortuna): $220
 - [La Fortuna → Manuel Antonio](/private-shuttle/la-fortuna-to-manuel-antonio): $330
-- [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport): $220
+- [Manuel Antonio → SJO](/private-shuttle/manuel-antonio-quepos-to-sjo-juan-santamaria-int-airport): $230
 - 2 local day trips by Uber/taxi (~$40 each): $80
 - **Total: $850 USD**
 
@@ -62,7 +62,7 @@ The honest comparison, based on a typical 7-day couple's trip:
 
 **No.** Manuel Antonio is the easiest "no-rental" destination in Costa Rica. The town is small, the national park is walkable from most hotels, restaurants are clustered along one main road, and Uber + taxis cover everything else.
 
-If you arrive on a [private shuttle from SJO to Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) ($220 for the whole vehicle), spend 3 nights walking everywhere or taking $5 Uber rides between the beach, your hotel, and dinner, then shuttle out to your next destination — you'll have spent about $260 less than a 4-day SUV rental.
+If you arrive on a [private shuttle from SJO to Manuel Antonio](/private-shuttle/sjo-to-manuel-antonio) ($230 for the whole vehicle), spend 3 nights walking everywhere or taking $5 Uber rides between the beach, your hotel, and dinner, then shuttle out to your next destination — you'll have spent about $260 less than a 4-day SUV rental.
 
 The only Manuel Antonio scenario where a rental makes sense: you want to do daily side trips to remote beaches (Playa Biesanz, Playa Espadilla Sur, Quepos waterfalls) without arranging tours.
 

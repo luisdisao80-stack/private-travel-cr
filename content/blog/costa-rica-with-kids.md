@@ -92,7 +92,7 @@ Only place I know where you can literally see a sloth and a capuchin monkey whil
 
 Where to stay: I like **Si Como No** for families (kids' club, two pools, monkeys on the balcony), **Parador Resort** for premium (adults-only sections + family sections), or **Costa Verde** for the classic Manuel Antonio experience.
 
-How to get there: **[from SJO airport ($220)](/private-shuttle/sjo-to-manuel-antonio)**, [from La Fortuna ($330)](/private-shuttle/la-fortuna-to-manuel-antonio), or from LIR Liberia ($375, longer).
+How to get there: **[from SJO airport ($230)](/private-shuttle/sjo-to-manuel-antonio)**, [from La Fortuna ($330)](/private-shuttle/la-fortuna-to-manuel-antonio), or from LIR Liberia ($375, longer).
 
 ### 3. Guanacaste beaches — pure resort vacation
 
