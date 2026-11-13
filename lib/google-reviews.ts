@@ -47,6 +47,16 @@ const FALLBACK: GoogleReviewsData = {
   reviews: [],
 };
 
+// Process-level memo. Every route/hotel page calls getGoogleReviews() at
+// build time (~1,200 pages), and the Next fetch cache did NOT collapse
+// those into one request across build workers: the 2026-11-13 deploy
+// logged 291 Google calls and blew the Places API daily quota (100
+// GetPlace/day → HTTP 429 → every page fell back to zero reviews).
+// Holding the in-flight promise here means one Google call per process
+// per 24h regardless of how many pages render.
+const MEMO_TTL_MS = 24 * 60 * 60 * 1000;
+let memo: { promise: Promise<GoogleReviewsData>; at: number } | null = null;
+
 export async function getGoogleReviews(): Promise<GoogleReviewsData> {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   if (!apiKey) {
@@ -56,6 +66,21 @@ export async function getGoogleReviews(): Promise<GoogleReviewsData> {
     return FALLBACK;
   }
 
+  if (memo && Date.now() - memo.at < MEMO_TTL_MS) return memo.promise;
+  const promise = fetchGoogleReviews(apiKey);
+  memo = { promise, at: Date.now() };
+  // A failed/quota-limited call must not be pinned for 24h, but hammering
+  // Google on every page while the quota is exhausted is pointless too:
+  // keep the fallback for 5 minutes, then let the next render retry.
+  promise.then((d) => {
+    if (d === FALLBACK && memo?.promise === promise) {
+      memo.at = Date.now() - MEMO_TTL_MS + 5 * 60 * 1000;
+    }
+  });
+  return promise;
+}
+
+async function fetchGoogleReviews(apiKey: string): Promise<GoogleReviewsData> {
   try {
     const url = `https://places.googleapis.com/v1/places/${PLACE_ID}?fields=rating,userRatingCount,reviews&key=${apiKey}`;
     const res = await fetch(url, {
