@@ -126,7 +126,80 @@ const ALIASES: Record<string, string[]> = {
     "miravalles",
     "bagaces",
   ],
+  // Puntos que son un hotel concreto dentro de la tabla routes. Sin alias,
+  // "belen" tecleado a mano caía en la ciudad del hotel de la tabla hotels
+  // y "belmar" no calzaba con nada; con el fallback de zona madre
+  // (PARENT_ZONE abajo) estos puntos ya cotizan a cualquier destino.
+  "Costa Rica Marriott Hacienda Belen": [
+    "marriott belen",
+    "marriott belén",
+    "hacienda belen",
+    "hacienda belén",
+    "belen",
+    "belén",
+    "marriott san jose",
+  ],
+  "Hotel Belmar (Monteverde)": ["belmar", "hotel belmar"],
+  "The Springs Resort (La Fortuna)": ["the springs", "springs resort"],
+  "Arenal Observatory Lodge (La Fortuna)": ["observatory", "arenal observatory"],
+  "Lost Iguana (La Fortuna)": ["lost iguana"],
+  "Chateau Arenal (La Fortuna)": ["chateau arenal", "chateau"],
+  "Sangregado Lodge (La Fortuna)": ["sangregado"],
+  "Linda Vista del Norte (La Fortuna)": ["linda vista"],
+  "Arenal Lodge (La Fortuna)": ["arenal lodge"],
 };
+
+// Zona madre de cada punto de `routes` que en realidad es un hotel o un
+// pueblo satélite. Diego (2026-11-14): "alguien quiere de Marriott Belén
+// al Four Seasons y dice que no tenemos esa ruta" — el punto "Costa Rica
+// Marriott Hacienda Belen" existe en routes con 2 rutas nada más, y Hotel
+// Belmar con 1. En vez de cargar ~100 filas por hotel, cuando falta la
+// ruta exacta el cotizador sube a la zona madre y usa ese precio: la fila
+// específica (si existe) siempre gana, el fallback sólo entra cuando no
+// hay nada. Los precios de cada hijo contra su madre se compararon en la
+// BD antes de elegir la madre: donde difieren, el hijo ya tiene su fila
+// propia y por tanto nunca llega al fallback para ese destino.
+const PARENT_ZONE: Record<string, string> = {
+  "Costa Rica Marriott Hacienda Belen": "SJO - Juan Santamaria Int. Airport",
+  "Alajuela City": "SJO - Juan Santamaria Int. Airport",
+  "Hotel Belmar (Monteverde)": "Monteverde (Cloud Forest)",
+  "The Springs Resort (La Fortuna)": "La Fortuna (Arenal)",
+  "Arenal Lodge (La Fortuna)": "La Fortuna (Arenal)",
+  "Arenal Observatory Lodge (La Fortuna)": "La Fortuna (Arenal)",
+  "Chateau Arenal (La Fortuna)": "La Fortuna (Arenal)",
+  "Linda Vista del Norte (La Fortuna)": "La Fortuna (Arenal)",
+  "Lost Iguana (La Fortuna)": "La Fortuna (Arenal)",
+  "Sangregado Lodge (La Fortuna)": "La Fortuna (Arenal)",
+  "JW Marriott (Guanacaste)": "Hacienda Pinilla (Guanacaste)",
+  "Hacienda Pinilla (Guanacaste)": "Tamarindo (Guanacaste)",
+  "RIU Guanacaste Hotel / RIU Palace Hotel (Guanacaste)": "Playas del Coco (Guanacaste)",
+  "Ocotal (Guanacaste)": "Playas del Coco (Guanacaste)",
+  "Playa Panama (Guanacaste)": "Papagayo Peninsula, Guanacaste",
+  "Playa Hermosa (Guanacaste)": "Papagayo Peninsula, Guanacaste",
+  "Punta Leona (Resort)": "Herradura (Los Sueños)",
+  "Herradura (Los Sueños)": "Jaco",
+  "Punta Islita (Hotel & Beach)": "Samara / Playa Carrillo (Guanacaste)",
+  "Malpaís (Nicoya Peninsula)": "Santa Teresa (Nicoya Peninsula)",
+  "Montezuma (Nicoya Peninsula)": "Santa Teresa (Nicoya Peninsula)",
+  "Cahuita (Caribbean Coast)": "Puerto Viejo (Caribbean Coast)",
+};
+
+export function parentZone(dbName: string): string | null {
+  return PARENT_ZONE[dbName] ?? null;
+}
+
+// [punto, madre, abuela…] — el punto mismo primero, para que quien busque
+// una ruta pruebe lo más específico antes que lo más general.
+export function zoneAncestry(dbName: string): string[] {
+  const out = [dbName];
+  let cur = dbName;
+  while (PARENT_ZONE[cur] && out.length < 5) {
+    cur = PARENT_ZONE[cur];
+    if (out.includes(cur)) break;
+    out.push(cur);
+  }
+  return out;
+}
 
 // Locations que aparecen primero en el dropdown cuando no hay query. Travelers
 // vienen en avión 99% de las veces — exponerlos primero ahorra clicks.

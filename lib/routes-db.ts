@@ -1,7 +1,7 @@
 import { supabase } from "./supabase";
 import type { Route } from "./types";
 import { isPopularRoute, isTopRoute, TOP_PAIRS } from "./popular-routes";
-import { displayLocation, isAirport } from "./locations";
+import { displayLocation, isAirport, zoneAncestry } from "./locations";
 
 // Supabase returns max 1000 rows per request; paginate for the full 1240+ routes.
 const PAGE_SIZE = 1000;
@@ -379,4 +379,52 @@ export async function getRouteByLocations(origen: string, destino: string): Prom
     .maybeSingle();
 
   return (result2.data as Route) || null;
+}
+
+/**
+ * COTIZADOR: como getRouteByLocations, pero si no hay fila exacta sube a la
+ * zona madre de cada punto (ver PARENT_ZONE en lib/locations.ts) — Marriott
+ * Belén → SJO, Hotel Belmar → Monteverde, The Springs → La Fortuna…
+ *
+ * Una sola consulta: trae todas las filas entre cualquier ancestro del
+ * origen y cualquier ancestro del destino (en ambos sentidos) y elige la
+ * más específica. La fila exacta siempre gana; después la que sólo
+ * generaliza un lado; al final zona-a-zona. Dos puntos de la misma zona
+ * (The Springs → Arenal Lodge) no tienen ruta madre y devuelven null, igual
+ * que antes.
+ *
+ * Para redirigir a una página de ruta (/book?from&to) se sigue usando
+ * getRouteByLocations: una ruta heredada no debe mandar al visitante a la
+ * página de la zona madre.
+ */
+export async function findRouteWithFallback(
+  origen: string,
+  destino: string,
+): Promise<Route | null> {
+  const a = zoneAncestry(origen);
+  const b = zoneAncestry(destino);
+  const pool = Array.from(new Set([...a, ...b]));
+
+  const { data, error } = await supabase
+    .from("routes")
+    .select("*")
+    .in("origen", pool)
+    .in("destino", pool);
+  if (error) {
+    console.error(`Error finding route ${origen} -> ${destino}:`, error);
+    return null;
+  }
+
+  let best: { route: Route; cost: number } | null = null;
+  for (const r of (data ?? []) as Route[]) {
+    const forward = [a.indexOf(r.origen), b.indexOf(r.destino)];
+    const reverse = [a.indexOf(r.destino), b.indexOf(r.origen)];
+    for (const [i, j] of [forward, reverse]) {
+      if (i < 0 || j < 0) continue;
+      // Preferir fila directa (origen→destino) ante empate con la inversa.
+      const cost = (i + j) * 2 + (r.origen === a[i] ? 0 : 1);
+      if (!best || cost < best.cost) best = { route: r, cost };
+    }
+  }
+  return best?.route ?? null;
 }

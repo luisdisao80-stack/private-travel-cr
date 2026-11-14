@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { supabase } from "@/lib/supabase";
+import { findRouteWithFallback } from "@/lib/routes-db";
 import type { Route, Hotel } from "@/lib/types";
 import {
   VIP_EXTRA_USD,
@@ -282,10 +282,12 @@ export default function QuoteCalculatorV2({
         return;
       }
       setLoading(true); setNotFound(false);
-      const r1 = await supabase.from("routes").select("*").eq("origen", from).eq("destino", to).maybeSingle();
-      if (r1.data) { setRoute(r1.data as Route); setNotFound(false); setLoading(false); return; }
-      const r2 = await supabase.from("routes").select("*").eq("origen", to).eq("destino", from).maybeSingle();
-      if (r2.data) { setRoute(r2.data as Route); setNotFound(false); }
+      // Exacta en ambos sentidos y, si no hay, la zona madre del hotel
+      // (Marriott Belén → SJO, Hotel Belmar → Monteverde…). Misma lógica
+      // que /api/quote/route-price para que el hero y este cotizador
+      // nunca difieran.
+      const found = await findRouteWithFallback(from, to);
+      if (found) { setRoute(found); setNotFound(false); }
       else { setRoute(null); setNotFound(true); }
       setLoading(false);
     }

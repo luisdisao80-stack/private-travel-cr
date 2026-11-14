@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getRouteByLocations } from "@/lib/routes-db";
+import { findRouteWithFallback } from "@/lib/routes-db";
 import { getPriceForGroupSize, formatDuration } from "@/lib/quote-helpers";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "from and to are required" }, { status: 400 });
   }
 
-  const route = await getRouteByLocations(from, to);
+  const route = await findRouteWithFallback(from, to);
   if (!route) {
     return NextResponse.json({ found: false });
   }
