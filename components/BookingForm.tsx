@@ -29,7 +29,7 @@ import { useCart, type CartItem } from "@/lib/CartContext";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, type Country } from "@/lib/country-codes";
 import {
   flightInfoNeeded,
-  VIP_EXTRA_USD,
+  vipExtraFor,
   nightSurchargeFor,
   computeTripTotal,
   getVehicleForPax,
@@ -792,7 +792,8 @@ function TripConfigCard({
     extraStopHours: item.extraStopHours,
     pickupTime: item.pickupTime,
   });
-  const vipPrice = standardPrice + VIP_EXTRA_USD;
+  const vipExtra = vipExtraFor(item.passengers);
+  const vipPrice = standardPrice + vipExtra;
 
   // Controlled inputs. The previous version used defaultValue + onBlur,
   // which silently dropped data on iOS where tapping the Pay CTA from
@@ -861,6 +862,7 @@ function TripConfigCard({
         serviceType: next.serviceType,
         extraStopHours: next.extraStopHours,
         pickupTime: next.pickupTime,
+        passengers: next.passengers,
       }),
     });
   };
@@ -919,6 +921,7 @@ function TripConfigCard({
               serviceType: latest.serviceType,
               extraStopHours: latest.extraStopHours,
               pickupTime: latest.pickupTime,
+              passengers: totalPax,
             }),
           });
         })
@@ -1278,8 +1281,8 @@ function TripConfigCard({
             priceUsd={vipPrice}
             priceNote={
               es
-                ? `+$${VIP_EXTRA_USD} sobre el Estándar`
-                : `+$${VIP_EXTRA_USD} over Standard`
+                ? `+$${vipExtra} sobre el Estándar`
+                : `+$${vipExtra} over Standard`
             }
             selected={item.serviceType === "vip"}
             onClick={() => setService("vip")}

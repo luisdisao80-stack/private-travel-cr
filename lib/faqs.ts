@@ -45,7 +45,7 @@ export const FAQS_EN: FAQ[] = [
   {
     question: "Can you make stops during the trip?",
     answer:
-      "Yes. Short stops (restroom, coffee, photos) are included at no cost. For a fuller experience with 1-2 hour tourist stops (waterfalls, coffee plantations, viewpoints), we recommend our VIP service for $80 extra, which includes flexible stops, drinks, and snacks.",
+      "Yes. Short stops (restroom, coffee, photos) are included at no cost. For a fuller experience with 1-2 hour tourist stops (waterfalls, coffee plantations, viewpoints), we recommend our VIP service for $80 extra for up to 5 passengers ($100 for 6-7, $120 for 8-9, $150 for 10-12), which includes flexible stops, drinks, and snacks.",
   },
   {
     question: "Is the price per person or per vehicle?",
@@ -55,7 +55,7 @@ export const FAQS_EN: FAQ[] = [
   {
     question: "What's the difference between Standard and VIP?",
     answer:
-      "Standard is a direct, fast, and comfortable transfer. VIP (+$80) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, water and snacks, onboard WiFi, USB chargers, and concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
+      "Standard is a direct, fast, and comfortable transfer. VIP (+$80 for up to 5 passengers, +$100 for 6-7, +$120 for 8-9, +$150 for 10-12) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, water and snacks, onboard WiFi, USB chargers, and concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
   },
   {
     question: "Do you pick up from SJO and LIR airports?",
@@ -108,7 +108,7 @@ export const FAQS_ES: FAQ[] = [
   {
     question: "¿Pueden hacer paradas durante el viaje?",
     answer:
-      "Sí. Paradas cortas (baño, café, fotos) están incluidas sin costo. Si quieres una experiencia más completa con paradas turísticas de 1-2 horas (cataratas, cafetales, miradores), te recomendamos nuestro servicio VIP por $80 extra, que incluye paradas flexibles, bebidas y snacks.",
+      "Sí. Paradas cortas (baño, café, fotos) están incluidas sin costo. Si quieres una experiencia más completa con paradas turísticas de 1-2 horas (cataratas, cafetales, miradores), te recomendamos nuestro servicio VIP por $80 extra para grupos de hasta 5 pasajeros ($100 para 6-7, $120 para 8-9, $150 para 10-12), que incluye paradas flexibles, bebidas y snacks.",
   },
   {
     question: "¿El precio es por persona o por vehículo?",
@@ -118,7 +118,7 @@ export const FAQS_ES: FAQ[] = [
   {
     question: "¿Cuál es la diferencia entre Standard y VIP?",
     answer:
-      "Standard es un traslado directo, rápido y cómodo. VIP (+$80) incluye 1-2 horas de paradas turísticas flexibles, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi a bordo, cargadores USB y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
+      "Standard es un traslado directo, rápido y cómodo. VIP (+$80 para hasta 5 pasajeros, +$100 para 6-7, +$120 para 8-9, +$150 para 10-12) incluye 1-2 horas de paradas turísticas flexibles, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi a bordo, cargadores USB y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
   },
   {
     question: "¿Recogen en los aeropuertos SJO y LIR?",

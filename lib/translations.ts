@@ -226,7 +226,7 @@ export const translations = {
         name: "VIP",
         description:
           "Why just travel when you can live an experience? Tourist stop, local drinks, and a driver who guides you.",
-        priceLabel: "Standard + $80 USD",
+        priceLabel: "Standard + $80 USD (up to 5 pax · $100-150 larger groups)",
         priceNote: "Includes full VIP experience",
         features: [
           { label: "1-2h tourist stop", sub: "(flexible)" },
@@ -451,7 +451,7 @@ export const translations = {
         {
           question: "Can you make stops during the trip?",
           answer:
-            "Of course! Short stops (bathroom, coffee, photos) are included at no cost. If you want a more complete experience with 1-2 hour tourist stops (waterfalls, coffee farms, viewpoints), we recommend our VIP service for just $80 extra, which includes flexible stops, drinks, and snacks.",
+            "Of course! Short stops (bathroom, coffee, photos) are included at no cost. If you want a more complete experience with 1-2 hour tourist stops (waterfalls, coffee farms, viewpoints), we recommend our VIP service for just $80 extra for up to 5 passengers ($100 for 6-7, $120 for 8-9, $150 for 10-12), which includes flexible stops, drinks, and snacks.",
         },
         {
           question: "Is the price per person or per vehicle?",
@@ -461,7 +461,7 @@ export const translations = {
         {
           question: "What's the difference between Standard and VIP?",
           answer:
-            "Standard is a direct, fast, and comfortable transfer. VIP (+$80) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, waters and snacks, onboard WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
+            "Standard is a direct, fast, and comfortable transfer. VIP (+$80 for up to 5 passengers, +$100 for 6-7, +$120 for 8-9, +$150 for 10-12) includes 1-2 hours of flexible tourist stops, a Welcome Kit with local beers, sodas, waters and snacks, onboard WiFi, chargers, and Concierge service where your driver recommends the best places. Perfect for honeymoons or special trips.",
         },
       ],
     },
@@ -513,8 +513,8 @@ export const translations = {
       standardDescShort: "Direct · Fast",
       standardDesc: "Direct · Fast",
       vipShort: "VIP",
-      vipDescShort: "+1-2h stop · +$80",
-      vipDesc: "+1-2h stop · +$80",
+      vipDescShort: "+1-2h stop · from +$80",
+      vipDesc: "+1-2h stop · from +$80",
       details: "Additional details (optional)",
       additionalDetails: "Additional details (optional)",
       detailsPlaceholder:
@@ -881,7 +881,7 @@ export const translations = {
         name: "VIP",
         description:
           "¿Por qué solo viajar cuando puedes vivir una experiencia? Parada turística, bebidas locales y un chofer que te guía.",
-        priceLabel: "Standard + $80 USD",
+        priceLabel: "Standard + $80 USD (up to 5 pax · $100-150 larger groups)",
         priceNote: "Incluye toda la experiencia VIP",
         features: [
           { label: "1-2h de parada turística", sub: "(flexible)" },
@@ -1099,7 +1099,7 @@ export const translations = {
         {
           question: "¿Pueden hacer paradas durante el viaje?",
           answer:
-            "¡Por supuesto! Paradas cortas (baño, café, fotos) están incluidas sin costo. Si quieres una experiencia más completa con paradas turísticas de 1-2 horas (cataratas, cafetales, miradores), te recomendamos nuestro servicio VIP por solo $80 extra, que incluye paradas flexibles, bebidas y snacks.",
+            "¡Por supuesto! Paradas cortas (baño, café, fotos) están incluidas sin costo. Si quieres una experiencia más completa con paradas turísticas de 1-2 horas (cataratas, cafetales, miradores), te recomendamos nuestro servicio VIP por solo $80 extra para grupos de hasta 5 pasajeros ($100 para 6-7, $120 para 8-9, $150 para 10-12), que incluye paradas flexibles, bebidas y snacks.",
         },
         {
           question: "¿El precio es por persona o por vehículo?",
@@ -1109,7 +1109,7 @@ export const translations = {
         {
           question: "¿Cuál es la diferencia entre Standard y VIP?",
           answer:
-            "El Standard es un traslado directo, rápido y cómodo. El VIP (+$80) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi a bordo, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
+            "El Standard es un traslado directo, rápido y cómodo. El VIP (+$80 para hasta 5 pasajeros, +$100 para 6-7, +$120 para 8-9, +$150 para 10-12) incluye 1-2 horas de parada turística flexible, Welcome Kit con cervezas locales, sodas, aguas y snacks, WiFi a bordo, cargadores y servicio Concierge donde tu chofer te recomienda los mejores lugares. Perfecto para lunas de miel o viajes especiales.",
         },
       ],
     },
@@ -1160,8 +1160,8 @@ export const translations = {
       standardDescShort: "Directo · Rápido",
       standardDesc: "Directo · Rápido",
       vipShort: "VIP",
-      vipDescShort: "+1-2h parada · +$80",
-      vipDesc: "+1-2h parada · +$80",
+      vipDescShort: "+1-2h parada · desde +$80",
+      vipDesc: "+1-2h parada · desde +$80",
       details: "Detalles adicionales (opcional)",
       additionalDetails: "Detalles adicionales (opcional)",
       detailsPlaceholder:

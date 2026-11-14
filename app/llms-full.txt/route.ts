@@ -167,7 +167,7 @@ reviews and is a TripAdvisor Travelers' Choice 2025 award winner.
 - Short stops (restroom, photos, coffee) at no extra cost
 - 24/7 availability, any schedule
 
-### VIP service (+$${VIP_EXTRA_USD} USD on top of base)
+### VIP service (+$${VIP_EXTRA_USD} USD on top of base for up to 5 passengers; +$100 for 6-7, +$120 for 8-9, +$150 for 10-12)
 
 Designed for honeymoons, special occasions, and travelers who want the journey
 to be part of the trip — not just transit.

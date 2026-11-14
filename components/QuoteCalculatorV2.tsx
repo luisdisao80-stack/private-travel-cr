@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { findRouteWithFallback } from "@/lib/routes-db";
 import type { Route, Hotel } from "@/lib/types";
 import {
-  VIP_EXTRA_USD,
+  vipExtraFor,
   EXTRA_STOP_PRICE_USD,
   nightSurchargeFor,
   computeTripTotal,
@@ -295,7 +295,7 @@ export default function QuoteCalculatorV2({
   }, [from, to, locationSet]);
 
   const basePrice = route ? getPriceForGroupSize(route, totalPax || 1) : 0;
-  const vipExtra = serviceType === "vip" ? VIP_EXTRA_USD : 0;
+  const vipExtra = serviceType === "vip" ? vipExtraFor(totalPax || 1) : 0;
   const stopsExtra = extraStops * EXTRA_STOP_PRICE;
   // Late-night pickup surcharge (11 PM–5 AM). Zero when the route has no
   // price yet (basePrice 0) so an empty calculator never shows a lone $30.
@@ -307,6 +307,7 @@ export default function QuoteCalculatorV2({
     serviceType,
     extraStopHours: extraStops,
     pickupTime: travelTime,
+    passengers: totalPax || 1,
   });
   const vehicle = getVehicleForPax(totalPax || 1);
   // Solo pedimos vuelo cuando la RECOGIDA es en el aeropuerto. Si la ruta
@@ -707,7 +708,7 @@ export default function QuoteCalculatorV2({
               <Crown size={14} />
               <span>VIP</span>
             </div>
-            <div className="text-xs mt-1">+<Price usd={VIP_EXTRA_USD} /></div>
+            <div className="text-xs mt-1">+<Price usd={vipExtraFor(totalPax || 1)} /></div>
           </button>
         </div>
 
@@ -829,7 +830,7 @@ export default function QuoteCalculatorV2({
             {(serviceType === "vip" || extraStops > 0 || nightExtra > 0) ? (
               <div className="text-right">
                 <div className="text-xs text-slate-500">{es ? "Base: " : "Base: "}<Price usd={basePrice} /></div>
-                {serviceType === "vip" ? (<div className="text-xs text-orange-600">+ VIP: <Price usd={VIP_EXTRA_USD} /></div>) : null}
+                {serviceType === "vip" ? (<div className="text-xs text-orange-600">+ VIP: <Price usd={vipExtra} /></div>) : null}
                 {extraStops > 0 ? (<div className="text-xs text-orange-600">+ {es ? "Paradas" : "Stops"}: <Price usd={stopsExtra} /></div>) : null}
                 {nightExtra > 0 ? (<div className="text-xs text-orange-600">+ {es ? "Nocturno" : "Night"} (11PM–5AM): <Price usd={nightExtra} /></div>) : null}
               </div>

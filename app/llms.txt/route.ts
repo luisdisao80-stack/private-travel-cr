@@ -155,7 +155,7 @@ ${lirLinks}
 - Fixed price, no hidden fees, full refund on cancellations 48h+ before pickup
 - 24/7 availability, any schedule
 
-## VIP add-on (+$${VIP_EXTRA_USD} USD)
+## VIP add-on (+$${VIP_EXTRA_USD} USD for up to 5 passengers · +$100 for 6-7 · +$120 for 8-9 · +$150 for 10-12)
 
 - 1–2 hour flexible tourist stop (waterfalls, viewpoints, coffee farms — driver's recommendation)
 - Welcome Kit: local beers, sodas, water, snacks

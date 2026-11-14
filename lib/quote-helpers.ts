@@ -3,7 +3,22 @@
 
 import type { Route } from "./types";
 
+// Extra VIP para grupos de hasta 5 pax (Staria). Desde 2026-11-14 el extra
+// escala con el grupo — ver vipExtraFor(); esta constante queda como el
+// "desde" que muestran los textos y como valor cuando no se conoce el grupo.
 export const VIP_EXTRA_USD = 80;
+
+// Extra VIP según tamaño del grupo (Diego, 2026-11-14): el VIP de una Hiace
+// o un Maxus cuesta más que el de una Staria (welcome kit para más gente,
+// paradas con grupos grandes). Cortes propios, distintos de los tramos de
+// precio base: 6-7 y 8-9 pagan distinto aunque los dos vayan en Hiace.
+export function vipExtraFor(totalPax: number | null | undefined): number {
+  const pax = totalPax && totalPax > 0 ? totalPax : 1;
+  if (pax <= 5) return 80;
+  if (pax <= 7) return 100;
+  if (pax <= 9) return 120;
+  return 150;
+}
 
 // Late-night pickup surcharge. Drivers pick up between 11:00 PM and 5:00 AM
 // get a flat $30 extra per trip (unsocial-hours pay + empty return legs at
@@ -111,9 +126,11 @@ export function computeTripTotal(input: {
   serviceType: ServiceType;
   extraStopHours: number;
   pickupTime?: string | null;
+  // Sin pasajeros se asume grupo chico (extra VIP de $80), igual que antes.
+  passengers?: number | null;
 }): number {
-  const { basePrice, serviceType, extraStopHours, pickupTime } = input;
-  const vipExtra = serviceType === "vip" ? VIP_EXTRA_USD : 0;
+  const { basePrice, serviceType, extraStopHours, pickupTime, passengers } = input;
+  const vipExtra = serviceType === "vip" ? vipExtraFor(passengers) : 0;
   const stopsExtra = (extraStopHours || 0) * EXTRA_STOP_PRICE_USD;
   const nightExtra = basePrice > 0 ? nightSurchargeFor(pickupTime) : 0;
   return basePrice + vipExtra + stopsExtra + nightExtra;
@@ -194,9 +211,9 @@ export function calculateAllPricesFromRoute(route: Route): {
   const hiaceStandard = route.precio7a9 || route.precio1a6 || 0;
   return {
     stariaStandard,
-    stariaVip: stariaStandard + VIP_EXTRA_USD,
+    stariaVip: stariaStandard + vipExtraFor(5),
     hiaceStandard,
-    hiaceVip: hiaceStandard + VIP_EXTRA_USD,
+    hiaceVip: hiaceStandard + vipExtraFor(6),
   };
 }
 

@@ -338,7 +338,7 @@ export default async function AirportToLaFortunaPage() {
           </div>
 
           <p className="mt-6 text-center text-sm text-slate-500">
-            VIP service (+$80) adds a 1-2 hour scenic stop (waterfall, viewpoint,
+            VIP service (+$80 for up to 5 passengers, $100–$150 for larger groups) adds a 1-2 hour scenic stop (waterfall, viewpoint,
             coffee farm), welcome kit (local snacks + sparkling water), and
             concierge driver recommendations.
           </p>

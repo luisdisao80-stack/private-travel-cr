@@ -211,7 +211,7 @@ export default function CreateQuoteForm({ action }: Props) {
                 className="w-full bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm"
               >
                 <option value="standard">Standard</option>
-                <option value="vip">VIP (+$80)</option>
+                <option value="vip">VIP (+$80 hasta 5 pax · +$100 6-7 · +$120 8-9 · +$150 10-12)</option>
               </select>
             </div>
             <Field
