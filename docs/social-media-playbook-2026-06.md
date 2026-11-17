@@ -343,7 +343,7 @@ What's actually in our vans 🚐
 ✅ Bluetooth speakers if you want road trip vibes
 ✅ A/C that actually works in 32°C heat
 
-If you book VIP service we add: 1-2h tourist stops + Welcome Kit (local beers, sodas, snacks) + fresh San Pellegrino.
+If you book VIP service we add: 1-2h tourist stops + Welcome Kit (local beers, sodas, snacks).
 
 DM "fleet" to see vehicle photos or link in bio to book 🚐
 

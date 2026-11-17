@@ -85,7 +85,7 @@ Most operators (us included) offer two service tiers:
 
 **Standard:** Direct route, professional driver, all the included items above. Best for airport transfers and travelers who just want to get from A to B.
 
-**VIP (+$80 USD):** Same vehicle, but the driver can stop at one or two tourist spots along the way (1–2 hours flexible), brings a welcome kit (local beers, sodas, snacks, fruit), San Pellegrino sparkling water, USB chargers + onboard WiFi, and acts more like a tour guide than a transport driver. Best for honeymooners and travelers on a longer transfer (SJO to La Fortuna, La Fortuna to Manuel Antonio).
+**VIP (+$80 USD):** Same vehicle, but the driver can stop at one or two tourist spots along the way (1–2 hours flexible), brings a welcome kit (local beers, sodas, snacks, fruit), USB chargers + onboard WiFi, and acts more like a tour guide than a transport driver. Best for honeymooners and travelers on a longer transfer (SJO to La Fortuna, La Fortuna to Manuel Antonio).
 
 ## When a private shuttle beats the alternatives
 

@@ -85,7 +85,7 @@ Our 2026 USD rates (per VEHICLE, not per person — taxes included):
 
 For ANY route + instant quote: privatetravelcr.com/book
 
-VIP service: +$80 (welcome kit, flexible stops, sparkling water).
+VIP service: +$80 (welcome kit, flexible stops, concierge driver).
 ```
 
 ---
@@ -144,7 +144,6 @@ VIP service (+$80 USD) is ideal for honeymoons, anniversaries, or long transfers
 
 ✨ 1–2 flexible tourist stops (waterfalls, viewpoints, coffee tour)
 🍻 Welcome kit: local craft beers, sodas, snacks, fresh fruit
-💧 San Pellegrino sparkling water
 🔌 USB chargers + onboard WiFi
 🧭 Concierge driver — recommendations the whole way
 

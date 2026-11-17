@@ -729,7 +729,6 @@ export default function QuoteCalculatorV2({
                   ? [
                       "Parada turística flexible de 1–2h",
                       "Kit de bienvenida: cervezas locales, gaseosas, snacks",
-                      "Agua con gas San Pellegrino",
                       "Chofer concierge con recomendaciones a la medida",
                       "Cargadores USB y WiFi a bordo",
                       "Ideal para lunas de miel y viajes especiales",
@@ -737,7 +736,6 @@ export default function QuoteCalculatorV2({
                   : [
                       "1–2h flexible tourist stop",
                       "Welcome Kit: local beers, sodas, snacks",
-                      "San Pellegrino sparkling water",
                       "Concierge driver with personalized tips",
                       "USB chargers & onboard WiFi",
                       "Ideal for honeymoons & special trips",

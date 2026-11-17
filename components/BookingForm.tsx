@@ -1293,7 +1293,6 @@ function TripConfigCard({
                 ? [
                     "Parada turística flexible de 1–2h",
                     "Welcome Kit: cervezas locales, gaseosas, snacks",
-                    "Agua con gas San Pellegrino",
                     "Chofer concierge — recomendaciones personalizadas",
                     "Cargadores USB y WiFi a bordo",
                     "Recomendado para lunas de miel",
@@ -1302,7 +1301,6 @@ function TripConfigCard({
                 : [
                     "1–2h flexible tourist stop",
                     "Welcome Kit: local beers, sodas, snacks",
-                    "San Pellegrino sparkling water",
                     "Concierge driver — personalized tips",
                     "USB chargers & onboard WiFi",
                     "Recommended for honeymoons",
