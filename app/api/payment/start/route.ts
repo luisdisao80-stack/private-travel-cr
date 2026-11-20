@@ -13,6 +13,8 @@ import {
   parseCostaRicaPickup,
 } from "@/lib/booking-rules";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
+import { findRouteWithFallback } from "@/lib/routes-db";
+import { getPriceForGroupSize } from "@/lib/quote-helpers";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -358,7 +360,45 @@ export async function POST(req: NextRequest) {
         );
       }
     }
-    bookingItems = items;
+    // Re-cotizar el precio BASE de cada tramo contra la tabla de rutas en
+    // vivo, igual que ya hacemos con los tours. Una pestaña abierta desde
+    // antes de un cambio de tarifas (caso real: PTCR-2315 pagó SJO→Monteverde
+    // a $220 cuando ya valía $230) traía el precio viejo y el servidor lo
+    // aceptaba tal cual. Si el base del cliente no coincide con el actual,
+    // usamos el del servidor y conservamos los extras que el cliente ya
+    // traía (VIP, recargo nocturno, paradas) como la diferencia entre su
+    // totalPrice y su basePrice. Si la ruta no existe (puntos custom), se
+    // respeta el precio del cliente como hasta ahora.
+    const repriced: CartItem[] = [];
+    let repricedTotal = 0;
+    for (const raw of items) {
+      const it = { ...(raw as CartItem) };
+      const route = await findRouteWithFallback(it.fromName, it.toName);
+      if (route) {
+        const clientBase =
+          typeof it.basePrice === "number" && it.basePrice > 0
+            ? it.basePrice
+            : it.totalPrice;
+        const serverBase = getPriceForGroupSize(route, it.passengers);
+        if (serverBase > 0 && Math.abs(serverBase - clientBase) > 0.01) {
+          const extras = Math.max(0, it.totalPrice - clientBase);
+          console.warn(
+            `[payment/start] shuttle price refreshed: ${it.fromName} -> ${it.toName} pax=${it.passengers} client base=$${clientBase} server base=$${serverBase} extras=$${extras}`,
+          );
+          it.basePrice = serverBase;
+          it.totalPrice = serverBase + extras;
+        }
+      }
+      repricedTotal += it.totalPrice;
+      repriced.push(it);
+    }
+    if (Math.abs(repricedTotal - body.totalUsd) > 0.01) {
+      console.warn(
+        `[payment/start] shuttle total refreshed: client=$${body.totalUsd} server=$${repricedTotal}`,
+      );
+    }
+    totalUsd = repricedTotal;
+    bookingItems = repriced;
     bookingRow = { kind: "shuttle" };
   }
 

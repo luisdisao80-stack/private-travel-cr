@@ -76,16 +76,16 @@ WhatsApp Business → Settings → Business Tools → **Quick Replies** → "+" 
 Our 2026 USD rates (per VEHICLE, not per person — taxes included):
 
 📍 SJO Airport → La Fortuna: from $220
-📍 SJO Airport → Manuel Antonio: from $220
-📍 SJO Airport → Monteverde: from $220
-📍 SJO Airport → Tamarindo: from $345
-📍 LIR Airport → Tamarindo: from $135
+📍 SJO Airport → Manuel Antonio: from $230
+📍 SJO Airport → Monteverde: from $230
+📍 SJO Airport → Tamarindo: from $365
+📍 LIR Airport → Tamarindo: from $150
 📍 LIR Airport → La Fortuna: from $225
 📍 La Fortuna ↔ Monteverde: from $255
 
 For ANY route + instant quote: privatetravelcr.com/book
 
-VIP service: +$80 (welcome kit, flexible stops, concierge driver).
+VIP service: from +$80 (welcome kit, flexible stops, concierge driver).
 ```
 
 ---
