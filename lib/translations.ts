@@ -433,6 +433,11 @@ export const translations = {
             "Yes. We offer free cancellation 48 hours before the trip. Simply write us on WhatsApp at +506 8633-4133 and we process your cancellation without complications. We want you to book with complete peace of mind.",
         },
         {
+          question: "Can I change my pickup time or date after booking?",
+          answer:
+            "Yes, free of charge, as long as you let us know at least 48 hours before your scheduled pickup. Just message us on WhatsApp at +506 8633-4133 with your booking number and the new details. Within 48 hours of pickup we can't guarantee a change, because your vehicle and driver are already assigned, though we'll always do our best. Flight delays are the exception: we track your flight and adjust the pickup automatically at no cost.",
+        },
+        {
           question: "Do you offer child seats?",
           answer:
             "Yes, we offer completely free child seats upon request. Just tell us when booking the age and number of children traveling, and we prepare the vehicle with the appropriate seats. Your family's safety is our priority.",
@@ -1078,6 +1083,11 @@ export const translations = {
           question: "¿Puedo cancelar mi reserva?",
           answer:
             "Sí. Ofrecemos cancelación gratuita con 48 horas de anticipación al viaje. Simplemente escríbenos por WhatsApp al +506 8633-4133 y procesamos tu cancelación sin complicaciones. Queremos que reserves con total tranquilidad.",
+        },
+        {
+          question: "¿Puedo cambiar la hora o la fecha después de reservar?",
+          answer:
+            "Sí, sin costo, siempre que nos avises con al menos 48 horas de anticipación a la hora de recogida. Escríbenos por WhatsApp al +506 8633-4133 con tu número de reserva y los nuevos datos. Dentro de las 48 horas previas no podemos garantizar el cambio, porque tu vehículo y tu chofer ya están asignados, aunque siempre haremos lo posible. Los atrasos de vuelo son la excepción: monitoreamos tu vuelo y ajustamos la recogida automáticamente sin costo.",
         },
         {
           question: "¿Ofrecen sillas para niños?",

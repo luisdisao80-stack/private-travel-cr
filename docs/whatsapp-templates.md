@@ -156,12 +156,29 @@ Same vehicle, just more service. Add it at checkout or reply "VIP" and I'll upgr
 
 ```
 ✅ Free cancellation up to 48 hours before pickup.
-🟡 50% refund within 48–24 hours.
-🔴 No refund inside 24 hours (we've already blocked the driver).
+🔴 Inside 48 hours: non-refundable (we've already blocked the driver).
 
 Need to cancel? Just reply with your booking number (PTCR-XXXX) and I'll process it.
 
-Flexible date changes are FREE anytime — even last-minute.
+📅 Date or time changes are FREE with 48+ hours notice, subject to availability. Inside 48 hours we can't guarantee a change — the vehicle and driver are already assigned — but I'll always do my best.
+
+✈️ Flight delays are the exception: I track your flight and adjust the pickup automatically, at no cost.
+```
+
+---
+
+### `/cambio`
+
+```
+Need to move your pickup time or date? No problem 👍
+
+📅 With 48+ hours notice: FREE, subject to availability.
+⏰ Inside 48 hours: I can't guarantee it — your vehicle and driver are already assigned — but send it anyway and I'll do my best.
+✈️ Flight delayed? That's always handled free. I track your flight and adjust the pickup automatically.
+
+Just reply with:
+1️⃣ Your booking number (PTCR-XXXX)
+2️⃣ The new date/time
 ```
 
 ---
