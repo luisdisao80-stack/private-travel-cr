@@ -213,6 +213,12 @@ accommodate. Flight delays and cancellations are handled at no extra cost — we
 monitor your flight and adjust pickup time automatically, or reschedule the
 service for the new date if the flight is cancelled.
 
+Schedule changes: any change to the pick-up time, date, or route of a confirmed
+booking must be requested at least 48 hours before the scheduled pickup. Changes
+requested in time are free of charge and subject to availability. Within 48 hours
+of pickup we cannot guarantee a change, as the vehicle and driver have already
+been assigned. Flight delays are the exception and are always handled at no cost.
+
 Full terms at ${url}/terms.
 
 ## Frequently asked questions

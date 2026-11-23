@@ -17,7 +17,7 @@ export default function TermsPage() {
       title: "Terms and Conditions",
       icon: "📜",
       company: "Private Travel Costa Rica",
-      lastUpdated: "Last Updated: October 7, 2026",
+      lastUpdated: "Last Updated: November 23, 2026",
       intro: "Welcome to Private Travel Costa Rica. By accessing our website, booking our services, or communicating with us, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully, as they define your rights and responsibilities.",
       sections: [
         {
@@ -63,7 +63,11 @@ export default function TermsPage() {
               ],
             },
             {
-              subtitle: "3.2 Service Provider Cancellations",
+              subtitle: "3.2 Schedule Changes",
+              text: "Any change to the pick-up time, date, or route of a confirmed booking must be requested at least 48 hours before the scheduled pick-up. Changes requested at least 48 hours in advance are free of charge and subject to availability. Within 48 hours of the scheduled pick-up we cannot guarantee a change, as the vehicle and driver have already been assigned; if we cannot accommodate it, the original booking stands and the standard cancellation policy above applies.",
+            },
+            {
+              subtitle: "3.3 Service Provider Cancellations",
               text: "If Private Travel Costa Rica must cancel a service due to severe weather, road closures, safety concerns, or any unforeseen circumstances beyond our control, the client will receive a full refund or the option to reschedule the service at no extra cost.",
             },
           ],
@@ -156,7 +160,7 @@ export default function TermsPage() {
       title: "Términos y Condiciones",
       icon: "📜",
       company: "Private Travel Costa Rica",
-      lastUpdated: "Última Actualización: 7 de Octubre, 2026",
+      lastUpdated: "Última Actualización: 23 de Noviembre, 2026",
       intro: "Bienvenido a Private Travel Costa Rica. Al acceder a nuestro sitio web, reservar nuestros servicios o comunicarse con nosotros, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Léalos cuidadosamente, ya que definen sus derechos y responsabilidades.",
       sections: [
         {
@@ -202,7 +206,11 @@ export default function TermsPage() {
               ],
             },
             {
-              subtitle: "3.2 Cancelaciones del Proveedor de Servicios",
+              subtitle: "3.2 Cambios de Horario",
+              text: "Cualquier cambio en la hora de recogida, la fecha o la ruta de una reserva confirmada debe solicitarse con al menos 48 horas de anticipación a la hora de recogida programada. Los cambios solicitados con 48 horas o más de anticipación no tienen costo y están sujetos a disponibilidad. Dentro de las 48 horas previas a la recogida no podemos garantizar el cambio, ya que el vehículo y el chofer ya fueron asignados; si no es posible acomodarlo, la reserva original se mantiene y aplica la política de cancelación indicada arriba.",
+            },
+            {
+              subtitle: "3.3 Cancelaciones del Proveedor de Servicios",
               text: "Si Private Travel Costa Rica debe cancelar un servicio debido a clima severo, cierres de carreteras, preocupaciones de seguridad o cualquier circunstancia imprevista más allá de nuestro control, el cliente recibirá un reembolso completo o la opción de reprogramar el servicio sin costo adicional.",
             },
           ],

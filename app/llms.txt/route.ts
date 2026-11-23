@@ -104,6 +104,7 @@ ${startingPriceLine}
 - **Booking lead time:** 1 week recommended in high season (Dec–Apr), 2–3 days off-season. Last-minute bookings are accepted via WhatsApp.
 - **Payment:** credit/debit card or a secure payment link via Tilopay (USD billing). Full payment in advance is required to confirm a booking.
 - **Cancellation:** full refund when cancelled 48 hours or more before pickup. Within 48 hours, no-shows, and last-minute changes are non-refundable. If we cancel from our side (severe weather, road closures, safety), you get a full refund or a free reschedule.
+- **Schedule changes:** any change to the pick-up time, date, or route must be requested at least 48 hours before pickup. Free of charge and subject to availability. Within 48 hours we cannot guarantee a change, as the vehicle and driver are already assigned.
 - **Child seats:** infant, convertible, and booster seats provided free of charge (Costa Rican law requires them for kids under 12).
 - **Flight tracking:** included on every airport pickup at no extra cost — driver waits if your flight is delayed.
 - **Licensing & insurance:** ICT license #3205-2022 (Instituto Costarricense de Turismo); insured through INS (Instituto Nacional de Seguros), Costa Rica's national insurance carrier.
@@ -174,6 +175,8 @@ ${lirLinks}
 ## Cancellation & refunds
 
 Full refund when cancelled 48 hours or more before pickup. Cancellations within 48 hours, no-shows, and last-minute changes are non-refundable. If we have to cancel from our side (severe weather, road closures, safety), you get a full refund or a free reschedule. To cancel or reschedule, message us on WhatsApp. Full policy: [Terms](${url}/terms).
+
+Schedule changes follow the same window: any change to the pick-up time, date, or route must be requested at least 48 hours before pickup. Changes requested in time are free and subject to availability. Within 48 hours of pickup we cannot guarantee a change, as the vehicle and driver have already been assigned.
 
 ## Data & inventory
 
