@@ -446,15 +446,21 @@ export default function BookingForm({ onBack, hotels = [] }: BookingFormProps) {
           onChange={(e) => setAcceptedTerms(e.target.checked)}
           className="mt-0.5 h-4 w-4 rounded border-slate-300 bg-white accent-orange-600 shrink-0"
         />
+        {/* El Banco Nacional pidio (25-nov-2026) que al llegar al checkout
+            los Terminos y la Politica de Privacidad esten en UN SOLO
+            documento, asi que este enlace apunta a /legal, que contiene
+            ambos, y no a /terms. */}
         <span className="text-xs text-slate-600 leading-snug">
           {es ? "Leí y acepto los " : "I have read and accept the "}
           <a
-            href="/terms"
+            href="/legal"
             target="_blank"
             rel="noopener noreferrer"
             className="text-orange-600 hover:text-orange-700 underline underline-offset-2"
           >
-            {es ? "Términos y Condiciones" : "Terms & Conditions"}
+            {es
+              ? "Términos y Condiciones y la Política de Privacidad"
+              : "Terms & Conditions and the Privacy Policy"}
           </a>
           .
         </span>
