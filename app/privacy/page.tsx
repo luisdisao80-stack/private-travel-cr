@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const LAST_UPDATED = "May 12, 2026";
+const LAST_UPDATED = "November 25, 2026";
 
 export default function PrivacyPolicyPage() {
   const business = siteConfig.business;
@@ -92,8 +92,12 @@ export default function PrivacyPolicyPage() {
                 <li>Transaction ID and amount</li>
               </ul>
               <p className="mt-3">
-                We <strong>never see</strong> the full card number, expiration date, or CVV — those go
-                straight to Tilopay&apos;s PCI-compliant gateway.
+                We <strong>never see and never store</strong>{" "}the full card number, the expiration
+                date, or the security code (CVV). Those details are typed directly into the payment
+                processor&apos;s PCI-DSS compliant gateway and never reach our servers, our database,
+                or our staff. The only card information we retain is the last four digits and the
+                authorization code, which we need in order to identify the transaction and to issue
+                a refund if one is due.
               </p>
               <p className="mt-3 mb-2">When you browse the site we collect (via cookies and analytics):</p>
               <ul className="list-disc pl-6 space-y-1">
@@ -118,8 +122,11 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-xl font-bold text-blue-900 mb-3">3. Who we share it with</h2>
               <p className="mb-2">
-                We do not sell your personal data. We share it only with the service providers that
-                make the booking possible:
+                We do not sell, rent, trade, or otherwise commercialize your personal data, and we
+                do not share or transfer it to third parties without your authorization or a
+                corresponding legal basis. We share it only with the service providers strictly
+                necessary to deliver the service you booked, each of whom may use it for that
+                purpose alone:
               </p>
               <ul className="list-disc pl-6 space-y-1">
                 <li><strong>Tilopay</strong> — payment processing (Costa Rica).</li>
@@ -136,7 +143,56 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-blue-900 mb-3">4. Cookies and tracking</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">4. How we protect it</h2>
+              <p className="mb-2">
+                We apply the following security measures to protect your personal information
+                against loss, misuse, and unauthorized access, alteration, or disclosure:
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Encryption in transit.</strong> The entire site is served over HTTPS
+                  (TLS). Everything you submit in the booking form travels encrypted between your
+                  device and our servers.
+                </li>
+                <li>
+                  <strong>Encryption at rest.</strong> Our database encrypts stored data, and
+                  backups are encrypted as well.
+                </li>
+                <li>
+                  <strong>Card data never touches our systems.</strong>{" "}Payments are processed
+                  entirely inside the payment gateway&apos;s PCI-DSS certified environment. We do
+                  not store the full card number, the expiration date, or the CVV at any point.
+                </li>
+                <li>
+                  <strong>Access control.</strong>{" "}Access to booking records is limited to
+                  authorized personnel through individual accounts with strong authentication, and
+                  row-level security rules in the database prevent one customer&apos;s records from
+                  being read by another.
+                </li>
+                <li>
+                  <strong>Minimum necessary disclosure.</strong> Drivers receive only the
+                  trip-specific details needed to perform the pickup — never any payment
+                  information.
+                </li>
+                <li>
+                  <strong>Vetted providers.</strong> We rely on established infrastructure
+                  providers with their own recognized security programs, and we keep our software
+                  and its dependencies up to date.
+                </li>
+                <li>
+                  <strong>Retention limits.</strong> We keep personal data only for as long as
+                  described in section 6 below, and delete or anonymize it afterwards.
+                </li>
+              </ul>
+              <p className="mt-3">
+                No system can be guaranteed to be perfectly secure. If we ever become aware of a
+                breach affecting your personal data, we will notify you and the competent
+                authorities as required by Costa Rican law.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">5. Cookies and tracking</h2>
               <p className="mb-2">We use two kinds of cookies / similar storage:</p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>
@@ -158,7 +214,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-blue-900 mb-3">5. How long we keep it</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">6. How long we keep it</h2>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Booking records: <strong>7 years</strong> (Costa Rican tax requirement).</li>
                 <li>Analytics data: <strong>14 months</strong> (Google Analytics default).</li>
@@ -167,7 +223,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-blue-900 mb-3">6. Your rights</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">7. Your rights</h2>
               <p className="mb-2">
                 Wherever you live, you can ask us to:
               </p>
@@ -187,7 +243,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-blue-900 mb-3">7. Children</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">8. Children</h2>
               <p>
                 Our services are intended for adults booking on behalf of themselves or their
                 travel group, which may include children. We do not knowingly collect personal data
@@ -197,7 +253,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-blue-900 mb-3">8. International transfers</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">9. International transfers</h2>
               <p>
                 Some of our service providers (Supabase, Resend, Vercel, Google) process data in the
                 United States. By using the site, you consent to your personal data being processed
@@ -207,7 +263,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-blue-900 mb-3">9. Changes to this policy</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">10. Changes to this policy</h2>
               <p>
                 We may update this policy occasionally. When we do, we&apos;ll change the
                 &quot;Last updated&quot; date at the top. Material changes will be flagged via
@@ -216,7 +272,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-blue-900 mb-3">10. Contact</h2>
+              <h2 className="text-xl font-bold text-blue-900 mb-3">11. Contact</h2>
               <p>
                 Questions about this policy or your data?{" "}
                 <a className="text-orange-600 hover:text-orange-700" href={`mailto:${business.email}`}>{business.email}</a>{" "}

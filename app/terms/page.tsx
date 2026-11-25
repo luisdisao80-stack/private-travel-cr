@@ -17,7 +17,7 @@ export default function TermsPage() {
       title: "Terms and Conditions",
       icon: "📜",
       company: "Private Travel Costa Rica",
-      lastUpdated: "Last Updated: November 23, 2026",
+      lastUpdated: "Last Updated: November 25, 2026",
       intro: "Welcome to Private Travel Costa Rica. By accessing our website, booking our services, or communicating with us, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully, as they define your rights and responsibilities.",
       sections: [
         {
@@ -69,6 +69,14 @@ export default function TermsPage() {
             {
               subtitle: "3.3 Service Provider Cancellations",
               text: "If Private Travel Costa Rica must cancel a service due to severe weather, road closures, safety concerns, or any unforeseen circumstances beyond our control, the client will receive a full refund or the option to reschedule the service at no extra cost.",
+            },
+            {
+              subtitle: "3.4 How to Request a Cancellation or a Refund",
+              text: "To cancel a booking or request a refund, contact us through any of these channels, quoting your booking number (PTCR-XXXX):\n• Email: info@privatetravelcr.com\n• WhatsApp or phone: +506 8633-4133\n• Contact form: privatetravelcr.com/contact\nWe answer every request and confirm each cancellation in writing by email. A cancellation takes effect only once we have confirmed it; a message sent without receiving our confirmation does not cancel a booking. If you do not receive a reply within 24 hours, please write again or call us.",
+            },
+            {
+              subtitle: "3.5 Refund Policy and Processing",
+              text: "Refunds are issued in the following cases: cancellation by the client 48 hours or more before the service; cancellation by Private Travel Costa Rica for any reason; a service we are unable to provide; or a duplicate or erroneous charge.\n\nAll refunds are returned to the same credit or debit card used for the original purchase. We cannot refund to a different card, to a different person, or by any other payment method, and we never ask for your card details in order to issue a refund.\n\nApproved refunds are submitted to the payment processor within 5 business days. The time it takes for the money to appear on your statement then depends on your issuing bank, and is normally between 5 and 15 business days. Refunds are issued for the full amount paid, in U.S. dollars; we do not deduct any administrative fee. If your card has expired or been cancelled since the purchase, contact us at info@privatetravelcr.com and we will coordinate an alternative with you and your bank.",
             },
           ],
         },
@@ -160,7 +168,7 @@ export default function TermsPage() {
       title: "Términos y Condiciones",
       icon: "📜",
       company: "Private Travel Costa Rica",
-      lastUpdated: "Última Actualización: 23 de Noviembre, 2026",
+      lastUpdated: "Última Actualización: 25 de Noviembre, 2026",
       intro: "Bienvenido a Private Travel Costa Rica. Al acceder a nuestro sitio web, reservar nuestros servicios o comunicarse con nosotros, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Léalos cuidadosamente, ya que definen sus derechos y responsabilidades.",
       sections: [
         {
@@ -212,6 +220,14 @@ export default function TermsPage() {
             {
               subtitle: "3.3 Cancelaciones del Proveedor de Servicios",
               text: "Si Private Travel Costa Rica debe cancelar un servicio debido a clima severo, cierres de carreteras, preocupaciones de seguridad o cualquier circunstancia imprevista más allá de nuestro control, el cliente recibirá un reembolso completo o la opción de reprogramar el servicio sin costo adicional.",
+            },
+            {
+              subtitle: "3.4 Cómo Solicitar una Cancelación o una Devolución",
+              text: "Para cancelar una reserva o solicitar una devolución de dinero, contáctenos por cualquiera de estos medios, indicando su número de reserva (PTCR-XXXX):\n• Correo electrónico: info@privatetravelcr.com\n• WhatsApp o teléfono: +506 8633-4133\n• Formulario de contacto: privatetravelcr.com/contact\nRespondemos todas las solicitudes y confirmamos cada cancelación por escrito al correo electrónico. La cancelación surte efecto únicamente cuando se la hemos confirmado; un mensaje enviado sin recibir nuestra confirmación no cancela la reserva. Si no recibe respuesta en 24 horas, por favor escríbanos de nuevo o llámenos.",
+            },
+            {
+              subtitle: "3.5 Política de Devoluciones y Procesamiento",
+              text: "Se realiza devolución de dinero en los siguientes casos: cancelación por parte del cliente con 48 horas o más de anticipación al servicio; cancelación por parte de Private Travel Costa Rica por cualquier motivo; un servicio que no podamos prestar; o un cobro duplicado o erróneo.\n\nTodas las devoluciones se realizan a la misma tarjeta de crédito o débito con la cual se ejecutó la compra. No podemos devolver el dinero a una tarjeta distinta, a una persona distinta ni por ningún otro medio de pago, y nunca le solicitamos los datos de su tarjeta para tramitar una devolución.\n\nLas devoluciones aprobadas se tramitan ante el procesador de pagos dentro de los 5 días hábiles siguientes. El tiempo que tarda el dinero en reflejarse en su estado de cuenta depende luego de su banco emisor, y normalmente es de 5 a 15 días hábiles. Las devoluciones se realizan por el monto total pagado, en dólares estadounidenses; no deducimos ningún cargo administrativo. Si su tarjeta venció o fue cancelada después de la compra, escríbanos a info@privatetravelcr.com y coordinamos una alternativa con usted y su banco.",
             },
           ],
         },
