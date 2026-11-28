@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, Users, Plane, Baby, Star, CalendarDays } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import type { CartItem } from "@/lib/CartContext";
+import { fechaCorta, hoyCR, origenPago, sumarDias } from "@/lib/cierre-semanal";
 import { hora12, sillasTexto, vueloValido } from "@/lib/hoja-servicio";
 import DispatchRow, { type ProviderOption } from "@/components/admin/DispatchRow";
 import { saveDispatchAction, setDispatchEstadoAction } from "./actions";
@@ -39,21 +40,6 @@ type Tramo = {
   d: DispatchDb | null;
 };
 
-// Hoy en Costa Rica (UTC-6, sin horario de verano) como YYYY-MM-DD.
-function hoyCR(): string {
-  return new Date(Date.now() - 6 * 3600 * 1000).toISOString().slice(0, 10);
-}
-function sumarDias(iso: string, n: number): string {
-  const [y, m, d] = iso.split("-").map(Number);
-  return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10);
-}
-const DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
-const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-function fechaCorta(iso: string): string {
-  const [y, m, d] = iso.split("-").map(Number);
-  const dt = new Date(Date.UTC(y, m - 1, d));
-  return `${DIAS[dt.getUTCDay()]} ${d} ${MESES[m - 1]} ${y}`;
-}
 
 export default async function DespachoPage({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams;
@@ -87,8 +73,7 @@ export default async function DespachoPage({ searchParams }: { searchParams: Sea
     for (const it of b.items || []) {
       if (it.date !== fecha) continue;
       idx += 1;
-      const pago: Tramo["pago"] =
-        b.status !== "approved" ? "Pendiente" : b.tilopay_response === "paid_via_wetravel" ? "WeTravel" : b.tilopay_id ? "Web" : "WeTravel";
+      const pago: Tramo["pago"] = origenPago(b);
       tramos.push({
         key: `${b.order_number}#${idx}`,
         orden: b.order_number,

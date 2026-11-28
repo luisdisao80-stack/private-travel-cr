@@ -61,6 +61,13 @@ export default async function AuthedAdminLayout({
             >
               <span aria-hidden>🚐</span> Despacho
             </Link>
+            <span className="text-adm-border-strong">·</span>
+            <Link
+              href="/admin/cierre"
+              className="text-sm font-medium text-adm-text-2 hover:text-adm-accent-hover inline-flex items-center gap-1"
+            >
+              <span aria-hidden>💵</span> Cierre
+            </Link>
           </div>
           <form action={logoutAction}>
             <button
