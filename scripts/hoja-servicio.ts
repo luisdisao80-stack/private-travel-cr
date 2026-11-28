@@ -10,6 +10,7 @@ import { readFileSync, writeFileSync, mkdtempSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { tmpdir, homedir } from "node:os";
 import { join, resolve } from "node:path";
+import type { HojaBooking, HojaItem } from "../lib/hoja-servicio";
 
 for (const line of readFileSync(".env.local", "utf8").split("\n")) {
   const t = line.trim();
@@ -25,6 +26,10 @@ function arg(name: string, def?: string): string | undefined {
 }
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+
+// La fila de Supabase trae los tramos en `items`, cada uno con su fecha.
+type ItemConFecha = HojaItem & { date?: string };
+type ReservaRow = HojaBooking & { items?: ItemConFecha[] | null };
 
 type Hoja = { orden: string; fecha: string; chofer: string; neto?: string | number; nota?: string; tramo?: number };
 
@@ -63,8 +68,8 @@ type Manual = { cliente: string; pax: number; vehiculo?: string; hora: string; r
 
 async function generar({ orden, fecha, chofer, neto, nota = "", tramo, manual }: Hoja & { manual?: Manual }) {
   const tramoIdx = tramo ? String(tramo) : undefined;
-  let b: any;
-  let it: any;
+  let b: ReservaRow;
+  let it: HojaItem;
   if (manual) {
     b = { order_number: orden, customer_name: manual.cliente, status: manual.pagado === false ? "pending" : "approved" };
     it = {
@@ -86,14 +91,15 @@ async function generar({ orden, fecha, chofer, neto, nota = "", tramo, manual }:
       .select("order_number,customer_name,status,items")
       .eq("order_number", orden)
       .single();
-    b = res.data;
-    if (res.error || !b) {
+    const row: ReservaRow | null = res.data;
+    if (res.error || !row) {
       console.error("No encontré la reserva", orden, res.error?.message);
       process.exit(1);
     }
-    const items: any[] = (b.items || []).filter((i: any) => (i.date || "").startsWith(fecha));
+    b = row;
+    const items = (b.items || []).filter((i) => (i.date || "").startsWith(fecha));
     if (!items.length) {
-      console.error(`La reserva ${orden} no tiene tramos el ${fecha}. Fechas:`, (b.items || []).map((i: any) => i.date));
+      console.error(`La reserva ${orden} no tiene tramos el ${fecha}. Fechas:`, (b.items || []).map((i) => i.date));
       process.exit(1);
     }
     it = tramoIdx ? items[Number(tramoIdx) - 1] : items[0];
