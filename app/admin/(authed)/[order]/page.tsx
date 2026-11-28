@@ -66,7 +66,7 @@ export default async function AdminBookingDetailPage({
 
   if (error) {
     return (
-      <div className="bg-red-500/10 border border-red-500/30 text-red-300 text-sm rounded-md px-4 py-3">
+      <div className="bg-adm-danger/10 border border-adm-danger/30 text-adm-danger text-sm rounded-md px-4 py-3">
         Failed to load booking: {error.message}
       </div>
     );
@@ -84,20 +84,20 @@ export default async function AdminBookingDetailPage({
     <div className="max-w-4xl">
       <Link
         href="/admin"
-        className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-amber-400 mb-4"
+        className="inline-flex items-center gap-1 text-xs text-adm-muted hover:text-adm-accent-hover mb-4"
       >
         <ChevronLeft size={14} /> All bookings
       </Link>
 
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-gray-500">
+          <div className="text-[10px] uppercase tracking-wider text-adm-faint">
             Order number
           </div>
           <h1 className="text-2xl md:text-3xl font-bold font-mono">
             {data.order_number}
           </h1>
-          <div className="text-xs text-gray-500 mt-1">
+          <div className="text-xs text-adm-faint mt-1">
             Created {formatCRDateTime(new Date(data.created_at))}
           </div>
         </div>
@@ -111,8 +111,8 @@ export default async function AdminBookingDetailPage({
       </div>
 
       <div className="grid md:grid-cols-3 gap-4 mb-6">
-        <div className="md:col-span-2 bg-zinc-950 border border-zinc-900 rounded-xl p-5">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">
+        <div className="md:col-span-2 bg-adm-surface border border-adm-border rounded-xl p-5">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-adm-muted mb-4">
             Customer
           </h2>
           <div className="space-y-3 text-sm">
@@ -123,7 +123,7 @@ export default async function AdminBookingDetailPage({
                 data.customer_email ? (
                   <a
                     href={`mailto:${data.customer_email}`}
-                    className="text-amber-400 hover:text-amber-300 inline-flex items-center gap-1.5"
+                    className="text-adm-accent hover:text-adm-accent-hover inline-flex items-center gap-1.5"
                   >
                     <Mail size={12} /> {data.customer_email}
                   </a>
@@ -139,7 +139,7 @@ export default async function AdminBookingDetailPage({
                   <span className="inline-flex items-center gap-3">
                     <a
                       href={`tel:${phone}`}
-                      className="text-amber-400 hover:text-amber-300 inline-flex items-center gap-1.5"
+                      className="text-adm-accent hover:text-adm-accent-hover inline-flex items-center gap-1.5"
                     >
                       <Phone size={12} /> {phone}
                     </a>
@@ -148,7 +148,7 @@ export default async function AdminBookingDetailPage({
                         href={whatsappHref}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-green-400 hover:text-green-300 inline-flex items-center gap-1.5"
+                        className="text-adm-ok hover:text-adm-ok inline-flex items-center gap-1.5"
                       >
                         <MessageCircle size={12} /> WhatsApp
                       </a>
@@ -164,7 +164,7 @@ export default async function AdminBookingDetailPage({
                 label="Hotel"
                 value={
                   <span className="inline-flex items-center gap-1.5">
-                    <Hotel size={12} className="text-gray-500" />
+                    <Hotel size={12} className="text-adm-faint" />
                     {data.customer_hotel}
                   </span>
                 }
@@ -175,7 +175,7 @@ export default async function AdminBookingDetailPage({
                 label="Flight"
                 value={
                   <span className="inline-flex items-center gap-1.5">
-                    <Plane size={12} className="text-gray-500" />
+                    <Plane size={12} className="text-adm-faint" />
                     {data.flight_number}
                     {data.flight_time ? ` · ${data.flight_time}` : ""}
                   </span>
@@ -189,7 +189,7 @@ export default async function AdminBookingDetailPage({
                   <span className="inline-flex items-start gap-1.5">
                     <FileText
                       size={12}
-                      className="text-gray-500 mt-0.5 shrink-0"
+                      className="text-adm-faint mt-0.5 shrink-0"
                     />
                     <span className="whitespace-pre-wrap">{data.notes}</span>
                   </span>
@@ -199,15 +199,15 @@ export default async function AdminBookingDetailPage({
           </div>
         </div>
 
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">
+        <div className="bg-adm-surface border border-adm-border rounded-xl p-5">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-adm-muted mb-4">
             Payment
           </h2>
           <div className="space-y-3 text-sm">
             <Row
               label="Total"
               value={
-                <span className="text-lg font-bold text-amber-400">
+                <span className="text-lg font-bold text-adm-accent">
                   ${Number(data.total_usd || 0).toFixed(2)} {data.currency || "USD"}
                 </span>
               }
@@ -230,8 +230,8 @@ export default async function AdminBookingDetailPage({
         </div>
       </div>
 
-      <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mb-6">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">
+      <div className="bg-adm-surface border border-adm-border rounded-xl p-5 mb-6">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-adm-muted mb-4">
           Trips ({items.length})
         </h2>
         {/* One-shot banner after deleteTripAction redirects back with
@@ -239,7 +239,7 @@ export default async function AdminBookingDetailPage({
             confirms the DB change and points at the notify button, since
             deletes (like edits) never auto-email the customer. */}
         {justDeletedTrip && (
-          <div className="mb-4 rounded-md border border-green-500/40 bg-green-500/10 px-3 py-2 text-xs text-green-200 leading-relaxed">
+          <div className="mb-4 rounded-md border border-adm-ok/40 bg-adm-ok/10 px-3 py-2 text-xs text-adm-ok leading-relaxed">
             ✅ <strong>Trip deleted.</strong> The total has been
             recalculated with the remaining trips. The customer has NOT
             been notified yet — use &ldquo;Notify customer of
@@ -247,7 +247,7 @@ export default async function AdminBookingDetailPage({
           </div>
         )}
         {items.length === 0 ? (
-          <p className="text-sm text-gray-500">No trip items found.</p>
+          <p className="text-sm text-adm-faint">No trip items found.</p>
         ) : (
           <div className="space-y-4">
             {items.map((it, idx) => {
@@ -255,24 +255,24 @@ export default async function AdminBookingDetailPage({
               return (
                 <div
                   key={it.id || idx}
-                  className="border border-zinc-900 rounded-lg p-4 bg-black/40"
+                  className="border border-adm-border rounded-lg p-4 bg-adm-bg/40"
                 >
                   <div className="flex items-start justify-between gap-3 flex-wrap mb-3">
                     <div className="font-bold text-sm">
                       {it.fromName} → {it.toName}
                     </div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-adm-muted">
                       {it.vehicleName} ·{" "}
                       <span className="uppercase">{it.serviceType}</span>
                     </div>
                   </div>
-                  <div className="grid sm:grid-cols-2 gap-2 text-xs text-gray-300">
+                  <div className="grid sm:grid-cols-2 gap-2 text-xs text-adm-text-2">
                     <div className="inline-flex items-center gap-1.5">
-                      <Calendar size={12} className="text-gray-500" />
+                      <Calendar size={12} className="text-adm-faint" />
                       {pu ? formatCRDateTime(pu) : `${it.date} ${it.pickupTime}`}
                     </div>
                     <div className="inline-flex items-center gap-1.5">
-                      <Users size={12} className="text-gray-500" />
+                      <Users size={12} className="text-adm-faint" />
                       {it.passengers} adult{it.passengers === 1 ? "" : "s"}
                       {it.children
                         ? ` · ${it.children} child${it.children === 1 ? "" : "ren"}`
@@ -323,9 +323,9 @@ export default async function AdminBookingDetailPage({
                         parts.push(`${it.boosterSeats} booster`);
                       if (parts.length === 0) return null;
                       return (
-                        <div className="inline-flex items-center gap-1.5 sm:col-span-2 text-amber-300 font-medium">
-                          <Baby size={12} className="text-amber-400" />
-                          <span className="text-amber-400/70">Child seats:</span>{" "}
+                        <div className="inline-flex items-center gap-1.5 sm:col-span-2 text-adm-accent font-medium">
+                          <Baby size={12} className="text-adm-accent" />
+                          <span className="text-adm-accent/70">Child seats:</span>{" "}
                           {parts.join(" + ")}
                         </div>
                       );
@@ -337,8 +337,8 @@ export default async function AdminBookingDetailPage({
                       to the 25th?" Before this form existed every change
                       needed raw-SQL access. Wrapped in <details> so the
                       card stays clean until needed; default-collapsed. */}
-                  <details className="mt-3 border-t border-zinc-900 pt-3 group">
-                    <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-gray-500 hover:text-amber-400 transition-colors select-none">
+                  <details className="mt-3 border-t border-adm-border pt-3 group">
+                    <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-adm-faint hover:text-adm-accent-hover transition-colors select-none">
                       Change date / time
                     </summary>
                     <form
@@ -356,7 +356,7 @@ export default async function AdminBookingDetailPage({
                         value={idx}
                       />
                       <label className="flex flex-col gap-1">
-                        <span className="text-[10px] uppercase tracking-wider text-gray-500">
+                        <span className="text-[10px] uppercase tracking-wider text-adm-faint">
                           Date
                         </span>
                         <input
@@ -364,11 +364,11 @@ export default async function AdminBookingDetailPage({
                           name="date"
                           defaultValue={it.date}
                           required
-                          className="bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm text-white"
+                          className="bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md px-3 py-2 text-sm text-adm-text"
                         />
                       </label>
                       <label className="flex flex-col gap-1">
-                        <span className="text-[10px] uppercase tracking-wider text-gray-500">
+                        <span className="text-[10px] uppercase tracking-wider text-adm-faint">
                           Pickup time
                         </span>
                         <input
@@ -376,18 +376,18 @@ export default async function AdminBookingDetailPage({
                           name="pickupTime"
                           defaultValue={it.pickupTime}
                           required
-                          className="bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm text-white"
+                          className="bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md px-3 py-2 text-sm text-adm-text"
                         />
                       </label>
                       <button
                         type="submit"
-                        className="bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+                        className="bg-adm-accent hover:bg-adm-accent-hover text-adm-on-accent font-bold text-xs px-4 py-2 rounded-md transition-colors"
                       >
                         Save change
                       </button>
-                      <span className="text-[10px] text-gray-500 ml-1 leading-relaxed">
+                      <span className="text-[10px] text-adm-faint ml-1 leading-relaxed">
                         Saves the change to the database only — the customer
-                        is <strong className="text-amber-300">NOT</strong>{" "}
+                        is <strong className="text-adm-accent">NOT</strong>{" "}
                         emailed automatically. After saving, use the
                         &ldquo;Notify customer of changes&rdquo; button below
                         when you&apos;re ready to send the update email.
@@ -400,7 +400,7 @@ export default async function AdminBookingDetailPage({
                         trip card so multi-trip bookings only flash the
                         banner on the one Diego just edited. */}
                     {justSavedTripIdx === idx && (
-                      <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/10 px-3 py-2 text-xs text-green-200 leading-relaxed">
+                      <div className="mt-3 rounded-md border border-adm-ok/40 bg-adm-ok/10 px-3 py-2 text-xs text-adm-ok leading-relaxed">
                         ✅ <strong>Saved.</strong> The new date / time is in
                         the database. The customer has NOT been notified yet
                         — scroll down to &ldquo;Notify customer of
@@ -420,8 +420,8 @@ export default async function AdminBookingDetailPage({
                       save, notify via the button below — same contract
                       as every other trip edit on this page. */}
                   {items.length > 1 && (
-                    <details className="mt-3 border-t border-zinc-900 pt-3">
-                      <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-gray-500 hover:text-red-400 transition-colors select-none">
+                    <details className="mt-3 border-t border-adm-border pt-3">
+                      <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-adm-faint hover:text-adm-danger transition-colors select-none">
                         Delete this trip
                       </summary>
                       <form
@@ -436,15 +436,15 @@ export default async function AdminBookingDetailPage({
                         <input type="hidden" name="tripIndex" value={idx} />
                         <button
                           type="submit"
-                          className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-4 py-2 rounded-md transition-colors"
+                          className="inline-flex items-center gap-2 bg-adm-danger hover:bg-adm-danger/85 text-white font-bold text-xs px-4 py-2 rounded-md transition-colors"
                         >
                           <Trash2 size={12} />
                           Yes, delete this trip
                         </button>
-                        <span className="text-[10px] text-gray-500 ml-1 leading-relaxed">
+                        <span className="text-[10px] text-adm-faint ml-1 leading-relaxed">
                           Removes this trip and recalculates the total with
                           the remaining trips. The customer is{" "}
-                          <strong className="text-amber-300">NOT</strong>{" "}
+                          <strong className="text-adm-accent">NOT</strong>{" "}
                           emailed automatically — use &ldquo;Notify customer
                           of changes&rdquo; below when you&apos;re ready.
                         </span>
@@ -460,8 +460,8 @@ export default async function AdminBookingDetailPage({
 
       <AttributionCard attribution={data.attribution as Record<string, unknown> | null} />
 
-      <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">
+      <div className="bg-adm-surface border border-adm-border rounded-xl p-5">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-adm-muted mb-4">
           Change status
         </h2>
         <form
@@ -476,7 +476,7 @@ export default async function AdminBookingDetailPage({
           <select
             name="status"
             defaultValue={data.status || ""}
-            className="bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm"
+            className="bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md px-3 py-2 text-sm"
           >
             {STATUSES.map((s) => (
               <option key={s} value={s}>
@@ -486,7 +486,7 @@ export default async function AdminBookingDetailPage({
           </select>
           <button
             type="submit"
-            className="bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+            className="bg-adm-accent hover:bg-adm-accent-hover text-adm-on-accent font-bold text-xs px-4 py-2 rounded-md transition-colors"
           >
             Save
           </button>
@@ -504,25 +504,25 @@ export default async function AdminBookingDetailPage({
       <div
         className={`border rounded-xl p-5 mt-6 transition-colors ${
           (justSavedTripIdx !== null || justDeletedTrip) && !justSentUpdate
-            ? "bg-green-500/5 border-green-500/40"
-            : "bg-zinc-950 border-zinc-900"
+            ? "bg-adm-ok/5 border-adm-ok/40"
+            : "bg-adm-surface border-adm-border"
         }`}
       >
-        <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 inline-flex items-center gap-2">
-          <Send size={14} className="text-green-400" />
+        <h2 className="text-sm font-bold uppercase tracking-wider text-adm-muted mb-2 inline-flex items-center gap-2">
+          <Send size={14} className="text-adm-ok" />
           Notify customer of changes
         </h2>
-        <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+        <p className="text-xs text-adm-faint mb-4 leading-relaxed">
           Sends an &ldquo;Your booking has been updated&rdquo; email with
           the current trip details + a refreshed .ics calendar invite to{" "}
-          <span className="text-amber-400 font-medium">
+          <span className="text-adm-accent font-medium">
             {data.customer_email || "(no email on file)"}
           </span>
           . Use this AFTER you&apos;ve edited a trip&apos;s date / time
           above and verified the change is correct.
         </p>
         {justSentUpdate && (
-          <div className="mb-4 rounded-md border border-green-500/40 bg-green-500/10 px-3 py-2 text-xs text-green-200">
+          <div className="mb-4 rounded-md border border-adm-ok/40 bg-adm-ok/10 px-3 py-2 text-xs text-adm-ok">
             ✅ <strong>Update email sent</strong> to {data.customer_email}.
           </div>
         )}
@@ -538,7 +538,7 @@ export default async function AdminBookingDetailPage({
           <button
             type="submit"
             disabled={!data.customer_email}
-            className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 disabled:bg-zinc-800 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+            className="inline-flex items-center gap-2 bg-adm-ok hover:bg-adm-ok/85 disabled:bg-adm-surface-2 disabled:text-adm-faint disabled:cursor-not-allowed text-adm-on-accent font-bold text-xs px-4 py-2 rounded-md transition-colors"
           >
             <Send size={12} />
             Send update email to customer
@@ -556,18 +556,18 @@ export default async function AdminBookingDetailPage({
           approved bookings — resending a "confirmation" for a pending
           / cancelled booking would confuse the customer. */}
       {data.status === "approved" && (
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mt-6">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 inline-flex items-center gap-2">
-            <Send size={14} className="text-amber-400" />
+        <div className="bg-adm-surface border border-adm-border rounded-xl p-5 mt-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-adm-muted mb-2 inline-flex items-center gap-2">
+            <Send size={14} className="text-adm-accent" />
             Resend confirmation email
           </h2>
-          <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+          <p className="text-xs text-adm-faint mb-4 leading-relaxed">
             Use when a customer messages saying they didn&apos;t receive
             the ORIGINAL confirmation (e.g. it landed in spam), or after
             you&apos;ve corrected a pickup / drop-off address and want
             the customer to have the refreshed details. Re-sends the
             original &ldquo;Booking Confirmed&rdquo; template to{" "}
-            <span className="text-amber-400 font-medium">
+            <span className="text-adm-accent font-medium">
               {data.customer_email || "(no email on file)"}
             </span>{" "}
             only — your internal inbox is NOT copied. For date / time
@@ -592,12 +592,12 @@ export default async function AdminBookingDetailPage({
           booking is approved — pending/rejected bookings 409 from the
           PDF route. */}
       {data.status === "approved" && (
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mt-6">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2 inline-flex items-center gap-2">
-            <Download size={14} className="text-blue-400" />
+        <div className="bg-adm-surface border border-adm-border rounded-xl p-5 mt-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-adm-muted mb-2 inline-flex items-center gap-2">
+            <Download size={14} className="text-adm-info" />
             Driver trip sheet (no pricing)
           </h2>
-          <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+          <p className="text-xs text-adm-faint mb-4 leading-relaxed">
             Downloads a PDF with the trip details (route, addresses,
             date, passengers, flight, notes) but WITHOUT the total, the
             per-trip prices, or the Tilopay auth / card info. Send this
@@ -610,7 +610,7 @@ export default async function AdminBookingDetailPage({
             )}/pdf?variant=driver&t=${pdfTokenFor(data.order_number)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs px-4 py-2 rounded-md transition-colors"
+            className="inline-flex items-center gap-2 bg-adm-info hover:bg-adm-info/85 text-white font-bold text-xs px-4 py-2 rounded-md transition-colors"
           >
             <Download size={12} />
             Download driver PDF
@@ -630,7 +630,7 @@ function Row({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="w-20 shrink-0 text-[11px] uppercase tracking-wider text-gray-500 pt-0.5">
+      <div className="w-20 shrink-0 text-[11px] uppercase tracking-wider text-adm-faint pt-0.5">
         {label}
       </div>
       <div className="flex-1 min-w-0">{value}</div>
@@ -683,9 +683,9 @@ function AttributionCard({
   const hasUtm = utmSource || utmMedium || utmCampaign || utmContent || utmTerm;
 
   return (
-    <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-5 mb-6">
-      <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 inline-flex items-center gap-2">
-        <TrendingUp size={14} className="text-amber-400" />
+    <div className="bg-adm-surface border border-adm-border rounded-xl p-5 mb-6">
+      <h2 className="text-sm font-bold uppercase tracking-wider text-adm-muted mb-4 inline-flex items-center gap-2">
+        <TrendingUp size={14} className="text-adm-accent" />
         Where this booking came from
       </h2>
       <div className="space-y-3 text-sm">
@@ -694,7 +694,7 @@ function AttributionCard({
             label="Source"
             value={
               <span className="inline-flex items-center gap-1.5">
-                <Globe size={12} className="text-gray-500" />
+                <Globe size={12} className="text-adm-faint" />
                 <span className="font-medium">
                   {referrerDomain === "direct" ? "Direct / typed URL" : referrerDomain}
                 </span>
@@ -707,8 +707,8 @@ function AttributionCard({
             label="Landed on"
             value={
               <span className="inline-flex items-center gap-1.5">
-                <MapPinned size={12} className="text-gray-500" />
-                <code className="text-xs bg-black/40 px-1.5 py-0.5 rounded">
+                <MapPinned size={12} className="text-adm-faint" />
+                <code className="text-xs bg-adm-bg/40 px-1.5 py-0.5 rounded">
                   {landingPage}
                 </code>
               </span>
@@ -721,27 +721,27 @@ function AttributionCard({
             value={
               <div className="flex flex-wrap gap-1.5 text-xs">
                 {utmSource && (
-                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                  <span className="bg-adm-accent/10 border border-adm-accent/30 text-adm-accent px-2 py-0.5 rounded">
                     source: {utmSource}
                   </span>
                 )}
                 {utmMedium && (
-                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                  <span className="bg-adm-accent/10 border border-adm-accent/30 text-adm-accent px-2 py-0.5 rounded">
                     medium: {utmMedium}
                   </span>
                 )}
                 {utmCampaign && (
-                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                  <span className="bg-adm-accent/10 border border-adm-accent/30 text-adm-accent px-2 py-0.5 rounded">
                     campaign: {utmCampaign}
                   </span>
                 )}
                 {utmContent && (
-                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                  <span className="bg-adm-accent/10 border border-adm-accent/30 text-adm-accent px-2 py-0.5 rounded">
                     content: {utmContent}
                   </span>
                 )}
                 {utmTerm && (
-                  <span className="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded">
+                  <span className="bg-adm-accent/10 border border-adm-accent/30 text-adm-accent px-2 py-0.5 rounded">
                     term: {utmTerm}
                   </span>
                 )}
@@ -765,7 +765,7 @@ function AttributionCard({
             label="Device"
             value={
               <span className="inline-flex items-center gap-1.5 capitalize">
-                <Smartphone size={12} className="text-gray-500" />
+                <Smartphone size={12} className="text-adm-faint" />
                 {device}
               </span>
             }
@@ -775,7 +775,7 @@ function AttributionCard({
           <Row
             label="First seen"
             value={
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-adm-muted">
                 {(() => {
                   try {
                     return formatCRDateTime(new Date(firstSeenAt));
@@ -791,11 +791,11 @@ function AttributionCard({
           <Row
             label="UA"
             value={
-              <details className="text-xs text-gray-500">
-                <summary className="cursor-pointer hover:text-gray-300">
+              <details className="text-xs text-adm-faint">
+                <summary className="cursor-pointer hover:text-adm-text-2">
                   Show raw user-agent
                 </summary>
-                <code className="block mt-1 break-all bg-black/40 p-2 rounded">
+                <code className="block mt-1 break-all bg-adm-bg/40 p-2 rounded">
                   {userAgent}
                 </code>
               </details>

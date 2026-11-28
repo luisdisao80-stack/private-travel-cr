@@ -75,7 +75,7 @@ export default function ResendConfirmationButton({
         type="button"
         onClick={handleClick}
         disabled={disabled}
-        className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-zinc-800 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-bold text-xs px-4 py-2 rounded-md transition-colors min-w-[220px] justify-center"
+        className="inline-flex items-center gap-2 bg-adm-accent hover:bg-adm-accent-hover disabled:bg-adm-surface-2 disabled:text-adm-faint disabled:cursor-not-allowed text-adm-on-accent font-bold text-xs px-4 py-2 rounded-md transition-colors min-w-[220px] justify-center"
       >
         {isPending ? (
           <>
@@ -96,14 +96,14 @@ export default function ResendConfirmationButton({
       </button>
 
       {status.kind === "success" && (
-        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-green-400">
+        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-adm-ok">
           <Check size={14} />
           Sent at {formatTime(status.sentAt)}
         </span>
       )}
 
       {status.kind === "error" && (
-        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-red-400">
+        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-adm-danger">
           <AlertCircle size={14} />
           {status.message}
         </span>

@@ -92,8 +92,8 @@ export default function CreateQuoteForm({ action }: Props) {
   return (
     <form action={action} className="space-y-6">
       {/* CUSTOMER */}
-      <section className="bg-zinc-950 border border-zinc-900 rounded-xl p-5">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400 mb-4">
+      <section className="bg-adm-surface border border-adm-border rounded-xl p-5">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-adm-accent mb-4">
           Customer
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
@@ -122,17 +122,17 @@ export default function CreateQuoteForm({ action }: Props) {
       {trips.map((trip, idx) => (
         <section
           key={trip.id}
-          className="bg-zinc-950 border border-zinc-900 rounded-xl p-5"
+          className="bg-adm-surface border border-adm-border rounded-xl p-5"
         >
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-adm-accent">
               Trip #{idx + 1}
             </h2>
             {trips.length > 1 && (
               <button
                 type="button"
                 onClick={() => removeTrip(idx)}
-                className="inline-flex items-center gap-1 text-[11px] text-red-400 hover:text-red-300 transition-colors"
+                className="inline-flex items-center gap-1 text-[11px] text-adm-danger hover:text-adm-danger transition-colors"
               >
                 <Trash2 size={12} />
                 Remove
@@ -197,7 +197,7 @@ export default function CreateQuoteForm({ action }: Props) {
               onChange={(v) => updateTrip(idx, { passengers: v })}
             />
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-gray-500 mb-1.5">
+              <label className="block text-[10px] uppercase tracking-wider text-adm-faint mb-1.5">
                 Service type
               </label>
               <select
@@ -208,7 +208,7 @@ export default function CreateQuoteForm({ action }: Props) {
                     serviceType: e.target.value as "standard" | "vip",
                   })
                 }
-                className="w-full bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm"
+                className="w-full bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md px-3 py-2 text-sm"
               >
                 <option value="standard">Standard</option>
                 <option value="vip">VIP (+$80 hasta 5 pax · +$100 6-7 · +$120 8-9 · +$150 10-12)</option>
@@ -229,9 +229,9 @@ export default function CreateQuoteForm({ action }: Props) {
               onChange={(v) => updateTrip(idx, { flightNumber: v })}
             />
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-gray-500 mb-1.5">
+              <label className="block text-[10px] uppercase tracking-wider text-adm-faint mb-1.5">
                 Trip price USD
-                <span className="text-amber-400 ml-0.5">*</span>
+                <span className="text-adm-accent ml-0.5">*</span>
               </label>
               <input
                 type="number"
@@ -244,7 +244,7 @@ export default function CreateQuoteForm({ action }: Props) {
                 onChange={(e) =>
                   updateTrip(idx, { tripPrice: e.target.value })
                 }
-                className="w-full bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm font-mono"
+                className="w-full bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md px-3 py-2 text-sm font-mono"
               />
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function CreateQuoteForm({ action }: Props) {
         <button
           type="button"
           onClick={addTrip}
-          className="inline-flex items-center gap-2 bg-zinc-950 hover:bg-zinc-900 border border-dashed border-amber-500/40 hover:border-amber-500/70 text-amber-400 font-semibold text-xs px-5 py-3 rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 bg-adm-surface hover:bg-adm-surface-2 border border-dashed border-adm-accent/40 hover:border-adm-accent/70 text-adm-accent font-semibold text-xs px-5 py-3 rounded-lg transition-colors"
         >
           <Plus size={14} />
           Add another trip
@@ -264,24 +264,24 @@ export default function CreateQuoteForm({ action }: Props) {
       </div>
 
       {/* TOTAL */}
-      <section className="bg-zinc-950 border border-zinc-900 rounded-xl p-5">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400 mb-4">
+      <section className="bg-adm-surface border border-adm-border rounded-xl p-5">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-adm-accent mb-4">
           Total
         </h2>
         <div className="grid sm:grid-cols-2 gap-4 items-start">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-gray-500 mb-1.5">
+            <label className="block text-[10px] uppercase tracking-wider text-adm-faint mb-1.5">
               Auto sum of trips
             </label>
-            <div className="w-full bg-black border border-zinc-800 rounded-md px-3 py-2 text-sm font-mono text-gray-400">
+            <div className="w-full bg-adm-bg border border-adm-border-strong rounded-md px-3 py-2 text-sm font-mono text-adm-muted">
               ${computedTotal.toFixed(2)} USD
             </div>
-            <p className="text-[10px] text-gray-500 mt-1.5">
+            <p className="text-[10px] text-adm-faint mt-1.5">
               Automatically added from each trip&apos;s price.
             </p>
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-gray-500 mb-1.5">
+            <label className="block text-[10px] uppercase tracking-wider text-adm-faint mb-1.5">
               Override total (optional)
             </label>
             <input
@@ -293,10 +293,10 @@ export default function CreateQuoteForm({ action }: Props) {
               }
               value={overrideTotal}
               onChange={(e) => setOverrideTotal(e.target.value)}
-              className="w-full bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm font-mono"
+              className="w-full bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md px-3 py-2 text-sm font-mono"
             />
-            <p className="text-[10px] text-gray-500 mt-1.5 flex items-start gap-1">
-              <Info size={11} className="text-amber-400 mt-0.5 shrink-0" />
+            <p className="text-[10px] text-adm-faint mt-1.5 flex items-start gap-1">
+              <Info size={11} className="text-adm-accent mt-0.5 shrink-0" />
               Leave blank to use the auto sum. Fill in if you agreed a
               different total (discount, add-ons).
             </p>
@@ -308,39 +308,39 @@ export default function CreateQuoteForm({ action }: Props) {
       </section>
 
       {/* NOTES */}
-      <section className="bg-zinc-950 border border-zinc-900 rounded-xl p-5">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400 mb-4">
+      <section className="bg-adm-surface border border-adm-border rounded-xl p-5">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-adm-accent mb-4">
           Internal notes (optional)
         </h2>
         <textarea
           name="notes"
           rows={3}
           placeholder="Anything the driver should know…"
-          className="w-full bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm resize-y"
+          className="w-full bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md px-3 py-2 text-sm resize-y"
         />
       </section>
 
       <div className="flex items-center justify-between gap-3 flex-wrap">
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-adm-faint">
           {trips.length === 1
             ? "1 trip"
             : `${trips.length} trips`}{" "}
           · Sending to customer:{" "}
-          <span className="text-amber-400 font-mono">
+          <span className="text-adm-accent font-mono">
             ${displayedTotal || "0.00"} USD
           </span>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           <Link
             href="/admin"
-            className="text-xs text-gray-400 hover:text-white transition-colors"
+            className="text-xs text-adm-muted hover:text-adm-text transition-colors"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={trips.length === 0 || !displayedTotal}
-            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-zinc-800 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-bold text-sm px-6 py-3 rounded-md transition-colors"
+            className="inline-flex items-center gap-2 bg-adm-accent hover:bg-adm-accent-hover disabled:bg-adm-surface-2 disabled:text-adm-faint disabled:cursor-not-allowed text-adm-on-accent font-bold text-sm px-6 py-3 rounded-md transition-colors"
           >
             <Send size={14} />
             Send payment link to customer
@@ -378,9 +378,9 @@ function Field({
 }: FieldProps) {
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-wider text-gray-500 mb-1.5">
+      <label className="block text-[10px] uppercase tracking-wider text-adm-faint mb-1.5">
         {label}
-        {required && <span className="text-amber-400 ml-0.5">*</span>}
+        {required && <span className="text-adm-accent ml-0.5">*</span>}
       </label>
       <input
         type={type}
@@ -392,7 +392,7 @@ function Field({
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         min={min}
         max={max}
-        className="w-full bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md px-3 py-2 text-sm"
+        className="w-full bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md px-3 py-2 text-sm"
       />
     </div>
   );

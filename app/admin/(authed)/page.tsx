@@ -69,7 +69,7 @@ export default async function AdminBookingsPage({
       <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold">Bookings</h1>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-adm-faint mt-1">
             {count ?? 0} total · page {page} of {totalPages}
           </p>
         </div>
@@ -79,7 +79,7 @@ export default async function AdminBookingsPage({
             pipeline runs on payment. Added 2026-06-30. */}
         <Link
           href="/admin/create-quote"
-          className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+          className="inline-flex items-center gap-2 bg-adm-accent hover:bg-adm-accent-hover text-adm-on-accent font-bold text-xs px-4 py-2 rounded-md transition-colors"
         >
           <Plus size={14} />
           Create quote for customer
@@ -88,30 +88,30 @@ export default async function AdminBookingsPage({
 
       <form
         method="GET"
-        className="bg-zinc-950 border border-zinc-900 rounded-xl p-3 mb-6 flex items-center gap-2 flex-wrap"
+        className="bg-adm-surface border border-adm-border rounded-xl p-3 mb-6 flex items-center gap-2 flex-wrap"
       >
         <div className="relative flex-1 min-w-[200px]">
           <Search
             size={14}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500"
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-adm-faint"
           />
           <input
             type="text"
             name="q"
             defaultValue={q}
             placeholder="Search order #, email, or name"
-            className="w-full bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md pl-8 pr-3 py-2 text-sm"
+            className="w-full bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md pl-8 pr-3 py-2 text-sm"
           />
         </div>
         <div className="relative">
           <Filter
             size={14}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-adm-faint pointer-events-none"
           />
           <select
             name="status"
             defaultValue={status}
-            className="bg-black border border-zinc-800 focus:border-amber-500/60 focus:outline-none rounded-md pl-8 pr-8 py-2 text-sm appearance-none"
+            className="bg-adm-bg border border-adm-border-strong focus:border-adm-accent/60 focus:outline-none rounded-md pl-8 pr-8 py-2 text-sm appearance-none"
           >
             <option value="">All statuses</option>
             {STATUSES.map((s) => (
@@ -123,14 +123,14 @@ export default async function AdminBookingsPage({
         </div>
         <button
           type="submit"
-          className="bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs px-4 py-2 rounded-md transition-colors"
+          className="bg-adm-accent hover:bg-adm-accent-hover text-adm-on-accent font-bold text-xs px-4 py-2 rounded-md transition-colors"
         >
           Apply
         </button>
         {(status || q) && (
           <Link
             href="/admin"
-            className="text-xs text-gray-400 hover:text-white px-2 py-2"
+            className="text-xs text-adm-muted hover:text-adm-text px-2 py-2"
           >
             Clear
           </Link>
@@ -138,15 +138,15 @@ export default async function AdminBookingsPage({
       </form>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-300 text-sm rounded-md px-3 py-2 mb-4">
+        <div className="bg-adm-danger/10 border border-adm-danger/30 text-adm-danger text-sm rounded-md px-3 py-2 mb-4">
           Failed to load bookings: {error.message}
         </div>
       )}
 
-      <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden">
+      <div className="bg-adm-surface border border-adm-border rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-zinc-900/70 text-xs uppercase tracking-wider text-gray-400">
+            <thead className="bg-adm-surface-2/70 text-xs uppercase tracking-wider text-adm-muted">
               <tr>
                 <th className="text-left font-medium px-4 py-3">Order</th>
                 <th className="text-left font-medium px-4 py-3">Customer</th>
@@ -162,7 +162,7 @@ export default async function AdminBookingsPage({
                 <tr>
                   <td
                     colSpan={7}
-                    className="text-center text-gray-500 py-12 text-sm"
+                    className="text-center text-adm-faint py-12 text-sm"
                   >
                     No bookings match these filters.
                   </td>
@@ -180,12 +180,12 @@ export default async function AdminBookingsPage({
                 return (
                   <tr
                     key={row.order_number}
-                    className="border-t border-zinc-900 hover:bg-zinc-900/40 transition-colors"
+                    className="border-t border-adm-border hover:bg-adm-surface-2/40 transition-colors"
                   >
                     <td className="px-4 py-3">
                       <Link
                         href={`/admin/${encodeURIComponent(row.order_number)}`}
-                        className="text-amber-400 hover:text-amber-300 font-mono text-xs"
+                        className="text-adm-accent hover:text-adm-accent-hover font-mono text-xs"
                       >
                         {row.order_number}
                       </Link>
@@ -194,7 +194,7 @@ export default async function AdminBookingsPage({
                       <div className="font-medium">
                         {row.customer_name || "—"}
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-adm-faint">
                         {row.customer_email || ""}
                       </div>
                     </td>
@@ -212,7 +212,7 @@ export default async function AdminBookingsPage({
                         {row.status || "—"}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-xs text-gray-400">
+                    <td className="px-4 py-3 text-xs text-adm-muted">
                       {formatCRDateTime(new Date(row.created_at))}
                     </td>
                   </tr>
@@ -228,18 +228,18 @@ export default async function AdminBookingsPage({
           {page > 1 && (
             <Link
               href={buildPageHref(sp, page - 1)}
-              className="px-3 py-1.5 border border-zinc-800 rounded-md hover:border-amber-500/60"
+              className="px-3 py-1.5 border border-adm-border-strong rounded-md hover:border-adm-accent/60"
             >
               ← Previous
             </Link>
           )}
-          <span className="text-gray-500 px-2">
+          <span className="text-adm-faint px-2">
             {page} / {totalPages}
           </span>
           {page < totalPages && (
             <Link
               href={buildPageHref(sp, page + 1)}
-              className="px-3 py-1.5 border border-zinc-800 rounded-md hover:border-amber-500/60"
+              className="px-3 py-1.5 border border-adm-border-strong rounded-md hover:border-adm-accent/60"
             >
               Next →
             </Link>

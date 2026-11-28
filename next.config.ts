@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // La hoja de servicio (/api/admin/hoja) lee el logo y las fuentes Inter
+  // del disco en tiempo de ejecución; hay que asegurarse de que Vercel los
+  // empaquete con esa función.
+  outputFileTracingIncludes: {
+    "/api/admin/hoja": ["./lib/fonts/**/*", "./public/logo-ptcr.png"],
+  },
+
   // 301 redirects for legacy paths from the previous site that Google
   // still has links to. Search Console "Not found (404)" report flagged
   // `/home` (May 15, 2026) — the old site used `/home` as the homepage
