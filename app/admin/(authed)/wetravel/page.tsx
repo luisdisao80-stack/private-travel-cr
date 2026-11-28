@@ -251,7 +251,7 @@ export default async function WeTravelPage({
           </div>
         )}
         {sales.length > 0 && (
-          <div className="divide-y divide-zinc-900">
+          <div className="divide-y divide-adm-border">
             {sales.map((s) => (
               <div
                 key={s.id}

@@ -471,6 +471,28 @@
   --adm-info: #1d4ed8;
 }
 
+/* Sitio: la paleta de privatetravelcr.com y de los correos de reserva.
+   Naranja orange-600 de acento, azul blue-900 para encabezados y datos,
+   verde green-600 para lo pagado. Cada hex es uno que ya usa lib/email.ts. */
+.admin-theme[data-admin-palette="sitio"] {
+  color-scheme: light;
+  --adm-bg: #f3f4f6;
+  --adm-surface: #ffffff;
+  --adm-surface-2: #f9fafb;
+  --adm-border: #e5e7eb;
+  --adm-border-strong: #d1d5db;
+  --adm-text: #111827;
+  --adm-text-2: #374151;
+  --adm-muted: #6b7280;
+  --adm-faint: #9ca3af;
+  --adm-accent: #ea580c;
+  --adm-accent-hover: #c2410c;
+  --adm-on-accent: #ffffff;
+  --adm-ok: #16a34a;
+  --adm-danger: #dc2626;
+  --adm-info: #1e3a8a;
+}
+
 /* Verde / natural: bosque oscuro con acento verde claro */
 .admin-theme[data-admin-palette="natural"] {
   color-scheme: dark;
