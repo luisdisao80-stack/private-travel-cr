@@ -82,16 +82,16 @@ function formatUsdCents(n: number): string {
 function DeltaBadge({ label, pct }: { label: string; pct: number | null }) {
   if (pct === null || !Number.isFinite(pct)) {
     return (
-      <span className="text-xs text-gray-500">
+      <span className="text-xs text-adm-faint">
         {label}: <span className="font-medium">–</span>
       </span>
     );
   }
   const positive = pct >= 0;
-  const color = positive ? "text-green-400" : "text-red-400";
+  const color = positive ? "text-adm-ok" : "text-adm-danger";
   const sign = positive ? "+" : "";
   return (
-    <span className="text-xs text-gray-400">
+    <span className="text-xs text-adm-muted">
       {label}:{" "}
       <span className={`font-semibold ${color}`}>
         {sign}
@@ -113,15 +113,15 @@ function Card({
   hint?: string;
 }) {
   return (
-    <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-gray-500">
+    <div className="bg-adm-surface border border-adm-border rounded-xl p-4">
+      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-adm-faint">
         <span aria-hidden>{emoji}</span>
         <span>{label}</span>
       </div>
-      <div className="mt-2 text-2xl md:text-3xl font-bold text-amber-400 font-mono break-all">
+      <div className="mt-2 text-2xl md:text-3xl font-bold text-adm-accent font-mono break-all">
         {value}
       </div>
-      {hint && <div className="text-[11px] text-gray-500 mt-1">{hint}</div>}
+      {hint && <div className="text-[11px] text-adm-faint mt-1">{hint}</div>}
     </div>
   );
 }
@@ -151,14 +151,14 @@ export default async function AnalyticsPage() {
       <div className="mb-6">
         <Link
           href="/admin"
-          className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-amber-400 mb-3"
+          className="inline-flex items-center gap-1 text-xs text-adm-muted hover:text-adm-accent-hover mb-3"
         >
           <ChevronLeft size={14} /> All bookings
         </Link>
         <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
           <span aria-hidden>📊</span> Analytics
         </h1>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-adm-faint mt-1">
           Revenue = website + WeTravel · America/Costa_Rica timezone · approved
           bookings only. Bookings count, avg ticket, routes &amp; sources are
           website-only.
@@ -166,7 +166,7 @@ export default async function AnalyticsPage() {
       </div>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-300 text-sm rounded-md px-3 py-2 mb-4">
+        <div className="bg-adm-danger/10 border border-adm-danger/30 text-adm-danger text-sm rounded-md px-3 py-2 mb-4">
           Failed to load bookings: {error}
         </div>
       )}
@@ -232,37 +232,37 @@ export default async function AnalyticsPage() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-          <div className="text-sm font-semibold mb-2 text-gray-200">
+        <div className="bg-adm-surface border border-adm-border rounded-xl p-4">
+          <div className="text-sm font-semibold mb-2 text-adm-text">
             Revenue per day
-            <span className="text-xs text-gray-500 font-normal ml-2">
+            <span className="text-xs text-adm-faint font-normal ml-2">
               last 30 days
             </span>
           </div>
           <RevenueChart data={stats.daily} />
         </div>
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-          <div className="text-sm font-semibold mb-2 text-gray-200">
+        <div className="bg-adm-surface border border-adm-border rounded-xl p-4">
+          <div className="text-sm font-semibold mb-2 text-adm-text">
             Bookings per day
-            <span className="text-xs text-gray-500 font-normal ml-2">
+            <span className="text-xs text-adm-faint font-normal ml-2">
               last 30 days
             </span>
           </div>
           <BookingsChart data={stats.daily} />
         </div>
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-          <div className="text-sm font-semibold mb-2 text-gray-200">
+        <div className="bg-adm-surface border border-adm-border rounded-xl p-4">
+          <div className="text-sm font-semibold mb-2 text-adm-text">
             Top 10 routes by revenue
-            <span className="text-xs text-gray-500 font-normal ml-2">
+            <span className="text-xs text-adm-faint font-normal ml-2">
               last 30 days · split by trip
             </span>
           </div>
           <TopRoutesChart data={stats.topRoutes30d} />
         </div>
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-          <div className="text-sm font-semibold mb-2 text-gray-200">
+        <div className="bg-adm-surface border border-adm-border rounded-xl p-4">
+          <div className="text-sm font-semibold mb-2 text-adm-text">
             Revenue by month
-            <span className="text-xs text-gray-500 font-normal ml-2">
+            <span className="text-xs text-adm-faint font-normal ml-2">
               last 12 months
             </span>
           </div>
@@ -271,15 +271,15 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Top routes this month */}
-      <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden mb-6">
-        <div className="px-4 py-3 border-b border-zinc-900">
-          <div className="text-sm font-semibold text-gray-200">
+      <div className="bg-adm-surface border border-adm-border rounded-xl overflow-hidden mb-6">
+        <div className="px-4 py-3 border-b border-adm-border">
+          <div className="text-sm font-semibold text-adm-text">
             Top routes this month
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-zinc-900/70 text-xs uppercase tracking-wider text-gray-400">
+            <thead className="bg-adm-surface-2/70 text-xs uppercase tracking-wider text-adm-muted">
               <tr>
                 <th className="text-left font-medium px-4 py-3">Route</th>
                 <th className="text-right font-medium px-4 py-3">Trips</th>
@@ -292,7 +292,7 @@ export default async function AnalyticsPage() {
                 <tr>
                   <td
                     colSpan={4}
-                    className="text-center text-gray-500 py-8 text-sm"
+                    className="text-center text-adm-faint py-8 text-sm"
                   >
                     No approved bookings this month yet.
                   </td>
@@ -301,14 +301,14 @@ export default async function AnalyticsPage() {
               {stats.topRoutesThisMonth.map((r) => (
                 <tr
                   key={r.route}
-                  className="border-t border-zinc-900 hover:bg-zinc-900/40 transition-colors"
+                  className="border-t border-adm-border hover:bg-adm-surface-2/40 transition-colors"
                 >
                   <td className="px-4 py-3">{r.route}</td>
                   <td className="px-4 py-3 text-right font-mono">{r.trips}</td>
-                  <td className="px-4 py-3 text-right font-mono text-amber-300">
+                  <td className="px-4 py-3 text-right font-mono text-adm-accent">
                     {formatUsdCents(r.revenue)}
                   </td>
-                  <td className="px-4 py-3 text-right font-mono text-gray-400">
+                  <td className="px-4 py-3 text-right font-mono text-adm-muted">
                     {formatUsdCents(r.trips > 0 ? r.revenue / r.trips : 0)}
                   </td>
                 </tr>
@@ -324,18 +324,18 @@ export default async function AnalyticsPage() {
           may drive real bookings. First-touch over the last 12 months. */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {/* By source */}
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-zinc-900">
-            <div className="text-sm font-semibold text-gray-200">
+        <div className="bg-adm-surface border border-adm-border rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-adm-border">
+            <div className="text-sm font-semibold text-adm-text">
               Where bookings come from
-              <span className="text-xs text-gray-500 font-normal ml-2">
+              <span className="text-xs text-adm-faint font-normal ml-2">
                 first-touch · last 12 months
               </span>
             </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-zinc-900/70 text-xs uppercase tracking-wider text-gray-400">
+              <thead className="bg-adm-surface-2/70 text-xs uppercase tracking-wider text-adm-muted">
                 <tr>
                   <th className="text-left font-medium px-4 py-3">Source</th>
                   <th className="text-right font-medium px-4 py-3">Bookings</th>
@@ -345,7 +345,7 @@ export default async function AnalyticsPage() {
               <tbody>
                 {stats.sourcesAllTime.length === 0 && (
                   <tr>
-                    <td colSpan={3} className="text-center text-gray-500 py-8 text-sm">
+                    <td colSpan={3} className="text-center text-adm-faint py-8 text-sm">
                       No attribution data yet.
                     </td>
                   </tr>
@@ -353,11 +353,11 @@ export default async function AnalyticsPage() {
                 {stats.sourcesAllTime.map((s) => (
                   <tr
                     key={s.source}
-                    className="border-t border-zinc-900 hover:bg-zinc-900/40 transition-colors"
+                    className="border-t border-adm-border hover:bg-adm-surface-2/40 transition-colors"
                   >
                     <td className="px-4 py-3">{s.source}</td>
                     <td className="px-4 py-3 text-right font-mono">{s.bookings}</td>
-                    <td className="px-4 py-3 text-right font-mono text-amber-300">
+                    <td className="px-4 py-3 text-right font-mono text-adm-accent">
                       {formatUsd(s.revenue)}
                     </td>
                   </tr>
@@ -368,18 +368,18 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* By landing page */}
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-zinc-900">
-            <div className="text-sm font-semibold text-gray-200">
+        <div className="bg-adm-surface border border-adm-border rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-adm-border">
+            <div className="text-sm font-semibold text-adm-text">
               Top converting pages
-              <span className="text-xs text-gray-500 font-normal ml-2">
+              <span className="text-xs text-adm-faint font-normal ml-2">
                 landing page · last 12 months
               </span>
             </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-zinc-900/70 text-xs uppercase tracking-wider text-gray-400">
+              <thead className="bg-adm-surface-2/70 text-xs uppercase tracking-wider text-adm-muted">
                 <tr>
                   <th className="text-left font-medium px-4 py-3">Landing page</th>
                   <th className="text-right font-medium px-4 py-3">Bookings</th>
@@ -389,7 +389,7 @@ export default async function AnalyticsPage() {
               <tbody>
                 {stats.landingPagesAllTime.length === 0 && (
                   <tr>
-                    <td colSpan={3} className="text-center text-gray-500 py-8 text-sm">
+                    <td colSpan={3} className="text-center text-adm-faint py-8 text-sm">
                       No attribution data yet.
                     </td>
                   </tr>
@@ -397,11 +397,11 @@ export default async function AnalyticsPage() {
                 {stats.landingPagesAllTime.map((l) => (
                   <tr
                     key={l.landing}
-                    className="border-t border-zinc-900 hover:bg-zinc-900/40 transition-colors"
+                    className="border-t border-adm-border hover:bg-adm-surface-2/40 transition-colors"
                   >
                     <td className="px-4 py-3 text-xs font-mono break-all">{l.landing}</td>
                     <td className="px-4 py-3 text-right font-mono">{l.bookings}</td>
-                    <td className="px-4 py-3 text-right font-mono text-amber-300">
+                    <td className="px-4 py-3 text-right font-mono text-adm-accent">
                       {formatUsd(l.revenue)}
                     </td>
                   </tr>
@@ -413,15 +413,15 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Recent bookings */}
-      <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-zinc-900">
-          <div className="text-sm font-semibold text-gray-200">
+      <div className="bg-adm-surface border border-adm-border rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-adm-border">
+          <div className="text-sm font-semibold text-adm-text">
             Recent approved bookings
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-zinc-900/70 text-xs uppercase tracking-wider text-gray-400">
+            <thead className="bg-adm-surface-2/70 text-xs uppercase tracking-wider text-adm-muted">
               <tr>
                 <th className="text-left font-medium px-4 py-3">Customer</th>
                 <th className="text-left font-medium px-4 py-3">Route</th>
@@ -436,7 +436,7 @@ export default async function AnalyticsPage() {
                 <tr>
                   <td
                     colSpan={6}
-                    className="text-center text-gray-500 py-8 text-sm"
+                    className="text-center text-adm-faint py-8 text-sm"
                   >
                     No approved bookings in the last 12 months.
                   </td>
@@ -445,19 +445,19 @@ export default async function AnalyticsPage() {
               {stats.recentBookings.map((b) => (
                 <tr
                   key={b.order_number}
-                  className="border-t border-zinc-900 hover:bg-zinc-900/40 transition-colors"
+                  className="border-t border-adm-border hover:bg-adm-surface-2/40 transition-colors"
                 >
                   <td className="px-4 py-3">{b.customer_name}</td>
                   <td className="px-4 py-3 text-xs">{b.route}</td>
                   <td className="px-4 py-3">
                     <Link
                       href={`/admin/${encodeURIComponent(b.order_number)}`}
-                      className="text-amber-400 hover:text-amber-300 font-mono text-xs"
+                      className="text-adm-accent hover:text-adm-accent-hover font-mono text-xs"
                     >
                       {b.order_number}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-xs text-gray-400">
+                  <td className="px-4 py-3 text-xs text-adm-muted">
                     {formatCRDateTime(new Date(b.created_at))}
                   </td>
                   <td className="px-4 py-3 text-right font-mono">

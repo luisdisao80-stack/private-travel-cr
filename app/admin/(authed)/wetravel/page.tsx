@@ -110,7 +110,7 @@ export default async function WeTravelPage({
     <div className="max-w-3xl">
       <Link
         href="/admin/analytics"
-        className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-amber-400 mb-4"
+        className="inline-flex items-center gap-1 text-xs text-adm-muted hover:text-adm-accent-hover mb-4"
       >
         <ChevronLeft size={14} /> Analytics
       </Link>
@@ -119,7 +119,7 @@ export default async function WeTravelPage({
         <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
           <span aria-hidden>🧾</span> WeTravel sales
         </h1>
-        <p className="text-xs text-gray-500 mt-1 max-w-2xl">
+        <p className="text-xs text-adm-faint mt-1 max-w-2xl">
           Log sales you collected through WeTravel (or any platform outside the
           website). These aren&apos;t in the booking system, so add them here and
           they&apos;ll be added to the Analytics totals — giving you your true
@@ -129,23 +129,23 @@ export default async function WeTravelPage({
 
       {/* Banners */}
       {saved && (
-        <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm rounded-md px-3 py-2 mb-4">
+        <div className="bg-adm-ok/10 border border-adm-ok/30 text-adm-ok text-sm rounded-md px-3 py-2 mb-4">
           ✅ Sale saved. It&apos;s now included in your Analytics totals.
         </div>
       )}
       {deleted && (
-        <div className="bg-zinc-500/10 border border-zinc-500/30 text-zinc-300 text-sm rounded-md px-3 py-2 mb-4">
+        <div className="bg-adm-surface-2 border border-adm-border-strong text-adm-text-2 text-sm rounded-md px-3 py-2 mb-4">
           Sale deleted.
         </div>
       )}
       {errorMsg && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-300 text-sm rounded-md px-3 py-2 mb-4">
+        <div className="bg-adm-danger/10 border border-adm-danger/30 text-adm-danger text-sm rounded-md px-3 py-2 mb-4">
           {errorMsg}
         </div>
       )}
       {tableMissing && (
-        <div className="bg-amber-500/10 border border-amber-500/30 text-amber-200 text-sm rounded-md px-3 py-3 mb-4">
-          The <code className="text-amber-300">external_sales</code> table
+        <div className="bg-adm-accent/10 border border-adm-accent/30 text-adm-accent text-sm rounded-md px-3 py-3 mb-4">
+          The <code className="text-adm-accent">external_sales</code> table
           doesn&apos;t exist yet. Run the setup SQL in Supabase first, then this
           page will work.
         </div>
@@ -153,15 +153,15 @@ export default async function WeTravelPage({
 
       {/* Summary */}
       <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl px-4 py-3">
-          <div className="text-xs text-gray-500">WeTravel this month</div>
-          <div className="text-xl font-bold text-amber-400">
+        <div className="bg-adm-surface border border-adm-border rounded-xl px-4 py-3">
+          <div className="text-xs text-adm-faint">WeTravel this month</div>
+          <div className="text-xl font-bold text-adm-accent">
             {formatUsd(totalThisMonth)}
           </div>
         </div>
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl px-4 py-3">
-          <div className="text-xs text-gray-500">WeTravel all-time logged</div>
-          <div className="text-xl font-bold text-white">
+        <div className="bg-adm-surface border border-adm-border rounded-xl px-4 py-3">
+          <div className="text-xs text-adm-faint">WeTravel all-time logged</div>
+          <div className="text-xl font-bold text-adm-text">
             {formatUsd(totalAll)}
           </div>
         </div>
@@ -170,12 +170,12 @@ export default async function WeTravelPage({
       {/* Add form */}
       <form
         action={createExternalSaleAction}
-        className="bg-zinc-950 border border-zinc-900 rounded-xl p-4 mb-8 space-y-4"
+        className="bg-adm-surface border border-adm-border rounded-xl p-4 mb-8 space-y-4"
       >
-        <div className="text-sm font-semibold text-gray-200">Add a sale</div>
+        <div className="text-sm font-semibold text-adm-text">Add a sale</div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <label className="block">
-            <span className="text-xs text-gray-400">Amount (USD) *</span>
+            <span className="text-xs text-adm-muted">Amount (USD) *</span>
             <input
               type="number"
               name="amountUsd"
@@ -183,70 +183,70 @@ export default async function WeTravelPage({
               step="0.01"
               required
               placeholder="450"
-              className="mt-1 w-full bg-black border border-zinc-800 rounded-md px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="mt-1 w-full bg-adm-bg border border-adm-border-strong rounded-md px-3 py-2 text-sm text-adm-text focus:border-adm-accent focus:outline-none"
             />
           </label>
           <label className="block">
-            <span className="text-xs text-gray-400">Sale date *</span>
+            <span className="text-xs text-adm-muted">Sale date *</span>
             <input
               type="date"
               name="saleDate"
               required
               defaultValue={crToday()}
-              className="mt-1 w-full bg-black border border-zinc-800 rounded-md px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="mt-1 w-full bg-adm-bg border border-adm-border-strong rounded-md px-3 py-2 text-sm text-adm-text focus:border-adm-accent focus:outline-none"
             />
           </label>
           <label className="block">
-            <span className="text-xs text-gray-400">Customer (optional)</span>
+            <span className="text-xs text-adm-muted">Customer (optional)</span>
             <input
               type="text"
               name="customerName"
               placeholder="John Smith"
-              className="mt-1 w-full bg-black border border-zinc-800 rounded-md px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="mt-1 w-full bg-adm-bg border border-adm-border-strong rounded-md px-3 py-2 text-sm text-adm-text focus:border-adm-accent focus:outline-none"
             />
           </label>
           <label className="block">
-            <span className="text-xs text-gray-400">Route (optional)</span>
+            <span className="text-xs text-adm-muted">Route (optional)</span>
             <input
               type="text"
               name="route"
               placeholder="SJO → La Fortuna"
-              className="mt-1 w-full bg-black border border-zinc-800 rounded-md px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none"
+              className="mt-1 w-full bg-adm-bg border border-adm-border-strong rounded-md px-3 py-2 text-sm text-adm-text focus:border-adm-accent focus:outline-none"
             />
           </label>
         </div>
         <label className="block">
-          <span className="text-xs text-gray-400">Notes (optional)</span>
+          <span className="text-xs text-adm-muted">Notes (optional)</span>
           <input
             type="text"
             name="notes"
             placeholder="Round trip, paid in full"
-            className="mt-1 w-full bg-black border border-zinc-800 rounded-md px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none"
+            className="mt-1 w-full bg-adm-bg border border-adm-border-strong rounded-md px-3 py-2 text-sm text-adm-text focus:border-adm-accent focus:outline-none"
           />
         </label>
         <button
           type="submit"
-          className="bg-amber-500 hover:bg-amber-400 text-black font-semibold text-sm rounded-md px-4 py-2 transition-colors"
+          className="bg-adm-accent hover:bg-adm-accent-hover text-adm-on-accent font-semibold text-sm rounded-md px-4 py-2 transition-colors"
         >
           Save sale
         </button>
       </form>
 
       {/* List */}
-      <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-zinc-900 text-sm font-semibold text-gray-200">
+      <div className="bg-adm-surface border border-adm-border rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-adm-border text-sm font-semibold text-adm-text">
           Logged sales{" "}
-          <span className="text-xs text-gray-500 font-normal">
+          <span className="text-xs text-adm-faint font-normal">
             ({sales.length})
           </span>
         </div>
         {error && !tableMissing && (
-          <div className="px-4 py-3 text-sm text-red-300">
+          <div className="px-4 py-3 text-sm text-adm-danger">
             Failed to load: {error}
           </div>
         )}
         {!error && sales.length === 0 && (
-          <div className="px-4 py-6 text-sm text-gray-500 text-center">
+          <div className="px-4 py-6 text-sm text-adm-faint text-center">
             No WeTravel sales logged yet.
           </div>
         )}
@@ -257,21 +257,21 @@ export default async function WeTravelPage({
                 key={s.id}
                 className="px-4 py-3 flex items-center gap-3 text-sm"
               >
-                <div className="w-24 shrink-0 text-gray-400 text-xs">
+                <div className="w-24 shrink-0 text-adm-muted text-xs">
                   {formatSaleDate(s.sale_date)}
                 </div>
-                <div className="w-20 shrink-0 font-semibold text-amber-400">
+                <div className="w-20 shrink-0 font-semibold text-adm-accent">
                   {formatUsd(toNumber(s.amount_usd))}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-gray-200 truncate">
+                  <div className="text-adm-text truncate">
                     {s.customer_name || "—"}
                     {s.route ? (
-                      <span className="text-gray-500"> · {s.route}</span>
+                      <span className="text-adm-faint"> · {s.route}</span>
                     ) : null}
                   </div>
                   {s.notes && (
-                    <div className="text-xs text-gray-600 truncate">
+                    <div className="text-xs text-adm-faint truncate">
                       {s.notes}
                     </div>
                   )}
@@ -281,7 +281,7 @@ export default async function WeTravelPage({
                   <button
                     type="submit"
                     aria-label="Delete sale"
-                    className="text-gray-600 hover:text-red-400 p-1 rounded hover:bg-zinc-900"
+                    className="text-adm-faint hover:text-adm-danger p-1 rounded hover:bg-adm-surface-2"
                   >
                     <Trash2 size={15} />
                   </button>

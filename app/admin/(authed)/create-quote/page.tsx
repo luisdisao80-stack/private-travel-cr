@@ -26,7 +26,7 @@ export default function CreateQuotePage() {
     <div className="max-w-3xl">
       <Link
         href="/admin"
-        className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-amber-400 mb-4"
+        className="inline-flex items-center gap-1 text-xs text-adm-muted hover:text-adm-accent-hover mb-4"
       >
         <ChevronLeft size={14} /> All bookings
       </Link>
@@ -35,7 +35,7 @@ export default function CreateQuotePage() {
         <h1 className="text-2xl md:text-3xl font-bold">
           Create quote for customer
         </h1>
-        <p className="text-xs text-gray-500 mt-1 max-w-2xl">
+        <p className="text-xs text-adm-faint mt-1 max-w-2xl">
           For customers who can&apos;t use the site. Fill this out and the
           customer receives a single email with a &ldquo;Pay now&rdquo;
           button — no form to fill on their end. Link expires in 48

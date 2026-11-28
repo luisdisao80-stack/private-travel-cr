@@ -12,15 +12,15 @@ export type BookingStatus = (typeof STATUSES)[number];
 export function statusBadgeClass(status: string | null | undefined): string {
   switch (status) {
     case "approved":
-      return "bg-green-500/15 text-green-300 border border-green-500/40";
+      return "bg-adm-ok/15 text-adm-ok border border-adm-ok/40";
     case "completed":
-      return "bg-blue-500/15 text-blue-300 border border-blue-500/40";
+      return "bg-adm-info/15 text-adm-info border border-adm-info/40";
     case "cancelled":
-      return "bg-red-500/15 text-red-300 border border-red-500/40";
+      return "bg-adm-danger/15 text-adm-danger border border-adm-danger/40";
     case "pending":
-      return "bg-amber-500/15 text-amber-300 border border-amber-500/40";
+      return "bg-adm-accent/15 text-adm-accent border border-adm-accent/40";
     default:
-      return "bg-zinc-800 text-gray-400 border border-zinc-700";
+      return "bg-adm-surface-2 text-adm-muted border border-adm-border-strong";
   }
 }
 

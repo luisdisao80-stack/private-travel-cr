@@ -16,7 +16,7 @@ type Props = { data: RouteAggregate[] };
 export default function TopRoutesChart({ data }: Props) {
   if (!data || data.length === 0) {
     return (
-      <div className="h-72 flex items-center justify-center text-sm text-gray-500">
+      <div className="h-72 flex items-center justify-center text-sm text-adm-faint">
         No route revenue in the last 30 days yet.
       </div>
     );
@@ -35,30 +35,30 @@ export default function TopRoutesChart({ data }: Props) {
           layout="vertical"
           margin={{ top: 4, right: 24, left: 4, bottom: 4 }}
         >
-          <CartesianGrid stroke="#27272a" strokeDasharray="3 3" horizontal={false} />
+          <CartesianGrid stroke="var(--adm-border)" strokeDasharray="3 3" horizontal={false} />
           <XAxis
             type="number"
-            stroke="#71717a"
+            stroke="var(--adm-faint)"
             fontSize={11}
-            tick={{ fill: "#a1a1aa" }}
+            tick={{ fill: "var(--adm-muted)" }}
             tickFormatter={(v: number) => `$${Math.round(v)}`}
           />
           <YAxis
             type="category"
             dataKey="route"
-            stroke="#71717a"
+            stroke="var(--adm-faint)"
             fontSize={11}
-            tick={{ fill: "#a1a1aa" }}
+            tick={{ fill: "var(--adm-muted)" }}
             width={160}
           />
           <Tooltip
             contentStyle={{
-              background: "#09090b",
-              border: "1px solid #27272a",
+              background: "var(--adm-surface)",
+              border: "1px solid var(--adm-border)",
               borderRadius: 8,
               fontSize: 12,
             }}
-            labelStyle={{ color: "#e4e4e7" }}
+            labelStyle={{ color: "var(--adm-text)" }}
             cursor={{ fill: "rgba(234, 88, 12, 0.08)" }}
             formatter={(value, _name, item) => {
               const trips = (item?.payload?.trips as number | undefined) ?? 0;
@@ -68,7 +68,7 @@ export default function TopRoutesChart({ data }: Props) {
               ];
             }}
           />
-          <Bar dataKey="revenue" fill="#ea580c" radius={[0, 4, 4, 0]} />
+          <Bar dataKey="revenue" fill="var(--adm-accent)" radius={[0, 4, 4, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

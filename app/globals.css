@@ -404,3 +404,89 @@
 @media (prefers-reduced-motion: reduce) {
   .cart-fade-in, .cart-slide-in, .cart-item-in { animation: none; }
 }
+
+/* ============================================ */
+/* Admin palette tokens (/admin)                */
+/* ============================================ */
+/* Todo el panel usa clases `*-adm-*` (bg-adm-surface, text-adm-accent…) en
+   lugar de colores sueltos. La paleta activa se elige con el atributo
+   data-admin-palette del contenedor (ver lib/admin-theme.ts). */
+
+@theme inline {
+  --color-adm-bg: var(--adm-bg);
+  --color-adm-surface: var(--adm-surface);
+  --color-adm-surface-2: var(--adm-surface-2);
+  --color-adm-border: var(--adm-border);
+  --color-adm-border-strong: var(--adm-border-strong);
+  --color-adm-text: var(--adm-text);
+  --color-adm-text-2: var(--adm-text-2);
+  --color-adm-muted: var(--adm-muted);
+  --color-adm-faint: var(--adm-faint);
+  --color-adm-accent: var(--adm-accent);
+  --color-adm-accent-hover: var(--adm-accent-hover);
+  --color-adm-on-accent: var(--adm-on-accent);
+  --color-adm-ok: var(--adm-ok);
+  --color-adm-danger: var(--adm-danger);
+  --color-adm-info: var(--adm-info);
+}
+
+/* Marca: azul marino + dorado (logo y hojas de servicio) */
+.admin-theme,
+.admin-theme[data-admin-palette="brand"] {
+  color-scheme: dark;
+  --adm-bg: #0b1220;
+  --adm-surface: #111a2e;
+  --adm-surface-2: #182440;
+  --adm-border: #1e2a44;
+  --adm-border-strong: #2c3c60;
+  --adm-text: #f3f4f6;
+  --adm-text-2: #d1d5db;
+  --adm-muted: #9ca3af;
+  --adm-faint: #6b7280;
+  --adm-accent: #c9a227;
+  --adm-accent-hover: #dcb73b;
+  --adm-on-accent: #0b1220;
+  --adm-ok: #22c55e;
+  --adm-danger: #ef4444;
+  --adm-info: #3b82f6;
+}
+
+/* Clara neutra: fondo gris muy claro, tarjetas blancas, dorado oscuro */
+.admin-theme[data-admin-palette="light"] {
+  color-scheme: light;
+  --adm-bg: #f4f5f8;
+  --adm-surface: #ffffff;
+  --adm-surface-2: #eceef3;
+  --adm-border: #e2e5ec;
+  --adm-border-strong: #c9cfdb;
+  --adm-text: #111827;
+  --adm-text-2: #374151;
+  --adm-muted: #6b7280;
+  --adm-faint: #9ca3af;
+  --adm-accent: #a16207;
+  --adm-accent-hover: #854d0e;
+  --adm-on-accent: #ffffff;
+  --adm-ok: #15803d;
+  --adm-danger: #b91c1c;
+  --adm-info: #1d4ed8;
+}
+
+/* Verde / natural: bosque oscuro con acento verde claro */
+.admin-theme[data-admin-palette="natural"] {
+  color-scheme: dark;
+  --adm-bg: #0e1a14;
+  --adm-surface: #14241b;
+  --adm-surface-2: #1b3024;
+  --adm-border: #22392c;
+  --adm-border-strong: #31503f;
+  --adm-text: #f0f4ef;
+  --adm-text-2: #cfd8d0;
+  --adm-muted: #93a79a;
+  --adm-faint: #6b7f72;
+  --adm-accent: #8fd19e;
+  --adm-accent-hover: #a7e0b4;
+  --adm-on-accent: #0e1a14;
+  --adm-ok: #22c55e;
+  --adm-danger: #f87171;
+  --adm-info: #60a5fa;
+}
